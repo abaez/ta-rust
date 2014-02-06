@@ -41,15 +41,14 @@ if type(snippets) == 'table' then
 
     -- if
     ["if"]      = "if %1(expr) {\n\t%0\n}",
-    ["ife"]     = "if %1(expr) {\n\t%1(block)\n} else %0(expr)",
-    match       = "match %1(expr) {\n\t%2(pattern) => %0(expr)\n}",
-
-
+    ["ife"]     = "if %1(expr) {\n\t%2(block)\n} else %3(expr)",
+    match       = "match %1(expr) {\n\t%2(pattern) => %3(expr)\n}",
 
     -- random
     ["#"]   = "#[%0(attribute)]",
     static  = "static %1(name): %2(type) = %0;",
     lmut    = "let mut %1(name): %2(type) = %0;",
+    let     = "let %1(name): %2(type) = %0;",
     ["/*"]  = "/*\n\t%0\n*/"
   }
 end
@@ -59,15 +58,7 @@ events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
 
   buffer.tab_width = 4
-  buffer.tab_indents = false
 
-  -- semantic highlighting
-  buffer.property['style.operator'] = 'fore:%(color.base0F)'
-  buffer.property['style.identifier'] = 'fore:%(color.base0D)'
-  buffer.property['style.function'] = 'fore:%(color.base08)'
-  buffer.property['style.constant'] = 'fore:%(color.base0E)'
-  buffer.property['style.library'] = 'fore:%(color.base09)'
-  buffer.property['style.keyword'] = 'fore:%(color.base04)'
 end)
 
 return {}
