@@ -1,5 +1,5 @@
 # ta-rust
-## A [Rust](http://www.rust-lang.org) module and lexer for [TextAdept](http://foicica.com/textadept/).
+## A [Rust](http://www.rust-lang.org) module and lexer for [Textadept](http://foicica.com/textadept/).
 
 ### DESCRIPTION
 A work in progress module/lexer for Rust. I recently decided to take a month
