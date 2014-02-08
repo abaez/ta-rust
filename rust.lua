@@ -21,18 +21,15 @@ local dq_str = P('L')^-1 * l.delimited_range('"', true)
 local string = token(l.STRING, dq_str)
 
 -- Numbers.
---local number = token(l.NUMBER, l.float + l.integer )
 local number = token(l.NUMBER, l.float + "0b" * l.integer + "0o" * l.integer +
   l.integer)
---local number = number .. token(l.NUMBER, '0b' * l.integer)
 
 -- Keywords.
 local keyword = token(l.KEYWORD, word_match{
   'as', 'break', 'do', 'else', 'enum', 'extern', 'false', 'fn', 'for', 'if',
   'impl', 'in', 'let', 'loop', 'match', 'mod', 'mut', 'priv', 'pub', 'ref',
   'return', 'self', 'static', 'struct', 'super', 'true', 'trait', 'type',
-  'unsafe', 'use', 'while',
-  'None'
+  'unsafe', 'use', 'while'
 })
 
 -- Types.
@@ -40,6 +37,7 @@ local type = token(l.TYPE, word_match{
   '()', 'bool', 'int', 'uint', 'char', 'str',
   'u8', 'u16', 'u32', 'u64', 'i8', 'i16', 'i32', 'i64',
   'binary32', 'binary64', 'f32','f64',
+  'None', 'float'
 })
 
 -- Identifiers.

@@ -1,6 +1,39 @@
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
 
+-- compiler
+textadept.run.compile_commands.rust = 'rustc %(filename)'
+
+
+local sense = textadept.adeptsense.new('rust')
+local as = textadept.adeptsense
+
+-- [ctags.rust](https://github.com/mozilla/rust/blob/master/src/etc/ctags.rust)
+-- NOTE: c is disabled in the tags builder. Will change this later on...
+sense.ctags_kinds = {
+  c = as.FIELD, d = as.CLASS, f = as.FUNCTION, g = as.FIELD, i = as.CLASS,
+  m = as.CLASS, s = as.FIELD, t = as.CLASS, T = as.FIELD
+}
+
+sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
+
+-- NOTE: api file still not produced. Need to make a script to do so.
+--sense.api_files = {
+--  _USERHOME .. '/modules/rust/api'
+--}
+
+sense.syntax.type_declarations = {
+  -- missing explicit references and template! like `foo<T> : 'r bar`
+  "([%w_%.]+): [%s*~@&]+%_[^%w_]", -- ONLY for normal declares.
+}
+
+-- add a trigger for auto sense
+sense:add_trigger('.')
+sense:add_trigger("::")
+
+
+
+
 -- Table of Rust-specific key bindings.
 -- @class table
 -- @name _G.keys.rust
@@ -61,4 +94,6 @@ events.connect(events.LEXER_LOADED, function (lang)
 
 end)
 
-return {}
+return {
+  sense = sense
+}
