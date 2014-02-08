@@ -1,12 +1,12 @@
 textadept.file_types.extensions.rs = 'rust'
-
+textadept.editing.comment_string.rust = '//'
 
 -- Table of Rust-specific key bindings.
 -- @class table
--- @name _G.keys.ansi_c
+-- @name _G.keys.rust
 keys.rust = {
   [keys.LANGUAGE_MODULE_PREFIX] = {
-    m = {io.open_file, _HOME..'/modules/rust/init.lua'},
+    m = {io.open_file, _USERHOME..'/modules/rust/init.lua'},
   },
   ['s\n'] = function()
     buffer:line_end()
@@ -29,10 +29,10 @@ if type(snippets) == 'table' then
     enum    = "enum %1(name) {\n\t%0\n}",
     mod     = "mod %1(name) {\n\t%0\n}",
     trait   = "trait %1(name) {\n\t%0\n}",
-    impl    = "impl %1(name) %2(for %3(type)) {\n\t%0\n}",
+    impl    = "impl %1(name) %2(for %3(type)){\n\t%0\n}",
 
     -- Expressions
-    v           = "[%1(start), ..%2(range_end)] %0",
+    v           = "[%1(start), %2(.. %3(range_end))]%0",
     l           = "|%1(param)| %0(expr)",
     ["while"]   = "while %1(expr) {\n\t%0\n}",
     loop        = "loop {\n\t%0\n}",

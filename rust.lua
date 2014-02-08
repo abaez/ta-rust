@@ -22,7 +22,8 @@ local string = token(l.STRING, dq_str)
 
 -- Numbers.
 --local number = token(l.NUMBER, l.float + l.integer )
-local number = token(l.NUMBER, l.float + "0b" * l.integer + l.integer)
+local number = token(l.NUMBER, l.float + "0b" * l.integer + "0o" * l.integer +
+  l.integer)
 --local number = number .. token(l.NUMBER, '0b' * l.integer)
 
 -- Keywords.
@@ -30,7 +31,8 @@ local keyword = token(l.KEYWORD, word_match{
   'as', 'break', 'do', 'else', 'enum', 'extern', 'false', 'fn', 'for', 'if',
   'impl', 'in', 'let', 'loop', 'match', 'mod', 'mut', 'priv', 'pub', 'ref',
   'return', 'self', 'static', 'struct', 'super', 'true', 'trait', 'type',
-  'unsafe', 'use', 'while'
+  'unsafe', 'use', 'while',
+  'None'
 })
 
 -- Types.
