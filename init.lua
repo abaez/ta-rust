@@ -6,7 +6,7 @@ textadept.file_types.extensions.rs = 'rust'
 -- @name _G.keys.ansi_c
 keys.rust = {
   [keys.LANGUAGE_MODULE_PREFIX] = {
-    m = {io.open_file, _HOME..'/modules/rust/init.lua'},
+    m = {io.open_file, _USERHOME..'/modules/rust/init.lua'},
   },
   ['s\n'] = function()
     buffer:line_end()
