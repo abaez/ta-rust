@@ -3,6 +3,8 @@ textadept.editing.comment_string.rust = '//'
 
 -- compiler
 textadept.run.compile_commands.rust = 'rustc %(filename)'
+textadept.run.run_commands.rust = '%d%(filename_noext)'
+
 
 
 local sense = textadept.adeptsense.new('rust')
@@ -46,6 +48,7 @@ keys.rust = {
     buffer:add_text(';')
     buffer:new_line()
   end,
+
 }
 
 if type(snippets) == 'table' then
