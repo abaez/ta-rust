@@ -17,24 +17,27 @@ sense.ctags_kinds = {
   m = as.CLASS, s = as.FIELD, t = as.CLASS, T = as.FIELD
 }
 
-sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
+
+sense.syntax.class_definition = "(trait)%s+[(%w_)+]"
+
+sense.syntax.type_declarations = {
+  "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]", -- foo: bar || foo: 'r bar
+  "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]", -- foo<t>: bar || foo<t>: 'r bar
+}
+
+
+--sense.syntax.symbol_chars = "[%w_%_]"
+
+-- add a trigger for auto sense
+sense:add_trigger('.')
+sense:add_trigger("::", false, true)
+
 
 -- NOTE: api file still not produced. Need to make a script to do so.
 --sense.api_files = {
 --  _USERHOME .. '/modules/rust/api'
 --}
-
-sense.syntax.type_declarations = {
-  -- missing explicit references and template! like `foo<T> : 'r bar`
-  "([%w_%.]+): [%s*~@&]+%_[^%w_]", -- ONLY for normal declares.
-}
-
--- add a trigger for auto sense
-sense:add_trigger('.')
-sense:add_trigger("::")
-
-
-
+sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
 
 -- Table of Rust-specific key bindings.
 -- @class table

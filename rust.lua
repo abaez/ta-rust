@@ -37,7 +37,6 @@ local type = token(l.TYPE, word_match{
   '()', 'bool', 'int', 'uint', 'char', 'str',
   'u8', 'u16', 'u32', 'u64', 'i8', 'i16', 'i32', 'i64',
   'binary32', 'binary64', 'f32','f64',
-  'None', 'float'
 })
 
 -- Identifiers.
