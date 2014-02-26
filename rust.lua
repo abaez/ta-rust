@@ -45,6 +45,9 @@ local identifier = token(l.IDENTIFIER, l.word)
 -- Operators.
 local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
+-- Attributes.
+local attribute = token(l.PREPROCESSOR, "#[" * l.nonnewline^0 * "]")
+
 M._rules = {
   {'whitespace', ws},
   {'keyword', keyword},
@@ -54,6 +57,7 @@ M._rules = {
   {'comment', comment},
   {'number', number},
   {'operator', operator},
+  {'preprocessor', attribute},
 }
 
 M._foldsymbols = {

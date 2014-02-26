@@ -72,7 +72,7 @@ if type(snippets) == 'table' then
 
     -- Expressions
     v           = "[%1(start), %2(.. %3(range_end))]%0",
-    l           = "|%1(param)| %0(expr)",
+    l           = "|%1(param)| %0",
     ["while"]   = "while %1(expr) {\n\t%0\n}",
     loop        = "loop {\n\t%0\n}",
     ["do"]      = "do |%1(param)| {\n\t%0\n}",
