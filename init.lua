@@ -77,18 +77,20 @@ if type(snippets) == 'table' then
     loop        = "loop {\n\t%0\n}",
     ["do"]      = "do |%1(param)| {\n\t%0\n}",
     ["for"]     = "for %1(pattern) in %2(expr) {\n\t%0\n}",
+    ["forr"]     = "for %1(pattern) in range(%2(0), %3(10)) {\n\t%0\n}",
 
     -- if
-    ["if"]      = "if %1(expr) {\n\t%0\n}",
-    ["ife"]     = "if %1(expr) {\n\t%2(block)\n} else %3(expr)",
+    ["if"]      = "if %1(expr) {\n\t%1\n} %0",
+    ["else"]    = 'else {\n\t%0\n}',
     match       = "match %1(expr) {\n\t%2(pattern) => %3(expr)\n}",
 
     -- random
-    ["#"]   = "#[%0(attribute)]",
+    ["#"]   = "#[%1(attribute)]",
     static  = "static %1(name): %2(type) = %0;",
     lmut    = "let mut %1(name): %2(type) = %0;",
     let     = "let %1(name): %2(type) = %0;",
-    ["/*"]  = "/*\n\t%0\n*/"
+    ["/*"]  = "/*\n\t%0\n*/",
+    ["print"] = 'print(format!("{:%1(?)}\\n", %0))'
   }
 end
 
