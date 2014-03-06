@@ -14,7 +14,7 @@ local as = textadept.adeptsense
 -- NOTE: c is disabled in the tags builder. Will change this later on...
 sense.ctags_kinds = {
   c = as.FIELD, d = as.CLASS, f = as.FUNCTION, g = as.FIELD, i = as.CLASS,
-  m = as.CLASS, s = as.FIELD, t = as.CLASS, T = as.FIELD
+  m = as.CLASS, s = as.CLASS, t = as.CLASS, T = as.FIELD
 }
 
 
@@ -22,7 +22,7 @@ sense.syntax.class_definition = "(trait)%s+[(%w_)+]"
 
 sense.syntax.type_declarations = {
   "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]", -- foo: bar || foo: 'r bar
-  "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]", -- foo<t>: bar || foo<t>: 'r bar
+  "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]", -- foo<t>: bar || foo<t>: 'r bar,
 }
 
 
@@ -30,7 +30,8 @@ sense.syntax.type_declarations = {
 
 -- add a trigger for auto sense
 sense:add_trigger('.')
-sense:add_trigger("::", false, true)
+--sense:add_trigger("::", false, true)
+sense:add_trigger("::")
 
 
 -- NOTE: api file still not produced. Need to make a script to do so.
