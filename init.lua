@@ -35,10 +35,10 @@ sense:add_trigger("::")
 
 
 -- NOTE: api file still not produced. Need to make a script to do so.
---sense.api_files = {
---  _USERHOME .. '/modules/rust/api'
---}
 sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
+sense.api_files = {
+  _USERHOME .. '/modules/rust/api'
+}
 
 -- Table of Rust-specific key bindings.
 -- @class table
