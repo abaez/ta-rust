@@ -29,12 +29,10 @@ sense.syntax.type_declarations = {
 --sense.syntax.symbol_chars = "[%w_%_]"
 
 -- add a trigger for auto sense
-sense:add_trigger('.')
+--sense:add_trigger('.')
 --sense:add_trigger("::", false, true)
-sense:add_trigger("::")
+--sense:add_trigger("::")
 
-
--- NOTE: api file still not produced. Need to make a script to do so.
 sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
 sense.api_files = {
   _USERHOME .. '/modules/rust/api'
@@ -77,11 +75,11 @@ if type(snippets) == 'table' then
     ["while"]   = "while %1(expr) {\n\t%0\n}",
     loop        = "loop {\n\t%0\n}",
     ["do"]      = "do |%1(param)| {\n\t%0\n}",
-    ["for"]     = "for %1(pattern) in %2(expr) {\n\t%0\n}",
-    ["forr"]     = "for %1(pattern) in range(%2(0), %3(10)) {\n\t%0\n}",
+    ["for"]     = "for %1(i) in %2(iterator) {\n\t%0\n}",
+    ["forr"]     = "for %1(i) in range(%2(0), %3(10)) {\n\t%0\n}",
 
     -- if
-    ["if"]      = "if %1(expr) {\n\t%1\n} %0",
+    ["if"]      = "if %1(expr) {\n\t%2\n} %0",
     ["else"]    = 'else {\n\t%0\n}',
     match       = "match %1(expr) {\n\t%2(pattern) => %3(expr)\n}",
 
@@ -100,7 +98,7 @@ events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
 
   buffer.tab_width = 4
-
+  buffer.use_tabs = false
 end)
 
 return {

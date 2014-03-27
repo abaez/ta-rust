@@ -14,6 +14,7 @@ AllocHeader			struct AllocHeader
 AllocHeader			struct AllocHeader;
 Alphabetic			    pub fn Alphabetic(c: char) -> bool 
 Any			pub trait Any 
+AnyLines			pub type AnyLines<'a> =
 AnyMutRefExt			pub trait AnyMutRefExt<'a> 
 AnyOwnExt			impl AnyOwnExt for ~Any 
 AnyOwnExt			pub trait AnyOwnExt 
@@ -41,7 +42,11 @@ AtomicU64			impl AtomicU64
 AtomicU64			pub struct AtomicU64 
 AtomicUint			impl AtomicUint 
 AtomicUint			pub struct AtomicUint 
+BOOL			                pub type BOOL = c_int;
+BOOLEAN			                pub type BOOLEAN = BYTE;
+BYTE			                pub type BYTE = u8;
 Bar			    struct Bar(int, int);
+BigSortable			    type BigSortable = (u64,u64,u64,u64);
 Binary			pub trait Binary { fn fmt(&self, &mut Formatter) -> Result; }
 Binary			struct Binary;
 BitAnd			impl BitAnd<bool, bool> for bool 
@@ -68,6 +73,7 @@ BlockedTask			pub enum BlockedTask
 BlockedTasks			pub struct BlockedTasks 
 Bool			impl Bool for bool 
 Bool			pub trait Bool { fn fmt(&self, &mut Formatter) -> Result; }
+BorrowFlag			type BorrowFlag = uint;
 Borrowed			pub struct Borrowed<T> 
 Bounded			impl Bounded for f32 
 Bounded			impl Bounded for f64 
@@ -75,6 +81,7 @@ Bounded			impl Bounded for $T
 Bounded			pub trait Bounded 
 Bounded			impl Bounded for $T 
 Box			pub struct Box<T> 
+Box			pub type Box = raw::Box<()>;
 BufReader			pub struct BufReader<'a> 
 BufWriter			pub struct BufWriter<'a> 
 Buffer			impl Buffer for MemReader 
@@ -87,13 +94,16 @@ BufferedWriter			pub struct BufferedWriter<W>
 ByRef			pub struct ByRef<'a, T> 
 Bytes			    struct Bytes<'a>(&'a [u8]);
 Bytes			pub struct Bytes<'r, T> 
+Bytes			pub type Bytes<'a> =
 BytesContainer			impl BytesContainer for CString 
 BytesContainer			impl BytesContainer for ~[u8] 
 BytesContainer			impl BytesContainer for ~str 
 BytesContainer			pub trait BytesContainer 
 BytesContainer			impl BytesContainer for Path 
 BytesContainer			impl BytesContainer for Path 
+CCHAR			                pub type CCHAR = c_char;
 CChars			pub struct CChars<'a> 
+CHAR			                pub type CHAR = c_char;
 CString			impl CString 
 CString			pub struct CString 
 Callback			pub trait Callback 
@@ -178,6 +188,8 @@ Closed01			pub struct Closed01<F>(F);
 Closure			pub struct Closure 
 Co			    pub fn Co(c: char) -> bool 
 CommandLineToArgvW			    fn CommandLineToArgvW(lpCmdLine: LPCWSTR, pNumArgs: *mut c_int) -> **u16;
+Components			pub type Components<'a> = Splits<'a, u8>;
+Components			pub type Components<'a> = Map<'a, Option<&'a str>, &'a [u8],
 Compound			    struct Compound 
 ConnectNamedPipe			                pub fn ConnectNamedPipe(hNamedPipe: HANDLE,
 ConstRand			    struct ConstRand(uint);
@@ -211,6 +223,8 @@ Custom			    struct Custom
 Cycle			pub struct Cycle<T> 
 Cycle			        struct Cycle 
 DIR			            pub enum DIR {}
+DWORD			                pub type DWORD = c_ulong;
+DWORDLONG			                pub type DWORDLONG = c_ulonglong;
 Death			impl Death 
 Death			pub struct Death 
 DeathAction			pub enum DeathAction 
@@ -242,6 +256,7 @@ Direction			enum Direction { Pos, Neg }
 Directories			pub struct Directories 
 DisconnectNamedPipe			                pub fn DisconnectNamedPipe(hNamedPipe: HANDLE) -> BOOL;
 Display			pub struct Display<'a, P> 
+Disr			pub type Disr = u64;
 Div			impl Div<f32,f32> for f32 
 Div			impl Div<f64,f64> for f64 
 Div			impl Div<$T,$T> for $T 
@@ -309,6 +324,7 @@ File			pub struct File
 FileAccess			pub enum FileAccess 
 FileMode			pub enum FileMode 
 FileOpenConfig			pub struct FileOpenConfig 
+FilePermission			pub type FilePermission = u32;
 FileStat			pub struct FileStat 
 FileType			pub enum FileType 
 Filter			pub struct Filter<'a, A, T> 
@@ -360,6 +376,7 @@ FromStrRadix			impl FromStrRadix for $T
 FromStrRadix			pub trait FromStrRadix 
 FromStrRadix			impl FromStrRadix for $T 
 Fuse			pub struct Fuse<T> 
+GROUP			                pub type GROUP = c_uint;
 GUID			                pub struct GUID 
 Gamma			impl Gamma 
 Gamma			pub enum Gamma 
@@ -394,6 +411,10 @@ GetOverlappedResult			                pub fn GetOverlappedResult(hFile: HANDLE,
 GetProcAddress			        fn GetProcAddress(handle: *libc::c_void, name: *libc::c_char) -> *libc::c_void;
 GetSystemInfo			                pub fn GetSystemInfo(lpSystemInfo: LPSYSTEM_INFO);
 GetSystemTimeAsFileTime			                pub fn GetSystemTimeAsFileTime(
+GlueFn			pub type GlueFn = extern "Rust" fn(*i8);
+HANDLE			                pub type HANDLE = LPVOID;
+HCRYPTPROV			type HCRYPTPROV = c_long;
+HMODULE			                pub type HMODULE = c_uint;
 Handle			pub struct Handle<'port, T> 
 HasDtor			    struct HasDtor 
 Hash			    impl Hash<u64> for Custom 
@@ -439,6 +460,7 @@ InvariantType			    pub struct InvariantType<T>;
 IoError			pub struct IoError 
 IoErrorKind			pub enum IoErrorKind 
 IoFactory			pub trait IoFactory 
+IoResult			pub type IoResult<T> = Result<T, IoError>;
 IpAddr			pub enum IpAddr 
 Isaac64Rng			impl Isaac64Rng 
 Isaac64Rng			pub struct Isaac64Rng 
@@ -452,7 +474,38 @@ Iterator			pub trait Iterator<A>
 Iterator			impl Iterator<BlockedTask> for BlockedTasks 
 Iterator			impl Iterator<(uint, uint)> for ElementSwaps 
 Juju			    struct Juju;
+Key			pub type Key<T> = &'static KeyValue<T>;
+Key			pub type Key = DWORD;
+Key			pub type Key = pthread_key_t;
 KeyValue			pub enum KeyValue<T> { Key }
+LARGE_INTEGER			                pub type LARGE_INTEGER = c_longlong;
+LONG			                pub type LONG = c_long;
+LONG_PTR			                pub type LONG_PTR = c_long;
+LONG_PTR			                pub type LONG_PTR = i64;
+LPBYTE			                pub type LPBYTE = *mut BYTE;
+LPCH			                pub type LPCH = *mut CHAR;
+LPCRITICAL_SECTION			    type LPCRITICAL_SECTION = *mut c_void;
+LPCSTR			                pub type LPCSTR = *CHAR;
+LPCVOID			                pub type LPCVOID = *c_void;
+LPCWSTR			                pub type LPCWSTR = *WCHAR;
+LPCWSTR			type LPCWSTR = *u16;
+LPDWORD			                pub type LPDWORD = *mut DWORD;
+LPFILETIME			                pub type LPFILETIME = *mut FILETIME;
+LPHANDLE			                pub type LPHANDLE = *mut HANDLE;
+LPMEMORY_BASIC_INFORMATION			                pub type LPMEMORY_BASIC_INFORMATION = *mut MEMORY_BASIC_INFORMATION;
+LPOVERLAPPED			                pub type LPOVERLAPPED = *mut OVERLAPPED;
+LPPROCESS_INFORMATION			                pub type LPPROCESS_INFORMATION = *mut PROCESS_INFORMATION;
+LPSECURITY_ATTRIBUTES			                pub type LPSECURITY_ATTRIBUTES = LPVOID;
+LPSTARTUPINFO			                pub type LPSTARTUPINFO = *mut STARTUPINFO;
+LPSTR			                pub type LPSTR = *mut CHAR;
+LPSYSTEM_INFO			                pub type LPSYSTEM_INFO = *mut SYSTEM_INFO;
+LPVOID			                pub type LPVOID = *mut c_void;
+LPWCH			                pub type LPWCH = *mut WCHAR;
+LPWORD			                pub type LPWORD = *mut WORD;
+LPWSAPROTOCOLCHAIN			                pub type LPWSAPROTOCOLCHAIN = *mut WSAPROTOCOLCHAIN;
+LPWSAPROTOCOL_INFO			                pub type LPWSAPROTOCOL_INFO = *mut WSAPROTOCOL_INFO;
+LPWSTR			                pub type LPWSTR = *mut WCHAR;
+LRESULT			                pub type LRESULT = LONG_PTR;
 LeaveCriticalSection			        fn LeaveCriticalSection(lpCriticalSection: LPCRITICAL_SECTION);
 LimitReader			pub struct LimitReader<R> 
 LineBufferedWriter			pub struct LineBufferedWriter<W> 
@@ -494,6 +547,7 @@ MEMORY_BASIC_INFORMATION			                pub struct MEMORY_BASIC_INFORMATION
 Managed			    pub struct Managed;
 Map			pub trait Map<K, V>: Container 
 Map			pub struct Map<'a, A, B, T> 
+Map			pub type Map = ~[Option<(*u8, TLSValue, LoanState)>];
 MapError			pub enum MapError 
 MapOption			pub enum MapOption 
 MapViewOfFile			                pub fn MapViewOfFile(hFileMappingObject: HANDLE,
@@ -546,6 +600,7 @@ MutableTotalOrdVector			pub trait MutableTotalOrdVector<T>
 MutableVector			pub trait MutableVector<'a, T> 
 Mutex			    impl Mutex 
 Mutex			    pub struct Mutex 
+MyRng			    type MyRng = ReseedingRng<Counter, ReseedWithDefault>;
 MyUpgrade			enum MyUpgrade<T> 
 MyWriter			    struct MyWriter 
 MyWriterHasher			    struct MyWriterHasher;
@@ -625,6 +680,9 @@ OwnedStrAsciiExt			impl OwnedStrAsciiExt for ~str
 OwnedStrAsciiExt			pub trait OwnedStrAsciiExt 
 OwnedVector			pub trait OwnedVector<T> 
 P			struct P {a: int, b: f64}
+PBOOL			                pub type PBOOL = *mut BOOL;
+PLARGE_INTEGER			                pub type PLARGE_INTEGER = *mut c_longlong;
+PLONG			                pub type PLONG = *mut c_long;
 PROCESS_INFORMATION			                pub struct PROCESS_INFORMATION 
 Packet			pub struct Packet<T> 
 Packet			pub trait Packet 
@@ -664,6 +722,7 @@ Pointer			pub trait Pointer { fn fmt(&self, &mut Formatter) -> Result; }
 Poly			pub trait Poly { fn fmt(&self, &mut Formatter) -> Result; }
 PopResult			pub enum PopResult<T> 
 Port			pub struct Port<T> 
+Port			pub type Port = u16;
 PortReader			impl PortReader 
 PortReader			pub struct PortReader 
 Position			pub enum Position<'a> 
@@ -684,6 +743,7 @@ Protocol			pub enum Protocol
 Ps			    pub fn Ps(c: char) -> bool 
 QueryPerformanceCounter			                pub fn QueryPerformanceCounter(
 QueryPerformanceFrequency			                pub fn QueryPerformanceFrequency(
+Queue			type Queue = Exclusive<~[proc()]>;
 Queue			pub struct Queue<T> 
 Queue			pub struct Queue<T> 
 Queue			pub struct Queue<T> 
@@ -769,9 +829,21 @@ ReprVisitor			pub struct ReprVisitor<'a>
 ReseedWithDefault			pub struct ReseedWithDefault;
 Reseeder			pub trait Reseeder<R> 
 ReseedingRng			pub struct ReseedingRng<R, Rsdr> 
+Result			pub type Result = io::IoResult<()>;
 Result			pub enum Result<T, E> 
 Rev			pub struct Rev<T> 
+RevBytes			pub type RevBytes<'a> = Rev<Bytes<'a>>;
+RevCharOffsets			pub type RevCharOffsets<'a> = Rev<CharOffsets<'a>>;
+RevCharSplits			pub type RevCharSplits<'a, Sep> = Rev<CharSplits<'a, Sep>>;
+RevChars			pub type RevChars<'a> = Rev<Chars<'a>>;
+RevComponents			pub type RevComponents<'a> = RevSplits<'a, u8>;
+RevComponents			pub type RevComponents<'a> = Map<'a, Option<&'a str>, &'a [u8],
+RevItems			pub type RevItems<'a, T> = Rev<Items<'a, T>>;
+RevMoveItems			pub type RevMoveItems<T> = Rev<MoveItems<T>>;
+RevMutItems			pub type RevMutItems<'a, T> = Rev<MutItems<'a, T>>;
 RevSplits			pub struct RevSplits<'a, T> 
+RevStrComponents			pub type RevStrComponents<'a> = Map<'a, &'a [u8], Option<&'a str>,
+RevStrComponents			pub type RevStrComponents<'a> = Rev<Map<'a, &'a str, Option<&'a str>,
 Rng			    impl Rng for CountingRng 
 Rng			impl Rng for Isaac64Rng 
 Rng			impl Rng for IsaacRng 
@@ -802,6 +874,8 @@ RtioUnixListener			pub trait RtioUnixListener
 Runtime			pub trait Runtime 
 S			        struct S;
 S			        struct S 
+SIZE_T			                pub type SIZE_T = size_t;
+SOCKET			                pub type SOCKET = c_uint;
 STARTUPINFO			                pub struct STARTUPINFO 
 SYSTEM_INFO			                impl SYSTEM_INFO 
 SYSTEM_INFO			                pub struct SYSTEM_INFO 
@@ -835,6 +909,7 @@ SelectArm			pub struct SelectArm<'a>
 SelectionResult			pub enum SelectionResult<T> 
 SelectionResult			pub enum SelectionResult<T> 
 Send			pub trait Send 
+SendStr			pub type SendStr = MaybeOwned<'static>;
 Set			pub trait Set<T>: Container 
 SetCurrentDirectoryW			                pub fn SetCurrentDirectoryW(lpPathName: LPCWSTR) -> BOOL;
 SetEndOfFile			                pub fn SetEndOfFile(hFile: HANDLE) -> BOOL;
@@ -875,6 +950,7 @@ SocketAddr			pub struct SocketAddr
 SocketType			pub enum SocketType 
 Splits			pub struct Splits<'a, T> 
 StandardNormal			pub struct StandardNormal(f64);
+StartFn			type StartFn = extern "C" fn(*libc::c_void) -> imp::rust_thread_return;
 State			        struct State<'a> 
 State			struct State<T> 
 StaticNativeMutex			impl StaticNativeMutex 
@@ -893,11 +969,14 @@ Stealer			pub struct Stealer<T>
 Stolen			pub enum Stolen<T> 
 Str			pub trait Str 
 StrAsciiExt			pub trait StrAsciiExt 
+StrComponents			pub type StrComponents<'a> = Map<'a, &'a [u8], Option<&'a str>,
+StrComponents			pub type StrComponents<'a> = Map<'a, &'a str, Option<&'a str>,
 StrSlice			pub trait StrSlice<'a> 
 StrSplits			pub struct StrSplits<'a> 
 StrVector			pub trait StrVector 
 Stream			pub trait Stream: Reader + Writer { }
 String			pub trait String { fn fmt(&self, &mut Formatter) -> Result; }
+String			pub type String = Vec<u8>;
 Struct			    struct Struct 
 StudentT			impl StudentT 
 StudentT			pub struct StudentT 
@@ -907,6 +986,10 @@ Sub			impl Sub<$T,$T> for $T
 Sub			impl Sub<$T,$T> for $T 
 Sub			pub trait Sub<RHS,Result> 
 SwitchToThread			        fn SwitchToThread() -> BOOL;
+T			            type T = &'static str;
+T			            type T = ~Any;
+T			            type T = ~str;
+TLSValue			type TLSValue = ~LocalData;
 Take			pub struct Take<T> 
 TakeWhile			pub struct TakeWhile<'a, A, T> 
 Task			impl Task 
@@ -915,7 +998,9 @@ TaskBuilder			impl TaskBuilder
 TaskBuilder			pub struct TaskBuilder 
 TaskOpts			impl TaskOpts 
 TaskOpts			pub struct TaskOpts 
+TaskResult			pub type TaskResult = Result<(), ~Any>;
 TaskRng			pub struct TaskRng 
+TaskRngInner			type TaskRngInner = reseeding::ReseedingRng<StdRng, TaskRngReseeder>;
 TaskRngReseeder			struct TaskRngReseeder;
 TcpAcceptor			pub struct TcpAcceptor 
 TcpListener			impl TcpListener 
@@ -1010,6 +1095,8 @@ VirtualProtect			                pub fn VirtualProtect(lpAddress: LPVOID,
 VirtualQuery			                pub fn VirtualQuery(lpAddress: LPCVOID,
 VirtualUnlock			                pub fn VirtualUnlock(lpAddress: LPVOID, dwSize: SIZE_T)
 Void			pub enum Void { }
+WCHAR			                pub type WCHAR = wchar_t;
+WORD			                pub type WORD = u16;
 WSAPROTOCOLCHAIN			                pub struct WSAPROTOCOLCHAIN 
 WSAPROTOCOL_INFO			                pub struct WSAPROTOCOL_INFO 
 WaitForSingleObject			                pub fn WaitForSingleObject(hHandle: HANDLE,
@@ -1021,6 +1108,7 @@ Weighted			pub struct Weighted<T>
 WeightedChoice			pub struct WeightedChoice<T> 
 White_Space			    pub fn White_Space(c: char) -> bool 
 Windows			pub struct Windows<'a, T> 
+Words			pub type Words<'a> =
 Worker			pub struct Worker<T> 
 WriteFile			                pub fn WriteFile(hFile: HANDLE,
 Writer			    impl Writer for MyWriter 
@@ -1044,12 +1132,15 @@ XID_Continue			    pub fn XID_Continue(c: char) -> bool
 XID_Start			    pub fn XID_Start(c: char) -> bool 
 XorShiftRng			impl XorShiftRng 
 XorShiftRng			pub struct XorShiftRng 
+Z			        type Z = [i8, ..0];
+Z			        type Z = [i8, ..0];
 Zero			impl Zero for f32 
 Zero			impl Zero for f64 
 Zero			impl Zero for $T 
 Zero			pub trait Zero: Add<Self, Self> 
 Zero			impl Zero for $T 
 ZeroReader			pub struct ZeroReader;
+ZigTable			pub type ZigTable = &'static [f64, .. 257];
 Zip			pub struct Zip<T, U> 
 Zl			    pub fn Zl(c: char) -> bool 
 Zp			    pub fn Zp(c: char) -> bool 
@@ -1061,9 +1152,12 @@ _Unwind_Action			    pub enum _Unwind_Action
 _Unwind_Context			    pub enum _Unwind_Context {}
 _Unwind_DeleteException			        pub fn _Unwind_DeleteException(exception: *_Unwind_Exception);
 _Unwind_Exception			    pub struct _Unwind_Exception 
+_Unwind_Exception_Class			    pub type _Unwind_Exception_Class = u64;
+_Unwind_Exception_Cleanup_Fn			    pub type _Unwind_Exception_Cleanup_Fn = extern "C" fn(unwind_code: _Unwind_Reason_Code,
 _Unwind_RaiseException			        pub fn _Unwind_RaiseException(exception: *_Unwind_Exception) -> _Unwind_Reason_Code;
 _Unwind_Reason_Code			    pub enum _Unwind_Reason_Code 
 _Unwind_State			    pub enum _Unwind_State
+_Unwind_Word			    pub type _Unwind_Word = uintptr_t;
 __errno_location			            fn __errno_location() -> *c_int;
 __error			            fn __error() -> *c_int;
 __gcc_personality_v0			        fn __gcc_personality_v0(state: uw::_Unwind_State,
@@ -1240,6 +1334,10 @@ asin			    fn asin(&self) -> Self;
 asinh			    fn asinh(&self) -> f32 
 asinh			    fn asinh(&self) -> f64 
 asinh			    fn asinh(&self) -> Self;
+assert			macro_rules! assert(
+assert_approx_eq			macro_rules! assert_approx_eq(
+assert_eq			macro_rules! assert_eq(
+assert_pow			        macro_rules! assert_pow(
 assert_sane			    fn assert_sane(&self) 
 assert_sane			    fn assert_sane(&self) {}
 at_exit			pub fn at_exit(f: proc()) 
@@ -1345,6 +1443,8 @@ atomic_xsub_rel			    pub fn atomic_xsub_rel<T>(dst: &mut T, src: T) -> T;
 atomic_xsub_relaxed			    pub fn atomic_xsub_relaxed<T>(dst: &mut T, src: T) -> T;
 atomics			pub mod atomics;
 avoid_copying_the_body			fn avoid_copying_the_body(spawnfn: |v: proc()|) 
+b			    macro_rules! b(
+b			    macro_rules! b(
 base			            fn base(&self) -> u8 { $base }
 base			    fn base(&self) -> u8 { self.base }
 base			    fn base(&self) -> u8;
@@ -1416,6 +1516,12 @@ bitxor			    fn bitxor(&self, b: &bool) -> bool { *self ^ *b }
 bitxor			    fn bitxor(&self, other: &$T) -> $T { *self ^ *other }
 bitxor			    fn bitxor(&self, other: &$T) -> $T { *self ^ *other }
 bitxor			    fn bitxor(&self, rhs: &RHS) -> Result;
+blkcnt_t			                pub type blkcnt_t = i32;
+blkcnt_t			                pub type blkcnt_t = i64;
+blkcnt_t			                pub type blkcnt_t = u32;
+blksize_t			                pub type blksize_t = i32;
+blksize_t			                pub type blksize_t = i64;
+blksize_t			                pub type blksize_t = u32;
 block			    pub fn block(task: ~Task) -> BlockedTask 
 block_and_wake			    fn block_and_wake() 
 bookkeeping			pub mod bookkeeping;
@@ -1477,10 +1583,25 @@ c95			        pub mod c95
 c95			    pub mod c95 
 c99			            pub mod c99 
 c99			        pub mod c99 
+c_char			                pub type c_char = i8;
+c_double			                pub type c_double = f64;
 c_double			pub mod c_double 
+c_float			                pub type c_float = f32;
 c_float			pub mod c_float 
+c_int			                pub type c_int = i32;
+c_long			                pub type c_long = i32;
+c_long			                pub type c_long = i64;
+c_longlong			                pub type c_longlong = i64;
+c_schar			                pub type c_schar = i8;
+c_short			                pub type c_short = i16;
 c_str			pub mod c_str;
 c_str_to_static_slice			    pub unsafe fn c_str_to_static_slice(s: *libc::c_char) -> &'static str 
+c_uchar			                pub type c_uchar = u8;
+c_uint			                pub type c_uint = u32;
+c_ulong			                pub type c_ulong = u32;
+c_ulong			                pub type c_ulong = u64;
+c_ulonglong			                pub type c_ulonglong = u64;
+c_ushort			                pub type c_ushort = u16;
 c_void			            pub enum c_void 
 call			    fn call(&mut self);
 callback			    fn callback(&mut self, proc());
@@ -1492,6 +1613,7 @@ can_recv			    pub fn can_recv(&mut self) -> Result<bool, Port<T>>
 can_recv			    fn can_recv(&self) -> bool;
 can_recv			    pub fn can_recv(&mut self) -> bool 
 can_recv			    pub fn can_recv(&mut self) -> Result<bool, Port<T>> 
+cannot			           type cannot be implicitly copied, and is moved out of when passed to
 canonical			    pub fn canonical(c: char, i: |char|) { d(c, i, false); }
 canonical_combining_class			    pub fn canonical_combining_class(c: char) -> u8 
 canonical_sort			fn canonical_sort(comb: &mut [(char, u8)]) 
@@ -1553,6 +1675,7 @@ chars_rev			    fn chars_rev(&self) -> RevChars<'a>;
 chdir			                pub fn chdir(dir: *c_char) -> c_int;
 chdir			    fn chdir(p: &Path) -> bool 
 check			    fn check(s: &str, c_str: *libc::c_char) 
+check			    macro_rules! check( ($e:expr) => (
 check_for_errors_in			    pub fn check_for_errors_in<T>(f: || -> T) -> Result<T, ~str> 
 check_for_null			fn check_for_null(v: &[u8], buf: *mut libc::c_char) 
 check_randacc_iter			    fn check_randacc_iter<A: Eq, T: Clone + RandomAccessIterator<A>>(a: T, len: uint)
@@ -1620,6 +1743,10 @@ clear			    fn clear(&mut self);
 clear			    fn clear(&mut self) 
 clear			    pub fn clear(&mut self, order: Ordering) 
 clear			    fn clear(&mut self) { self.truncate(0) }
+clock_t			                pub type clock_t = i32;
+clock_t			                pub type clock_t = i64;
+clock_t			                pub type clock_t = u32;
+clock_t			                pub type clock_t = u64;
 clone			    fn clone(&self) -> CString 
 clone			    fn clone(&self) -> Cell<T> 
 clone			    fn clone(&self) -> RefCell<T> 
@@ -1665,6 +1792,7 @@ clone_chan			    pub fn clone_chan(&mut self)
 clone_from			    fn clone_from(&mut self, source: &Self) 
 clone_from			    fn clone_from(&mut self, source: &~T) 
 clone_from			    fn clone_from(&mut self, source: &~[A]) 
+clone_impl			macro_rules! clone_impl(
 close			                pub fn close(fd: c_int) -> c_int;
 close			pub fn close(fd: int) -> int 
 close			    pub unsafe fn close(handle: *u8) 
@@ -1713,6 +1841,7 @@ compatibility			    pub fn compatibility(c: char, i: |char|) { d(c, i, true); }
 compiled			pub mod compiled 
 components			    pub fn components<'a>(&'a self) -> Components<'a> 
 components			    pub fn components<'a>(&'a self) -> Components<'a> 
+compress			macro_rules! compress (
 concat			    fn concat(&self) -> ~str 
 concat			    fn concat(&self) -> ~str;
 concat			    fn concat(bh: &mut BenchHarness) 
@@ -1837,6 +1966,7 @@ darwin_fd_limit			mod darwin_fd_limit
 data			    fn data() { assert_eq!(Thread::start(proc () { 1 }).join(), 1); }
 datasync			    pub fn datasync(&mut self) -> IoResult<()> 
 datasync			    fn datasync(&mut self) -> Result<(), IoError>;
+debug			macro_rules! debug(
 debug_borrow			pub fn debug_borrow() -> bool 
 debug_mem			fn debug_mem() -> bool 
 decompose			pub mod decompose 
@@ -1862,6 +1992,7 @@ deep_clone			    fn deep_clone(&self) -> ~[A]
 deep_clone_from			    fn deep_clone_from(&mut self, source: &Self) 
 deep_clone_from			    fn deep_clone_from(&mut self, source: &~T) 
 deep_clone_from			    fn deep_clone_from(&mut self, source: &~[A]) 
+deep_clone_impl			macro_rules! deep_clone_impl(
 default			    fn default() -> bool { false }
 default			    fn default() -> char { '\\x00' }
 default			    fn default() -> @T { @Default::default() }
@@ -1887,6 +2018,9 @@ default			    fn default() -> ~[A] { ~[] }
 default			    fn default() -> Vec<T> 
 default_sched_threads			pub fn default_sched_threads() -> uint 
 defined			trait defined in this module. For loops can be viewed as a syntactical expansion
+delegate			macro_rules! delegate(($ty:ty to $other:ident) => 
+delegate			macro_rules! delegate(
+delegate			macro_rules! delegate(
 deque			    pub fn deque(&mut self) -> (Worker<T>, Stealer<T>) 
 deque			pub mod deque;
 deref			    fn deref<'a>(&'a self) -> &'a T 
@@ -1905,6 +2039,9 @@ destroy			    pub unsafe fn destroy(&mut self) { self.inner.destroy() }
 destroy_immediately			    fn destroy_immediately() 
 detach			    pub unsafe fn detach(native: rust_thread) 
 detached			    fn detached() { Thread::spawn(proc () {}) }
+dev_t			                pub type dev_t = i32;
+dev_t			                pub type dev_t = u32;
+dev_t			                pub type dev_t = u64;
 different_sizes			    fn different_sizes() 
 digit			            fn digit(&self, x: u8) -> u8 
 digit			    fn digit(&self, x: u8) -> u8 
@@ -2086,9 +2223,12 @@ erfc			        pub fn erfc(n: c_double) -> c_double;
 erfc			        pub fn erfc(n: c_float) -> c_float;
 err			    fn err(&mut self, msg: &str) 
 err			    pub fn err(self) -> Option<E> 
+err			        macro_rules! err ( () => { {*iter = old; return false} });
 errno			pub fn errno() -> int 
 errno			pub fn errno() -> uint 
 errno_location			    fn errno_location() -> *c_int 
+error			macro_rules! error(
+error			        macro_rules! error(() => (
 escape			    fn escape(&mut self) -> char 
 escape_default			    fn escape_default(&self, f: |char|) { escape_default(*self, f) }
 escape_default			    fn escape_default(&self, f: |char|);
@@ -2150,6 +2290,8 @@ extension			    fn extension<'a>(&'a self) -> Option<&'a [u8]>
 extension_str			    fn extension_str<'a>(&'a self) -> Option<&'a str> 
 extension_str			    fn extension_str<'a>(&'a self) -> Option<&'a str> 
 extensions			pub mod extensions;
+extern_fn_clone			macro_rules! extern_fn_clone(
+extern_fn_deep_clone			macro_rules! extern_fn_deep_clone(
 externfnpointers			mod externfnpointers 
 extra			            pub mod extra 
 extra			            pub mod extra {}
@@ -2164,6 +2306,7 @@ f64			    mod f64
 f64x2			pub struct f64x2(f64, f64);
 fabsf32			    pub fn fabsf32(x: f32) -> f32;
 fabsf64			    pub fn fabsf64(x: f64) -> f64;
+fail			macro_rules! fail(
 fail_			pub fn fail_(expr: *u8, file: *u8, line: uint) -> ! 
 fail_bounds_check			pub fn fail_bounds_check(file: *u8, line: uint, index: uint, len: uint) -> ! 
 failing			pub fn failing() -> bool 
@@ -2186,6 +2329,7 @@ fetch_sub			    pub fn fetch_sub(&mut self, val: int, order: Ordering) -> int
 fetch_sub			    pub fn fetch_sub(&mut self, val: u64, order: Ordering) -> u64 
 fetch_sub			    pub fn fetch_sub(&mut self, val: uint, order: Ordering) -> uint 
 fetch_xor			    pub fn fetch_xor(&mut self, val: bool, order: Ordering) -> bool 
+fflags_t			                pub type fflags_t = u32;
 fflush			                pub fn fflush(file: *FILE) -> c_int;
 fgetc			                pub fn fgetc(stream: *FILE) -> c_int;
 fgetpos			                pub fn fgetpos(stream: *FILE, ptr: *fpos_t) -> c_int;
@@ -2231,9 +2375,12 @@ flat_map			    fn flat_map<'r, B, U: Iterator<B>>(self, f: 'r |A| -> U)
 flat_map			    fn flat_map<U>(&self, f: |t: &T| -> ~[U]) -> ~[U] 
 flat_map			    fn flat_map<U>(&self, f: |t: &T| -> ~[U]) -> ~[U];
 flat_map			pub fn flat_map<T, U>(v: &[T], f: |t: &T| -> ~[U]) -> ~[U] 
+float_impl			macro_rules! float_impl 
+float_impls			macro_rules! float_impls 
 float_to_str			        fn float_to_str(bh: &mut BenchHarness) 
 float_to_str_bytes_common			pub fn float_to_str_bytes_common<T:NumCast+Zero+One+Eq+Ord+Float+Round+
 float_to_str_common			pub fn float_to_str_common<T:NumCast+Zero+One+Eq+Ord+NumStrConv+Float+Round+
+floating			macro_rules! floating(($ty:ident) => 
 floating_point_edge_cases			    fn floating_point_edge_cases() 
 floor			    fn floor(&self) -> f32 { floor(*self) }
 floor			    fn floor(x: f32) -> f32 = intrinsics::floorf32,
@@ -2296,6 +2443,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt_int			    fn fmt_int<T: Int>(&self, mut x: T, f: &mut fmt::Formatter) -> fmt::Result 
 fmtdflt			    fn fmtdflt() -> FormatSpec<'static> 
+fnptreq			    macro_rules! fnptreq(
 fold			    fn fold<B>(&mut self, init: B, f: |B, A| -> B) -> B 
 fold			pub fn fold<T,
 fold_			pub fn fold_<T,E,Iter:Iterator<Result<T,E>>>(iterator: Iter) -> Result<(),E> 
@@ -2306,6 +2454,7 @@ forget			    pub fn forget<T>(_: T) -> ();
 fork			                pub fn fork() -> pid_t;
 format			pub fn format(args: &Arguments) -> ~str 
 format			    fn format(&mut self) -> FormatSpec<'a> 
+format			macro_rules! format(
 format_align_fill			    fn format_align_fill() 
 format_base_36			        fn format_base_36(bh: &mut BenchHarness) 
 format_bin			        fn format_bin(bh: &mut BenchHarness) 
@@ -2583,6 +2732,7 @@ getrlimit			        fn getrlimit(resource: libc::c_int, rlp: *mut rlimit) -> lib
 getsockname			            pub fn getsockname(socket: SOCKET, address: *mut sockaddr,
 getsockname			            pub fn getsockname(socket: c_int, address: *mut sockaddr,
 getuid			                pub fn getuid() -> uid_t;
+gid_t			                pub type gid_t = u32;
 glob			                pub fn glob(pattern: *c_char,
 glob			        pub mod glob 
 glob_t			                pub struct glob_t 
@@ -2679,10 +2829,28 @@ imm_release_borrow_mut			    fn imm_release_borrow_mut()
 imp			mod imp 
 imp			mod imp 
 imp			mod imp 
+impl_NumStrConv_Floating			macro_rules! impl_NumStrConv_Floating (($t:ty) => (
+impl_NumStrConv_Integer			macro_rules! impl_NumStrConv_Integer (($t:ty) => (
+impl_from_primitive			macro_rules! impl_from_primitive(
+impl_hash			macro_rules! impl_hash(
+impl_hash_tuple			macro_rules! impl_hash_tuple(
+impl_num_cast			macro_rules! impl_num_cast(
+impl_to_primitive_float			macro_rules! impl_to_primitive_float(
+impl_to_primitive_float_to_float			macro_rules! impl_to_primitive_float_to_float(
+impl_to_primitive_int			macro_rules! impl_to_primitive_int(
+impl_to_primitive_int_to_int			macro_rules! impl_to_primitive_int_to_int(
+impl_to_primitive_int_to_uint			macro_rules! impl_to_primitive_int_to_uint(
+impl_to_primitive_uint			macro_rules! impl_to_primitive_uint(
+impl_to_primitive_uint_to_int			macro_rules! impl_to_primitive_uint_to_int(
+impl_to_primitive_uint_to_uint			macro_rules! impl_to_primitive_uint_to_uint(
 in6_addr			                pub struct in6_addr 
 in_addr			                pub struct in_addr 
+in_addr_t			                pub type in_addr_t = u32;
+in_port_t			                pub type in_port_t = u16;
 incoming			    fn incoming<'r>(&'r mut self) -> IncomingConnections<'r, Self> 
 increment			pub fn increment() 
+ind			        macro_rules! ind (
+ind			        macro_rules! ind (($x:expr) => 
 ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> f64 
 ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> f64 
 ind_sample			    fn ind_sample<R: Rng>(&self, &mut R) -> Support;
@@ -2701,9 +2869,11 @@ inf			    fn inf()      -> Option<Self>;
 infinity			    fn infinity() -> f32 { 1.0 \/ 0.0 }
 infinity			    fn infinity() -> f64 { 1.0 \/ 0.0 }
 infinity			    fn infinity() -> Self;
+info			macro_rules! info(
 inherit_blocker			    pub fn inherit_blocker(&mut self, task: Option<BlockedTask>) 
 init			    pub fn init<T>() -> T;
 init			pub unsafe fn init<T>() -> T 
+init			        macro_rules! init (
 init			    fn init(&mut self, use_rsl: bool) 
 init			    pub unsafe fn init(_argc: int, _argv: **u8) 
 init			    pub unsafe fn init(argc: int, argv: **u8) 
@@ -2726,6 +2896,9 @@ init_elem			    unsafe fn init_elem(self, i: uint, val: T);
 init_lock			    pub unsafe fn init_lock() -> uint 
 initn			    fn initn(&self, n: uint) -> &'a [T] 
 initn			    fn initn(&self, n: uint) -> &'a [T];
+ino_t			                pub type ino_t = i16;
+ino_t			                pub type ino_t = u32;
+ino_t			                pub type ino_t = u64;
 insert			    fn insert(&mut self, key: K, value: V) -> bool 
 insert			    fn insert(&mut self, value: T) -> bool;
 insert			    fn insert(&mut self, position: uint, substring: &str) 
@@ -2740,11 +2913,21 @@ insertion_sort			fn insertion_sort<T>(v: &mut [T], compare: |&T, &T| -> Ordering
 inspect			    fn inspect<'r>(self, f: 'r |&A|) -> Inspect<'r, A, Self> 
 int			    mod int 
 int			    mod int 
+int16_t			            pub type int16_t = i16;
+int32_t			            pub type int32_t = i32;
+int64			                pub type int64 = i64;
+int64_t			            pub type int64_t = i64;
+int8_t			            pub type int8_t = i8;
+int_base			macro_rules! int_base 
+int_module			macro_rules! int_module (($T:ty, $bits:expr) => (
+int_repr			macro_rules! int_repr(($ty:ident, $suffix:expr) => (impl Repr for $ty 
 int_to_str_bytes_common			pub fn int_to_str_bytes_common<T: Int>(num: T, radix: uint, sign: SignFormat, f: |u8|) 
+integer			macro_rules! integer 
 integer			    fn integer(&mut self) -> Option<uint> 
 integer_decode			    fn integer_decode(&self) -> (u64, i16, i8) 
 integer_decode			    fn integer_decode(&self) -> (u64, i16, i8) 
 integer_decode			    fn integer_decode(&self) -> (u64, i16, i8);
+integer_impl			macro_rules! integer_impl 
 into_ascii			    fn into_ascii(self) -> ~[Ascii] 
 into_ascii_lower			    fn into_ascii_lower(self) -> ~str 
 into_ascii_lower			    fn into_ascii_lower(self) -> ~str;
@@ -2774,12 +2957,14 @@ into_str			    fn into_str(self) -> ~str;
 into_vec			    fn into_vec(self) -> ~[u8];
 into_vec			    fn into_vec(self) -> ~[u8] 
 into_vec			    fn into_vec(self) -> ~[u8] 
+intptr_t			                pub type intptr_t = int;
 intrinsics			pub mod intrinsics;
 io			        impl io::Reader for S 
 io			        impl io::Writer for S 
 io			pub mod io;
 io			    fn io<'a>(&'a mut self) -> Option<&'a mut IoFactory>;
 io			    impl io::Writer for Stderr 
+iotest			macro_rules! iotest (
 ip			pub mod ip;
 ip6_mreq			                pub struct ip6_mreq 
 ip_mreq			                pub struct ip_mreq 
@@ -2942,6 +3127,7 @@ iter_crate_map			pub fn iter_crate_map<'a>(crate_map: &'a CrateMap<'a>, f: |&'a 
 iter_crate_map_duplicates			    fn iter_crate_map_duplicates() 
 iter_crate_map_follow_children			    fn iter_crate_map_follow_children() 
 iterator			    fn iterator(bh: &mut BenchHarness) 
+iterator			macro_rules! iterator 
 j0			        pub fn j0(n: c_double) -> c_double;
 j1			        pub fn j1(n: c_double) -> c_double;
 jn			        pub fn jn(i: c_int, n: c_double) -> c_double;
@@ -3013,6 +3199,8 @@ len_utf8_bytes			pub fn len_utf8_bytes(c: char) -> uint
 letdie			    fn letdie(&mut self) -> Result<(), IoError>;
 lev_distance			    fn lev_distance(&self, t: &str) -> uint 
 lev_distance			    fn lev_distance(&self, t: &str) -> uint;
+lexical_cmp			macro_rules! lexical_cmp 
+lexical_ord			macro_rules! lexical_ord 
 lexical_ordering			pub fn lexical_ordering(o1: Ordering, o2: Ordering) -> Ordering 
 lgamma			        pub fn lgamma(n: c_double, sign: &mut c_int) -> c_double;
 lgamma			        pub fn lgamma(n: c_float, sign: &mut c_int) -> c_float;
@@ -3065,6 +3253,7 @@ load_argc_and_argv			    unsafe fn load_argc_and_argv(argc: int, argv: **u8) -> 
 load_self			    fn load_self() -> Option<~[u8]> 
 local			pub mod local;
 local_data			pub mod local_data;
+local_data_key			macro_rules! local_data_key(
 local_free			pub unsafe fn local_free(ptr: *u8) 
 local_free_			pub unsafe fn local_free_(ptr: *u8) 
 local_heap			pub mod local_heap;
@@ -3082,6 +3271,7 @@ lock_noguard			    pub unsafe fn lock_noguard(&mut self) { self.inner.lock_nogua
 log			    fn log(&mut self, _level: u32, args: &fmt::Arguments) 
 log			    fn log(&mut self, level: u32, args: &fmt::Arguments);
 log			pub fn log(level: u32, args: &fmt::Arguments) 
+log			macro_rules! log(
 log			    fn log(&self, base: &f32) -> f32 { self.ln() \/ base.ln() }
 log			    fn log(&self, base: &f64) -> f64 { self.ln() \/ base.ln() }
 log			    fn log(&self, base: &Self) -> Self;
@@ -3105,6 +3295,7 @@ log2_e			    fn log2_e() -> f64 { 1.44269504088896340735992468100189214 }
 log2_e			    fn log2_e() -> Self;
 log2f32			    pub fn log2f32(x: f32) -> f32;
 log2f64			    pub fn log2f64(x: f64) -> f64;
+log_enabled			macro_rules! log_enabled(
 log_radix			        pub fn log_radix(n: c_double) -> c_double;
 log_radix			        pub fn log_radix(n: c_float) -> c_float;
 logf32			    pub fn logf32(x: f32) -> f32;
@@ -3144,6 +3335,7 @@ lt			    fn lt(&self, _other: &()) -> bool { false }
 lt			        fn lt(&self, other: & &'a [T]) -> bool 
 lt			        fn lt(&self, other: &~[T]) -> bool { self.as_slice() < other.as_slice() }
 mach_timebase_info			                pub struct mach_timebase_info 
+mach_timebase_info_data_t			                pub type mach_timebase_info_data_t = mach_timebase_info;
 macos			    pub mod macos 
 macros			pub mod macros;
 macros			mod macros;
@@ -3212,6 +3404,7 @@ mem			mod mem;
 mem			pub mod mem;
 memchr			                pub fn memchr(cx: *c_void, c: c_int, n: size_t) -> *c_void;
 memcmp			                pub fn memcmp(cx: *c_void, ct: *c_void, n: size_t) -> c_int;
+memloop			            macro_rules! memloop (
 memory_map_file			    fn memory_map_file() 
 memory_map_rw			    fn memory_map_rw() 
 merge_sort			fn merge_sort<T>(v: &mut [T], compare: |&T, &T| -> Ordering) 
@@ -3244,6 +3437,7 @@ min_value			    fn min_value() -> Self;
 min_value			    fn min_value() -> $T { MIN }
 mincore			            pub fn mincore(addr: *c_void, len: size_t, vec: *c_uchar)
 mips			    pub mod mips 
+mix			        macro_rules! mix(
 mkdir			pub fn mkdir(path: &Path, mode: FilePermission) -> IoResult<()> 
 mkdir			                pub fn mkdir(path: *c_char) -> c_int;
 mkdir			                pub fn mkdir(path: *c_char, mode: mode_t) -> c_int;
@@ -3253,6 +3447,8 @@ mlock			                pub fn mlock(addr: *c_void, len: size_t) -> c_int;
 mlockall			                pub fn mlockall(flags: c_int) -> c_int;
 mman			        pub mod mman 
 mmap			                pub fn mmap(addr: *c_void,
+mode_t			                pub type mode_t = u16;
+mode_t			                pub type mode_t = u32;
 modf			        pub fn modf(n: c_double, iptr: &mut c_double) -> c_double;
 modf			        pub fn modf(n: c_float, iptr: &mut c_float) -> c_float;
 modify			pub fn modify<T: 'static>(key: Key<T>, f: |Option<T>| -> Option<T>) 
@@ -3364,6 +3560,7 @@ neg			    fn neg(&self) -> f64 { -*self }
 neg			    fn neg(&self) -> $T { -*self }
 neg			    fn neg(&self) -> $T { -*self }
 neg			    fn neg(&self) -> Result;
+neg			        macro_rules! neg ( ($($e:expr),*) => { { $(assert!(!is_utf16($e));)* } });
 neg_inf			        fn neg_inf()  -> Option<$t> { Some(-1.0 \/ 0.0) }
 neg_inf			    fn neg_inf()  -> Option<Self>;
 neg_infinity			    fn neg_infinity() -> f32 { -1.0 \/ 0.0 }
@@ -3501,11 +3698,13 @@ next			    fn next(&mut self) -> Option<A>;
 next			    fn next(&mut self) -> Option<B> 
 next			    fn next(&mut self) -> Option<A> 
 next			    fn next(&mut self) -> Option<BlockedTask> 
+next			        macro_rules! next ( () => 
 next			    fn next(&mut self) -> Option<&'a str> 
 next			    fn next(&mut self) -> Option<(uint, char)> 
 next			    fn next(&mut self) -> Option<(uint, uint)> 
 next			    fn next(&mut self) -> Option<UTF16Item> 
 next			    fn next(&mut self) -> Option<char> 
+next			    macro_rules! next ( ($ret:expr) => 
 next			            fn next(&mut self) -> Option<$elem> 
 next			    fn next(&mut self) -> Option<&'a [T]> 
 next			    fn next(&mut self) -> Option<&'a mut [T]> 
@@ -3564,6 +3763,9 @@ nfd_chars			    fn nfd_chars(&self) -> Normalizations<'a>
 nfd_chars			    fn nfd_chars(&self) -> Normalizations<'a>;
 nfkd_chars			    fn nfkd_chars(&self) -> Normalizations<'a> 
 nfkd_chars			    fn nfkd_chars(&self) -> Normalizations<'a>;
+nlink_t			                pub type nlink_t = u16;
+nlink_t			                pub type nlink_t = u32;
+nlink_t			                pub type nlink_t = u64;
 no_double_borrow_mut			    fn no_double_borrow_mut() 
 no_imm_then_borrow_mut			    fn no_imm_then_borrow_mut() 
 no_mut_then_imm_borrow			    fn no_mut_then_imm_borrow() 
@@ -3597,7 +3799,11 @@ num			impl num::ToStrRadix for f32
 num			impl num::FromStrRadix for f64 
 num			impl num::ToStrRadix for f64 
 num_cpus			pub fn num_cpus() -> uint 
+num_repr			macro_rules! num_repr(($ty:ident, $suffix:expr) => (impl Repr for $ty 
 of			    pub fn of<T: 'static>() -> TypeId 
+of			type of the vector is `int`, the element type of the iterator is `&int`.
+off_t			                pub type off_t = i32;
+off_t			                pub type off_t = i64;
 offset			    pub fn offset<T>(dst: *T, offset: int) -> *T;
 offset			    unsafe fn offset(self, count: int) -> *T { intrinsics::offset(self, count) }
 offset			    unsafe fn offset(self, count: int) -> *mut T { intrinsics::offset(self as *T, count) as *mut T }
@@ -3697,6 +3903,8 @@ perror			                pub fn perror(s: *c_char);
 pi			    fn pi() -> f32 { 3.14159265358979323846264338327950288 }
 pi			    fn pi() -> f64 { 3.14159265358979323846264338327950288 }
 pi			    fn pi() -> Self;
+pid_t			                pub type pid_t = i32;
+pid_t			                pub type pid_t = i64;
 pipe			pub mod pipe;
 pipe			                pub fn pipe(fds: *mut c_int) -> c_int;
 pipe			                pub fn pipe(fds: *mut c_int, psize: c_uint, textmode: c_int)
@@ -3728,6 +3936,7 @@ pop_ptr			    pub unsafe fn pop_ptr<T>(slice: &mut Slice<T>) -> *T
 pop_ref			    fn pop_ref(&mut self) -> Option<&'a T> 
 pop_ref			    fn pop_ref(&mut self) -> Option<&'a T>;
 popen			                pub fn popen(command: *c_char, mode: *c_char) -> *FILE;
+pos			        macro_rules! pos ( ($($e:expr),*) => { { $(assert!(is_utf16($e));)* } });
 position			    fn position(&mut self) -> Position<'a> 
 position			    fn position(&mut self, predicate: |A| -> bool) -> Option<uint> 
 position			pub unsafe fn position<T>(buf: *T, f: |&T| -> bool) -> uint 
@@ -3773,8 +3982,10 @@ prefix_len			    fn prefix_len(&self) -> uint
 prefix_len			fn prefix_len(p: Option<PathPrefix>) -> uint 
 prelude			pub mod prelude;
 print			pub fn print(s: &str) 
+print			macro_rules! print(
 print_args			pub fn print_args(fmt: &fmt::Arguments) 
 println			pub fn println(s: &str) 
+println			macro_rules! println(
 println_args			pub fn println_args(fmt: &fmt::Arguments) 
 process			pub mod process;
 product			    fn product(&mut self) -> A 
@@ -3784,31 +3995,42 @@ pthread_attr_init			        fn pthread_attr_init(attr: *mut libc::pthread_attr_t
 pthread_attr_setdetachstate			        fn pthread_attr_setdetachstate(attr: *mut libc::pthread_attr_t,
 pthread_attr_setstacksize			        fn pthread_attr_setstacksize(attr: *mut libc::pthread_attr_t,
 pthread_attr_t			                pub struct pthread_attr_t 
+pthread_attr_t			                pub type pthread_attr_t = *c_void;
 pthread_cond_destroy			        fn pthread_cond_destroy(cond: *mut pthread_cond_t) -> libc::c_int;
 pthread_cond_init			        fn pthread_cond_init(cond: *mut pthread_cond_t,
 pthread_cond_signal			        fn pthread_cond_signal(cond: *mut pthread_cond_t) -> libc::c_int;
 pthread_cond_t			        pub struct pthread_cond_t { value: libc::c_int }
 pthread_cond_t			        pub struct pthread_cond_t 
+pthread_cond_t			        pub type pthread_cond_t = *libc::c_void;
 pthread_cond_wait			        fn pthread_cond_wait(cond: *mut pthread_cond_t,
+pthread_condattr_t			    type pthread_condattr_t = libc::c_void;
 pthread_create			        fn pthread_create(native: *mut libc::pthread_t,
 pthread_detach			        fn pthread_detach(thread: libc::pthread_t) -> libc::c_int;
 pthread_getspecific			    fn pthread_getspecific(key: pthread_key_t) -> *mut u8;
 pthread_join			        fn pthread_join(native: libc::pthread_t,
 pthread_key_create			    fn pthread_key_create(key: *mut pthread_key_t, dtor: *u8) -> c_int;
 pthread_key_delete			    fn pthread_key_delete(key: pthread_key_t) -> c_int;
+pthread_key_t			type pthread_key_t = ::libc::c_uint;
+pthread_key_t			type pthread_key_t = ::libc::c_ulong;
 pthread_mutex_destroy			        fn pthread_mutex_destroy(lock: *mut pthread_mutex_t) -> libc::c_int;
 pthread_mutex_init			        fn pthread_mutex_init(lock: *mut pthread_mutex_t,
 pthread_mutex_lock			        fn pthread_mutex_lock(lock: *mut pthread_mutex_t) -> libc::c_int;
 pthread_mutex_t			        pub struct pthread_mutex_t { value: libc::c_int }
 pthread_mutex_t			        pub struct pthread_mutex_t 
+pthread_mutex_t			        pub type pthread_mutex_t = *libc::c_void;
 pthread_mutex_trylock			        fn pthread_mutex_trylock(lock: *mut pthread_mutex_t) -> libc::c_int;
 pthread_mutex_unlock			        fn pthread_mutex_unlock(lock: *mut pthread_mutex_t) -> libc::c_int;
+pthread_mutexattr_t			    type pthread_mutexattr_t = libc::c_void;
 pthread_setspecific			    fn pthread_setspecific(key: pthread_key_t, value: *mut u8) -> c_int;
+pthread_t			                pub type pthread_t = c_ulong;
+pthread_t			                pub type pthread_t = uintptr_t;
 pthread_yield			        fn pthread_yield() -> libc::c_int;
 ptr			pub mod ptr;
 ptr_eq			    pub fn ptr_eq(&self, other: &Gc<T>) -> bool 
 ptr_eq			pub fn ptr_eq<T>(a: @T, b: @T) -> bool 
 ptr_tests			pub mod ptr_tests 
+ptrdiff_t			                pub type ptrdiff_t = i32;
+ptrdiff_t			                pub type ptrdiff_t = i64;
 push			    fn push<T: BytesContainer>(&mut self, path: T) 
 push			pub fn push(f: proc()) 
 push			    pub fn push(&mut self, t: T) 
@@ -3865,7 +4087,9 @@ puts			    fn puts(s: *libc::c_char);
 puts			                pub fn puts(s: *c_char) -> c_int;
 pwrite			                pub fn pwrite(fd: c_int, buf: *c_void, count: size_t,
 pwrite			    fn pwrite(&mut self, buf: &[u8], offset: u64) -> Result<(), IoError>;
+radix			macro_rules! radix 
 radix			pub fn radix<T>(x: T, base: u8) -> RadixFmt<T, Radix> 
+radix_fmt			macro_rules! radix_fmt 
 raise_fd_limit			    pub unsafe fn raise_fd_limit() 
 raise_fd_limit			    pub unsafe fn raise_fd_limit() {}
 raise_fd_limit			pub fn raise_fd_limit() 
@@ -4130,15 +4354,18 @@ rint			    fn rint(n: f32) -> f32 = intrinsics::rintf32,
 rint			    fn rint(n: f64) -> f64 = intrinsics::rintf64,
 rintf32			    pub fn rintf32(x: f32) -> f32;
 rintf64			    pub fn rintf64(x: f64) -> f64;
+rlim_t			    type rlim_t = libc::uint64_t;
 rlimit			    struct rlimit 
 rmdir			pub fn rmdir(path: &Path) -> IoResult<()> 
 rmdir			                pub fn rmdir(path: *c_char) -> c_int;
 rmdir_recursive			pub fn rmdir_recursive(path: &Path) -> IoResult<()> 
 rng			pub fn rng() -> StdRng 
 rng			    fn rng() 
+rngstep			        macro_rules! rngstep(
 root_path			    fn root_path(&self) -> Option<Self>;
 root_path			    fn root_path(&self) -> Option<Path> 
 root_path			    fn root_path(&self) -> Option<Path> 
+rotl			macro_rules! rotl (
 round			    fn round(&self) -> f32 { round(*self) }
 round			    fn round(n: f32) -> f32 = intrinsics::roundf32,
 round			    fn round(&self) -> f64 { round(*self) }
@@ -4165,7 +4392,11 @@ rsqrt			    fn rsqrt(&self) -> f64 { self.sqrt().recip() }
 rsqrt			    fn rsqrt(&self) -> Self;
 rt			pub mod rt;
 rt			pub mod rt;
+rtabort			macro_rules! rtabort (
+rtassert			macro_rules! rtassert (
+rtdebug			macro_rules! rtdebug (
 rtdeps			mod rtdeps;
+rterrln			macro_rules! rterrln (
 rtio			pub mod rtio;
 run			    fn run(&mut self, piece: &rt::Piece, cur: Option<&str>) -> Result 
 run			pub fn run() 
@@ -4191,8 +4422,14 @@ rust_readdir_r			                fn rust_readdir_r(dirp: *DIR, entry: *mut diren
 rust_running_on_valgrind			    fn rust_running_on_valgrind() -> uintptr_t;
 rust_set_crate_map			pub extern fn rust_set_crate_map(map: *CrateMap<'static>) 
 rust_stack_exhausted			pub extern "C" fn rust_stack_exhausted() 
+rust_thread			    pub type rust_thread = HANDLE;
+rust_thread			    pub type rust_thread = libc::pthread_t;
+rust_thread_return			    pub type rust_thread_return = *u8;
+rust_thread_return			    pub type rust_thread_return = DWORD;
 rust_try			            fn rust_try(f: extern "C" fn(*c_void, *c_void),
 rust_win32_rand_gen			            fn rust_win32_rand_gen(hProv: HCRYPTPROV, dwLen: DWORD,
+sa_family_t			                pub type sa_family_t = u16;
+sa_family_t			                pub type sa_family_t = u8;
 safe_get			    fn safe_get(xs: &[u8], i: uint, total: uint) -> u8 
 same			    fn same(fmt: &'static str, p: ~[Piece<'static>]) 
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
@@ -4222,6 +4459,7 @@ seek_past_end			    fn seek_past_end()
 seekdir			                pub fn seekdir(dirp: *DIR, loc: c_long);
 select			mod select;
 select			    fn select(&mut self) -> ~Method<'a> 
+select			macro_rules! select 
 select_cases			    fn select_cases() 
 select_simple			    fn select_simple() 
 self_exe_name			pub fn self_exe_name() -> Option<Path> 
@@ -4352,6 +4590,8 @@ size_of_64			    fn size_of_64()
 size_of_basic			    fn size_of_basic() 
 size_of_val			pub fn size_of_val<T>(_val: &T) -> uint 
 size_of_val_basic			    fn size_of_val_basic() 
+size_t			                pub type size_t = u32;
+size_t			                pub type size_t = u64;
 skip			    fn skip(self, n: uint) -> Skip<Self> 
 skip_while			    fn skip_while<'r>(self, predicate: 'r |&A| -> bool) -> SkipWhile<'r, A, Self> 
 sleep			    pub fn sleep(&mut self, msecs: u64) 
@@ -4403,6 +4643,8 @@ socket_name			    pub fn socket_name(addr: SocketAddr)
 socket_name			    pub fn socket_name(&mut self) -> IoResult<SocketAddr> 
 socket_name			    pub fn socket_name(addr: SocketAddr) 
 socket_name			    fn socket_name(&mut self) -> Result<SocketAddr, IoError>;
+socklen_t			                pub type socklen_t = c_int;
+socklen_t			                pub type socklen_t = u32;
 sort			    fn sort(self) 
 sort			    fn sort(self);
 sort_big_random_large			    fn sort_big_random_large(bh: &mut BenchHarness) 
@@ -4457,6 +4699,8 @@ square			    fn square(n: uint) -> uint { n * n }
 square_ref			    fn square_ref(n: &uint) -> uint { square(*n) }
 srand			                pub fn srand(seed: c_uint);
 src			fn src<T>(fd: libc::c_int, readable: bool, f: |StdSource| -> T) -> T 
+ssize_t			                pub type ssize_t = i32;
+ssize_t			                pub type ssize_t = i64;
 stack			pub mod stack;
 stack_bounds			    fn stack_bounds(&self) -> (uint, uint); \/\/ (lo, hi)
 stack_bounds			    pub fn stack_bounds(&self) -> (uint, uint) 
@@ -4554,6 +4798,8 @@ success			    pub fn success(&self) -> bool
 sum			    fn sum(&mut self) -> A 
 sum			    fn sum(&mut self) -> A;
 sum_len			        fn sum_len<S: Container>(v: &[S]) -> uint 
+suseconds_t			                pub type suseconds_t = i32;
+suseconds_t			                pub type suseconds_t = i64;
 swap			    fn swap(&mut self, k: K, v: V) -> Option<V>;
 swap			pub fn swap<T>(x: &mut T, y: &mut T) 
 swap			pub unsafe fn swap<T>(x: *mut T, y: *mut T) 
@@ -4584,6 +4830,12 @@ sysctlbyname			            pub fn sysctlbyname(name: *c_char,
 sysctlnametomib			            pub fn sysctlnametomib(name: *c_char,
 system			                pub fn system(s: *c_char) -> c_int;
 t			        fn t(o1: Ordering, o2: Ordering, e: Ordering) 
+t			        macro_rules! t(
+t			    macro_rules! t(
+t			        macro_rules! t(
+t			    macro_rules! t(
+t			        macro_rules! t (
+t			        macro_rules! t (
 t			        fn t(a: &str, b: &str, start: uint) 
 t			        fn t(v: &[&str], s: &str) 
 t			        fn t(v: &[&str], sep: &str, s: &str) 
@@ -4591,6 +4843,8 @@ t			        fn t(v: &[~str], s: &str)
 t			        fn t(v: &[~str], sep: &str, s: &str) 
 t			        fn t<'a>(s: &str, sep: &'a str, u: ~[&str]) 
 t			        fn t<S: Default + Str>() 
+t			        macro_rules! t (
+t			        macro_rules! t (
 tail			    fn tail(&self) -> &'a [T] { self.slice(1, self.len()) }
 tail			    fn tail(&self) -> &'a [T];
 tail			    pub fn tail<'a>(&'a self) -> &'a [T] 
@@ -4641,6 +4895,7 @@ tell			    fn tell(&self) -> Result<u64, IoError>;
 telldir			                pub fn telldir(dirp: *DIR) -> c_long;
 test			mod test 
 test			mod test 
+test			macro_rules! test (
 test			mod test 
 test			mod test 
 test			mod test 
@@ -4747,6 +5002,7 @@ test_bytes_revator			    fn test_bytes_revator()
 test_bytes_set_memory			    fn test_bytes_set_memory() 
 test_bytesator			    fn test_bytesator() 
 test_capacity			    fn test_capacity() 
+test_cast_20			    macro_rules! test_cast_20(
 test_cast_range_i16_max			    fn test_cast_range_i16_max() 
 test_cast_range_i16_min			    fn test_cast_range_i16_min() 
 test_cast_range_i32_max			    fn test_cast_range_i32_max() 
@@ -4780,6 +5036,7 @@ test_char_range_at_reverse_underflow			    fn test_char_range_at_reverse_underfl
 test_chars			    fn test_chars() 
 test_checked_add			    fn test_checked_add() 
 test_checked_mul			    fn test_checked_mul() 
+test_checked_next_power_of_two			    macro_rules! test_checked_next_power_of_two(
 test_checked_sub			    fn test_checked_sub() 
 test_chi_squared_large			    fn test_chi_squared_large() 
 test_chi_squared_one			    fn test_chi_squared_one() 
@@ -4934,6 +5191,7 @@ test_get_ptr			    fn test_get_ptr()
 test_get_resource			    fn test_get_resource() 
 test_get_str			    fn test_get_str() 
 test_getenv_big			    fn test_getenv_big() 
+test_getter			        macro_rules! test_getter(
 test_getters			    fn test_getters() 
 test_getters			    fn test_getters() 
 test_getters			    fn test_getters() 
@@ -5088,6 +5346,7 @@ test_nested_get_mut2			    fn test_nested_get_mut2()
 test_nested_get_mut3			    fn test_nested_get_mut3() 
 test_nested_get_mut4			    fn test_nested_get_mut4() 
 test_nested_get_set1			    fn test_nested_get_set1() 
+test_next_power_of_two			    macro_rules! test_next_power_of_two(
 test_nfd_chars			    fn test_nfd_chars() 
 test_nfkd_chars			    fn test_nfkd_chars() 
 test_normal			    fn test_normal() 
@@ -5278,6 +5537,7 @@ test_show			    fn test_show()
 test_show			    fn test_show() 
 test_show			    fn test_show() 
 test_show			    fn test_show() 
+test_show_vec			        macro_rules! test_show_vec(
 test_shrink_to_fit			    fn test_shrink_to_fit() 
 test_shuffle			    fn test_shuffle() 
 test_signed_checked_div			    fn test_signed_checked_div() 
@@ -5483,6 +5743,9 @@ thread_local_storage			mod thread_local_storage;
 thread_local_task_smoke_test			    fn thread_local_task_smoke_test() 
 thread_local_task_two_instances			    fn thread_local_task_two_instances() 
 thread_start			extern fn thread_start(main: *libc::c_void) -> imp::rust_thread_return 
+time64_t			                pub type time64_t = i64;
+time_t			                pub type time_t = i32;
+time_t			                pub type time_t = i64;
 time_to_live			    fn time_to_live(&mut self, ttl: int) -> Result<(), IoError>;
 timer			pub mod timer;
 timer_init			    fn timer_init(&mut self) -> Result<~RtioTimer, IoError>;
@@ -5627,6 +5890,8 @@ to_upper			    pub fn to_upper(self) -> Ascii
 to_utf16			    fn to_utf16(&self) -> ~[u16] 
 to_utf16			    fn to_utf16(&self) -> ~[u16];
 tolower			                pub fn tolower(c: c_char) -> c_char;
+totaleq_impl			macro_rules! totaleq_impl(
+totalord_impl			macro_rules! totalord_impl(
 toupper			                pub fn toupper(c: c_char) -> c_char;
 trailing_zeros			    fn trailing_zeros(&self) -> i16 { unsafe { intrinsics::cttz16(*self) } }
 trailing_zeros			    fn trailing_zeros(&self) -> i32 { unsafe { intrinsics::cttz32(*self) } }
@@ -5677,6 +5942,8 @@ truncate			    pub fn truncate(&mut self, len: uint)
 truncate_utf16_at_nul			pub fn truncate_utf16_at_nul<'a>(v: &'a [u16]) -> &'a [u16] 
 truncf32			    pub fn truncf32(x: f32) -> f32;
 truncf64			    pub fn truncf64(x: f64) -> f64;
+try			macro_rules! try(
+try			macro_rules! try( ($me:expr, $e:expr) => (
 try			    pub fn try(&mut self, f: ||) 
 try			    pub fn try<T:Send>(mut self, f: proc() -> T) -> Result<T, ~Any> 
 try			pub fn try<T:Send>(f: proc() -> T) -> Result<T, ~Any> 
@@ -5702,6 +5969,8 @@ trylock_noguard			    pub unsafe fn trylock_noguard(&mut self) -> bool
 tty_open			    fn tty_open(&mut self, fd: c_int, readable: bool)
 ttyname			                pub fn ttyname(fd: c_int) -> *c_char;
 tuple			pub mod tuple;
+tuple_impl			macro_rules! tuple_impl 
+tuple_impls			macro_rules! tuple_impls 
 two_pi			    fn two_pi() -> f32 { 6.28318530717958647692528676655900576 }
 two_pi			    fn two_pi() -> f64 { 6.28318530717958647692528676655900576 }
 two_pi			    fn two_pi() -> Self;
@@ -5723,6 +5992,7 @@ u64_from_be_bytes_7_aligned			    fn u64_from_be_bytes_7_aligned(bh: &mut BenchH
 u64_from_be_bytes_7_unaligned			    fn u64_from_be_bytes_7_unaligned(bh: &mut BenchHarness) 
 u64_from_be_bytes_8_aligned			    fn u64_from_be_bytes_8_aligned(bh: &mut BenchHarness) 
 u64_from_be_bytes_8_unaligned			    fn u64_from_be_bytes_8_unaligned(bh: &mut BenchHarness) 
+u64_from_be_bytes_bench_impl			    macro_rules! u64_from_be_bytes_bench_impl(
 u64_mul_with_overflow			    pub fn u64_mul_with_overflow(x: u64, y: u64) -> (u64, bool);
 u64_sub_with_overflow			    pub fn u64_sub_with_overflow(x: u64, y: u64) -> (u64, bool);
 u64_to_be_bytes			pub fn u64_to_be_bytes<T>(n: u64, size: uint, f: |v: &[u8]| -> T) -> T 
@@ -5731,13 +6001,23 @@ u64x2			pub struct u64x2(u64, u64);
 u8_add_with_overflow			    pub fn u8_add_with_overflow(x: u8, y: u8) -> (u8, bool);
 u8_mul_with_overflow			    pub fn u8_mul_with_overflow(x: u8, y: u8) -> (u8, bool);
 u8_sub_with_overflow			    pub fn u8_sub_with_overflow(x: u8, y: u8) -> (u8, bool);
+u8to64_le			macro_rules! u8to64_le (
 u8x16			pub struct u8x16(u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
 udp			pub mod udp;
 udp_bind			    fn udp_bind(&mut self, addr: SocketAddr) -> Result<~RtioUdpSocket, IoError>;
+uid_t			                pub type uid_t = u32;
 uint			    mod uint 
 uint			    mod uint 
+uint16_t			            pub type uint16_t = u16;
+uint32_t			            pub type uint32_t = u32;
+uint64_t			            pub type uint64_t = u64;
+uint8_t			            pub type uint8_t = u8;
+uint_module			macro_rules! uint_module (($T:ty, $T_SIGNED:ty, $bits:expr) => (
+uintptr_t			                pub type uintptr_t = uint;
 ungetc			                pub fn ungetc(c: c_int, stream: *FILE) -> c_int;
 unicode			mod unicode;
+uniform_fn_call_workaround			macro_rules! uniform_fn_call_workaround 
+unimplemented			macro_rules! unimplemented(
 uninit			    pub fn uninit<T>() -> T;
 uninit			pub unsafe fn uninit<T>() -> T 
 unistd			        pub mod unistd 
@@ -5752,6 +6032,7 @@ unlock			        pub unsafe fn unlock(&mut self) { pthread_mutex_unlock(&mut sel
 unlock			        pub unsafe fn unlock(&mut self) 
 unlock_noguard			    pub unsafe fn unlock_noguard(&mut self) { self.inner.unlock() }
 unlock_noguard			    pub unsafe fn unlock_noguard(&mut self) { self.inner.unlock_noguard() }
+unreachable			macro_rules! unreachable(
 unregister			    pub fn unregister(&mut self, signum: Signum) 
 unsafe_borrow			    unsafe fn unsafe_borrow() -> *mut Self;
 unsafe_borrow			    unsafe fn unsafe_borrow() -> *mut Task { local_ptr::unsafe_borrow() }
@@ -5810,16 +6091,21 @@ update_size			    fn update_size(&mut self, size: u32)
 upgrade			    pub fn upgrade(&mut self, up: Port<T>) -> UpgradeResult 
 upgrade			    pub fn upgrade(&mut self, up: Port<T>) -> UpgradeResult 
 upgrade			    pub fn upgrade(&self) -> Option<Rc<T>> 
+useconds_t			                pub type useconds_t = u32;
 usleep			                pub fn usleep(secs: c_uint) -> c_int;
 utf16_items			pub fn utf16_items<'a>(v: &'a [u16]) -> UTF16Items<'a> 
+utf8_acc_cont_byte			macro_rules! utf8_acc_cont_byte(
 utf8_char_width			pub fn utf8_char_width(b: u8) -> uint 
+utf8_first_byte			macro_rules! utf8_first_byte(
 util			pub mod util;
 util			mod util;
 utimbuf			                pub struct utimbuf 
 utime			    fn utime() 
 utime			                pub fn utime(file: *c_char, buf: *utimbuf) -> c_int;
 utime_noexist			    fn utime_noexist() 
+v2ascii			    macro_rules! v2ascii (
 vec			pub mod vec;
+vec			macro_rules! vec(
 vec_ng			pub mod vec_ng;
 vec_str_conversions			    fn vec_str_conversions() 
 version			fn version(crate_map: &CrateMap) -> i32 
@@ -5995,6 +6281,9 @@ wait_with_output			    pub fn wait_with_output(&mut self) -> ProcessOutput
 waitpid			                pub fn waitpid(pid: pid_t, status: *mut c_int, options: c_int)
 wake			    pub fn wake(self) -> Option<~Task> 
 walk_dir			pub fn walk_dir(path: &Path) -> IoResult<Directories> 
+warn			macro_rules! warn(
+wchar_t			                pub type wchar_t = i32;
+wchar_t			                pub type wchar_t = u16;
 wchmod			                pub fn wchmod(path: *wchar_t, mode: c_int) -> c_int;
 wcslen			                pub fn wcslen(buf: *wchar_t) -> size_t;
 weak_rng			pub fn weak_rng() -> XorShiftRng 
@@ -6065,6 +6354,7 @@ write			    fn write(&mut self, _buf: &[u8]) -> io::IoResult<()> { Ok(()) }
 write			    fn write(&mut self, buf: &[u8]) -> io::IoResult<()> 
 write			                pub fn write(fd: c_int, buf: *c_void, count: c_uint) -> c_int;
 write			                pub fn write(fd: c_int, buf: *c_void, count: size_t)
+write			macro_rules! write(
 write			    pub fn write<T:Repr>(&mut self) -> bool 
 write			    fn write(&mut self, buf: &[u8]) -> Result<(), IoError>;
 write			        fn write(&mut self, data: &[u8]) -> IoResult<()> 
@@ -6099,12 +6389,14 @@ write_repr			    fn write_repr(&self, writer: &mut io::Writer) -> io::IoResult<(
 write_repr			    fn write_repr(&self, writer: &mut io::Writer) -> io::IoResult<()>;
 write_repr			pub fn write_repr<T>(writer: &mut io::Writer, object: &T) -> io::IoResult<()> 
 write_str			    fn write_str(&mut self, s: &str) -> IoResult<()> 
+write_tuple			macro_rules! write_tuple 
 write_u8			    fn write_u8(&mut self, n: u8) -> IoResult<()> 
 write_uint			    fn write_uint(&mut self, n: uint) -> IoResult<()> 
 write_unboxed_vec_repr			    pub fn write_unboxed_vec_repr(&mut self, _: uint, v: &raw::Vec<()>, inner: *TyDesc) -> bool 
 write_unsafe			pub unsafe fn write_unsafe(output: &mut io::Writer,
 write_vec_range			    pub fn write_vec_range(&mut self, ptr: *(), len: uint, inner: *TyDesc) -> bool 
 writeln			pub fn writeln(output: &mut io::Writer, args: &Arguments) -> Result 
+writeln			macro_rules! writeln(
 wrmdir			                pub fn wrmdir(path: *wchar_t) -> c_int;
 ws			    fn ws(&mut self) 
 wsconsume			    fn wsconsume(&mut self, c: char) -> bool 
