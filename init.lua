@@ -57,9 +57,14 @@ if type(snippets) == 'table' then
   snippets.rust = {
 
     -- functions
-    fn    = "fn %1(name)(%2(param)) %3(-> %4(type) ){\n\t%0\n}",
+    fn    = "fn %1(name)(%2(&self)) %3(-> %4(type) ){\n\t%0\n}",
     gfn   = "fn %1(name)<%2(T)>(%3(%4(param): &[T])) %5(-> %6(&[T])) {\n\t%0\n}",
     divfn = "fn %1(name)(%2(param)) ! {\n\t%0\n}",
+
+    -- closures
+    s     = "|%1(param)| %0", -- stack closure
+    o     = "proc() {\n\t%0\n}", -- owned closure
+
 
     -- Items and Attributes
     extern  = "extern %1(\"ABI\") {\n\t%0\n}",
@@ -71,7 +76,6 @@ if type(snippets) == 'table' then
 
     -- Expressions
     v           = "[%1(start), %2(.. %3(range_end))]%0",
-    l           = "|%1(param)| %0",
     ["while"]   = "while %1(expr) {\n\t%0\n}",
     loop        = "loop {\n\t%0\n}",
     ["do"]      = "do |%1(param)| {\n\t%0\n}",
@@ -89,7 +93,12 @@ if type(snippets) == 'table' then
     lmut    = "let mut %1(name): %2(type) = %0;",
     let     = "let %1(name): %2(type) = %0;",
     ["/*"]  = "/*\n\t%0\n*/",
-    ["print"] = 'print(format!("{:%1(?)}\\n", %0))'
+    ["print"] = 'print(format!("{:%1(?)}\\n", %0))',
+
+    -- tasks and communication
+    ["spawn"] = "spawn(proc() {\n\t%0\n});",
+    ["channel"] = "let (%1(tx, rx)): (Sender<%2(int)>, Receiver<%3(int)) = channel();%0",
+
   }
 end
 

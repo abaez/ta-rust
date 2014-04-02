@@ -29,14 +29,14 @@ local keyword = token(l.KEYWORD, word_match{
   'as', 'break', 'do', 'else', 'enum', 'extern', 'false', 'fn', 'for', 'if',
   'impl', 'in', 'let', 'loop', 'match', 'mod', 'mut', 'priv', 'pub', 'ref',
   'return', 'self', 'static', 'struct', 'super', 'true', 'trait', 'type',
-  'unsafe', 'use', 'while'
+  'unsafe', 'use', 'while', 'crate'
 })
 
 -- Types.
 local type = token(l.TYPE, word_match{
   '()', 'bool', 'int', 'uint', 'char', 'str',
   'u8', 'u16', 'u32', 'u64', 'i8', 'i16', 'i32', 'i64',
-  'binary32', 'binary64', 'f32','f64',
+  'f32','f64',
 })
 
 -- Identifiers.
