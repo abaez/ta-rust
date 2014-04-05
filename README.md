@@ -14,16 +14,12 @@ manual. It also encompasses the a vast list of snippets I use when coding,
 ctags for semi auto-complete, and api references.
 
 Note: The API references are currently just the presentation of the prototypes
-for an API call. Full documentation for each API call of a crate is currently
-planned for future releases.
+for an API call. I believe with how Rust work, these prototypes are good enough for each reference call.  
 
 #### Completed:
-*   lexer: All keywords, types, and numbers lexer definitions.
-*   module: *.rs, massive list of snippets, and API reference to the crate std.
+*   lexer: All keywords, types, strings, and numbers lexer definitions.
+*   module: *.rs, massive list of snippets, and API reference to all crates as of v0.10.
 
-#### Currently Planned:
-*   lexer: explicit lifetime references.
-*   module: API reference to all crates from master branch.
 
 ### INSTALL
 Clone the repository to your `~/.textadept/modules` directory:

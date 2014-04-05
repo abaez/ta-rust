@@ -1,3 +1,10 @@
+--- the Textadept initializer for the Rust module
+-- See @{README.md} for details on usage.
+-- @author Alejandro Baez <alejan.baez@gmail.com>
+-- @copyright 2014
+-- @license MIT (see LICENSE)
+-- @module rust
+
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
 
@@ -11,7 +18,6 @@ local sense = textadept.adeptsense.new('rust')
 local as = textadept.adeptsense
 
 -- [ctags.rust](https://github.com/mozilla/rust/blob/master/src/etc/ctags.rust)
--- NOTE: c is disabled in the tags builder. Will change this later on...
 sense.ctags_kinds = {
   c = as.FIELD, d = as.CLASS, f = as.FUNCTION, g = as.FIELD, i = as.CLASS,
   m = as.CLASS, s = as.CLASS, t = as.CLASS, T = as.FIELD
@@ -25,15 +31,8 @@ sense.syntax.type_declarations = {
   "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]", -- foo<t>: bar || foo<t>: 'r bar,
 }
 
-
---sense.syntax.symbol_chars = "[%w_%_]"
-
--- add a trigger for auto sense
---sense:add_trigger('.')
---sense:add_trigger("::", false, true)
---sense:add_trigger("::")
-
-
+--- all crates as of v0.10
+-- @table lib_list
 lib_list = {
     "arena",
     "collections",
@@ -66,13 +65,12 @@ lib_list = {
 ta_path = _USERHOME .. '/modules/rust/ta/'
 
 for _, lib in ipairs(lib_list) do
---  sense.api_files[#sense.apifiles + 1] = ta_path .. 'api_' .. lib_list
   table.insert(sense.api_files, ta_path .. 'api_' .. lib)
   sense:load_ctags(ta_path .. 'tags_' .. lib, true)
 end
 
--- Table of Rust-specific key bindings.
--- @class table
+--- Table of Rust-specific key bindings.
+-- @table keys.rust
 -- @name _G.keys.rust
 keys.rust = {
   [keys.LANGUAGE_MODULE_PREFIX] = {
