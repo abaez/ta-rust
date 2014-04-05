@@ -33,10 +33,43 @@ sense.syntax.type_declarations = {
 --sense:add_trigger("::", false, true)
 --sense:add_trigger("::")
 
-sense:load_ctags(_USERHOME .. "/modules/rust/tags", true)
-sense.api_files = {
-  _USERHOME .. '/modules/rust/api'
+
+lib_list = {
+    "arena",
+    "collections",
+    "flate",
+    "fourcc",
+    "getopts",
+    "glob",
+    "green",
+    "hexfloat",
+    "log",
+    "native",
+    "num",
+    "rand",
+    "rustc",
+    "rustdoc",
+    "rustuv",
+    "semver",
+    "serialize",
+    "std",
+    "sync",
+    "syntax",
+    "term",
+    "test",
+    "time",
+    "url",
+    "uuid",
+    "workcache"
 }
+
+ta_path = _USERHOME .. '/modules/rust/ta/'
+
+for _, lib in ipairs(lib_list) do
+--  sense.api_files[#sense.apifiles + 1] = ta_path .. 'api_' .. lib_list
+  table.insert(sense.api_files, ta_path .. 'api_' .. lib)
+  sense:load_ctags(ta_path .. 'tags_' .. lib, true)
+end
 
 -- Table of Rust-specific key bindings.
 -- @class table
