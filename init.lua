@@ -13,23 +13,55 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 
+local XPM = textadept.editing.XPM_IMAGES
+local xpms = setmetatable({
+  c = XPM.VARIABLE, d = XPM.CLASS, f = XPM.METHOD, i = XPM.NAMESPACE,
+  g = XPM.TYPEDEF, m = XPM.CLASS,  s = XPM.STRUCT, t = XPM.NAMESPACE,
+  T = XPM.TYPEDEF
+}, {__index = function(t, k) return 0 end})
 
-local sense = textadept.adeptsense.new('rust')
-local as = textadept.adeptsense
 
 -- [ctags.rust](https://github.com/mozilla/rust/blob/master/src/etc/ctags.rust)
-sense.ctags_kinds = {
-  c = as.FIELD, d = as.CLASS, f = as.FUNCTION, g = as.FIELD, i = as.CLASS,
-  m = as.CLASS, s = as.CLASS, t = as.CLASS, T = as.FIELD
-}
+textadept.editing.autocompleters.rust = function()
+  local list = {}
+  local line, pos = buffer:get_cur_line()
+  local symbol, op, part = line:sub(1, pos):match("([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]")
+
+  if symbol == '' and part == '' and op ~= '' then return nil end -- lone ., ->
+  if op ~= '' and op ~= '.' and op ~= '->' then return nil end
 
 
-sense.syntax.class_definition = "(trait)%s+[(%w_)+]"
+  local buffer = buffer
+  local declaration = "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]"
 
-sense.syntax.type_declarations = {
-  "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]", -- foo: bar || foo: 'r bar
-  "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]", -- foo<t>: bar || foo<t>: 'r bar,
-}
+  for i = buffer:line_from_position(buffer.current_pos) - 1, 0, -1 do
+    local class = buffer:get_line(i):match(declaration)
+    if class then symbol = class break end
+  end
+    -- Search through ctags for completions for that symbol.
+  local name_patt = '^'..part
+  local sep = string.char(buffer.auto_c_type_separator)
+  for i = 1, #M.tags do
+    if lfs.attributes(M.tags[i]) then
+      for line in io.lines(M.tags[i]) do
+        local name = line:match('^%S+')
+        if name:find(name_patt) and not name:find('^!') and not list[name] then
+          local fields = line:match(';"\t(.*)$')
+          if (fields:match('class:(%S+)') or fields:match('enum:(%S+)') or
+              fields:match('struct:(%S+)') or fields:match('typedef:(%S+)') or
+              '') == symbol then
+            local k = xpms[fields:sub(1, 1)]
+            list[#list + 1] = ("%s%s%d"):format(name, sep, xpms[k])
+            list[name] = true
+          end
+        end
+      end
+    end
+  end
+  return #part, list
+end
+
+--sense.syntax.class_definition = "(trait)%s+[(%w_)+]"
 
 --- all crates as of v0.10
 -- @table lib_list
@@ -62,12 +94,18 @@ lib_list = {
     "workcache"
 }
 
+local tags = {}
+local rust_api = {}
+
 ta_path = _USERHOME .. '/modules/rust/ta/'
 
 for _, lib in ipairs(lib_list) do
-  table.insert(sense.api_files, ta_path .. 'api_' .. lib)
-  sense:load_ctags(ta_path .. 'tags_' .. lib, true)
+  table.insert(rust_api, ta_path .. 'api_' .. lib)
+--  sense:load_ctags(ta_path .. 'tags_' .. lib, true)
+  tags[#tags + 1] = ta_path .. 'tags_' .. lib
 end
+
+textadept.editing.api_files.rust = rust_api
 
 --- Table of Rust-specific key bindings.
 -- @table keys.rust
@@ -142,5 +180,5 @@ events.connect(events.LEXER_LOADED, function (lang)
 end)
 
 return {
-  sense = sense
+  tags = tags
 }
