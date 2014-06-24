@@ -26,10 +26,19 @@ local number = token(l.NUMBER, l.float + "0b" * l.integer + "0o" * l.integer +
 
 -- Keywords.
 local keyword = token(l.KEYWORD, word_match{
-  'as', 'break', 'do', 'else', 'enum', 'extern', 'false', 'fn', 'for', 'if',
-  'impl', 'in', 'let', 'loop', 'match', 'mod', 'mut', 'priv', 'pub', 'ref',
-  'return', 'self', 'static', 'struct', 'super', 'true', 'trait', 'type',
-  'unsafe', 'use', 'while', 'crate'
+  'as', 'box', 'break',
+  'continue', 'crate',
+  'else', 'enum', 'extern',
+  'false', 'fn', 'for',
+  'if', 'impl', 'in',
+  'let', 'loop',
+  'match', 'mod', 'mut',
+  'priv', 'proc', 'pub',
+  'ref', 'return',
+  'self', 'static', 'struct', 'super',
+  'true', 'trait', 'type',
+  'unsafe', 'use',
+  'while'
 })
 
 -- Types.
