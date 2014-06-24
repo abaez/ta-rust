@@ -25,10 +25,11 @@ local xpms = setmetatable({
 textadept.editing.autocompleters.rust = function()
   local list = {}
   local line, pos = buffer:get_cur_line()
-  local symbol, op, part = line:sub(1, pos):match("([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]")
+  local symbol, op, part = line:sub(1, pos):match(
+    "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]")
 
   if symbol == '' and part == '' and op ~= '' then return nil end -- lone ., ->
-  if op ~= '' and op ~= '.' and op ~= '->' then return nil end
+  if op ~= '' and op ~= '.' and op ~= '::' then return nil end
 
 
   local buffer = buffer
@@ -60,8 +61,6 @@ textadept.editing.autocompleters.rust = function()
   end
   return #part, list
 end
-
---sense.syntax.class_definition = "(trait)%s+[(%w_)+]"
 
 --- all crates as of v0.10
 -- @table lib_list
@@ -101,7 +100,6 @@ ta_path = _USERHOME .. '/modules/rust/ta/'
 
 for _, lib in ipairs(lib_list) do
   table.insert(rust_api, ta_path .. 'api_' .. lib)
---  sense:load_ctags(ta_path .. 'tags_' .. lib, true)
   tags[#tags + 1] = ta_path .. 'tags_' .. lib
 end
 
@@ -162,7 +160,7 @@ if type(snippets) == 'table' then
     lmut    = "let mut %1(name): %2(type) = %0;",
     let     = "let %1(name): %2(type) = %0;",
     ["/*"]  = "/*\n\t%0\n*/",
-    ["print"] = 'print(format!("{:%1(?)}\\n", %0))',
+    ["print"] = 'println!("{:%1(?)}\\n", %0);',
 
     -- tasks and communication
     ["spawn"] = "spawn(proc() {\n\t%0\n});",
