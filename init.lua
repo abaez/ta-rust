@@ -62,35 +62,44 @@ textadept.editing.autocompleters.rust = function()
   return #part, list
 end
 
---- all crates as of v0.10
--- @table lib_list
-lib_list = {
-    "arena",
-    "collections",
-    "flate",
-    "fourcc",
-    "getopts",
-    "glob",
-    "green",
-    "hexfloat",
-    "log",
-    "native",
-    "num",
-    "rand",
-    "rustc",
-    "rustdoc",
-    "rustuv",
-    "semver",
-    "serialize",
-    "std",
-    "sync",
-    "syntax",
-    "term",
-    "test",
-    "time",
-    "url",
-    "uuid",
-    "workcache"
+--- all crates as of v0.11
+-- @table crates
+local crates = {
+  "alloc",
+  "arena",
+  "collections",
+  "core",
+  "debug",
+  "flate",
+  "fmt_macros",
+  "fourcc",
+  "getopts",
+  "glob",
+  "graphviz",
+  "green",
+  "hexfloat",
+  "libc",
+  "log",
+  "native",
+  "num",
+  "rand",
+  "regex",
+  "regex_macros",
+  "rlibc",
+  "rustc",
+  "rustdoc",
+  "rustrt",
+  "rustuv",
+  "semver",
+  "serialize",
+  "std",
+  "sync",
+  "syntax",
+  "term",
+  "test",
+  "time",
+  "url",
+  "uuid",
 }
 
 local tags = {}
@@ -98,7 +107,7 @@ local rust_api = {}
 
 ta_path = _USERHOME .. '/modules/rust/ta/'
 
-for _, lib in ipairs(lib_list) do
+for _, lib in ipairs(crates) do
   table.insert(rust_api, ta_path .. 'api_' .. lib)
   tags[#tags + 1] = ta_path .. 'tags_' .. lib
 end
@@ -177,5 +186,6 @@ events.connect(events.LEXER_LOADED, function (lang)
 end)
 
 return {
-  tags = tags
+  tags = tags,
+  crates = crates
 }
