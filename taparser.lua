@@ -1,6 +1,49 @@
 #!/usr/bin/lua
 --- Makes tags and api for rust
 
+--- all crates as of v0.11
+-- @table crates
+local crates = {
+  "alloc",
+  "arena",
+  "collections",
+  "core",
+  "debug",
+  "flate",
+  "fmt_macros",
+  "fourcc",
+  "getopts",
+  "glob",
+  "graphviz",
+  "green",
+  "hexfloat",
+  "libc",
+  "log",
+  "native",
+  "num",
+  "rand",
+  "regex",
+  "regex_macros",
+  "rlibc",
+  "rustc",
+  "rustdoc",
+  "rustrt",
+  "rustuv",
+  "semver",
+  "serialize",
+  "std",
+  "sync",
+  "syntax",
+  "term",
+  "test",
+  "time",
+  "url",
+  "uuid",
+}
+
+for i, v in ipairs(crates) do
+  print(v)
+end
 
 local rust_path = "/data/Projects/DVCS/other/git/rust"
 
@@ -65,3 +108,6 @@ function formatter(ctag, mod)
 end
 
 formatter("tags", "test")
+
+os.remove("tags")
+return crates
