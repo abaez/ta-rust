@@ -1,5 +1,12 @@
 #!/usr/bin/lua
---- Makes tags and api for rust
+--- builds the api and tags files for all crates in rust.
+-- Completely self contained parser.
+-- See @{README.md} for details on usage.
+-- @author Alejandro Baez <alejan.baez@gmail.com>
+-- @copyright 2014
+-- @license MIT (see LICENSE)
+-- @module taparser
+
 
 --- all crates as of v0.11
 -- @table crates
@@ -41,13 +48,9 @@ local crates = {
   "uuid",
 }
 
-for i, v in ipairs(crates) do
-  print(v)
-end
 
 local rust_path = "/data/Projects/DVCS/other/git/rust"
-
-ctag_rust = "/src/etc/ctags.rust"
+local ctag_rust = "/src/etc/ctags.rust"
 
 
 --- converts ctags.rust into correct formatting for use.
@@ -69,20 +72,22 @@ function parse_ctags(f)
   return ctag_options
 end
 
+
 local parsed = parse_ctags(rust_path .. ctag_rust)
 
-local out = '| grep -E "^([^_~]|_[^_])" > tags'
 
-os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/liburl/*", parsed, rust_path))
+--- builds the api and tags for textadept from parsed ctags.rust file.
+-- @function formatter
+-- @param crate the library/crate to build.
+local function formatter(crate)
+  os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/lib%s/*",
+    parsed, rust_path, crate))
 
+  local fapi = io.open("ta/api_" .. crate, "w")
+  local ftag = io.open("ta/tag_" .. crate, "w")
 
-
-function formatter(ctag, mod)
-  local fapi = io.open("api_" .. mod, "w")
-  local ftag = io.open("tag_" .. mod, "w")
-
-  for line in io.input(ctag):lines("*l") do
-      local tline, aline = line, line
+  for line in io.input("tags"):lines("*l") do
+    local tline, aline = line, line
 
     do -- for fapi
       aline = aline:gsub("/.+%prs", "\t")
@@ -107,7 +112,13 @@ function formatter(ctag, mod)
   ftag:close()
 end
 
-formatter("tags", "test")
+
+for _, lib in ipairs(crates) do
+  print("building:", lib)
+  formatter(lib)
+end
+
 
 os.remove("tags")
+
 return crates
