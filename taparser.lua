@@ -30,27 +30,38 @@ local parsed = parse_ctags(rust_path .. ctag_rust)
 
 local out = '| grep -E "^([^_~]|_[^_])" > tags'
 
---os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/liburl/*", parsed, rust_path))
+os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/liburl/*", parsed, rust_path))
 
 
 
-function api_format(ctag, mod)
-  local fw = io.open("api_" .. mod, "w")
+function formatter(ctag, mod)
+  local fapi = io.open("api_" .. mod, "w")
+  local ftag = io.open("tag_" .. mod, "w")
 
   for line in io.input(ctag):lines("*l") do
+      local tline, aline = line, line
 
-    line = line:gsub("/.+%prs", "\t")
-    line = line:gsub("{?$.+", "")
-    line = line:gsub("/%^", "")
+    do -- for fapi
+      aline = aline:gsub("/.+%prs", "\t")
+      aline = aline:gsub("{?$.+", "")
+      aline = aline:gsub("/%^", "")
+    end
+
+    do -- for ftag
+      tline = tline:gsub("/.+%prs", "_")
+      tline = tline:gsub("/%^.+\"", "0")
+    end
 
     if line:find("(!_).+") or line:find("^test_") then
       ; -- purposely left blank since no continue
     else
-      fw:write(line, "\n")
+      fapi:write(aline, "\n")
+      ftag:write(tline, "\n")
     end
   end
 
-  fw:close()
+  fapi:close()
+  ftag:close()
 end
 
-api_format("tags", "test")
+formatter("tags", "test")
