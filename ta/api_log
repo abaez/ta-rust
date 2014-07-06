@@ -1,15 +1,21 @@
 DefaultLogger			struct DefaultLogger 
 Drop			impl Drop for DefaultLogger 
 LogDirective			pub struct LogDirective 
+LogLevel			pub struct LogLevel(pub u32);
+LogLocation			pub struct LogLocation 
+LogRecord			pub struct LogRecord<'a> 
 Logger			impl Logger for DefaultLogger 
 Logger			pub trait Logger 
 directive			mod directive;
 drop			    fn drop(&mut self) 
-enabled			fn enabled(level: u32, module: &str,
+enabled			fn enabled(level: u32,
+fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			impl fmt::Show for LogLevel 
+fmt			impl fmt::Signed for LogLevel 
 init			fn init() 
-log			    fn log(&mut self, _level: u32, args: &fmt::Arguments) 
-log			    fn log(&mut self, level: u32, args: &fmt::Arguments);
-log			pub fn log(level: u32, args: &fmt::Arguments) 
+log			    fn log(&mut self, record: &LogRecord) 
+log			    fn log(&mut self, record: &LogRecord);
+log			pub fn log(level: u32, loc: &'static LogLocation, args: &fmt::Arguments) 
 log_level			pub fn log_level() -> u32 { unsafe { LOG_LEVEL } }
 macros			pub mod macros;
 main			fn main() 
@@ -26,7 +32,7 @@ parse_logging_spec_invalid_crate			    fn parse_logging_spec_invalid_crate()
 parse_logging_spec_invalid_log_level			    fn parse_logging_spec_invalid_log_level() 
 parse_logging_spec_string_log_level			    fn parse_logging_spec_string_log_level() 
 parse_logging_spec_valid			    fn parse_logging_spec_valid() 
-set_logger			pub fn set_logger(logger: ~Logger:Send) -> Option<~Logger:Send> 
+set_logger			pub fn set_logger(logger: Box<Logger + Send>) -> Option<Box<Logger + Send>> 
 tests			mod tests 
 tests			mod tests 
 zero_level			    fn zero_level() 

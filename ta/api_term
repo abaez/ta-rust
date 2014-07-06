@@ -4,54 +4,75 @@ Flags			struct Flags
 FormatOp			enum FormatOp 
 FormatOp			impl FormatOp 
 FormatState			enum FormatState 
+GetStdHandle			    fn GetStdHandle(which: libc::DWORD) -> libc::HANDLE;
 Param			pub enum Param 
+SetConsoleTextAttribute			    fn SetConsoleTextAttribute(handle: libc::HANDLE, attr: libc::WORD) -> libc::BOOL;
 States			enum States 
 TermInfo			pub struct TermInfo 
-Terminal			pub struct Terminal<T> 
+Terminal			pub trait Terminal<T: Writer>: Writer 
+TerminfoTerminal			pub struct TerminfoTerminal<T> 
 Variables			impl Variables 
 Variables			pub struct Variables 
-attr			    pub fn attr(&mut self, attr: attr::Attr) -> io::IoResult<bool> 
+WinConsole			pub struct WinConsole<T> 
+Writer			impl Writer for WriterWrapper 
+WriterWrapper			pub struct WriterWrapper 
+apply			    fn apply(&mut self) 
+attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool>;
 attr			pub mod attr 
-bg			    pub fn bg(&mut self, color: color::Color) -> io::IoResult<bool> 
+attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool> 
+attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool> 
+bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool>;
+bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool> 
+bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool> 
 cap_for_attr			fn cap_for_attr(attr: attr::Attr) -> &'static str 
 color			pub mod color 
+color_to_bits			fn color_to_bits(color: color::Color) -> u16 
 compiled			    pub mod compiled;
 dim_if_necessary			    fn dim_if_necessary(&self, color: color::Color) -> color::Color 
 expand			pub fn expand(cap: &[u8], params: &[Param], vars: &mut Variables)
-fg			    pub fn fg(&mut self, color: color::Color) -> io::IoResult<bool> 
-flush			    fn flush(&mut self) -> io::IoResult<()> 
-format			fn format(val: Param, op: FormatOp, flags: Flags) -> Result<Vec<u8> ,~str> 
+fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool>;
+fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool> 
+fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool> 
+flush			    fn flush(&mut self) -> IoResult<()> 
+flush			    fn flush(&mut self) -> IoResult<()> 
+flush			    fn flush(&mut self) -> IoResult<()> 
+format			fn format(val: Param, op: FormatOp, flags: Flags) -> Result<Vec<u8> ,String> 
 from_char			    fn from_char(c: char) -> FormatOp 
-get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<~Path> 
-get_mut			    pub fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.out }
-get_ref			    pub fn get_ref<'a>(&'a self) -> &'a T { &self.out }
-msys_terminfo			pub fn msys_terminfo() -> ~TermInfo 
-new			    pub fn new(out: T) -> Result<Terminal<T>, ~str> 
+get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<Box<Path>> 
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T;
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.out }
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.buf }
+get_ref			    fn get_ref<'a>(&'a self) -> &'a T;
+get_ref			    fn get_ref<'a>(&'a self) -> &'a T { &self.out }
+get_ref			    fn get_ref<'a>(&'a self) -> &'a T { &self.buf }
+msys_terminfo			pub fn msys_terminfo() -> Box<TermInfo> 
+new			    fn new(out: T) -> Option<Self>;
+new			    fn new(out: T) -> Option<TerminfoTerminal<T>> 
 new			    fn new() -> Flags 
 new			    pub fn new() -> Variables 
-open			pub fn open(term: &str) -> Result<File, ~str> 
+new			    fn new(out: T) -> Option<WinConsole<T>> 
+open			pub fn open(term: &str) -> Result<File, String> 
 parm			pub mod parm;
-parse			pub fn parse(file: &mut io::Reader,
+parse			pub fn parse(file: &mut io::Reader, longnames: bool)
 parser			pub mod parser 
-reset			    pub fn reset(&mut self) -> io::IoResult<()> 
+reset			    fn reset(&mut self) -> IoResult<()>;
+reset			    fn reset(&mut self) -> IoResult<()> 
+reset			    fn reset(&mut self) -> IoResult<()> 
 searcher			pub mod searcher;
-supports_attr			    pub fn supports_attr(&self, attr: attr::Attr) -> bool 
+stderr			pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send> + Send> 
+stdout			pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> 
+supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool;
+supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool 
+supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool 
 terminfo			pub mod terminfo;
 test			mod test 
 test			mod test 
-test_basic_setabf			    fn test_basic_setabf() 
-test_comparison_ops			    fn test_comparison_ops() 
-test_conditionals			    fn test_conditionals() 
-test_format			    fn test_format() 
-test_get_dbpath_for_term			fn test_get_dbpath_for_term() 
-test_multiple_int_constants			    fn test_multiple_int_constants() 
-test_op_i			    fn test_op_i() 
-test_open			fn test_open() 
-test_param_stack_failure_conditions			    fn test_param_stack_failure_conditions() 
-test_parse			    fn test_parse() 
-test_push_bad_param			    fn test_push_bad_param() 
-test_veclens			    fn test_veclens() 
 to_char			    fn to_char(self) -> char 
-unwrap			    pub fn unwrap(self) -> T { self.out }
-write			    fn write(&mut self, buf: &[u8]) -> io::IoResult<()> 
-x			    fn x(t: &str) -> ~str 
+unwrap			    fn unwrap(self) -> T;
+unwrap			    fn unwrap(self) -> T { self.out }
+unwrap			    fn unwrap(self) -> T { self.buf }
+win			mod win;
+write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
+write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
+write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
+x			    fn x(t: &str) -> String 
