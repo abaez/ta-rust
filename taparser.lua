@@ -120,5 +120,3 @@ end
 
 
 os.remove("tags")
-
-return crates
