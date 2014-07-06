@@ -145,7 +145,6 @@ if type(snippets) == 'table' then
     v           = "[%1(start), %2(.. %3(range_end))]%0",
     ["while"]   = "while %1(expr) {\n\t%0\n}",
     loop        = "loop {\n\t%0\n}",
-    ["do"]      = "do |%1(param)| {\n\t%0\n}",
     ["for"]     = "for %1(i) in %2(iterator) {\n\t%0\n}",
     ["forr"]     = "for %1(i) in range(%2(0), %3(10)) {\n\t%0\n}",
 
