@@ -9,17 +9,21 @@ it's missing a couple of features and languages that I like using. Rust is one
 of those languages.
 
 Currently, this module holds all keywords, types, and any other standard lexer
-definition described by the [Rust reference](static.rust-lang.org/doc/master/rust.html)
+definition described by the [Rust reference](http://doc.rust-lang.org/0.11.0/rust.html)
 manual. It also encompasses the a vast list of snippets I use when coding,
 ctags for semi auto-complete, and api references.
 
 Note: The API references are currently just the presentation of the prototypes
-for an API call. I believe with how Rust work, these prototypes are good enough for each reference call.  
+for an API call. I believe with how Rust work, these prototypes are good enough for each reference call.
 
 #### Completed:
 *   lexer: All keywords, types, strings, and numbers lexer definitions.
-*   module: *.rs, massive list of snippets, and API reference to all crates as of v0.10.
+*   module: *.rs, massive list of snippets, and API reference to all crates as of v0.11.
 
+
+### REQUIREMENT
+*   Rust >= v0.11
+*   Textadept >= v7.3
 
 ### INSTALL
 Clone the repository to your `~/.textadept/modules` directory:
