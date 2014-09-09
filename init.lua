@@ -5,45 +5,8 @@
 -- @license MIT (see LICENSE)
 -- @module rust
 
---- all crates as of v0.11
--- @table crates
-local crates = {
-  "alloc",
-  "arena",
-  "collections",
-  "core",
-  "debug",
-  "flate",
-  "fmt_macros",
-  "fourcc",
-  "getopts",
-  "glob",
-  "graphviz",
-  "green",
-  "hexfloat",
-  "libc",
-  "log",
-  "native",
-  "num",
-  "rand",
-  "regex",
-  "regex_macros",
-  "rlibc",
-  "rustc",
-  "rustdoc",
-  "rustrt",
-  "rustuv",
-  "semver",
-  "serialize",
-  "std",
-  "sync",
-  "syntax",
-  "term",
-  "test",
-  "time",
-  "url",
-  "uuid",
-}
+local crates, config = require("modules.rust.config")
+textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
@@ -60,47 +23,6 @@ local xpms = setmetatable({
   T = XPM.TYPEDEF
 }, {__index = function(t, k) return 0 end})
 
-
--- [ctags.rust](https://github.com/mozilla/rust/blob/master/src/etc/ctags.rust)
-textadept.editing.autocompleters.rust = function()
-  local list = {}
-  local line, pos = buffer:get_cur_line()
-  local symbol, op, part = line:sub(1, pos):match(
-    "([%w_%d]+)%b<>%s?:[%s*~@&]+%_[^%w_]")
-
-  if symbol == '' and part == '' and op ~= '' then return nil end -- lone ., ->
-  if op ~= '' and op ~= '.' and op ~= '::' then return nil end
-
-
-  local buffer = buffer
-  local declaration = "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]"
-
-  for i = buffer:line_from_position(buffer.current_pos) - 1, 0, -1 do
-    local class = buffer:get_line(i):match(declaration)
-    if class then symbol = class break end
-  end
-    -- Search through ctags for completions for that symbol.
-  local name_patt = '^'..part
-  local sep = string.char(buffer.auto_c_type_separator)
-  for i = 1, #M.tags do
-    if lfs.attributes(M.tags[i]) then
-      for line in io.lines(M.tags[i]) do
-        local name = line:match('^%S+')
-        if name:find(name_patt) and not name:find('^!') and not list[name] then
-          local fields = line:match(';"\t(.*)$')
-          if (fields:match('class:(%S+)') or fields:match('enum:(%S+)') or
-              fields:match('struct:(%S+)') or fields:match('typedef:(%S+)') or
-              '') == symbol then
-            local k = xpms[fields:sub(1, 1)]
-            list[#list + 1] = ("%s%s%d"):format(name, sep, xpms[k])
-            list[name] = true
-          end
-        end
-      end
-    end
-  end
-  return #part, list
-end
 
 local tags = {}
 local rust_api = {}
