@@ -20,6 +20,13 @@ for an API call. I believe with how Rust work, these prototypes are good enough 
 *   lexer: All keywords, types, strings, and numbers lexer definitions.
 *   module: *.rs, massive list of snippets, and API reference to all crates as of v0.11.
 
+#### To Do:
+*   autocomplete: An actual autocomplete working...(finally)
+*   lint: Basic lint from post compile. (better than what is implemented now)
+*   build: using cargo to make a build of a project. (should be fun to do...)
+*   unit test: somehow get unit test integrated better.
+*   rustdoc: Make some rustdoc integration as well, while we at it.
+*   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
 *   Rust >= v0.11
