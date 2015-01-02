@@ -42,12 +42,9 @@ local keyword = token(l.KEYWORD, word_match{
 local library = R("AZ") * R("az")^0
 
 -- syntax extensions
-local func = token(l.FUNCTION, word_match{
-  "format", "env", "file", "stringify",
-  "include", "include_str", "include_bytes",
-  "error", "warn", "info", "debug"
-} + library)
+local extension = R("az")^0 * S("!")
 
+local func = token(l.FUNCTION, library + ext)
 
 -- Types.
 local type = token(l.TYPE, word_match{
