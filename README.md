@@ -17,7 +17,8 @@ Note: The API references are currently just the presentation of the prototypes
 for an API call. I believe with how Rust work, these prototypes are good enough for each reference call.
 
 #### Completed:
-*   lexer: All keywords, types, strings, and numbers lexer definitions.
+*   lexer: All keywords, types, library types, syntax extensions, strings, and
+numbers lexer definitions.
 *   module: *.rs, massive list of snippets, and API reference to all crates as of v0.11.
 
 #### To Do:
@@ -29,7 +30,7 @@ for an API call. I believe with how Rust work, these prototypes are good enough 
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v0.11
+*   Rust >= v0.13
 *   Textadept >= v7.3
 
 ### INSTALL
