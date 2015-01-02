@@ -44,7 +44,7 @@ local library = R("AZ") * R("az")^0
 -- syntax extensions
 local extension = R("az")^0 * S("!")
 
-local func = token(l.FUNCTION, library + ext)
+local func = token(l.FUNCTION, library + extension)
 
 -- Types.
 local type = token(l.TYPE, word_match{
