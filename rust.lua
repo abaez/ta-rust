@@ -17,7 +17,7 @@ local comment = token(l.COMMENT, line_comment + block_comment)
 -- Strings.
 local sq_str = P('L')^-1 * l.delimited_range("'")
 local dq_str = P('L')^-1 * l.delimited_range('"')
-local raw_str = P('L')^-1 * l.delimited_range('#', true)
+local raw_str = P('L')^-1 * l.delimited_range('##', true)
 local string = token(l.STRING, dq_str)
 
 -- Numbers.
@@ -36,6 +36,18 @@ local keyword = token(l.KEYWORD, word_match{
   'self', 'struct', 'super', 'true', 'trait',
   'type', 'typeof', 'unsafe', 'unsized', 'use',
   'virtual', 'where', 'while', 'yield'
+})
+
+-- syntax extensions
+local func = token(l.FUNCTION, word_match{
+  "format", "env", "file", "stringify",
+  "include", "include_str", "include_bytes",
+  "error", "warn", "info", "debug"
+})
+
+-- Library types
+local library = token('library', word_match{
+  'None', 'Some', 'Option'
 })
 
 -- Types.
@@ -57,6 +69,7 @@ local attribute = token(l.PREPROCESSOR, "#[" * l.nonnewline^0 * "]")
 M._rules = {
   {'whitespace', ws},
   {'keyword', keyword},
+  {'function', func},
   {'type', type},
   {'identifier', identifier},
   {'string', string},
