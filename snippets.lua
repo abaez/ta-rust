@@ -15,16 +15,16 @@ return {
 
   -- closures
   -- :&
-  fns     = "fn %1(name)<%2(T)>(%3(param): %2)\n\t" ..
+  fns     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
             "where %2: Fn(&%4) -> %5\n{\n\t%0\n}",
   -- :&mut
-  fnm     = "fn %1(name)<%2(T)>(%3(param): %2)\n\t" ..
-            "where %2: FnMut(&%4) -> %5\n{\n\t%0\n}",
+  fnm     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
+            "where %2: FnMut(&%6) -> %7\n{\n\t%0\n}",
   -- :
-  fno     = "fn %1(name)<%2(T)>(%3(param): %2)\n\t" ..
-            "where %2: FnOnce(%4) -> %5\n{\n\t%0\n}",
+  fno     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
+            "where %2: FnOnce(%6) -> %7\n{\n\t%0\n}",
   ["|"]   = "|%1(:)| %0",
-  move    = "move|%1(:)| {\n\t%0\n})",
+  move    = "move |%1(:)| {\n\t%0\n})",
 
   -- Data Structures
   extern  = "extern %1(\"ABI\") {\n\t%0\n}",
@@ -61,6 +61,6 @@ return {
   ["print"] = 'println!("{%1(name)}\\n", %1);%0',
 
   -- tasks and communication
-  ["spawn"]   = "spawn(move|| {\n\t%0\n});",
+  ["spawn"]   = "spawn(move || {\n\t%0\n});",
   ["channel"] = "let (%1(tx, rx)): (Sender<%2(int)>, Receiver<%3(int)) = channel();%0",
 }
