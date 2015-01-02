@@ -38,22 +38,23 @@ local keyword = token(l.KEYWORD, word_match{
   'virtual', 'where', 'while', 'yield'
 })
 
+-- Library types
+local library = R("AZ") * R("az")^0
+
 -- syntax extensions
 local func = token(l.FUNCTION, word_match{
   "format", "env", "file", "stringify",
   "include", "include_str", "include_bytes",
   "error", "warn", "info", "debug"
-})
+} + library)
 
--- Library types
-local library = R("AZ") * R("az")^0
 
 -- Types.
 local type = token(l.TYPE, word_match{
   '()', 'bool', 'int', 'uint', 'char', 'str',
   'u8', 'u16', 'u32', 'u64', 'i8', 'i16', 'i32', 'i64',
   'f32','f64',
-} + library)
+})
 
 -- Identifiers.
 local identifier = token(l.IDENTIFIER, l.word)
