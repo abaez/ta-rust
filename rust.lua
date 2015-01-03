@@ -39,12 +39,12 @@ local keyword = token(l.KEYWORD, word_match{
 })
 
 -- Library types
-local library = R("AZ") * R("az")^0
+local library = token(l.LABEL, R("AZ") * R("az")^0)
 
 -- syntax extensions
 local extension = R("az")^0 * S("!")
 
-local func = token(l.FUNCTION, library + extension)
+local func = token(l.FUNCTION, extension)
 
 -- Types.
 local type = token(l.TYPE, word_match{
@@ -66,6 +66,7 @@ M._rules = {
   {'whitespace', ws},
   {'keyword', keyword},
   {'function', func},
+  {'library', library},
   {'type', type},
   {'identifier', identifier},
   {'string', string},
