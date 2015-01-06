@@ -61,7 +61,7 @@ local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
 -- Attributes.
 local attribute = token(l.PREPROCESSOR, "#[" *
-                        (l.nonewline - ']')^0 * P("]")^-1)
+                        (l.nonnewline - ']')^0 * P("]")^-1)
 
 M._rules = {
   {'whitespace', ws},
