@@ -17,12 +17,12 @@ local comment = token(l.COMMENT, line_comment + block_comment)
 -- Strings.
 local sq_str = P('L')^-1 * l.delimited_range("'")
 local dq_str = P('L')^-1 * l.delimited_range('"')
-local raw_str = P('L')^-1 * l.delimited_range('##', true)
-local string = token(l.STRING, dq_str)
+local raw_str =  "##" * (l.any - '##')^0 * P("##")^-1
+local string = token(l.STRING, dq_str + raw_str)
 
 -- Numbers.
-local number = token(l.NUMBER, l.float + l.hex_num + l.oct_num +
-                     "0b" * l.integer + l.integer)
+local number = token(l.NUMBER, l.float +
+                     "0b" * (l.dec_num + "_")^1 + l.integer)
 
 -- Keywords.
 local keyword = token(l.KEYWORD, word_match{
@@ -60,7 +60,8 @@ local identifier = token(l.IDENTIFIER, l.word)
 local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
 -- Attributes.
-local attribute = token(l.PREPROCESSOR, "#[" * l.nonnewline^0 * "]")
+local attribute = token(l.PREPROCESSOR, "#[" *
+                        (l.nonewline - ']')^0 * P("]")^-1)
 
 M._rules = {
   {'whitespace', ws},
