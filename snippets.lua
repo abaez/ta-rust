@@ -48,8 +48,8 @@ return {
   match       = "match %1(expr) {\n\t%2(pattern) => %3(expr)\n}",
 
   -- let
-  let     = "let %1(name): %2(type) = %0;",
-  lmut    = "let mut %1(name): %2(type) = %0;",
+  let     = "let %1(name)%2(: %3(type)) = %0;",
+  lmut    = "let mut %1(name)%2(: %2(type)) = %0;",
   lvec    = "let %1(mut) %2(name): Vec<%3(T)> = Vec::new();%0",
   lbox    = "let %1(mut) %2(name): Box<%3(T)> = box %4(value);%0",
 

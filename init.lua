@@ -60,6 +60,7 @@ events.connect(events.LEXER_LOADED, function (lang)
 
   buffer.tab_width = 4
   buffer.use_tabs = false
+
 end)
 
 return {
