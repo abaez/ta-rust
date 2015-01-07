@@ -1,14 +1,19 @@
-AsciiGenerator			pub struct AsciiGenerator<'a, R> 
+::Rng for MyRng			    impl<R: rand::Rng> ::Rng for MyRng<R> 
+AsciiGenerator			pub struct AsciiGenerator<'a, R:'a> 
+ChaChaRng			impl ChaChaRng 
+ChaChaRng			pub struct ChaChaRng 
 ChiSquared			impl ChiSquared 
 ChiSquared			pub struct ChiSquared 
 ChiSquaredRepr			enum ChiSquaredRepr 
+Clone for Isaac64Rng			impl Clone for Isaac64Rng 
+Clone for IsaacRng			impl Clone for IsaacRng 
 Closed01			pub struct Closed01<F>(pub F);
 ConstRand			    struct ConstRand(uint);
 ConstantRng			    struct ConstantRng(u64);
 Counter			    struct Counter 
 CountingRng			    struct CountingRng { i: u32 }
-Default			    impl Default for Counter 
-Default			impl Default for ReseedWithDefault 
+Default for Counter			    impl Default for Counter 
+Default for ReseedWithDefault			impl Default for ReseedWithDefault 
 Exp			impl Exp 
 Exp			pub struct Exp 
 Exp1			pub struct Exp1(pub f64);
@@ -21,82 +26,99 @@ GammaLargeShape			struct GammaLargeShape
 GammaRepr			enum GammaRepr 
 GammaSmallShape			impl GammaSmallShape 
 GammaSmallShape			struct GammaSmallShape 
-Generator			pub struct Generator<'a, T, R> 
-IndependentSample			impl IndependentSample<f64> for Exp 
-IndependentSample			impl IndependentSample<f64> for ChiSquared 
-IndependentSample			impl IndependentSample<f64> for FisherF 
-IndependentSample			impl IndependentSample<f64> for Gamma 
-IndependentSample			impl IndependentSample<f64> for GammaLargeShape 
-IndependentSample			impl IndependentSample<f64> for GammaSmallShape 
-IndependentSample			impl IndependentSample<f64> for StudentT 
+Generator			pub struct Generator<'a, T, R:'a> 
 IndependentSample			pub trait IndependentSample<Support>: Sample<Support> 
-IndependentSample			impl IndependentSample<f64> for LogNormal 
-IndependentSample			impl IndependentSample<f64> for Normal 
+IndependentSample for ChiSquared			impl IndependentSample<f64> for ChiSquared 
+IndependentSample for Exp			impl IndependentSample<f64> for Exp 
+IndependentSample for FisherF			impl IndependentSample<f64> for FisherF 
+IndependentSample for Gamma			impl IndependentSample<f64> for Gamma 
+IndependentSample for GammaLargeShape			impl IndependentSample<f64> for GammaLargeShape 
+IndependentSample for GammaSmallShape			impl IndependentSample<f64> for GammaSmallShape 
+IndependentSample for LogNormal			impl IndependentSample<f64> for LogNormal 
+IndependentSample for Normal			impl IndependentSample<f64> for Normal 
+IndependentSample for RandSample			impl<Sup: Rand> IndependentSample<Sup> for RandSample<Sup> 
+IndependentSample for Range			impl<Sup: SampleRange> IndependentSample<Sup> for Range<Sup> 
+IndependentSample for StudentT			impl IndependentSample<f64> for StudentT 
+IndependentSample for WeightedChoice			impl<'a, T: Clone> IndependentSample<T> for WeightedChoice<'a, T> 
 Isaac64Rng			impl Isaac64Rng 
 Isaac64Rng			pub struct Isaac64Rng 
 IsaacRng			impl IsaacRng 
 IsaacRng			pub struct IsaacRng 
+Iterator for AsciiGenerator			impl<'a, R: Rng> Iterator for AsciiGenerator<'a, R> 
+Iterator for Generator			impl<'a, T: Rand, R: Rng> Iterator for Generator<'a, T, R> 
 LogNormal			impl LogNormal 
 LogNormal			pub struct LogNormal 
 MyRng			    pub struct MyRng<R> { inner: R }
 Normal			impl Normal 
 Normal			pub struct Normal 
 Open01			pub struct Open01<F>(pub F);
-Rand			impl Rand for Exp1 
-Rand			    impl Rand for ConstRand 
-Rand			impl Rand for StandardNormal 
-Rand			impl Rand for Isaac64Rng 
-Rand			impl Rand for IsaacRng 
-Rand			impl Rand for XorShiftRng 
-Rand			pub trait Rand 
+Rand			pub trait Rand : Sized 
 Rand			            impl Rand for 
-Rand			            impl Rand for Closed01<
-Rand			            impl Rand for Open01<
 Rand			impl Rand for () 
-Rand			impl Rand for bool 
-Rand			impl Rand for char 
-Rand			impl Rand for i16 
-Rand			impl Rand for i32 
-Rand			impl Rand for i64 
-Rand			impl Rand for i8 
-Rand			impl Rand for int 
-Rand			impl Rand for u16 
-Rand			impl Rand for u32 
-Rand			impl Rand for u64 
-Rand			impl Rand for u8 
-Rand			impl Rand for uint 
+Rand for ChaChaRng			impl Rand for ChaChaRng 
+Rand for Closed01			            impl Rand for Closed01<
+Rand for ConstRand			    impl Rand for ConstRand 
+Rand for Exp1			impl Rand for Exp1 
+Rand for Isaac64Rng			impl Rand for Isaac64Rng 
+Rand for IsaacRng			impl Rand for IsaacRng 
+Rand for Open01			            impl Rand for Open01<
+Rand for Option			impl<T:Rand> Rand for Option<T> 
+Rand for StandardNormal			impl Rand for StandardNormal 
+Rand for XorShiftRng			impl Rand for XorShiftRng 
+Rand for bool			impl Rand for bool 
+Rand for char			impl Rand for char 
+Rand for i16			impl Rand for i16 
+Rand for i32			impl Rand for i32 
+Rand for i64			impl Rand for i64 
+Rand for i8			impl Rand for i8 
+Rand for int			impl Rand for int 
+Rand for u16			impl Rand for u16 
+Rand for u32			impl Rand for u32 
+Rand for u64			impl Rand for u64 
+Rand for u8			impl Rand for u8 
+Rand for uint			impl Rand for uint 
 RandSample			pub struct RandSample<Sup>;
+Range			impl<X: SampleRange + PartialOrd> Range<X> 
 Range			pub struct Range<X> 
 ReseedWithDefault			pub struct ReseedWithDefault;
 Reseeder			pub trait Reseeder<R> 
+Reseeder for ReseedWithDefault			impl<R: Rng + Default> Reseeder<R> for ReseedWithDefault 
 ReseedingRng			pub struct ReseedingRng<R, Rsdr> 
-Rng			    impl Rng for CountingRng 
-Rng			impl Rng for Isaac64Rng 
-Rng			impl Rng for IsaacRng 
-Rng			impl Rng for XorShiftRng 
-Rng			pub trait Rng 
-Rng			    impl Rng for ConstantRng 
-Rng			    impl Rng for Counter 
-Sample			impl Sample<f64> for Exp 
-Sample			impl Sample<f64> for ChiSquared 
-Sample			impl Sample<f64> for FisherF 
-Sample			impl Sample<f64> for Gamma 
-Sample			impl Sample<f64> for GammaLargeShape 
-Sample			impl Sample<f64> for GammaSmallShape 
-Sample			impl Sample<f64> for StudentT 
+Rng			pub trait Rng : Sized 
+Rng for ChaChaRng			impl Rng for ChaChaRng 
+Rng for ConstantRng			    impl Rng for ConstantRng 
+Rng for Counter			    impl Rng for Counter 
+Rng for CountingRng			    impl Rng for CountingRng 
+Rng for Isaac64Rng			impl Rng for Isaac64Rng 
+Rng for IsaacRng			impl Rng for IsaacRng 
+Rng for XorShiftRng			impl Rng for XorShiftRng 
 Sample			pub trait Sample<Support> 
-Sample			impl Sample<f64> for LogNormal 
-Sample			impl Sample<f64> for Normal 
+Sample for ChiSquared			impl Sample<f64> for ChiSquared 
+Sample for Exp			impl Sample<f64> for Exp 
+Sample for FisherF			impl Sample<f64> for FisherF 
+Sample for Gamma			impl Sample<f64> for Gamma 
+Sample for GammaLargeShape			impl Sample<f64> for GammaLargeShape 
+Sample for GammaSmallShape			impl Sample<f64> for GammaSmallShape 
+Sample for LogNormal			impl Sample<f64> for LogNormal 
+Sample for Normal			impl Sample<f64> for Normal 
+Sample for RandSample			impl<Sup: Rand> Sample<Sup> for RandSample<Sup> 
+Sample for Range			impl<Sup: SampleRange> Sample<Sup> for Range<Sup> 
+Sample for StudentT			impl Sample<f64> for StudentT 
+Sample for WeightedChoice			impl<'a, T: Clone> Sample<T> for WeightedChoice<'a, T> 
 SampleRange			        impl SampleRange for 
 SampleRange			pub trait SampleRange 
-SeedableRng			impl SeedableRng<[u32, .. 4]> for XorShiftRng 
 SeedableRng			pub trait SeedableRng<Seed>: Rng 
-SeedableRng			    impl SeedableRng<u32> for Counter 
+SeedableRng for ChaChaRng			impl<'a> SeedableRng<&'a [u32]> for ChaChaRng 
+SeedableRng for Counter			    impl SeedableRng<u32> for Counter 
+SeedableRng for Isaac64Rng			impl<'a> SeedableRng<&'a [u64]> for Isaac64Rng 
+SeedableRng for IsaacRng			impl<'a> SeedableRng<&'a [u32]> for IsaacRng 
+SeedableRng for XorShiftRng			impl SeedableRng<[u32; 4]> for XorShiftRng 
 StandardNormal			pub struct StandardNormal(pub f64);
 StudentT			impl StudentT 
 StudentT			pub struct StudentT 
 Weighted			pub struct Weighted<T> 
-WeightedChoice			pub struct WeightedChoice<'a, T> 
+WeightedChoice			impl<'a, T: Clone> WeightedChoice<'a, T> 
+WeightedChoice			pub struct WeightedChoice<'a, T:'a> 
 XorShiftRng			impl XorShiftRng 
 XorShiftRng			pub struct XorShiftRng 
 bench			mod bench 
@@ -104,10 +126,13 @@ bench			mod bench
 bench			mod bench 
 bench_gamma_large_shape			    fn bench_gamma_large_shape(b: &mut Bencher) 
 bench_gamma_small_shape			    fn bench_gamma_small_shape(b: &mut Bencher) 
+chacha			pub mod chacha;
 choose			    fn choose<'a, T>(&mut self, values: &'a [T]) -> Option<&'a T> 
-choose_option			    fn choose_option<'a, T>(&mut self, values: &'a [T]) -> Option<&'a T> 
+clone			    fn clone(&self) -> Isaac64Rng 
+clone			    fn clone(&self) -> IsaacRng 
 construct_range			            fn construct_range(low: 
 construct_range			    fn construct_range(low: Self, high: Self) -> Range<Self>;
+core			fn core(output: &mut [u32; STATE_WORDS], input: &[u32; STATE_WORDS]) 
 default			        fn default() -> Counter 
 default			    fn default() -> ReseedWithDefault { ReseedWithDefault }
 distributions			pub mod distributions;
@@ -115,10 +140,11 @@ exponential			pub mod exponential;
 fill_bytes			    fn fill_bytes(&mut self, dest: &mut [u8]) 
 fill_bytes			    fn fill_bytes(&mut self, dest: &mut [u8]) 
 floating_point_edge_cases			    fn floating_point_edge_cases() 
+from_seed			    fn from_seed(seed: &'a [u32]) -> ChaChaRng 
 from_seed			    fn from_seed(seed: &'a [u32]) -> IsaacRng 
 from_seed			    fn from_seed(seed: &'a [u64]) -> Isaac64Rng 
 from_seed			    fn from_seed(seed: Seed) -> Self;
-from_seed			    fn from_seed(seed: [u32, .. 4]) -> XorShiftRng 
+from_seed			    fn from_seed(seed: [u32; 4]) -> XorShiftRng 
 from_seed			        fn from_seed(seed: u32) -> Counter 
 from_seed		dr, seed): (Rsdr, S)) -> ReseedingRng<R, Rsdr> 
 gamma			pub mod gamma;
@@ -134,6 +160,7 @@ ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> Sup
 ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> T 
 ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> f64 
 ind_sample			    fn ind_sample<R: Rng>(&self, rng: &mut R) -> Sup 
+init			    fn init(&mut self, key: &[u32; KEY_WORDS]) 
 init		l: bool) 
 isaac			    fn isaac(&mut self) 
 isaac			pub mod isaac;
@@ -143,19 +170,23 @@ new			    pub fn new(k: f64) -> ChiSquared
 new			    pub fn new(m: f64, n: f64) -> FisherF 
 new			    pub fn new(n: f64) -> StudentT 
 new			    pub fn new(shape: f64, scale: f64) -> Gamma 
-new			    pub fn new<'a>(items: &'a mut [Weighted<T>]) -> WeightedChoice<'a, T> 
+new			    pub fn new(items: &'a mut [Weighted<T>]) -> WeightedChoice<'a, T> 
 new			    pub fn new(mean: f64, std_dev: f64) -> LogNormal 
 new			    pub fn new(mean: f64, std_dev: f64) -> Normal 
 new			    pub fn new(low: X, high: X) -> Range<X> 
 new			    pub fn new(rng: R, generation_threshold: uint, reseeder: Rsdr) -> ReseedingRng<R,Rsdr> 
 new_raw			    fn new_raw(shape: f64, scale: f64) -> GammaLargeShape 
 new_raw			    fn new_raw(shape: f64, scale: f64) -> GammaSmallShape 
+new_unseeded			    pub fn new_unseeded() -> ChaChaRng 
 new_unseeded			    pub fn new_unseeded() -> Isaac64Rng 
 new_unseeded			    pub fn new_unseeded() -> IsaacRng 
 new_unseeded			    pub fn new_unseeded() -> XorShiftRng 
 next			            fn next<T: rand::Rng>(t: &mut T) -> u32 
 next			    fn next(&mut self) -> Option<T> 
 next			    fn next(&mut self) -> Option<char> 
+next_f32			    fn next_f32(&mut self) -> f32 
+next_f64			    fn next_f64(&mut self) -> f64 
+next_u32			    fn next_u32(&mut self) -> u32 
 next_u32			        fn next_u32(&mut self) -> u32 
 next_u32			    fn next_u32(&mut self) -> u32 
 next_u32			        fn next_u32(&mut self) -> u32 
@@ -172,6 +203,7 @@ next_u64			    fn next_u64(&mut self) -> u64
 normal			pub mod normal;
 pdf			        fn pdf(x: f64) -> f64 
 pdf			        fn pdf(x: f64) -> f64 
+rand			    fn rand<R: Rng>(other: &mut R) -> ChaChaRng 
 rand			    fn rand<R:Rng>(rng: &mut R) -> Exp1 
 rand			        fn rand<R: Rng>(_: &mut R) -> ConstRand 
 rand			    fn rand<R:Rng>(rng: &mut R) -> StandardNormal 
@@ -204,16 +236,17 @@ rand_normal			    fn rand_normal(b: &mut Bencher)
 rand_open			    fn rand_open() 
 range			pub mod range;
 reseed			    fn reseed(&mut self, seed: &'a [u32]) 
+reseed			    fn reseed(&mut self, seed: &'a [u32]) 
 reseed			    fn reseed(&mut self, seed: &'a [u64]) 
 reseed			    fn reseed(&mut self, Seed);
-reseed			    fn reseed(&mut self, seed: [u32, .. 4]) 
+reseed			    fn reseed(&mut self, seed: [u32; 4]) 
 reseed			        fn reseed(&mut self, seed: u32) 
 reseed		dr, seed): (Rsdr, S)) 
 reseed			    fn reseed(&mut self, rng: &mut R) 
 reseed			    fn reseed(&mut self, rng: &mut R);
 reseed_if_necessary			    pub fn reseed_if_necessary(&mut self) 
 reseeding			pub mod reseeding;
-rng			    pub fn rng() -> MyRng<rand::TaskRng> 
+rng			    pub fn rng() -> MyRng<rand::ThreadRng> 
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup { self.ind_sample(rng) }
@@ -223,6 +256,7 @@ sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup { self.ind_sample(rng) }
 sample_range			            fn sample_range<R: Rng>(r: &Range<
 sample_range			    fn sample_range<R: Rng>(r: &Range<Self>, rng: &mut R) -> Self;
+set_counter			    pub fn set_counter(&mut self, counter_low: u64, counter_high: u64) 
 shuffle			    fn shuffle<T>(&mut self, values: &mut [T]) 
 std			mod std 
 test			mod test 
@@ -230,12 +264,14 @@ test			mod test
 test			mod test 
 test			mod test 
 test			mod test 
+test			mod test 
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
+update			    fn update(&mut self) 
 weak_rng			    pub fn weak_rng() -> MyRng<rand::XorShiftRng> 
 zero_case			        fn zero_case<R:Rng>(rng: &mut R, _u: f64) -> f64 
 zero_case			        fn zero_case<R:Rng>(rng: &mut R, u: f64) -> f64 
-ziggurat			fn ziggurat<R:Rng>(
+ziggurat			fn ziggurat<R: Rng, P, Z>(
 ziggurat_tables			mod ziggurat_tables;

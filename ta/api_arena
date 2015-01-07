@@ -2,19 +2,22 @@ Arena			impl Arena
 Arena			pub struct Arena 
 Chunk			impl Chunk 
 Chunk			struct Chunk 
-Drop			impl Drop for Arena 
+Drop for Arena			impl Drop for Arena 
+Drop for TypedArena			impl<T> Drop for TypedArena<T> 
 Inner			    struct Inner { value: uint }
 Noncopy			    struct Noncopy 
 Outer			    struct Outer<'a> { inner: &'a Inner }
 Point			    struct Point 
+TypedArena			impl<T> TypedArena<T> 
 TypedArena			pub struct TypedArena<T> 
+TypedArenaChunk			impl<T> TypedArenaChunk<T> 
 TypedArenaChunk			struct TypedArenaChunk<T> 
-alloc			    pub fn alloc<'a, T>(&'a self, op: || -> T) -> &'a T 
-alloc			    pub fn alloc<'a>(&'a self, object: T) -> &'a T 
-alloc_copy			    fn alloc_copy<'a, T>(&'a self, op: || -> T) -> &'a T 
+alloc			    pub fn alloc(&self, object: T) -> &mut T 
+alloc			    pub fn alloc<T, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
+alloc_copy			    fn alloc_copy<T, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
 alloc_copy_grow			    fn alloc_copy_grow(&self, n_bytes: uint, align: uint) -> *const u8 
 alloc_copy_inner			    fn alloc_copy_inner(&self, n_bytes: uint, align: uint) -> *const u8 
-alloc_noncopy			    fn alloc_noncopy<'a, T>(&'a self, op: || -> T) -> &'a T 
+alloc_noncopy			    fn alloc_noncopy<T, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
 alloc_noncopy_grow			    fn alloc_noncopy_grow(&self, n_bytes: uint,
 alloc_noncopy_inner			    fn alloc_noncopy_inner(&self, n_bytes: uint,
 as_ptr			    unsafe fn as_ptr(&self) -> *const u8 
@@ -25,6 +28,7 @@ bench_noncopy			    pub fn bench_noncopy(b: &mut Bencher)
 bench_noncopy_nonarena			    pub fn bench_noncopy_nonarena(b: &mut Bencher) 
 bench_noncopy_old_arena			    pub fn bench_noncopy_old_arena(b: &mut Bencher) 
 bitpack_tydesc_ptr			fn bitpack_tydesc_ptr(p: *const TyDesc, is_done: bool) -> uint 
+calculate_size			fn calculate_size<T>(capacity: uint) -> uint 
 capacity			    fn capacity(&self) -> uint 
 chunk			fn chunk(size: uint, is_copy: bool) -> Chunk 
 chunk_size			    fn chunk_size(&self) -> uint 
@@ -33,9 +37,9 @@ destroy_chunk			unsafe fn destroy_chunk(chunk: &Chunk)
 drop			    fn drop(&mut self) 
 end			    fn end(&self) -> *const u8 
 grow			    fn grow(&self) 
-new			    fn new(next: Option<Box<TypedArenaChunk<T>>>, capacity: uint)
 new			    pub fn new() -> Arena 
 new			    pub fn new() -> TypedArena<T> 
+new			    unsafe fn new(next: *mut TypedArenaChunk<T>, capacity: uint)
 new_with_size			    pub fn new_with_size(initial_size: uint) -> Arena 
 round_up			fn round_up(base: uint, align: uint) -> uint 
 start			    fn start(&self) -> *const u8 

@@ -1,22 +1,34 @@
 Ast			pub enum Ast 
 BuildAst			enum BuildAst 
 BuildAst			impl BuildAst 
+Captures			impl<'t> Captures<'t> 
 Captures			pub struct Captures<'t> 
+CharReader			impl<'t> CharReader<'t> 
 CharReader			pub struct CharReader<'t> 
-Clone			impl Clone for Native 
+Clone for ExNative			impl Clone for ExNative 
+Compiler			impl<'r> Compiler<'r> 
 Compiler			struct Compiler<'r> 
-Dynamic			pub struct Dynamic 
 Error			pub struct Error 
+ExDynamic			pub struct ExDynamic 
+ExNative			pub struct ExNative 
 FindCaptures			pub struct FindCaptures<'r, 't> 
 FindMatches			pub struct FindMatches<'r, 't> 
 Greed			impl Greed 
 Greed			pub enum Greed 
 Inst			pub enum Inst 
+Iterator for FindCaptures			impl<'r, 't> Iterator for FindCaptures<'r, 't> 
+Iterator for FindMatches			impl<'r, 't> Iterator for FindMatches<'r, 't> 
+Iterator for NamesIter			impl<'a> Iterator for NamesIter<'a> 
+Iterator for RegexSplits			impl<'r, 't> Iterator for RegexSplits<'r, 't> 
+Iterator for RegexSplitsN			impl<'r, 't> Iterator for RegexSplitsN<'r, 't> 
+Iterator for SubCaptures			impl<'t> Iterator for SubCaptures<'t> 
+Iterator for SubCapturesPos			impl<'t> Iterator for SubCapturesPos<'t> 
 MatchKind			pub enum MatchKind 
-NamesIter			enum NamesIter<'a> 
-Native			pub struct Native 
+NamesIter			pub enum NamesIter<'a> 
+Nfa			impl<'r, 't> Nfa<'r, 't> 
 Nfa			struct Nfa<'r, 't> 
 NoExpand			pub struct NoExpand<'t>(pub &'t str);
+Parser			impl<'a> Parser<'a> 
 Parser			struct Parser<'a> 
 Program			impl Program 
 Program			pub struct Program 
@@ -25,7 +37,10 @@ Regex			pub enum Regex
 RegexSplits			pub struct RegexSplits<'r, 't> 
 RegexSplitsN			pub struct RegexSplitsN<'r, 't> 
 Repeater			pub enum Repeater 
+Replacer			impl<'t> Replacer for &'t str 
 Replacer			pub trait Replacer 
+Replacer for F			impl<F> Replacer for F where F: FnMut(&Captures) -> String 
+Replacer for NoExpand			impl<'t> Replacer for NoExpand<'t> 
 StepState			pub enum StepState 
 SubCaptures			pub struct SubCaptures<'t> 
 SubCapturesPos			pub struct SubCapturesPos<'t> 
@@ -41,10 +56,10 @@ anchored_literal_long_non_match			fn anchored_literal_long_non_match(b: &mut Ben
 anchored_literal_short_match			fn anchored_literal_short_match(b: &mut Bencher) 
 anchored_literal_short_non_match			fn anchored_literal_short_non_match(b: &mut Bencher) 
 as_str			    pub fn as_str<'a>(&'a self) -> &'a str 
-at			    pub fn at(&self, i: uint) -> &'t str 
+at			    pub fn at(&self, i: uint) -> Option<&'t str> 
 bar			    fn bar(&self) -> bool 
 bench_assert_match			fn bench_assert_match(b: &mut Bencher, re: Regex, text: &str) 
-build_from			    fn build_from(&mut self, from: uint, mk: |Ast, Ast| -> Ast)
+build_from			    fn build_from<F>(&mut self, from: uint, mut mk: F) -> Result<Ast, Error> where
 capture			    fn capture(&self) -> Option<uint> 
 capture_name			    fn capture_name(&self) -> Option<String> 
 captures			    pub fn captures<'t>(&self, text: &'t str) -> Option<Captures<'t>> 
@@ -53,7 +68,7 @@ char_eq			    fn char_eq(&self, casei: bool, textc: Option<char>, regc: char) ->
 char_from_u32			    fn char_from_u32(&self, n: u32) -> Result<char, Error> 
 char_is			    fn char_is(&self, textc: Option<char>, regc: char) -> bool 
 class_cmp			fn class_cmp(casei: bool, mut textc: char,
-clone			    fn clone(&self) -> Native { *self }
+clone			    fn clone(&self) -> ExNative 
 combine_ranges			fn combine_ranges(unordered: Vec<(char, char)>) -> Vec<(char, char)> 
 compile			    fn compile(&mut self, ast: parse::Ast) 
 compile			mod compile;
@@ -79,17 +94,20 @@ find			    pub fn find(&self, text: &str) -> Option<(uint, uint)>
 find_class			fn find_class(classes: NamedClasses, name: &str) -> Option<Vec<(char, char)>> 
 find_iter			    pub fn find_iter<'r, 't>(&'r self, text: &'t str) -> FindMatches<'r, 't> 
 find_prefix			pub fn find_prefix(needle: &[u8], haystack: &[u8]) -> Option<uint> 
+first_range_starts_with_left_bracket			fn first_range_starts_with_left_bracket() 
 flags			    fn flags(&self) -> Flags 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			impl fmt::Show for Error 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			impl fmt::Show for Regex 
+fmt::Show for Error			impl fmt::Show for Error 
+fmt::Show for Regex			impl fmt::Show for Regex 
+fmt::String for Regex			impl fmt::String for Regex 
 gen_text			fn gen_text(n: uint) -> String 
 get_next_greedy			    fn get_next_greedy(&mut self) -> Result<Greed, Error> 
 groups			    fn groups<'r>(&'r mut self, i: uint) -> &'r mut [Option<uint>] 
 hard			fn hard() -> Regex { regex!("[ -~]*ABCDEFGHIJKLMNOPQRSTUVWXYZ
 has_match			fn has_match(caps: &CaptureLocs) -> bool 
 is_begin			    pub fn is_begin(&self) -> bool { self.prev.is_none() }
+is_empty			    pub fn is_empty(&self) -> bool { self.len() == 0 }
 is_end			    pub fn is_end(&self) -> bool { self.cur.is_none() }
 is_greedy			    pub fn is_greedy(&self) -> bool 
 is_match			    pub fn is_match(&self, text: &str) -> bool 
@@ -100,19 +118,16 @@ is_word			pub fn is_word(c: Option<char>) -> bool
 is_word_boundary			    pub fn is_word_boundary(&self) -> bool 
 iter			    pub fn iter(&'t self) -> SubCaptures<'t> 
 iter_pos			    pub fn iter_pos(&'t self) -> SubCapturesPos<'t> 
-len			    fn len(&self) -> uint 
+len			    pub fn len(&self) -> uint { self.locs.len() \/ 2 }
 literal			fn literal(b: &mut Bencher) 
 match_class			fn match_class(b: &mut Bencher) 
 match_class_in_range			fn match_class_in_range(b: &mut Bencher) 
 matches			mod matches;
 medium			fn medium() -> Regex { regex!("[XYZ]ABCDEFGHIJKLMNOPQRSTUVWXYZ
-name			    pub fn name(&self, name: &str) -> &'t str 
+name			    pub fn name(&self, name: &str) -> Option<&'t str> 
 names_iter			    pub fn names_iter<'a>(&'a self) -> NamesIter<'a> 
 names_len			    fn names_len(&self) -> uint 
 native			pub mod native 
-native_bench			mod native_bench;
-native_static			mod native_static;
-native_tests			mod native_tests;
 new			    pub fn new(ast: parse::Ast) -> (Program, Vec<Option<String>>) 
 new			    fn new(re: &Regex, search: &'t str, locs: CaptureLocs)
 new			    pub fn new(re: &str) -> Result<Regex, parse::Error> 
@@ -156,16 +171,18 @@ perl_unicode_class			fn perl_unicode_class(which: char) -> Vec<(char, char)>
 pop_ast			    fn pop_ast(&mut self) -> Result<Ast, Error> 
 pos			    fn pos(&self, c: char) -> Option<uint> 
 pos			    pub fn pos(&self, i: uint) -> Option<(uint, uint)> 
-pos_last			    fn pos_last(&self, allow_start: bool, pred: |&BuildAst| -> bool)
+pos_last			    fn pos_last<P>(&self, allow_start: bool, pred: P) -> Result<uint, Error> where
 push			    fn push(&mut self, x: Inst) 
 push			    fn push(&mut self, ast: Ast) 
 push_literal			    fn push_literal(&mut self, c: char) -> Result<(), Error> 
 push_repeater			    fn push_repeater(&mut self, c: char) -> Result<(), Error> 
 quote			pub fn quote(text: &str) -> String 
+quoted_bracket_set			fn quoted_bracket_set() 
+range_ends_with_escape			fn range_ends_with_escape() 
 re			mod re;
-reg_replace			    fn reg_replace<'a>(&'a mut self, _: &Captures) -> MaybeOwned<'a> 
-reg_replace			    fn reg_replace<'a>(&'a mut self, caps: &Captures) -> MaybeOwned<'a> 
-reg_replace			    fn reg_replace<'a>(&'a mut self, caps: &Captures) -> MaybeOwned<'a>;
+reg_replace			    fn reg_replace<'a>(&'a mut self, _: &Captures) -> CowString<'a> 
+reg_replace			    fn reg_replace<'a>(&'a mut self, caps: &Captures) -> CowString<'a> 
+reg_replace			    fn reg_replace<'a>(&'a mut self, caps: &Captures) -> CowString<'a>;
 replace			    pub fn replace<R: Replacer>(&self, text: &str, rep: R) -> String 
 replace_all			    pub fn replace_all<R: Replacer>(&self, text: &str, rep: R) -> String 
 replace_all			fn replace_all(b: &mut Bencher) 
@@ -187,6 +204,5 @@ step			    fn step(&self, groups: &mut [Option<uint>], nlist: &mut Threads,
 swap			    fn swap(self, swapped: bool) -> Greed 
 test			mod test;
 try_parse_ascii			    fn try_parse_ascii(&mut self) -> Option<Ast> 
-unicode			pub mod unicode;
 unwrap			    fn unwrap(self) -> Result<Ast, Error> 
 vm			mod vm;

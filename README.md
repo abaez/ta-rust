@@ -2,19 +2,16 @@
 ## A [Rust](http://www.rust-lang.org) module and lexer for [Textadept](http://foicica.com/textadept/).
 
 ### DESCRIPTION
-A module/lexer for Rust. I recently decided to take a month and learn
-Textadept. Turns out the little gem of a texteditor is much more
-powerful that I thought it would be and I decided to keep using it. However,
-it's missing a couple of features and languages that I like using. Rust is one
-of those languages.
+A module/lexer for Rust.
 
 Currently, this module holds all keywords, types, and any other standard lexer
-definition described by the [Rust reference](http://doc.rust-lang.org/0.11.0/rust.html)
+definition described by the [Rust reference](http://doc.rust-lang.org/reference.html)
 manual. It also encompasses the a vast list of snippets I use when coding,
 ctags for semi auto-complete, and api references.
 
 Note: The API references are currently just the presentation of the prototypes
-for an API call. I believe with how Rust work, these prototypes are good enough for each reference call.
+for an API call. I believe with how Rust work, these prototypes are good enough
+for each reference call.
 
 #### Completed:
 *   lexer: All keywords, types, library types, syntax extensions, strings, and
@@ -30,7 +27,7 @@ numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v0.13
+*   Rust >= v1.0.0 (rev: [9f1ead8fad](https://github.com/rust-lang/rust/commit/9f1ead8fadc56bad30dc74f5cc50d78af4fbc972))
 *   Textadept >= v7.3
 
 ### INSTALL

@@ -1,48 +1,61 @@
-Edge			    fn Edge(from: uint, to: uint, label: &'static str) -> Edge 
+AsSlice for MaybeOwnedVector			impl<'b,T> AsSlice<T> for MaybeOwnedVector<'b,T> 
+BytesContainer for MaybeOwnedVector			impl<'a> BytesContainer for MaybeOwnedVector<'a, u8> 
+Clone for MaybeOwnedVector			impl<'a, T: Clone> Clone for MaybeOwnedVector<'a, T> 
+Default for MaybeOwnedVector			impl<'a, T> Default for MaybeOwnedVector<'a, T> 
 Edge			    struct Edge 
-Edges			struct Edges(Vec<Ed>);
-Graph			struct Graph { nodes: Vec<&'static str>, edges: Vec<(uint,uint)> }
+Eq for MaybeOwnedVector			impl<'a, T: Eq> Eq for MaybeOwnedVector<'a, T> {}
+FromIterator for MaybeOwnedVector			impl<'a,T> FromIterator<T> for MaybeOwnedVector<'a,T> 
 GraphWalk			pub trait GraphWalk<'a, N, E> 
+GraphWalk for LabelledGraph			    impl<'a> GraphWalk<'a, Node, &'a Edge> for LabelledGraph 
+GraphWalk for LabelledGraphWithEscStrs			    impl<'a> GraphWalk<'a, Node, &'a Edge> for LabelledGraphWithEscStrs 
+Id			impl<'a> Id<'a> 
 Id			pub struct Id<'a> 
+IntoMaybeOwnedVector			impl<'a,T> IntoMaybeOwnedVector<'a,T> for &'a [T] 
 IntoMaybeOwnedVector			pub trait IntoMaybeOwnedVector<'a,T> 
+IntoMaybeOwnedVector for Vec			impl<'a,T:'a> IntoMaybeOwnedVector<'a,T> for Vec<T> 
+LabelText			impl<'a> LabelText<'a> 
 LabelText			pub enum LabelText<'a> 
 LabelledGraph			    impl LabelledGraph 
 LabelledGraph			    struct LabelledGraph 
 LabelledGraphWithEscStrs			    impl LabelledGraphWithEscStrs 
 LabelledGraphWithEscStrs			    struct LabelledGraphWithEscStrs 
 Labeller			pub trait Labeller<'a,N,E> 
-MaybeOwnedVector			pub enum MaybeOwnedVector<'a,T> 
+Labeller for LabelledGraph			    impl<'a> Labeller<'a, Node, &'a Edge> for LabelledGraph 
+Labeller for LabelledGraphWithEscStrs			    impl<'a> Labeller<'a, Node, &'a Edge> for LabelledGraphWithEscStrs 
+MaybeOwnedVector			impl<'a,T:Clone> MaybeOwnedVector<'a,T> 
+MaybeOwnedVector			impl<'a,T> MaybeOwnedVector<'a,T> 
+MaybeOwnedVector			pub enum MaybeOwnedVector<'a,T:'a> 
 NodeLabels			    enum NodeLabels<L> 
 NodeLabels			    impl NodeLabels<&'static str> 
+Ord for MaybeOwnedVector			impl<'a, T: Ord> Ord for MaybeOwnedVector<'a, T> 
+PartialEq for MaybeOwnedVector			impl<'a, T: PartialEq> PartialEq for MaybeOwnedVector<'a, T> 
+PartialOrd for MaybeOwnedVector			impl<'a, T: PartialOrd> PartialOrd for MaybeOwnedVector<'a, T> 
+RenderOption			pub enum RenderOption 
 as_slice			    pub fn as_slice(&'a self) -> &'a str 
 as_slice			    fn as_slice<'a>(&'a self) -> &'a [T] 
+badly_formatted_id			    fn badly_formatted_id() 
 clone			    fn clone(&self) -> MaybeOwnedVector<'a, T> 
 cmp			    fn cmp(&self, other: &MaybeOwnedVector<T>) -> Ordering 
-container_as_bytes			    fn container_as_bytes<'a>(&'a self) -> &'a [u8] 
+container_as_bytes			    fn container_as_bytes(&self) -> &[u8] 
 default			    fn default() -> MaybeOwnedVector<'a, T> 
+default_options			pub fn default_options() -> Vec<RenderOption> { vec![] }
+edge			    fn edge(from: uint, to: uint, label: &'static str) -> Edge 
 edge_label			        fn edge_label(&'a self, e: & &'a Edge) -> LabelText<'a> 
 edge_label			    fn edge_label(&'a self, e: &E) -> LabelText<'a> 
-edge_label			    fn edge_label<'a>(&'a self, _: &Ed) -> dot::LabelText<'a> 
-edge_label			    fn edge_label<'a>(&'a self, _: &Ed<'a>) -> dot::LabelText<'a> 
 edges			        fn edges(&'a self) -> Edges<'a,&'a Edge> 
 edges			    fn edges(&'a self) -> Edges<'a, E>;
-edges			    fn edges(&'a self) -> dot::Edges<'a,Ed<'a>> { self.edges.iter().collect() }
-edges			    fn edges(&'a self) -> dot::Edges<'a,Ed<'a>> 
-edges			    fn edges(&'a self) -> dot::Edges<'a,Ed> 
 empty_graph			    fn empty_graph() 
 eq			    fn eq(&self, other: &MaybeOwnedVector<T>) -> bool 
-equiv			    fn equiv(&self, other: &V) -> bool 
 escape			    pub fn escape(&self) -> String 
-escape_char			    fn escape_char(c: char, f: |char|) 
+escape_char			    fn escape_char<F>(c: char, mut f: F) where F: FnMut(char) 
 escape_str			    fn escape_str(s: &str) -> String 
+escaped			    pub fn escaped<S:IntoCow<'a, String, str>>(s: S) -> LabelText<'a> 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-from_iter			    fn from_iter<I:Iterator<T>>(iterator: I) -> MaybeOwnedVector<T> 
+fmt::Show for MaybeOwnedVector			impl<'a,T:fmt::Show> fmt::Show for MaybeOwnedVector<'a,T> 
+from_iter			    fn from_iter<I:Iterator<Item=T>>(iterator: I) -> MaybeOwnedVector<'a,T> 
 graph_id			        fn graph_id(&'a self) -> Id<'a> { self.graph.graph_id() }
 graph_id			        fn graph_id(&'a self) -> Id<'a> 
 graph_id			    fn graph_id(&'a self) -> Id<'a>;
-graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { dot::Id::new("example1") }
-graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { dot::Id::new("example2") }
-graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { dot::Id::new("example3") }
 hasse_diagram			    fn hasse_diagram() 
 id_name			    fn id_name<'a>(n: &Node) -> Id<'a> 
 in_range			        fn in_range(low: char, c: char, high: char) -> bool 
@@ -50,49 +63,39 @@ indent			    fn indent<W:Writer>(w: &mut W) -> io::IoResult<()>
 into_maybe_owned			    fn into_maybe_owned(self) -> MaybeOwnedVector<'a,T> { Borrowed(self) }
 into_maybe_owned			    fn into_maybe_owned(self) -> MaybeOwnedVector<'a,T> { Growable(self) }
 into_maybe_owned			    fn into_maybe_owned(self) -> MaybeOwnedVector<'a,T>;
-into_owned			    fn into_owned(self) -> Vec<T> 
 into_vec			    pub fn into_vec(self) -> Vec<T> 
 is_constituent			        fn is_constituent(c: char) -> bool 
+is_empty			    pub fn is_empty(&self) -> bool { self.len() == 0 }
 is_letter_or_underscore			        fn is_letter_or_underscore(c: char) -> bool 
-iter			    pub fn iter(&'a self) -> slice::Items<'a,T> 
+iter			    pub fn iter(&'a self) -> slice::Iter<'a,T> 
+label			    pub fn label<S:IntoCow<'a, String, str>>(s: S) -> LabelText<'a> 
 left_aligned_text			    fn left_aligned_text() 
-len			    fn len(&self) -> uint 
-main			pub fn main() 
+len			    pub fn len(&self) -> uint { self.as_slice().len() }
 maybe_owned_vec			pub mod maybe_owned_vec;
-name			    pub fn name(self) -> str::MaybeOwned<'a> 
+name			    pub fn name(self) -> CowString<'a> 
 new			        fn new(name: &'static str,
-new			    pub fn new<Name:str::IntoMaybeOwned<'a>>(name: Name) -> Id<'a> 
+new			    pub fn new<Name: IntoCow<'a, String, str>>(name: Name) -> Result<Id<'a>, ()> 
 node_id			        fn node_id(&'a self, n: &Node) -> Id<'a> { self.graph.node_id(n) }
 node_id			        fn node_id(&'a self, n: &Node) -> Id<'a> 
 node_id			    fn node_id(&'a self, n: &N) -> Id<'a>;
-node_id			    fn node_id(&'a self, n: &Nd) -> dot::Id<'a> 
-node_id			    fn node_id(&'a self, n: &Nd<'a>) -> dot::Id<'a> 
 node_label			        fn node_label(&'a self, n: &Node) -> LabelText<'a> 
 node_label			    fn node_label(&'a self, n: &N) -> LabelText<'a> 
-node_label			    fn node_label<'a>(&'a self, n: &Nd) -> dot::LabelText<'a> 
-node_label			    fn node_label<'a>(&'a self, n: &Nd<'a>) -> dot::LabelText<'a> 
 nodes			        fn nodes(&'a self) -> Nodes<'a,Node> 
 nodes			    fn nodes(&'a self) -> Nodes<'a, N>;
-nodes			    fn nodes(&'a self) -> dot::Nodes<'a,Nd<'a>> 
-nodes			    fn nodes(&self) -> dot::Nodes<'a,Nd> { range(0,self.nodes.len()).collect() }
-nodes			    fn nodes(&self) -> dot::Nodes<'a,Nd> 
 partial_cmp			    fn partial_cmp(&self, other: &MaybeOwnedVector<T>) -> Option<Ordering> 
-render			pub fn render<'a, N, E, G:Labeller<'a,N,E>+GraphWalk<'a,N,E>, W:Writer>(
-render_to			pub fn render_to<W:Writer>(output: &mut W) 
+pre_escaped_content			    fn pre_escaped_content(self) -> CowString<'a> 
+prefix_line			    pub fn prefix_line(self, prefix: LabelText) -> LabelText<'static> 
+render			pub fn render<'a, N:Clone+'a, E:Clone+'a, G:Labeller<'a,N,E>+GraphWalk<'a,N,E>, W:Writer>(
+render_opts			pub fn render_opts<'a, N:Clone+'a, E:Clone+'a, G:Labeller<'a,N,E>+GraphWalk<'a,N,E>, W:Writer>(
+simple_id_construction			    fn simple_id_construction() 
 single_cyclic_node			    fn single_cyclic_node() 
 single_edge			    fn single_edge() 
 single_node			    fn single_node() 
 source			        fn source(&'a self, edge: & &'a Edge) -> Node 
 source			    fn source(&'a self, edge: &E) -> N;
-source			    fn source(&self, e: &Ed) -> Nd { let & &(s,_) = e; s }
-source			    fn source(&self, e: &Ed) -> Nd { let &(s,_) = e; s }
-source			    fn source(&self, e: &Ed<'a>) -> Nd<'a> { let &(s,_) = e; s }
+suffix_line			    pub fn suffix_line(self, suffix: LabelText) -> LabelText<'static> 
 target			        fn target(&'a self, edge: & &'a Edge) -> Node 
 target			    fn target(&'a self, edge: &E) -> N;
-target			    fn target(&self, e: &Ed) -> Nd { let & &(_,t) = e; t }
-target			    fn target(&self, e: &Ed) -> Nd { let &(_,t) = e; t }
-target			    fn target(&self, e: &Ed<'a>) -> Nd<'a> { let &(_,t) = e; t }
 tests			mod tests 
 to_opt_strs			        fn to_opt_strs(self) -> Vec<Option<&'static str>> 
-to_owned			    fn to_owned(&self) -> Vec<T> 
 writeln			    fn writeln<W:Writer>(w: &mut W, arg: &[&str]) -> io::IoResult<()> 

@@ -13,13 +13,11 @@ DeleteFileW			                pub fn DeleteFileW(lpPathName: LPCWSTR) -> BOOL;
 DisconnectNamedPipe			                pub fn DisconnectNamedPipe(hNamedPipe: HANDLE) -> BOOL;
 DuplicateHandle			                pub fn DuplicateHandle(hSourceProcessHandle: HANDLE,
 FILE			            pub enum FILE {}
-FILETIME			                pub struct FILETIME 
 FindClose			                pub fn FindClose(findFile: HANDLE) -> BOOL;
-FindFirstFileW			                pub fn FindFirstFileW(fileName: LPCWSTR, findFileData: HANDLE)
-FindNextFileW			                pub fn FindNextFileW(findFile: HANDLE, findFileData: HANDLE)
+FindFirstFileW			                pub fn FindFirstFileW(fileName: LPCWSTR, findFileData: LPWIN32_FIND_DATAW)
+FindNextFileW			                pub fn FindNextFileW(findFile: HANDLE, findFileData: LPWIN32_FIND_DATAW)
 FlushFileBuffers			                pub fn FlushFileBuffers(hFile: HANDLE) -> BOOL;
 FreeEnvironmentStringsW			                pub fn FreeEnvironmentStringsW(env_ptr: LPWCH) -> BOOL;
-GUID			                pub struct GUID 
 GetCurrentDirectoryW			                pub fn GetCurrentDirectoryW(nBufferLength: DWORD,
 GetCurrentProcess			                pub fn GetCurrentProcess() -> HANDLE;
 GetCurrentProcessId			                pub fn GetCurrentProcessId() -> DWORD;
@@ -31,20 +29,13 @@ GetModuleFileNameW			                pub fn GetModuleFileNameW(hModule: HMODULE,
 GetOverlappedResult			                pub fn GetOverlappedResult(hFile: HANDLE,
 GetSystemInfo			                pub fn GetSystemInfo(lpSystemInfo: LPSYSTEM_INFO);
 GetSystemTimeAsFileTime			                pub fn GetSystemTimeAsFileTime(
-MEMORY_BASIC_INFORMATION			                pub struct MEMORY_BASIC_INFORMATION 
 MapViewOfFile			                pub fn MapViewOfFile(hFileMappingObject: HANDLE,
 MoveFileExW			                pub fn MoveFileExW(lpExistingFileName: LPCWSTR,
-Nullable			pub enum Nullable<T> 
-OVERLAPPED			                pub struct OVERLAPPED 
 OpenProcess			                pub fn OpenProcess(dwDesiredAccess: DWORD,
-PROCESS_INFORMATION			                pub struct PROCESS_INFORMATION 
 QueryPerformanceCounter			                pub fn QueryPerformanceCounter(
 QueryPerformanceFrequency			                pub fn QueryPerformanceFrequency(
 ReadFile			                pub fn ReadFile(hFile: HANDLE,
 RemoveDirectoryW			                pub fn RemoveDirectoryW(lpPathName: LPCWSTR) -> BOOL;
-SECURITY_ATTRIBUTES			                pub struct SECURITY_ATTRIBUTES 
-STARTUPINFO			                pub struct STARTUPINFO 
-SYSTEM_INFO			                pub struct SYSTEM_INFO 
 SetCurrentDirectoryW			                pub fn SetCurrentDirectoryW(lpPathName: LPCWSTR) -> BOOL;
 SetEndOfFile			                pub fn SetEndOfFile(hFile: HANDLE) -> BOOL;
 SetEnvironmentVariableW			                pub fn SetEnvironmentVariableW(n: LPCWSTR, v: LPCWSTR)
@@ -58,8 +49,6 @@ VirtualLock			                pub fn VirtualLock(lpAddress: LPVOID, dwSize: SIZE
 VirtualProtect			                pub fn VirtualProtect(lpAddress: LPVOID,
 VirtualQuery			                pub fn VirtualQuery(lpAddress: LPCVOID,
 VirtualUnlock			                pub fn VirtualUnlock(lpAddress: LPVOID, dwSize: SIZE_T)
-WSAPROTOCOLCHAIN			                pub struct WSAPROTOCOLCHAIN 
-WSAPROTOCOL_INFO			                pub struct WSAPROTOCOL_INFO 
 WaitForSingleObject			                pub fn WaitForSingleObject(hHandle: HANDLE,
 WaitNamedPipeW			                pub fn WaitNamedPipeW(lpNamedPipeName: LPCWSTR,
 WriteFile			                pub fn WriteFile(hFile: HANDLE,
@@ -69,9 +58,9 @@ abs			                pub fn abs(i: c_int) -> c_int;
 accept			            pub fn accept(socket: SOCKET, address: *mut sockaddr,
 accept			            pub fn accept(socket: c_int, address: *mut sockaddr,
 access			                pub fn access(path: *const c_char, amode: c_int) -> c_int;
-addrinfo			                pub struct addrinfo 
 alarm			                pub fn alarm(seconds: c_uint) -> c_uint;
 arch			        pub mod arch 
+atexit			                pub fn atexit(cb: extern fn()) -> c_int;
 atof			                pub fn atof(s: *const c_char) -> c_double;
 atoi			                pub fn atoi(s: *const c_char) -> c_int;
 bind			            pub fn bind(socket: SOCKET, address: *const sockaddr,
@@ -115,7 +104,6 @@ execvp			                pub fn execvp(c: *const c_char,
 execvpe			                pub fn execvpe(c: *const c_char, argv: *mut *const c_char,
 exit			                pub fn exit(status: c_int) -> !;
 extra			            pub mod extra 
-extra			            pub mod extra {}
 extra			        pub mod extra 
 extra			    pub mod extra 
 fchmod			                pub fn fchmod(fd: c_int, mode: mode_t) -> c_int;
@@ -139,6 +127,7 @@ fputc			                pub fn fputc(c: c_int, stream: *mut FILE) -> c_int;
 fputs			                pub fn fputs(s: *const c_char, stream: *mut FILE)-> c_int;
 fread			                pub fn fread(ptr: *mut c_void,
 free			                pub fn free(p: *mut c_void);
+freeifaddrs			            pub fn freeifaddrs(ifa: *mut ifaddrs);
 freopen			                pub fn freopen(filename: *const c_char, mode: *const c_char,
 fseek			                pub fn fseek(stream: *mut FILE, offset: c_long, whence: c_int)
 fsetpos			                pub fn fsetpos(stream: *mut FILE, ptr: *mut fpos_t) -> c_int;
@@ -156,6 +145,7 @@ getenv			                pub fn getenv(s: *const c_char) -> *mut c_char;
 geteuid			                pub fn geteuid() -> uid_t;
 getgid			                pub fn getgid() -> gid_t ;
 getgroups			                pub fn getgroups(ngroups_max: c_int, groups: *mut gid_t)
+getifaddrs			            pub fn getifaddrs(ifap: *mut *mut ifaddrs) -> c_int;
 getlogin			                pub fn getlogin() -> *mut c_char;
 getopt			                pub fn getopt(argc: c_int, argv: *mut *const c_char,
 getpeername			            pub fn getpeername(socket: SOCKET, address: *mut sockaddr,
@@ -164,17 +154,17 @@ getpgrp			                pub fn getpgrp() -> pid_t;
 getpid			                pub fn getpid() -> c_int;
 getpid			                pub fn getpid() -> pid_t;
 getppid			                pub fn getppid() -> pid_t;
+getsid			                pub fn getsid(pid: pid_t) -> pid_t;
 getsockname			            pub fn getsockname(socket: SOCKET, address: *mut sockaddr,
 getsockname			            pub fn getsockname(socket: c_int, address: *mut sockaddr,
 getuid			                pub fn getuid() -> uid_t;
 glob			                pub fn glob(pattern: *const c_char,
 glob			        pub mod glob 
-glob_t			                pub struct glob_t 
 globfree			                pub fn globfree(pglob: *mut glob_t);
-in6_addr			                pub struct in6_addr 
-in_addr			                pub struct in_addr 
-ip6_mreq			                pub struct ip6_mreq 
-ip_mreq			                pub struct ip_mreq 
+if_nametoindex			                pub fn if_nametoindex(ifname: *const c_char) -> c_uint;
+ioctl			            pub fn ioctl(d: c_int, request: c_int, ...) -> c_int;
+ioctl			            pub fn ioctl(d: c_int, request: c_ulong, ...) -> c_int;
+ioctlsocket			                pub fn ioctlsocket(s: SOCKET, cmd: c_long, argp: *mut c_ulong) -> c_int;
 isalnum			                pub fn isalnum(c: c_int) -> c_int;
 isalpha			                pub fn isalpha(c: c_int) -> c_int;
 isatty			                pub fn isatty(fd: c_int) -> c_int;
@@ -197,7 +187,6 @@ listen			            pub fn listen(socket: c_int, backlog: c_int) -> c_int;
 lseek			                pub fn lseek(fd: c_int, offset: c_long, origin: c_int)
 lseek			                pub fn lseek(fd: c_int, offset: off_t, whence: c_int)
 lstat			                pub fn lstat(path: *const c_char, buf: *mut stat) -> c_int;
-mach_timebase_info			                pub struct mach_timebase_info 
 madvise			            pub fn madvise(addr: *mut c_void, len: size_t, advice: c_int)
 malloc			                pub fn malloc(size: size_t) -> *mut c_void;
 memchr			                pub fn memchr(cx: *const c_void, c: c_int,
@@ -217,7 +206,9 @@ munlock			                pub fn munlock(addr: *const c_void, len: size_t) -> c_
 munlockall			                pub fn munlockall() -> c_int;
 munmap			                pub fn munmap(addr: *mut c_void, len: size_t) -> c_int;
 nanosleep			                pub fn nanosleep(rqtp: *const timespec,
+net			        pub mod net 
 open			                pub fn open(path: *const c_char, oflag: c_int, mode: c_int)
+open			                pub fn open(path: *const c_char, oflag: c_int, mode: mode_t)
 open_osfhandle			                pub fn open_osfhandle(osfhandle: intptr_t,
 opendir			                pub fn opendir(dirname: *const c_char) -> *mut DIR;
 os			    pub mod os 
@@ -242,7 +233,6 @@ posix88			        pub mod posix88
 posix88			    pub mod posix88 
 posix_madvise			                pub fn posix_madvise(addr: *mut c_void,
 pread			                pub fn pread(fd: c_int, buf: *mut c_void, count: size_t,
-pthread_attr_t			                pub struct pthread_attr_t 
 putenv			                pub fn putenv(string: *mut c_char) -> c_int;
 puts			                pub fn puts(s: *const c_char) -> c_int;
 pwrite			                pub fn pwrite(fd: c_int, buf: *const c_void, count: size_t,
@@ -262,8 +252,8 @@ rewind			                pub fn rewind(stream: *mut FILE);
 rewinddir			                pub fn rewinddir(dirp: *mut DIR);
 rmdir			                pub fn rmdir(path: *const c_char) -> c_int;
 seekdir			                pub fn seekdir(dirp: *mut DIR, loc: c_long);
-send			            pub fn send(socket: SOCKET, buf: *mut c_void, len: c_int,
-send			            pub fn send(socket: c_int, buf: *mut c_void, len: size_t,
+send			            pub fn send(socket: SOCKET, buf: *const c_void, len: c_int,
+send			            pub fn send(socket: c_int, buf: *const c_void, len: size_t,
 sendto			            pub fn sendto(socket: SOCKET, buf: *const c_void, len: c_int,
 sendto			            pub fn sendto(socket: c_int, buf: *const c_void, len: size_t,
 setbuf			                pub fn setbuf(stream: *mut FILE, buf: *mut c_char);
@@ -282,17 +272,12 @@ shutdown			            pub fn shutdown(socket: c_int, how: c_int) -> c_int;
 signal			                pub fn signal(signum: c_int,
 signal			        pub mod signal 
 sleep			                pub fn sleep(secs: c_uint) -> c_uint;
-sockaddr			                pub struct sockaddr 
-sockaddr_in			                pub struct sockaddr_in 
-sockaddr_in6			                pub struct sockaddr_in6 
-sockaddr_storage			                pub struct sockaddr_storage 
-sockaddr_un			                pub struct sockaddr_un 
 socket			            pub fn socket(domain: c_int, ty: c_int, protocol: c_int) -> SOCKET;
 socket			            pub fn socket(domain: c_int, ty: c_int, protocol: c_int) -> c_int;
 srand			                pub fn srand(seed: c_uint);
 stat			                pub fn stat(path: *const c_char, buf: *mut stat) -> c_int;
-stat			                pub struct stat 
 stat_			        pub mod stat_ 
+std			mod std 
 stdio			        pub mod stdio 
 stdlib			        pub mod stdlib 
 strcat			                pub fn strcat(s: *mut c_char, ct: *const c_char) -> *mut c_char;
@@ -325,9 +310,6 @@ sysctlnametomib			            pub fn sysctlnametomib(name: *const c_char,
 system			                pub fn system(s: *const c_char) -> c_int;
 tcgetpgrp			                pub fn tcgetpgrp(fd: c_int) -> pid_t;
 telldir			                pub fn telldir(dirp: *mut DIR) -> c_long;
-timespec			                pub struct timespec 
-timeval			                pub struct timeval 
-timezone			                pub enum timezone {}
 tmpfile			                pub fn tmpfile() -> *mut FILE;
 tolower			                pub fn tolower(c: c_char) -> c_char;
 toupper			                pub fn toupper(c: c_char) -> c_char;
@@ -338,10 +320,10 @@ unistd			        pub mod unistd
 unlink			                pub fn unlink(c: *const c_char) -> c_int;
 unsetenv			                pub fn unsetenv(name: *const c_char) -> c_int;
 usleep			                pub fn usleep(secs: c_uint) -> c_int;
-utimbuf			                pub struct utimbuf 
 utime			                pub fn utime(file: *const c_char, buf: *const utimbuf) -> c_int;
 wchmod			                pub fn wchmod(path: *const wchar_t, mode: c_int) -> c_int;
 wcslen			                pub fn wcslen(buf: *const wchar_t) -> size_t;
+winsock			        pub mod winsock 
 wopen			                pub fn wopen(path: *const wchar_t, oflag: c_int, mode: c_int)
 write			                pub fn write(fd: c_int, buf: *const c_void, count: size_t)
 write			                pub fn write(fd: c_int, buf: *const c_void,

@@ -7,8 +7,7 @@
 -- @license MIT (see LICENSE)
 -- @module taparser
 
-
---- all crates as of v0.11
+--- all crates as of v1.0.0 (rev: 9f1ead8fad).
 -- @table crates
 local crates = {
   "alloc",
@@ -29,13 +28,15 @@ local crates = {
   "native",
   "num",
   "rand",
+  "rbml",
   "regex",
   "regex_macros",
   "rlibc",
   "rustc",
+  "rustc_back",
+  "rustc_llvm",
   "rustdoc",
   "rustrt",
-  "rustuv",
   "semver",
   "serialize",
   "std",
@@ -44,13 +45,11 @@ local crates = {
   "term",
   "test",
   "time",
+  "unicode",
   "url",
   "uuid",
 }
 
-
-local rust_path = "/data/Projects/DVCS/other/git/rust"
-local ctag_rust = "/src/etc/ctags.rust"
 
 
 --- converts ctags.rust into correct formatting for use.
@@ -73,15 +72,14 @@ function parse_ctags(f)
 end
 
 
-local parsed = parse_ctags(rust_path .. ctag_rust)
-
-
 --- builds the api and tags for textadept from parsed ctags.rust file.
 -- @function formatter
 -- @param crate the library/crate to build.
-local function formatter(crate)
+-- @param path the location of your rust source.
+-- @param parsed output of parse_ctags.
+local function formatter(crate, path, parsed)
   os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/lib%s/*",
-    parsed, rust_path, crate))
+    parsed, path, crate))
 
   local fapi = io.open("ta/api_" .. crate, "w")
   local ftag = io.open("ta/tag_" .. crate, "w")
@@ -113,10 +111,27 @@ local function formatter(crate)
 end
 
 
-for _, lib in ipairs(crates) do
-  print("building:", lib)
-  formatter(lib)
+function get_location()
+  print("Give a rust absolute literal source location "
+    .. "such as: '/data/git/rust' ): ")
+
+--  l = io.input():read()
+--  print(l)
+  return io.input():read()
 end
 
 
-os.remove("tags")
+function main()
+  local ctag_rust = "/src/etc/ctags.rust"
+  local rust_path = get_location()
+  local parsed = parse_ctags(rust_path .. ctag_rust)
+
+  for _, lib in ipairs(crates) do
+    print("building:", lib)
+    formatter(lib, rust_path, parsed)
+  end
+
+  os.remove("tags")
+end
+
+main()
