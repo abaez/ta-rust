@@ -16,7 +16,7 @@ for each reference call.
 #### Completed:
 *   lexer: All keywords, types, library types, syntax extensions, strings, and
 numbers lexer definitions.
-*   module: *.rs, massive list of snippets, and API reference to all crates as of v0.11.
+*   module: *.rs, massive list of snippets, and API reference to all crates.
 
 #### To Do:
 *   autocomplete: An actual autocomplete working...(finally)

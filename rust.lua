@@ -1,5 +1,10 @@
--- Copyright 2014 Alejandro Baez <Alejan.Baez@gmail.com> See LICENSE.
--- Rust LPeg lexer.
+--- Rust LPeg lexer.
+-- See @{README.md} for details on usage.
+-- @author Alejandro Baez <alejan.baez@gmail.com>
+-- @copyright 2014
+-- @license MIT (see LICENSE)
+-- @module rust
+
 
 local l, token, word_match = lexer, lexer.token, lexer.word_match
 local P, R, S = lpeg.P, lpeg.R, lpeg.S

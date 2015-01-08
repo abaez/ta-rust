@@ -3,7 +3,7 @@
 -- @author Alejandro Baez <alejan.baez@gmail.com>
 -- @copyright 2014
 -- @license MIT (see LICENSE)
--- @module rust
+-- @module init
 
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")

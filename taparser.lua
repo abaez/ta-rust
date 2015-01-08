@@ -114,9 +114,6 @@ end
 function get_location()
   print("Give a rust absolute literal source location "
     .. "such as: '/data/git/rust' ): ")
-
---  l = io.input():read()
---  print(l)
   return io.input():read()
 end
 

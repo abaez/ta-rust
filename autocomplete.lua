@@ -1,4 +1,8 @@
---- autocomplete for rust.
+--- autocomplete and api declaration.
+-- @author Alejandro Baez <alejan.baez@gmail.com>
+-- @copyright 2014
+-- @license MIT (see LICENSE)
+-- @module autocomplete
 
 local crates, config = require("modules.rust.config")
 
@@ -20,8 +24,8 @@ local xpms = setmetatable({
 }, {__index = function(t, k) return 0 end})
 
 
--- [ctags.rust](https://github.com/rust-lang/rust/blob/master/src/etc/ctags.rust)
-autocomplete = function()
+--- potentially builds autocomplete using tags.
+local autocomplete = function()
   local list = {}
   local line, pos = buffer:get_cur_line()
   local symbol, op, part = line:sub(1, pos):match(
