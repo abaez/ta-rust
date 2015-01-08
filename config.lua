@@ -1,7 +1,7 @@
 --- keeps all the user configurations.
 -- Modify at your own discretion.
 
---- all crates as of v0.11
+--- all crates as of v1.0.0
 -- @table crates
 local crates = {
   "alloc",
@@ -22,13 +22,15 @@ local crates = {
   "native",
   "num",
   "rand",
+  "rbml",
   "regex",
   "regex_macros",
   "rlibc",
   "rustc",
+  "rustc_back",
+  "rustc_llvm",
   "rustdoc",
   "rustrt",
-  "rustuv",
   "semver",
   "serialize",
   "std",
@@ -37,10 +39,10 @@ local crates = {
   "term",
   "test",
   "time",
+  "unicode",
   "url",
   "uuid",
 }
-
 
 local config = {
 }

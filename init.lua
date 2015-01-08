@@ -5,7 +5,7 @@
 -- @license MIT (see LICENSE)
 -- @module rust
 
-local crates, config = require("modules.rust.config")
+textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
 
 textadept.file_types.extensions.rs = 'rust'
@@ -14,26 +14,6 @@ textadept.editing.comment_string.rust = '//'
 -- compiler
 textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
-
-
-local XPM = textadept.editing.XPM_IMAGES
-local xpms = setmetatable({
-  c = XPM.VARIABLE, d = XPM.CLASS, f = XPM.METHOD, i = XPM.NAMESPACE,
-  g = XPM.TYPEDEF, m = XPM.CLASS,  s = XPM.STRUCT, t = XPM.NAMESPACE,
-  T = XPM.TYPEDEF
-}, {__index = function(t, k) return 0 end})
-
-
-local tags = {}
-local rust_api = {}
-local ta_path = _USERHOME .. '/modules/rust/ta/'
-
-for _, lib in ipairs(crates) do
-  table.insert(rust_api, ta_path .. 'api_' .. lib)
-  tags[#tags + 1] = ta_path .. 'tags_' .. lib
-end
-
-textadept.editing.api_files.rust = rust_api
 
 --- Table of Rust-specific key bindings.
 -- @table keys.rust
@@ -63,6 +43,4 @@ events.connect(events.LEXER_LOADED, function (lang)
 --  buffer.edge_column = 99
 end)
 
-return {
-  tags = tags
-}
+return {}
