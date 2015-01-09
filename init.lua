@@ -15,6 +15,9 @@ textadept.editing.comment_string.rust = '//'
 textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
+-- build project
+textadept.run.build_commands["Cargo.toml"] = "cargo build"
+
 --- Table of Rust-specific key bindings.
 -- @table keys.rust
 -- @name _G.keys.rust
