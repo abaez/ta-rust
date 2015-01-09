@@ -15,6 +15,17 @@ textadept.editing.comment_string.rust = '//'
 textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
+-- build project
+textadept.run.build_commands.rust = function()
+  local button, target = ui.dialogs.standard_inputbox{
+    title = _L['Command'],
+    informative_text = 'cargo build'
+  }
+  if button == 1 then
+    return 'cargo build' .. target
+  end
+end
+
 
 local XPM = textadept.editing.XPM_IMAGES
 local xpms = setmetatable({
