@@ -66,7 +66,6 @@ Clone for LiveNode			impl Clone for LiveNode
 ClosureTy			pub struct ClosureTy<'tcx> 
 CodeExtent			impl CodeExtent 
 CodeExtent			pub enum CodeExtent 
-CodegenOptions			    pub struct CodegenOptions { 
 Coerce			impl<'f, 'tcx> Coerce<'f, 'tcx> 
 Coerce			pub struct Coerce<'f, 'tcx: 'f>(pub CombineFields<'f, 'tcx>);
 Combine			pub trait Combine<'tcx> : Sized 
@@ -79,6 +78,7 @@ CombineFields			pub struct CombineFields<'a, 'tcx: 'a>
 CombineMapType			pub enum CombineMapType 
 Combineable			pub trait Combineable<'tcx> : Repr<'tcx> + TypeFoldable<'tcx> 
 Combineable for Rc			impl<'tcx,T> Combineable<'tcx> for Rc<T>
+Combineable for Ty			impl<'tcx> Combineable<'tcx> for Ty<'tcx> 
 Combineable for ty			impl<'tcx> Combineable<'tcx> for ty::FnSig<'tcx> 
 Combineable for ty			impl<'tcx> Combineable<'tcx> for ty::ProjectionPredicate<'tcx> 
 Combineable for ty			impl<'tcx> Combineable<'tcx> for ty::TraitRef<'tcx> 
@@ -110,6 +110,7 @@ CrateAnalysis			pub struct CrateAnalysis<'tcx>
 CrateDep			pub struct CrateDep 
 CrateInfo			struct CrateInfo 
 CrateMismatch			pub struct CrateMismatch 
+CrateOrString			pub enum CrateOrString<'a> 
 CratePaths			impl CratePaths 
 CratePaths			pub struct CratePaths 
 CrateReader			impl<'a> CrateReader<'a> 
@@ -139,6 +140,7 @@ DefIdSet			pub mod DefIdSet
 DefIdSource			pub enum DefIdSource 
 DefLike			pub enum DefLike 
 DefRegion			pub enum DefRegion 
+Default for FnvHasher			impl Default for FnvHasher 
 Delegate			pub trait Delegate<'tcx> 
 Delegate			struct Delegate;
 Delegate			pub struct Delegate;
@@ -201,8 +203,7 @@ FnOutput			pub enum FnOutput<'tcx>
 FnSig			pub struct FnSig<'tcx> 
 FnvHashMap			pub mod FnvHashMap 
 FnvHashSet			pub mod FnvHashSet 
-FnvHasher			pub struct FnvHasher;
-FnvState			pub struct FnvState(u64);
+FnvHasher			pub struct FnvHasher(u64);
 Folder for NestedItemsDropper			impl Folder for NestedItemsDropper 
 Folder for StaticInliner			impl<'a, 'tcx> Folder for StaticInliner<'a, 'tcx> 
 Foo			    trait Foo { ... }
@@ -268,11 +269,13 @@ HasProjectionTypes for Ty			impl<'tcx> HasProjectionTypes for Ty<'tcx>
 HasProjectionTypes for UnboxedClosureUpvar			impl<'tcx> HasProjectionTypes for UnboxedClosureUpvar<'tcx> 
 HasProjectionTypes for Vec			impl<'tcx,T:HasProjectionTypes> HasProjectionTypes for Vec<T> 
 HasProjectionTypes for VecPerParamSpace			impl<'tcx,T:HasProjectionTypes> HasProjectionTypes for VecPerParamSpace<T> 
+HasProjectionTypes for field			impl<'tcx> HasProjectionTypes for field<'tcx> 
 HasProjectionTypes for subst			impl<'tcx> HasProjectionTypes for subst::Substs<'tcx> 
 HasProjectionTypes for ty			impl<'tcx> HasProjectionTypes for ty::GenericBounds<'tcx> 
-Hash for InternedTy			impl<'tcx, S: Writer> Hash<S> for InternedTy<'tcx> 
+Hash for InternedTy			impl<'tcx, S: Writer + Hasher> Hash<S> for InternedTy<'tcx> 
+Hash for TyS			impl<'tcx, S: Writer + Hasher> Hash<S> for TyS<'tcx> 
 Hash for TyS			impl<'tcx, S: Writer> Hash<S> for TyS<'tcx> 
-Hasher for FnvHasher			impl Hasher<FnvState> for FnvHasher 
+Hasher for FnvHasher			impl Hasher for FnvHasher 
 HigherRankedRelations			pub trait HigherRankedRelations<'tcx> 
 HigherRankedRelations for C			impl<'tcx,C> HigherRankedRelations<'tcx> for C
 IdVisitingOperation for Context			impl<'a, 'tcx> IdVisitingOperation for Context<'a, 'tcx> 
@@ -362,6 +365,7 @@ LintPass for RawPointerDerive			impl LintPass for RawPointerDerive
 LintPass for Stability			impl LintPass for Stability 
 LintPass for TypeLimits			impl LintPass for TypeLimits 
 LintPass for UnsafeBlocks			impl LintPass for UnsafeBlocks 
+LintPass for UnstableFeatures			impl LintPass for UnstableFeatures 
 LintPass for UnusedAllocation			impl LintPass for UnusedAllocation 
 LintPass for UnusedAttributes			impl LintPass for UnusedAttributes 
 LintPass for UnusedCasts			impl LintPass for UnusedCasts 
@@ -435,6 +439,7 @@ NonShorthandFieldPatterns			pub struct NonShorthandFieldPatterns;
 NonSnakeCase			impl NonSnakeCase 
 NonSnakeCase			pub struct NonSnakeCase;
 NonUpperCaseGlobals			pub struct NonUpperCaseGlobals;
+Normalized			impl<'tcx,T> Normalized<'tcx,T> 
 Normalized			pub struct Normalized<'tcx,T> 
 Note			pub enum Note 
 ObjectSafetyViolation			pub enum ObjectSafetyViolation<'tcx> 
@@ -478,7 +483,7 @@ Passes			pub enum Passes
 PathKind			pub enum PathKind 
 PathStatements			pub struct PathStatements;
 PluginLoader			impl<'a> PluginLoader<'a> 
-PluginLoader			struct PluginLoader<'a> 
+PluginLoader			pub struct PluginLoader<'a> 
 PluginMetadata			impl<'a> PluginMetadata<'a> 
 PluginMetadata			pub struct PluginMetadata<'a> 
 PluginRegistrar			pub struct PluginRegistrar 
@@ -537,6 +542,7 @@ RegionEscape for Predicate			impl<'tcx> RegionEscape for Predicate<'tcx>
 RegionEscape for ProjectionPredicate			impl<'tcx> RegionEscape for ProjectionPredicate<'tcx> 
 RegionEscape for ProjectionTy			impl<'tcx> RegionEscape for ProjectionTy<'tcx> 
 RegionEscape for Region			impl RegionEscape for Region 
+RegionEscape for Substs			impl<'tcx> RegionEscape for Substs<'tcx> 
 RegionEscape for TraitPredicate			impl<'tcx> RegionEscape for TraitPredicate<'tcx> 
 RegionEscape for TraitRef			impl<'tcx> RegionEscape for TraitRef<'tcx> 
 RegionEscape for Ty			impl<'tcx> RegionEscape for Ty<'tcx> 
@@ -573,10 +579,11 @@ Repr for AutoRef			impl<'tcx> Repr<'tcx> for AutoRef<'tcx>
 Repr for ClosureTy			impl<'tcx> Repr<'tcx> for ClosureTy<'tcx> 
 Repr for Constraint			impl<'tcx> Repr<'tcx> for Constraint 
 Repr for GenericKind			impl<'tcx> Repr<'tcx> for GenericKind<'tcx> 
-Repr for HashMap			impl<'tcx, S, H, K, V> Repr<'tcx> for HashMap<K,V,H>
+Repr for HashMap			impl<'tcx, S, K, V> Repr<'tcx> for HashMap<K, V, S>
 Repr for InteriorKind			impl<'tcx> Repr<'tcx> for InteriorKind 
 Repr for ObjectSafetyViolation			impl<'tcx> Repr<'tcx> for ObjectSafetyViolation<'tcx> 
 Repr for ParamTy			impl<'tcx> Repr<'tcx> for ParamTy 
+Repr for PointerKind			impl<'tcx> Repr<'tcx> for PointerKind 
 Repr for ProjectionTyCandidate			impl<'tcx> Repr<'tcx> for ProjectionTyCandidate<'tcx> 
 Repr for ProjectionTyError			impl<'tcx> Repr<'tcx> for ProjectionTyError<'tcx> 
 Repr for RegionAndOrigin			impl<'tcx> Repr<'tcx> for RegionAndOrigin<'tcx> 
@@ -592,6 +599,7 @@ Repr for TypeOrigin			impl<'tcx> Repr<'tcx> for TypeOrigin
 Repr for TypeTrace			impl<'tcx> Repr<'tcx> for TypeTrace<'tcx> 
 Repr for UnboxedClosureUpvar			impl<'tcx> Repr<'tcx> for UnboxedClosureUpvar<'tcx> 
 Repr for UnsizeKind			impl<'tcx> Repr<'tcx> for UnsizeKind<'tcx> 
+Repr for Upvar			impl<'tcx> Repr<'tcx> for Upvar 
 Repr for VarValue			impl<'tcx> Repr<'tcx> for VarValue 
 Repr for Verify			impl<'tcx> Repr<'tcx> for Verify<'tcx> 
 Repr for abi			impl<'tcx> Repr<'tcx> for abi::Abi 
@@ -615,6 +623,7 @@ Repr for ast			impl<'tcx> Repr<'tcx> for ast::Visibility
 Repr for categorization			impl<'tcx> Repr<'tcx> for categorization<'tcx> 
 Repr for cmt_			impl<'tcx> Repr<'tcx> for cmt_<'tcx> 
 Repr for def			impl<'tcx> Repr<'tcx> for def::Def 
+Repr for field			impl<'tcx> Repr<'tcx> for field<'tcx> 
 Repr for subst			impl<'tcx> Repr<'tcx> for subst::RegionSubsts 
 Repr for subst			impl<'tcx> Repr<'tcx> for subst::Substs<'tcx> 
 Repr for super			impl<'tcx> Repr<'tcx> for super::FulfillmentError<'tcx> 
@@ -622,6 +631,7 @@ Repr for super			impl<'tcx> Repr<'tcx> for super::FulfillmentErrorCode<'tcx>
 Repr for super			impl<'tcx> Repr<'tcx> for super::MismatchedProjectionTypes<'tcx> 
 Repr for super			impl<'tcx> Repr<'tcx> for super::SelectionError<'tcx> 
 Repr for super			impl<'tcx> Repr<'tcx> for super::VtableObjectData<'tcx> 
+Repr for ty			impl<'tcx> Repr<'tcx> for ty::UnboxedClosureKind 
 Repr for ty			impl<'tcx> Repr<'tcx> for ty::Predicate<'tcx> 
 Repr for ty			impl<'tcx> Repr<'tcx> for ty::ProjectionPredicate<'tcx> 
 Repr for ty			impl<'tcx> Repr<'tcx> for ty::type_err<'tcx> 
@@ -706,7 +716,7 @@ SnapshotVec			pub struct SnapshotVec<T,U,D>
 SnapshotVecDelegate			pub trait SnapshotVecDelegate<T,U> 
 Specials			struct Specials 
 Stability			impl Stability 
-Stability			pub struct Stability;
+Stability			pub struct Stability { this_crate_staged: bool }
 StackEntry			struct StackEntry<'tcx> 
 StaticInliner			impl<'a, 'tcx> StaticInliner<'a, 'tcx> 
 StaticInliner			pub struct StaticInliner<'a, 'tcx: 'a> 
@@ -787,6 +797,7 @@ TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::TraitStore
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::TypeParameterDef<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::UnboxedClosureUpvar<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::UnsizeKind<'tcx> 
+TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::field<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::mt<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::vtable_origin<'tcx> 
 TypeFolder			pub trait TypeFolder<'tcx> : Sized 
@@ -834,6 +845,8 @@ Union			struct Union;
 UnsafeBlocks			pub struct UnsafeBlocks;
 UnsafeContext			enum UnsafeContext 
 UnsizeKind			pub enum UnsizeKind<'tcx> 
+UnstableFeatures			pub struct UnstableFeatures;
+UnstableFeatures			pub enum UnstableFeatures 
 UnusedAllocation			pub struct UnusedAllocation;
 UnusedAttributes			pub struct UnusedAttributes;
 UnusedCasts			pub struct UnusedCasts;
@@ -852,6 +865,7 @@ UserString			pub trait UserString<'tcx> : Repr<'tcx>
 UserString for GenericKind			impl<'tcx> UserString<'tcx> for GenericKind<'tcx> 
 UserString for ParamTy			impl<'tcx> UserString<'tcx> for ParamTy 
 UserString for Ty			impl<'tcx> UserString<'tcx> for Ty<'tcx> 
+UserString for Upvar			impl<'tcx> UserString<'tcx> for Upvar 
 UserString for abi			impl<'tcx> UserString<'tcx> for abi::Abi 
 UserString for ast			impl<'tcx> UserString<'tcx> for ast::Ident 
 UserString for ast			impl<'tcx> UserString<'tcx> for ast::Name 
@@ -937,7 +951,7 @@ VtableObjectData			pub struct VtableObjectData<'tcx>
 WalkState			        struct WalkState<'tcx> 
 WhileTrue			pub struct WhileTrue;
 WitnessPreference			enum WitnessPreference 
-Writer for FnvState			impl Writer for FnvState 
+Writer for FnvHasher			impl Writer for FnvHasher 
 a_is_expected			    fn a_is_expected(&self) -> bool;
 a_is_expected			    fn a_is_expected(&self) -> bool { self.fields.a_is_expected }
 a_is_expected			    fn a_is_expected(&self) -> bool { self.fields.a_is_expected }
@@ -1030,7 +1044,7 @@ as_slice			    pub fn as_slice<'a>(&'a self) -> &'a [u8] { unsafe { &*self.data 
 as_slice			    pub fn as_slice(&self) -> &[T] 
 as_str			    pub fn as_str(&self) -> String 
 as_str			    pub fn as_str(self) -> &'static str 
-asm_comments			    pub fn asm_comments(&self) -> bool { self.debugging_opt(config::ASM_COMMENTS) }
+asm_comments			    pub fn asm_comments(&self) -> bool { self.opts.debugging_opts.asm_comments }
 assemble_builtin_bound_candidates			    fn assemble_builtin_bound_candidates<'o>(&mut self,
 assemble_candidates			    fn assemble_candidates<'o>(&mut self,
 assemble_candidates_from_caller_bounds			    fn assemble_candidates_from_caller_bounds(&mut self,
@@ -1069,7 +1083,6 @@ bar			        fn bar(x: T)
 bar			    fn bar(&self, x: X) { }
 bare_fn_to_string			    fn bare_fn_to_string<'tcx>(cx: &ctxt<'tcx>,
 bare_fn_tys			    fn bare_fn_tys(&self, a: &ty::BareFnTy<'tcx>,
-basic_codegen_options			    pub fn basic_codegen_options() -> CodegenOptions 
 basic_options			pub fn basic_options() -> Options 
 binders			    fn binders<T>(&self, a: &ty::Binder<T>, b: &ty::Binder<T>) -> cres<'tcx, ty::Binder<T>>
 binders			    fn binders<T>(&self, a: &ty::Binder<T>, b: &ty::Binder<T>) -> cres<'tcx, ty::Binder<T>>
@@ -1090,7 +1103,7 @@ borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 borrow_expr			    fn borrow_expr(&mut self,
 borrow_from			    fn borrow_from<'a>(ty: &'a InternedTy<'tcx>) -> &'a sty<'tcx> 
-borrowck_stats			    pub fn borrowck_stats(&self) -> bool { self.debugging_opt(config::BORROWCK_STATS) }
+borrowck_stats			    pub fn borrowck_stats(&self) -> bool { self.opts.debugging_opts.borrowck_stats }
 borrowed_contents			    fn borrowed_contents(region: ty::Region,
 bound_list_is_sorted			fn bound_list_is_sorted(bounds: &[ty::PolyProjectionPredicate]) -> bool 
 bound_region_ptr_to_string			pub fn bound_region_ptr_to_string(cx: &ctxt, br: BoundRegion) -> String 
@@ -1098,7 +1111,6 @@ bound_region_to_string			pub fn bound_region_to_string(cx: &ctxt,
 bug			    pub fn bug(&self, msg: &str) -> ! 
 build			    pub fn build(krate: &Crate) -> Index 
 build			pub mod build;
-build_codegen_options			pub fn build_codegen_options(matches: &getopts::Matches) -> CodegenOptions
 build_configuration			pub fn build_configuration(sess: &Session) -> ast::CrateConfig 
 build_nodeid_to_index			fn build_nodeid_to_index(decl: Option<&ast::FnDecl>,
 build_session			pub fn build_session(sopts: config::Options,
@@ -1119,9 +1131,10 @@ call			    fn call<'b, I: Iterator<Item=&'b ast::Expr>>(&mut self,
 call_site			    fn call_site(&self) -> Span 
 call_site			    fn call_site(&self) -> Span;
 can_coerce_mutbls			fn can_coerce_mutbls(from_mutbl: ast::Mutability,
-can_mk_eqty			pub fn can_mk_eqty<'a, 'tcx>(cx: &InferCtxt<'a, 'tcx>,
+can_equate			    pub fn can_equate<T>(&self, a: &T, b: &T) -> ures<'tcx>
+can_mk_eqty			pub fn can_mk_eqty<'a, 'tcx>(cx: &InferCtxt<'a, 'tcx>, a: Ty<'tcx>, b: Ty<'tcx>) -> ures<'tcx>
 can_mk_subty			pub fn can_mk_subty<'a, 'tcx>(cx: &InferCtxt<'a, 'tcx>,
-can_reach			pub fn can_reach<S,H:Hasher<S>,T:Eq+Clone+Hash<S>>(
+can_reach			pub fn can_reach<T, S>(edges_map: &HashMap<T, Vec<T>, S>, source: T,
 can_type_implement_copy			pub fn can_type_implement_copy<'a,'tcx>(param_env: &ParameterEnvironment<'a, 'tcx>,
 candidate_from_obligation			    fn candidate_from_obligation<'o>(&mut self,
 candidate_from_obligation_no_cache			    fn candidate_from_obligation_no_cache<'o>(&mut self,
@@ -1152,18 +1165,18 @@ categorization			pub enum categorization<'tcx>
 cfg			    pub mod cfg;
 cfg			    fn cfg(&self) -> ast::CrateConfig 
 cfg			    fn cfg(&self) -> ast::CrateConfig;
-cg_type_descs			    mod cg_type_descs 
-cgsetters			    mod cgsetters 
 check_all_inherited			    fn check_all_inherited(&self, item: &ast::Item) 
 check_arm			    fn check_arm(&mut self, _: &Context, _: &ast::Arm) { }
 check_arm			fn check_arm(this: &mut Liveness, arm: &ast::Arm) 
 check_arms			fn check_arms(cx: &MatchCheckCtxt,
+check_attribute			    fn check_attribute(&mut self, ctx: &Context, attr: &ast::Attribute) 
 check_attribute			    fn check_attribute(&mut self, cx: &Context, attr: &ast::Attribute) 
 check_attribute			    fn check_attribute(&mut self, _: &Context, _: &ast::Attribute) { }
 check_block			    fn check_block(&mut self, _: &Context, _: &ast::Block) { }
 check_candidate_cache			    fn check_candidate_cache(&mut self,
 check_case			    fn check_case(&self, cx: &Context, sort: &str, ident: ast::Ident, span: Span) 
 check_const			    pub mod check_const;
+check_crate			    fn check_crate(&mut self, _: &Context, c: &ast::Crate) 
 check_crate			    fn check_crate(&mut self, cx: &Context, krate: &ast::Crate) 
 check_crate			pub fn check_crate(tcx: &ty::ctxt,
 check_crate			    fn check_crate(&mut self, _: &Context, _: &ast::Crate) { }
@@ -1410,8 +1423,6 @@ data			    pub fn data<'a>(&'a self) -> &'a [u8] { self.data.as_slice() }
 data_log_string			fn data_log_string(data: &[u8], pos: uint) -> String 
 dataflow			    pub mod dataflow;
 dead			    pub mod dead;
-debugging_opt			    pub fn debugging_opt(&self, opt: u64) -> bool 
-debugging_opts_map			pub fn debugging_opts_map() -> Vec<(&'static str, &'static str, u64)> 
 decl			    fn decl(&mut self, decl: &ast::Decl, pred: CFGIndex) -> CFGIndex 
 decl_without_init			    fn decl_without_init(&mut self, _: NodeId, _: Span) {}
 decl_without_init			    fn decl_without_init(&mut self,
@@ -1435,6 +1446,7 @@ def_id_represents_local_inlined_item			    fn def_id_represents_local_inlined_it
 def_privacy			    fn def_privacy(&self, did: ast::DefId) -> PrivacyResult 
 def_to_path			pub fn def_to_path(tcx: &ty::ctxt, id: ast::DefId) -> ast::Path 
 def_to_string			pub fn def_to_string(did: DefId) -> String 
+default			    fn default() -> FnvHasher { FnvHasher(0xcbf29ce484222325) }
 default_configuration			pub fn default_configuration(sess: &Session) -> ast::CrateConfig 
 default_lib_output			pub fn default_lib_output() -> CrateType 
 define			    fn define(&mut self, writer: LiveNode, var: Variable) 
@@ -1476,7 +1488,7 @@ dump_constraints			    fn dump_constraints(&self)
 dump_crates			fn dump_crates(cstore: &CStore) 
 dump_region_constraints_to			fn dump_region_constraints_to<'a, 'tcx:'a >(tcx: &'a ty::ctxt<'tcx>,
 dylibname			    fn dylibname(&self) -> (String, String) 
-dylink_registrar			    fn dylink_registrar(&mut self,
+dylink_registrar			    fn dylink_registrar<'b>(&mut self,
 each_adjacent_edge			    pub fn each_adjacent_edge<'a, F>(&'a self,
 each_adjacent_from_a			    fn each_adjacent_from_a() 
 each_adjacent_from_b			    fn each_adjacent_from_b() 
@@ -1759,6 +1771,7 @@ expr_ty_adjusted			pub fn expr_ty_adjusted<'tcx>(cx: &ctxt<'tcx>, expr: &ast::Ex
 expr_ty_opt			pub fn expr_ty_opt<'tcx>(cx: &ctxt<'tcx>, expr: &ast::Expr) -> Option<Ty<'tcx>> 
 expr_use_visitor			    pub mod expr_use_visitor;
 exprs			    fn exprs<'b, I: Iterator<Item=&'b ast::Expr>>(&mut self,
+extend			    pub fn extend<I:Iterator<Item=T>>(&mut self, space: ParamSpace, mut values: I) 
 extract			pub fn extract(attrs: &[ast::Attribute]) -> Option<InternedString> 
 extract_all_region_names			    fn extract_all_region_names(&self) -> HashSet<ast::Name> 
 extract_anon_nums_and_names			    fn extract_anon_nums_and_names(&self, same_regions: &SameRegions)
@@ -1792,6 +1805,7 @@ find_nonrepresentable			    fn find_nonrepresentable<'tcx, It: Iterator<Item=Ty<
 find_plugin_registrar			pub fn find_plugin_registrar(diagnostic: &diagnostic::SpanHandler,
 find_reachable			pub fn find_reachable(tcx: &ty::ctxt,
 find_scope			    fn find_scope(&self,
+finish			    fn finish(&self) -> u64 { self.0 }
 first_adjacent			    pub fn first_adjacent(&self, node: NodeIndex, dir: Direction) -> EdgeIndex 
 fixup_err			pub enum fixup_err 
 fixup_err_to_string			pub fn fixup_err_to_string(f: fixup_err) -> String 
@@ -1895,6 +1909,7 @@ fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::
 fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::TraitStore 
 fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::TypeParameterDef<'tcx> 
 fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::UnsizeKind<'tcx> 
+fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::field<'tcx> 
 fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::mt<'tcx> 
 fold_with			    fn fold_with<F: TypeFolder<'tcx>>(&self, folder: &mut F) -> ty::vtable_origin<'tcx> 
 fold_with			    fn fold_with<F:TypeFolder<'tcx>>(&self, _: &mut F) -> () 
@@ -2092,7 +2107,7 @@ glb_free_regions			    fn glb_free_regions(&self,
 glb_regions			    pub fn glb_regions(&self,
 go			            pub fn go(tcx: &ty::ctxt) 
 graph			    pub mod graph;
-graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { dot::Id::new(self.name.index(&FullRange)).unwrap() }
+graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { dot::Id::new(&self.name[]).unwrap() }
 graph_id			    fn graph_id(&self) -> dot::Id 
 graphviz			pub mod graphviz;
 graphviz			mod graphviz;
@@ -2119,13 +2134,12 @@ has_type_params			    pub fn has_type_params(&self, space: subst::ParamSpace) ->
 hash			    fn hash(&self, state: &mut S) 
 hash			    pub fn hash(&self) -> Svh { decoder::get_crate_hash(self.data()) }
 hash			    fn hash(&self, s: &mut S) 
-hash			    fn hash<T: ?Sized + Hash<FnvState>>(&self, t: &T) -> u64 
-hash::Hash for LintId			impl<S: hash::Writer> hash::Hash<S> for LintId 
+hash::Hash for LintId			impl<S: hash::Writer + hash::Hasher> hash::Hash<S> for LintId 
 hash_crate_independent			pub fn hash_crate_independent<'tcx>(tcx: &ctxt<'tcx>, ty: Ty<'tcx>, svh: &Svh) -> u64 
 help			    pub fn help(&self, msg: &str) 
 helper			        fn helper(this: &RegionVarBindings,
 helper			        fn helper<'a, 'tcx>(this: &RegionVarBindings<'a, 'tcx>,
-helper			    fn helper<'tcx>(tcx: &ctxt<'tcx>, ty: Ty<'tcx>, svh: &Svh, state: &mut sip::SipState) 
+helper			    fn helper<'tcx>(tcx: &ctxt<'tcx>, ty: Ty<'tcx>, svh: &Svh,
 higher_ranked			mod higher_ranked;
 higher_ranked_glb			    fn higher_ranked_glb<T>(&self, a: &Binder<T>, b: &Binder<T>) -> cres<'tcx, Binder<T>>
 higher_ranked_lub			    fn higher_ranked_lub<T>(&self, a: &Binder<T>, b: &Binder<T>) -> cres<'tcx, Binder<T>>
@@ -2143,10 +2157,10 @@ ident_of			    fn ident_of(&self, st: &str) -> ast::Ident
 ident_of			    fn ident_of(&self, st: &str) -> ast::Ident;
 idx			    fn idx(&self, ln: LiveNode, var: Variable) -> uint 
 impl_can_satisfy			pub fn impl_can_satisfy(infcx: &InferCtxt,
+impl_obligations			    fn impl_obligations(&mut self,
 impl_of_method			pub fn impl_of_method(tcx: &ctxt, def_id: ast::DefId)
 impl_or_trait_item			pub fn impl_or_trait_item<'tcx>(cx: &ctxt<'tcx>, id: ast::DefId)
 impl_or_trait_item_idx			pub fn impl_or_trait_item_idx(id: ast::Name, trait_items: &[ImplOrTraitItem])
-impl_predicates			    fn impl_predicates(&mut self,
 impl_trait_ref			pub fn impl_trait_ref<'tcx>(cx: &ctxt<'tcx>, id: ast::DefId)
 impossible_case			    pub fn impossible_case(&self, sp: Span, msg: &str) -> ! 
 in_snapshot			    fn in_snapshot(&self) -> bool 
@@ -2192,6 +2206,7 @@ interior_unsized			    pub fn interior_unsized(&self) -> bool
 intern_ty			fn intern_ty<'tcx>(type_arena: &'tcx TypedArena<TyS<'tcx>>,
 intersect_scopes			    fn intersect_scopes(&self,
 intersects			    pub fn intersects(&self, tc: TypeContents) -> bool 
+into_vec			    pub fn into_vec(self) -> Vec<T> 
 intrinsicck			    pub mod intrinsicck;
 invalid_node			fn invalid_node() -> LiveNode { LiveNode(uint::MAX) }
 invalid_users			fn invalid_users() -> Users 
@@ -2236,6 +2251,8 @@ is_self			    pub fn is_self(&self) -> bool
 is_sized			    pub fn is_sized(&self, _: &ctxt) -> bool 
 is_snake_case			        fn is_snake_case(ident: ast::Ident) -> bool 
 is_stable			    pub fn is_stable(&self) -> bool 
+is_staged_api			pub fn is_staged_api(cstore: &cstore::CStore, def: ast::DefId) -> bool 
+is_staged_api			pub fn is_staged_api(tcx: &ty::ctxt, id: DefId) -> bool 
 is_subregion_of			    fn is_subregion_of(&self, sub: Region, sup: Region) -> bool 
 is_subregion_of			    pub fn is_subregion_of(&self,
 is_subscope_of			    pub fn is_subscope_of(&self,
@@ -2316,6 +2333,7 @@ load			    fn load() -> Box<Self>
 load			pub mod load;
 load_from			    fn load_from() -> Box<Self>;
 load_library_crate			    pub fn load_library_crate(&mut self) -> Library 
+load_plugin			    pub fn load_plugin<'b>(&mut self,
 load_plugins			pub fn load_plugins(sess: &Session, krate: &ast::Crate,
 loader			pub mod loader;
 local_node_id			    pub fn local_node_id(&self) -> ast::NodeId 
@@ -2395,13 +2413,14 @@ maybe_get_item_ast			pub fn maybe_get_item_ast<'tcx>(cdata: Cmd, tcx: &ty::ctxt<
 maybe_load_library_crate			    pub fn maybe_load_library_crate(&mut self) -> Option<Library> 
 maybe_print_constraints_for			pub fn maybe_print_constraints_for<'a, 'tcx>(region_vars: &RegionVarBindings<'a, 'tcx>,
 maybe_report_ambiguity			pub fn maybe_report_ambiguity<'a, 'tcx>(infcx: &InferCtxt<'a, 'tcx>,
+maybe_stage_features			    fn maybe_stage_features(&mut self, sess: &Session) 
 maybe_walk_ty			pub fn maybe_walk_ty<'tcx,F>(ty_root: Ty<'tcx>, mut f: F)
 mc::Typer for ParameterEnvironment			impl<'a,'tcx> mc::Typer<'tcx> for ParameterEnvironment<'a,'tcx> 
 mem_categorization			    pub mod mem_categorization;
-memoized			pub fn memoized<T, U, S, H, F>(cache: &RefCell<HashMap<T, U, H>>, arg: T, f: F) -> U where
+memoized			pub fn memoized<T, U, S, F>(cache: &RefCell<HashMap<T, U, S>>, arg: T, f: F) -> U
 merge_from_succ			    fn merge_from_succ(&mut self,
 meta_section_name			pub fn meta_section_name(is_osx: bool) -> &'static str 
-meta_stats			    pub fn meta_stats(&self) -> bool { self.debugging_opt(config::META_STATS) }
+meta_stats			    pub fn meta_stats(&self) -> bool { self.opts.debugging_opts.meta_stats }
 metadata			pub mod metadata;
 method_context			fn method_context(cx: &Context, m: &ast::Method) -> MethodContext 
 method_might_be_inlined			fn method_might_be_inlined(tcx: &ty::ctxt, method: &ast::Method,
@@ -2484,6 +2503,7 @@ nearest_common_ancestor			    pub fn nearest_common_ancestor(&self,
 needs_drop			    pub fn needs_drop(&self, _: &ctxt) -> bool 
 new			    pub fn new() -> MissingDoc 
 new			    pub fn new() -> RawPointerDerive 
+new			    pub fn new() -> Stability { Stability { this_crate_staged: false } }
 new			    pub fn new() -> TypeLimits 
 new			    fn new(tcx: &'a ty::ctxt<'tcx>,
 new			    pub fn new() -> LintStore 
@@ -2535,10 +2555,10 @@ new			    pub fn new(sess: &'a Session, krate: &ast::Crate) -> Registry<'a>
 new			    pub fn new() -> SearchPaths 
 new			    pub fn new() -> super::DefIdSet 
 new			    pub fn new() -> super::NodeSet 
-new			    pub fn new<K: Hash<super::FnvState> + Eq, V>() -> super::FnvHashMap<K, V> 
+new			    pub fn new<K: Hash<super::FnvHasher> + Eq, V>() -> super::FnvHashMap<K, V> 
 new			    pub fn new<T>() -> super::DefIdMap<T> 
 new			    pub fn new<T>() -> super::NodeMap<T> 
-new			    pub fn new<V: Hash<super::FnvState> + Eq>() -> super::FnvHashSet<V> 
+new			    pub fn new<V: Hash<super::FnvHasher> + Eq>() -> super::FnvHashSet<V> 
 new			    pub fn new(delegate: D) -> SnapshotVec<T,U,D> 
 new_bound			    pub fn new_bound(&self, debruijn: ty::DebruijnIndex) -> Region 
 new_def_id			    fn new_def_id(&self, def_id: ast::DefId) -> ast::DefId 
@@ -2575,7 +2595,7 @@ next_ty_var			    pub fn next_ty_var(&self) -> Ty<'tcx>
 next_ty_var_id			    pub fn next_ty_var_id(&self, diverging: bool) -> TyVid 
 next_ty_vars			    pub fn next_ty_vars(&self, n: uint) -> Vec<Ty<'tcx>> 
 no_landing_pads			    pub fn no_landing_pads(&self) -> bool 
-no_verify			    pub fn no_verify(&self) -> bool { self.debugging_opt(config::NO_VERIFY) }
+no_verify			    pub fn no_verify(&self) -> bool { self.opts.debugging_opts.no_verify }
 node			    pub fn node<'a>(&'a self, idx: NodeIndex) -> &'a Node<N> 
 node_data			    pub fn node_data<'a>(&'a self, idx: NodeIndex) -> &'a N 
 node_id			    fn node_id(&'a self, &(i,_): &Node<'a>) -> dot::Id<'a> 
@@ -2651,6 +2671,7 @@ opt_u			    pub fn     opt_u(a: S, b: S, c: S, d: S) -> R { unstable(getopts::op
 optgroups			pub fn optgroups() -> Vec<getopts::OptGroup> 
 or			    pub fn or(self, other: LastPrivate) -> LastPrivate 
 orphan_check			pub fn orphan_check<'tcx>(tcx: &ty::ctxt<'tcx>,
+output			        fn output(cx: &Context, span: Span, stability: &Option<attr::Stability>,
 output			    pub fn output(&self) -> ty::Binder<FnOutput<'tcx>> 
 overlapping_impls			pub fn overlapping_impls(infcx: &InferCtxt,
 overloaded_method_return_ty			    fn overloaded_method_return_ty(&self,
@@ -2991,7 +3012,9 @@ repr			    fn repr(&self, tcx: &ty::ctxt) -> String
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
+repr			    fn repr(&self, _: &ty::ctxt) -> String 
 repr			    fn repr(&self, _tcx: &ty::ctxt) -> String 
+repr			    fn repr(&self, tcx: &ty::ctxt) -> String 
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
 repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
@@ -3014,6 +3037,7 @@ reserve_id_range			fn reserve_id_range(sess: &Session,
 reserve_node_ids			    pub fn reserve_node_ids(&self, count: ast::NodeId) -> ast::NodeId 
 reset			    pub fn reset(&self) 
 reset			    fn reset(&mut self, bits: &mut [uint]) 
+reset			    fn reset(&mut self) { *self = Default::default(); }
 resolve			    fn resolve<'a>(&self, infcx: &InferCtxt<'a, 'tcx>) -> Self;
 resolve			    fn resolve<'a>(&self, infcx: &InferCtxt<'a, 'tcx>) -> Ty<'tcx> 
 resolve			    fn resolve<'a>(&self, infcx: &InferCtxt<'a, 'tcx>)
@@ -3237,7 +3261,7 @@ then			trait then<'tcx>
 then for ures			impl<'tcx> then<'tcx> for ures<'tcx> 
 time			pub fn time<T, U, F>(do_it: bool, what: &str, u: U, f: F) -> T where
 time_llvm_passes			    pub fn time_llvm_passes(&self) -> bool 
-time_passes			    pub fn time_passes(&self) -> bool { self.debugging_opt(config::TIME_PASSES) }
+time_passes			    pub fn time_passes(&self) -> bool { self.opts.debugging_opts.time_passes }
 to_bounds			    pub fn to_bounds(&self, tcx: &ty::ctxt<'tcx>, substs: &Substs<'tcx>)
 to_builtin_kind			    pub fn to_builtin_kind(&self, id: ast::DefId) -> Option<ty::BuiltinBound> 
 to_camel_case			        fn to_camel_case(s: &str) -> String 
@@ -3263,7 +3287,6 @@ to_ures			    fn to_ures(&self) -> ures<'tcx>
 to_ures			    fn to_ures(&self) -> ures<'tcx>;
 to_user_str			    pub fn to_user_str(&self) -> &'static str 
 to_user_str			    pub fn to_user_str(&self) -> &'static str 
-to_vec			    pub fn to_vec(self) -> Vec<T> 
 tps			    fn tps(&self,
 tr			    fn tr(&self, dcx: &DecodeContext) -> MethodOrigin<'tcx> 
 tr			    fn tr(&self, dcx: &DecodeContext) -> Option<ast::DefId> 
@@ -3324,7 +3347,7 @@ trait_store_to_string			pub fn trait_store_to_string(cx: &ctxt, s: ty::TraitStor
 trait_stores			    fn trait_stores(&self,
 traits			    pub mod traits;
 trans_empty			    pub fn trans_empty() -> Substs<'tcx> 
-trans_stats			    pub fn trans_stats(&self) -> bool { self.debugging_opt(config::TRANS_STATS) }
+trans_stats			    pub fn trans_stats(&self) -> bool { self.opts.debugging_opts.trans_stats }
 transitive_bounds			pub fn transitive_bounds<'cx, 'tcx>(tcx: &'cx ty::ctxt<'tcx>,
 translate_def_id			pub fn translate_def_id(cdata: Cmd, did: ast::DefId) -> ast::DefId 
 truncate			    pub fn truncate(&mut self, space: ParamSpace, len: uint) 
@@ -3468,9 +3491,9 @@ update_recursion_limit			pub fn update_recursion_limit(sess: &Session, krate: &a
 upvar			    pub fn upvar(&self) -> Option<cmt<'tcx>> 
 upvar_borrow			    fn upvar_borrow(&self, upvar_id: ty::UpvarId) -> Option<ty::UpvarBorrow>;
 upvar_borrow			    fn upvar_borrow(&self, upvar_id: ty::UpvarId) -> Option<ty::UpvarBorrow> 
-upvar_to_string			        fn upvar_to_string(upvar: &Upvar, is_copy: bool) -> String 
 used_on_entry			    fn used_on_entry(&self, ln: LiveNode, var: Variable) -> bool 
 user_string			    fn user_string(&self, tcx: &ty::ctxt<'tcx>) -> String 
+user_string			    fn user_string(&self, _: &ty::ctxt) -> String 
 user_string			    fn user_string(&self, _tcx: &ctxt) -> String 
 user_string			    fn user_string(&self, tcx: &ctxt) -> String 
 user_string			    fn user_string(&self, tcx: &ctxt<'tcx>) -> String 
@@ -3494,7 +3517,7 @@ variant_expr			    fn variant_expr<'a>(variants: &'a [P<ast::Variant>], id: ast:
 vars_created_since_snapshot			    pub fn vars_created_since_snapshot(&self, mark: &RegionSnapshot)
 vec_map_to_string			pub fn vec_map_to_string<T, F>(ts: &[T], f: F) -> String where
 vec_slice_info			        fn vec_slice_info(tcx: &ty::ctxt,
-verbose			    pub fn verbose(&self) -> bool { self.debugging_opt(config::VERBOSE) }
+verbose			    pub fn verbose(&self) -> bool { self.opts.debugging_opts.verbose }
 verify			fn verify(sess: &Session, items: &lang_items::LanguageItems) 
 verify_generic_bound			    pub fn verify_generic_bound(&self,
 verify_generic_bound			    pub fn verify_generic_bound(&self,
@@ -3683,6 +3706,7 @@ winnow_candidate			    fn winnow_candidate<'o>(&mut self,
 winnow_selection			    fn winnow_selection<'o>(&mut self,
 with			    fn with<F>(&mut self, wrap_scope: ScopeChain, f: F) where
 with			    pub fn with<P>(&self, value: P) -> Obligation<'tcx,P> 
+with			    pub fn with<U>(self, value: U) -> Normalized<'tcx,U> 
 with_capacity			    pub fn with_capacity(num_nodes: uint,
 with_const			    fn with_const<F>(&mut self, in_const: bool, f: F) where
 with_context			    fn with_context<F>(&mut self, cx: Context, f: F) where

@@ -46,6 +46,7 @@ Clean for ast			impl Clean<TyParamBound> for ast::TyParamBound
 Clean for ast			impl Clean<Type> for ast::QPath 
 Clean for ast			impl Clean<Type> for ast::TraitRef 
 Clean for ast			impl Clean<Type> for ast::Ty 
+Clean for ast			impl Clean<TypeBinding> for ast::TypeBinding 
 Clean for ast			impl Clean<VariantKind> for ast::VariantKind 
 Clean for ast			impl Clean<ViewItemInner> for ast::ViewItem_ 
 Clean for ast			impl Clean<ViewListIdent> for ast::PathListItem 
@@ -83,6 +84,7 @@ ClosureDecl			pub struct ClosureDecl
 Collapser			    struct Collapser;
 Collector			impl Collector 
 Collector			pub struct Collector 
+CommaSep			pub struct CommaSep<'a, T: 'a>(pub &'a [T]);
 CommentCleaner			    struct CommentCleaner;
 ConciseStability			pub struct ConciseStability<'a>(pub &'a Option<clean::Stability>);
 Constant			pub struct Constant 
@@ -199,6 +201,7 @@ TyParam			pub struct TyParam
 TyParamBound			pub enum TyParamBound 
 TyParamBounds			pub struct TyParamBounds<'a>(pub &'a [clean::TyParamBound]);
 Type			pub enum Type 
+TypeBinding			pub struct TypeBinding 
 TypeBound			pub enum TypeBound 
 TypeKind			pub enum TypeKind 
 Typedef			pub struct Typedef 
@@ -229,7 +232,7 @@ attr::AttrMetaMethods for Attribute			impl attr::AttrMetaMethods for Attribute
 block			    extern fn block(_ob: *mut hoedown_buffer,
 block			    extern fn block(ob: *mut hoedown_buffer, orig_text: *const hoedown_buffer,
 block			        fn block(w: &mut fmt::Formatter, short: &str, longty: &str,
-browserSupportsHistoryApi	/home/ubu/Downloads/rust/src/librustdoc/html/static/main.js	    function browserSupportsHistoryApi() 
+browserSupportsHistoryApi	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function browserSupportsHistoryApi() 
 build			pub fn build(krate: &Crate) -> ModuleSummary 
 build_const			fn build_const(cx: &DocContext, tcx: &ty::ctxt,
 build_external_function			fn build_external_function(cx: &DocContext, tcx: &ty::ctxt, did: ast::DefId) -> clean::Function 
@@ -274,6 +277,7 @@ clean			    fn clean(&self, cx: &DocContext) -> TraitMethod
 clean			    fn clean(&self, cx: &DocContext) -> TyParam 
 clean			    fn clean(&self, cx: &DocContext) -> TyParamBound 
 clean			    fn clean(&self, cx: &DocContext) -> Type 
+clean			    fn clean(&self, cx: &DocContext) -> TypeBinding 
 clean			    fn clean(&self, cx: &DocContext) -> U 
 clean			    fn clean(&self, cx: &DocContext) -> VariantKind 
 clean			    fn clean(&self, cx: &DocContext) -> VariantStruct 
@@ -316,9 +320,7 @@ find			    fn find(attrs: &[Attribute]) -> Option<PrimitiveType>
 find_testable_code			pub fn find_testable_code(doc: &str, tests: &mut ::test::Collector) 
 flock			        pub struct flock 
 flock			mod flock;
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
@@ -326,39 +328,8 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
-fmt::Show for ConciseStability			impl<'a> fmt::Show for ConciseStability<'a> 
-fmt::Show for Escape			impl<'a> fmt::Show for Escape<'a> 
-fmt::Show for Initializer			impl<'a> fmt::Show for Initializer<'a> 
-fmt::Show for Item			impl<'a> fmt::Show for Item<'a> 
-fmt::Show for ItemType			impl fmt::Show for ItemType 
-fmt::Show for Markdown			impl<'a> fmt::Show for Markdown<'a> 
-fmt::Show for MarkdownWithToc			impl<'a> fmt::Show for MarkdownWithToc<'a> 
-fmt::Show for Method			impl<'a> fmt::Show for Method<'a> 
-fmt::Show for ModuleSummary			impl fmt::Show for ModuleSummary 
-fmt::Show for MutableSpace			impl fmt::Show for MutableSpace 
-fmt::Show for RawMutableSpace			impl fmt::Show for RawMutableSpace 
-fmt::Show for Sidebar			impl<'a> fmt::Show for Sidebar<'a> 
-fmt::Show for Source			impl<'a> fmt::Show for Source<'a> 
-fmt::Show for Stability			impl<'a> fmt::Show for Stability<'a> 
 fmt::Show for Toc			impl fmt::Show for Toc 
-fmt::Show for TyParamBounds			impl<'a> fmt::Show for TyParamBounds<'a> 
-fmt::Show for UnsafetySpace			impl fmt::Show for UnsafetySpace 
-fmt::Show for VisSpace			impl fmt::Show for VisSpace 
-fmt::Show for WhereClause			impl<'a> fmt::Show for WhereClause<'a> 
-fmt::Show for clean			impl fmt::Show for clean::Arguments 
-fmt::Show for clean			impl fmt::Show for clean::FnDecl 
-fmt::Show for clean			impl fmt::Show for clean::FunctionRetTy 
-fmt::Show for clean			impl fmt::Show for clean::Generic 
-fmt::Show for clean			impl fmt::Show for clean::ImportSource 
-fmt::Show for clean			impl fmt::Show for clean::Lifetime 
-fmt::Show for clean			impl fmt::Show for clean::Path 
-fmt::Show for clean			impl fmt::Show for clean::PathParameters 
-fmt::Show for clean			impl fmt::Show for clean::PathSegment 
-fmt::Show for clean			impl fmt::Show for clean::PolyTrait 
-fmt::Show for clean			impl fmt::Show for clean::TyParamBound 
-fmt::Show for clean			impl fmt::Show for clean::Type 
-fmt::Show for clean			impl fmt::Show for clean::ViewListIdent 
-fmt::Show for clean			impl fmt::Show for clean::ViewPath 
+fmt::String for CommaSep			impl<'a, T: fmt::String> fmt::String for CommaSep<'a, T> 
 fmt::String for ConciseStability			impl<'a> fmt::String for ConciseStability<'a> 
 fmt::String for Escape			impl<'a> fmt::String for Escape<'a> 
 fmt::String for Initializer			impl<'a> fmt::String for Initializer<'a> 
@@ -390,6 +361,7 @@ fmt::String for clean			impl fmt::String for clean::PathSegment
 fmt::String for clean			impl fmt::String for clean::PolyTrait 
 fmt::String for clean			impl fmt::String for clean::TyParamBound 
 fmt::String for clean			impl fmt::String for clean::Type 
+fmt::String for clean			impl fmt::String for clean::TypeBinding 
 fmt::String for clean			impl fmt::String for clean::ViewListIdent 
 fmt::String for clean			impl fmt::String for clean::ViewPath 
 fmt_inner			        fn fmt_inner<'a>(f: &mut fmt::Formatter,
@@ -418,7 +390,7 @@ full_path			fn full_path(cx: &Context, item: &clean::Item) -> String
 generics			    fn generics(&mut self, generics: &clean::Generics) 
 get			    pub fn get(&self) -> Option<ast::Visibility> 
 get			    pub fn get(&self) -> ast::Unsafety 
-getQueryStringParams	/home/ubu/Downloads/rust/src/librustdoc/html/static/main.js	    function getQueryStringParams() 
+getQueryStringParams	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getQueryStringParams() 
 get_basic_keywords			fn get_basic_keywords() -> &'static str 
 get_ref			    pub fn get_ref<'a>(&'a self) -> &'a str 
 get_stability			fn get_stability(cx: &DocContext, def_id: ast::DefId) -> Option<Stability> 
@@ -426,7 +398,7 @@ header			    extern fn header(_ob: *mut hoedown_buffer,
 header			    extern fn header(ob: *mut hoedown_buffer, text: *const hoedown_buffer,
 highlight			pub fn highlight(src: &str, class: Option<&str>, id: Option<&str>) -> String 
 highlight			    pub mod highlight;
-highlightSourceLines	/home/ubu/Downloads/rust/src/librustdoc/html/static/main.js	    function highlightSourceLines(ev) 
+highlightSourceLines	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function highlightSourceLines(ev) 
 hoedown_buffer			struct hoedown_buffer 
 hoedown_buffer_free			    fn hoedown_buffer_free(b: *mut hoedown_buffer);
 hoedown_buffer_new			    fn hoedown_buffer_new(unit: libc::size_t) -> *mut hoedown_buffer;
@@ -533,8 +505,8 @@ render_sources			fn render_sources(cx: &mut Context,
 render_struct			fn render_struct(w: &mut fmt::Formatter, it: &clean::Item,
 reorder			    fn reorder(ty: ItemType) -> u8 
 reset_headers			pub fn reset_headers() 
-resizeShortBlocks	/home/ubu/Downloads/rust/src/librustdoc/html/static/main.js	    function resizeShortBlocks() 
-resizeTimeout	/home/ubu/Downloads/rust/src/librustdoc/html/static/main.js	    var resizeTimeout, interval;
+resizeShortBlocks	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function resizeShortBlocks() 
+resizeTimeout	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var resizeTimeout, interval;
 resolve_def			fn resolve_def(cx: &DocContext, id: ast::NodeId) -> Option<ast::DefId> 
 resolve_id			    fn resolve_id(&mut self, id: ast::NodeId, renamed: Option<ast::Ident>,
 resolve_type			fn resolve_type(cx: &DocContext,

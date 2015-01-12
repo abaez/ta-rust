@@ -16,6 +16,8 @@ Decodable for Box			impl< T: Decodable> Decodable for Box<T>
 Decodable for Box			impl< T: Decodable> Decodable for Box<[T]> 
 Decodable for Cell			impl<T: Decodable + Copy> Decodable for Cell<T> 
 Decodable for DList			impl<T:Decodable> Decodable for DList<T> 
+Decodable for HashMap			impl<K, V, S> Decodable for HashMap<K, V, S>
+Decodable for HashSet			impl<T, S> Decodable for HashSet<T, S>
 Decodable for Option			impl<T:Decodable> Decodable for Option<T> 
 Decodable for Rc			impl<T:Decodable> Decodable for Rc<T> 
 Decodable for RefCell			impl<T: Decodable> Decodable for RefCell<T> 
@@ -55,6 +57,8 @@ Encodable			pub trait Encodable
 Encodable for Arc			impl<T:Encodable> Encodable for Arc<T> 
 Encodable for Box			impl<T: ?Sized + Encodable> Encodable for Box<T> 
 Encodable for Cell			impl<T: Encodable + Copy> Encodable for Cell<T> 
+Encodable for HashMap			impl<K, V, S> Encodable for HashMap<K, V, S>
+Encodable for HashSet			impl<T, S> Encodable for HashSet<T, S>
 Encodable for Json			impl Encodable for Json 
 Encodable for Option			impl<T:Encodable> Encodable for Option<T> 
 Encodable for Rc			impl<T:Encodable> Encodable for Rc<T> 
@@ -167,8 +171,8 @@ decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BTreeMap<K, V>, D::Error
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BTreeSet<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<DList<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<EnumSet<T>, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashMap<K, V, H>, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashSet<T, H>, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashMap<K, V, S>, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashSet<T, S>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<RingBuf<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<VecMap<V>, D::Error> 
 decode			pub fn decode<T: ::Decodable>(s: &str) -> DecodeResult<T> 
@@ -283,6 +287,8 @@ emit_u8			    fn emit_u8(&mut self, v: u8) -> EncodeResult { write!(self.writer,
 emit_u8			    fn emit_u8(&mut self, v: u8) -> Result<(), Self::Error>;
 emit_uint			    fn emit_uint(&mut self, v: uint) -> EncodeResult { write!(self.writer, "{}", v) }
 emit_uint			    fn emit_uint(&mut self, v: uint) -> Result<(), Self::Error>;
+encode			    fn encode<E: Encoder>(&self, e: &mut E) -> Result<(), E::Error> 
+encode			    fn encode<E: Encoder>(&self, s: &mut E) -> Result<(), E::Error> 
 encode			    fn encode<S: Encoder>(&self, e: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<E: ::Encoder>(&self, e: &mut E) -> Result<(), E::Error> 
@@ -294,7 +300,7 @@ encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error>;
 ends_with			    pub fn ends_with(&self, rhs: &[StackElement]) -> bool 
 eof			    fn eof(&self) -> bool { self.ch.is_none() }
 error			    fn error(&mut self, err: &str) -> DecoderError 
-error			    fn error<T>(&self, reason: ErrorCode) -> Result<T, ParserError> 
+error			    fn error<U>(&self, reason: ErrorCode) -> Result<U, ParserError> 
 error			    fn error(&mut self, err: &str) -> Self::Error;
 error::Error for FromBase64Error			impl error::Error for FromBase64Error 
 error::Error for FromHexError			impl error::Error for FromHexError 
@@ -307,7 +313,6 @@ find_path			    pub fn find_path<'a>(&'a self, keys: &[&str]) -> Option<&'a Json
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Show for AsJson			impl<'a, T: Encodable> fmt::Show for AsJson<'a, T> 
 fmt::Show for ErrorCode			impl fmt::Show for ErrorCode 
 fmt::Show for FromBase64Error			impl fmt::Show for FromBase64Error 
 fmt::Show for FromHexError			impl fmt::Show for FromHexError 

@@ -4,6 +4,7 @@ Arc			pub struct Arc<T>
 ArcInner			struct ArcInner<T> 
 BorrowFrom			impl<T> BorrowFrom<Arc<T>> for T 
 BorrowFrom			impl<T> BorrowFrom<Rc<T>> for T 
+Box			impl<T> Box<T> 
 Box			pub struct Box<T>(Unique<T>);
 BoxAny			pub trait BoxAny 
 BoxAny for Box			impl BoxAny for Box<Any> 
@@ -112,7 +113,9 @@ fmt::Show for Box			impl fmt::Show for Box<Any>
 fmt::Show for Box			impl<T: ?Sized + fmt::Show> fmt::Show for Box<T> 
 fmt::Show for Rc			impl<T: fmt::Show> fmt::Show for Rc<T> 
 fmt::Show for Weak			impl<T: fmt::Show> fmt::Show for Weak<T> 
+fmt::String for Arc			impl<T: fmt::String> fmt::String for Arc<T> 
 fmt::String for Box			impl<T: ?Sized + fmt::String> fmt::String for Box<T> 
+fmt::String for Rc			impl<T: fmt::String> fmt::String for Rc<T> 
 ge			    fn ge(&self, other: &Arc<T>) -> bool { *(*self) >= *(*other) }
 ge			    fn ge(&self, other: &Box<T>) -> bool { PartialOrd::ge(&**self, &**other) }
 ge			    fn ge(&self, other: &Rc<T>) -> bool { **self >= **other }
@@ -121,6 +124,7 @@ get_mut			pub fn get_mut<'a, T>(rc: &'a mut Rc<T>) -> Option<&'a mut T>
 gt			    fn gt(&self, other: &Arc<T>) -> bool { *(*self) > *(*other) }
 gt			    fn gt(&self, other: &Box<T>) -> bool { PartialOrd::gt(&**self, &**other) }
 gt			    fn gt(&self, other: &Rc<T>) -> bool { **self > **other }
+hash			    fn hash(&self, state: &mut H) 
 hash			    fn hash(&self, state: &mut S) 
 hash			    fn hash(&self, state: &mut S) 
 heap			pub mod heap;
@@ -153,6 +157,7 @@ ne			    fn ne(&self, other: &Arc<T>) -> bool { *(*self) != *(*other) }
 ne			    fn ne(&self, other: &Box<T>) -> bool { PartialEq::ne(&**self, &**other) }
 ne			    fn ne(&self, other: &Rc<T>) -> bool { **self != **other }
 new			    pub fn new(data: T) -> Arc<T> 
+new			    pub fn new(x: T) -> Box<T> 
 new			    pub fn new(value: T) -> Rc<T> 
 oom			pub fn oom() -> ! 
 partial_cmp			    fn partial_cmp(&self, other: &Arc<T>) -> Option<Ordering> 

@@ -47,6 +47,9 @@ Barrier			pub struct Barrier
 BarrierState			struct BarrierState 
 BarrierWaitResult			impl BarrierWaitResult 
 BarrierWaitResult			pub struct BarrierWaitResult(bool);
+BitAnd			impl<'a, 'b, T, S, H> BitAnd<&'b HashSet<T, S>> for &'a HashSet<T, S>
+BitOr			impl<'a, 'b, T, S, H> BitOr<&'b HashSet<T, S>> for &'a HashSet<T, S>
+BitXor			impl<'a, 'b, T, S, H> BitXor<&'b HashSet<T, S>> for &'a HashSet<T, S>
 Blocker			enum Blocker 
 Bucket			impl<K, V, M> Bucket<K, V, M> 
 Bucket			pub struct Bucket<K, V, M> 
@@ -118,6 +121,7 @@ ChanWriter			pub struct ChanWriter
 Chars			pub struct Chars<'r, T:'r> 
 Cleanup			struct Cleanup 
 Clone for ChanWriter			impl Clone for ChanWriter 
+Clone for DefaultState			impl<H> Clone for DefaultState<H> 
 Clone for Dropable			    impl Clone for Dropable 
 Clone for Iter			impl<'a, K, V> Clone for Iter<'a, K, V> 
 Clone for Iter			impl<'a, K, V> Clone for Iter<'a, K, V> 
@@ -165,10 +169,14 @@ CryptAcquireContextA			        fn CryptAcquireContextA(phProv: *mut HCRYPTPROV,
 CryptGenRandom			        fn CryptGenRandom(hProv: HCRYPTPROV,
 CryptReleaseContext			        fn CryptReleaseContext(hProv: HCRYPTPROV, dwFlags: DWORD) -> BOOL;
 DISPATCHER_CONTEXT			    pub struct DISPATCHER_CONTEXT;
+Default for DefaultState			impl<H> Default for DefaultState<H> 
 Default for FilePermission			impl Default for FilePermission 
-Default for RandomSipHasher			impl Default for RandomSipHasher 
+Default for HashMap			impl<K, V, S, H> Default for HashMap<K, V, S>
+Default for HashSet			impl<T, S, H> Default for HashSet<T, S>
+Default for RandomState			impl Default for RandomState 
 DefaultResizePolicy			impl DefaultResizePolicy 
 DefaultResizePolicy			struct DefaultResizePolicy;
+DefaultState			pub struct DefaultState<H>;
 DeleteCriticalSection			    pub fn DeleteCriticalSection(lpCriticalSection: LPCRITICAL_SECTION);
 Deref for CString			impl Deref for CString 
 Deref for MutexGuard			impl<'mutex, T> Deref for MutexGuard<'mutex, T> 
@@ -178,7 +186,7 @@ Deref for StdinReaderGuard			impl<'a> Deref for StdinReaderGuard<'a>
 DerefMut for MutexGuard			impl<'mutex, T> DerefMut for MutexGuard<'mutex, T> 
 DerefMut for RwLockWriteGuard			impl<'rwlock, T> DerefMut for RwLockWriteGuard<'rwlock, T> 
 DerefMut for StdinReaderGuard			impl<'a> DerefMut for StdinReaderGuard<'a> 
-Difference			pub struct Difference<'a, T: 'a, H: 'a> 
+Difference			pub struct Difference<'a, T: 'a, S: 'a> 
 Directories			pub struct Directories 
 Display			impl<'a, P: GenericPath> Display<'a, P> 
 Display			pub struct Display<'a, P:'a> 
@@ -262,6 +270,8 @@ Entry			impl<'a, K, V> Entry<'a, K, V>
 Entry			pub enum Entry<'a, K: 'a, V: 'a> 
 EnvKey			struct EnvKey(CString);
 EofReader			    struct EofReader;
+Eq for HashMap			impl<K, V, S, H> Eq for HashMap<K, V, S>
+Eq for HashSet			impl<T, S, H> Eq for HashSet<T, S>
 Eq for Path			impl Eq for Path {}
 Eq for Path			impl Eq for Path {}
 Error			pub trait Error: Send 
@@ -278,6 +288,8 @@ Event			impl Event
 Event			pub struct Event(c::WSAEVENT);
 Exception			struct Exception 
 ExponentFormat			pub enum ExponentFormat 
+Extend for HashMap			impl<K, V, S, H> Extend<(K, V)> for HashMap<K, V, S>
+Extend for HashSet			impl<T, S, H> Extend<T> for HashSet<T, S>
 FLOATING_SAVE_AREA			    pub struct FLOATING_SAVE_AREA 
 FailFlushWriter			        struct FailFlushWriter;
 Failure			pub enum Failure<T> 
@@ -310,6 +322,8 @@ FromError			impl<T> FromError<PoisonError<T>> for TryLockError<T>
 FromError for Box			impl FromError<IoError> for Box<Error> 
 FromError for Box			impl FromError<MapError> for Box<Error> 
 FromError for E			impl<E> FromError<E> for E 
+FromIterator for HashMap			impl<K, V, S, H> FromIterator<(K, V)> for HashMap<K, V, S>
+FromIterator for HashSet			impl<T, S, H> FromIterator<T> for HashSet<T, S>
 FromPrimitive for Value			    impl FromPrimitive for Value 
 FromStr for IpAddr			impl FromStr for IpAddr 
 FromStr for Path			impl FromStr for Path 
@@ -347,17 +361,21 @@ Handler			impl Handler
 Handler			pub struct Handler 
 Handler			impl Handler 
 Handler			pub struct Handler 
-Hash for EnvKey			impl Hash for EnvKey 
-HashMap			impl<K: Hash + Eq, V> HashMap<K, V, RandomSipHasher> 
-HashMap			pub struct HashMap<K, V, H = RandomSipHasher> 
-HashSet			impl<T: Hash + Eq> HashSet<T, RandomSipHasher> 
-HashSet			pub struct HashSet<T, H = RandomSipHasher> 
-Hasher for RandomSipHasher			impl Hasher<sip::SipState> for RandomSipHasher 
+HashMap			impl<K, V, S, H> HashMap<K, V, S>
+HashMap			pub struct HashMap<K, V, S = RandomState> 
+HashSet			impl<T, S, H> HashSet<T, S>
+HashSet			pub struct HashSet<T, S = RandomState> 
+HashState			pub trait HashState 
+HashState for DefaultState			impl<H: Default + hash::Hasher> HashState for DefaultState<H> 
+HashState for RandomState			impl HashState for RandomState 
+Hasher			pub struct Hasher { inner: SipHasher }
 Helper			impl<M: Send> Helper<M> 
 Helper			pub struct Helper<M> 
 Hint			pub struct Hint 
 InAddr			pub enum InAddr 
 IncomingConnections			pub struct IncomingConnections<'a, A: ?Sized +'a> 
+Index for HashMap			impl<K, Q: ?Sized, V, S, H> Index<Q> for HashMap<K, V, S>
+IndexMut for HashMap			impl<K, V, S, H, Q: ?Sized> IndexMut<Q> for HashMap<K, V, S>
 Info			pub struct Info 
 InitialZeroByteReader			    struct InitialZeroByteReader 
 InitializeCriticalSectionAndSpinCount			    pub fn InitializeCriticalSectionAndSpinCount(
@@ -372,7 +390,7 @@ Inner			struct Inner
 Inner			struct Inner 
 InternalBufferedWriter			impl<W> InternalBufferedWriter<W> 
 InternalBufferedWriter			struct InternalBufferedWriter<W>(BufferedWriter<W>);
-Intersection			pub struct Intersection<'a, T: 'a, H: 'a> 
+Intersection			pub struct Intersection<'a, T: 'a, S: 'a> 
 IntoIter			pub struct IntoIter<K, V> 
 IntoIter			pub struct IntoIter<K> 
 IntoIter			pub struct IntoIter<K, V> 
@@ -391,12 +409,12 @@ IterMut			pub struct IterMut<'a, K: 'a, V: 'a>
 IterReader			pub struct IterReader<T> 
 Iterator for Bytes			impl<'r, R: Reader> Iterator for Bytes<'r, R> 
 Iterator for Chars			impl<'r, T: Buffer> Iterator for Chars<'r, T> 
-Iterator for Difference			impl<'a, T, S, H> Iterator for Difference<'a, T, H>
+Iterator for Difference			impl<'a, T, S, H> Iterator for Difference<'a, T, S>
 Iterator for Directories			impl Iterator for Directories 
 Iterator for Drain			impl<'a, K: 'a, V: 'a> Iterator for Drain<'a, K, V> 
 Iterator for Drain			impl<'a, K: 'a> Iterator for Drain<'a, K> 
 Iterator for Drain			impl<'a, K: 'a, V: 'a> Iterator for Drain<'a, K, V> 
-Iterator for Intersection			impl<'a, T, S, H> Iterator for Intersection<'a, T, H>
+Iterator for Intersection			impl<'a, T, S, H> Iterator for Intersection<'a, T, S>
 Iterator for IntoIter			impl<K, V> Iterator for IntoIter<K, V> 
 Iterator for IntoIter			impl<K> Iterator for IntoIter<K> 
 Iterator for IntoIter			impl<K, V> Iterator for IntoIter<K, V> 
@@ -411,8 +429,8 @@ Iterator for Lines			impl<'r, T: Buffer> Iterator for Lines<'r, T>
 Iterator for Packets			impl Iterator for Packets 
 Iterator for RawBuckets			impl<'a, K, V> Iterator for RawBuckets<'a, K, V> 
 Iterator for RevMoveBuckets			impl<'a, K, V> Iterator for RevMoveBuckets<'a, K, V> 
-Iterator for SymmetricDifference			impl<'a, T, S, H> Iterator for SymmetricDifference<'a, T, H>
-Iterator for Union			impl<'a, T, S, H> Iterator for Union<'a, T, H>
+Iterator for SymmetricDifference			impl<'a, T, S, H> Iterator for SymmetricDifference<'a, T, S>
+Iterator for Union			impl<'a, T, S, H> Iterator for Union<'a, T, S>
 Iterator for Values			impl<'a, K, V> Iterator for Values<'a, K, V> 
 JoinGuard			impl<'a, T: Send + 'a> JoinGuard<'a, T> 
 JoinGuard			impl<T: Send> JoinGuard<'static, T> 
@@ -454,8 +472,8 @@ MemoryMap			pub struct MemoryMap
 MemoryMapKind			pub enum MemoryMapKind 
 Message			enum Message<T> 
 Mul for Duration			impl Mul<i32> for Duration 
-MultiWriter			impl MultiWriter 
-MultiWriter			pub struct MultiWriter 
+MultiWriter			impl<W> MultiWriter<W> where W: Writer 
+MultiWriter			pub struct MultiWriter<W> 
 Mutex			impl<T: Send> Mutex<T> 
 Mutex			pub struct Mutex<T> 
 Mutex			impl Mutex 
@@ -504,6 +522,8 @@ Packets			struct Packets { cur: *mut Handle<'static, ()> }
 Parser			impl<'a> Parser<'a> 
 Parser			struct Parser<'a> 
 PartialEq for EnvKey			impl PartialEq for EnvKey 
+PartialEq for HashMap			impl<K, V, S, H> PartialEq for HashMap<K, V, S>
+PartialEq for HashSet			impl<T, S, H> PartialEq for HashSet<T, S>
 PartialEq for Path			impl PartialEq for Path 
 PartialEq for Path			impl PartialEq for Path 
 PartialOrd for Path			impl PartialOrd for Path 
@@ -550,8 +570,8 @@ RaceBox			struct RaceBox(BufferedReader<StdReader>);
 RaceBox			struct RaceBox(helper_signal::signal);
 RacyCell			impl<T> RacyCell<T> 
 RacyCell			struct RacyCell<T>(pub UnsafeCell<T>);
-RandomSipHasher			impl RandomSipHasher 
-RandomSipHasher			pub struct RandomSipHasher 
+RandomState			impl RandomState 
+RandomState			pub struct RandomState 
 RawBucket			impl<K, V> RawBucket<K, V> 
 RawBucket			struct RawBucket<K, V> 
 RawBuckets			struct RawBuckets<'a, K, V> 
@@ -658,6 +678,7 @@ SetLastError			            fn SetLastError(dwErrCode: DWORD);
 SetThreadStackGuarantee			    fn SetThreadStackGuarantee(StackSizeInBytes: *mut ULONG) -> BOOL;
 SetWaitableTimer			        pub fn SetWaitableTimer(hTimer: HANDLE,
 ShortReader			    pub struct ShortReader 
+Show for HashMap			impl<K, V, S, H> Show for HashMap<K, V, S>
 SignFormat			pub enum SignFormat 
 SignalToken			impl SignalToken 
 SignalToken			pub struct SignalToken 
@@ -693,9 +714,10 @@ Stdio			pub struct Stdio(libc::c_int);
 StdioContainer			pub enum StdioContainer 
 Stream			pub trait Stream: Reader + Writer { }
 Stream for T			impl<T: Reader + Writer> Stream for T {}
+Sub			impl<'a, 'b, T, S, H> Sub<&'b HashSet<T, S>> for &'a HashSet<T, S>
 Sub for Duration			impl Sub for Duration 
 SwitchToThread			    fn SwitchToThread() -> BOOL;
-SymmetricDifference			pub struct SymmetricDifference<'a, T: 'a, H: 'a> 
+SymmetricDifference			pub struct SymmetricDifference<'a, T: 'a, S: 'a> 
 SyncSender			impl<T: Send> SyncSender<T> 
 SyncSender			pub struct SyncSender<T> 
 TTY			impl TTY 
@@ -764,7 +786,7 @@ UdpSocket			impl UdpSocket
 UdpSocket			pub struct UdpSocket 
 UdpSocket			impl UdpSocket 
 UdpSocket			pub struct UdpSocket 
-Union			pub struct Union<'a, T: 'a, H: 'a> 
+Union			pub struct Union<'a, T: 'a, S: 'a> 
 UnixAcceptor			impl UnixAcceptor 
 UnixAcceptor			pub struct UnixAcceptor 
 UnixAcceptor			impl UnixAcceptor 
@@ -836,7 +858,7 @@ Writer for File			impl Writer for File
 Writer for IoResult			impl<W: Writer> Writer for IoResult<W> 
 Writer for LineBufferedWriter			impl<W: Writer> Writer for LineBufferedWriter<W> 
 Writer for MemWriter			impl Writer for MemWriter 
-Writer for MultiWriter			impl Writer for MultiWriter 
+Writer for MultiWriter			impl<W> Writer for MultiWriter<W> where W: Writer 
 Writer for NullStream			    impl Writer for NullStream 
 Writer for NullWriter			impl Writer for NullWriter 
 Writer for PipeStream			impl Writer for PipeStream 
@@ -1052,13 +1074,13 @@ bind_error			    fn bind_error()
 bind_error			    fn bind_error() 
 bind_error			    fn bind_error() 
 bitand			            fn bitand(self, other: 
-bitand			    fn bitand(self, rhs: &HashSet<T, H>) -> HashSet<T, H> 
+bitand			    fn bitand(self, rhs: &HashSet<T, S>) -> HashSet<T, S> 
 bitflags			pub mod bitflags;
 bitor			            fn bitor(self, other: 
-bitor			    fn bitor(self, rhs: &HashSet<T, H>) -> HashSet<T, H> 
+bitor			    fn bitor(self, rhs: &HashSet<T, S>) -> HashSet<T, S> 
 bits			            pub fn bits(&self) -> 
 bitxor			            fn bitxor(self, other: 
-bitxor			    fn bitxor(self, rhs: &HashSet<T, H>) -> HashSet<T, H> 
+bitxor			    fn bitxor(self, rhs: &HashSet<T, S>) -> HashSet<T, S> 
 blocking			mod blocking;
 bool			mod bool;
 boot			    pub fn boot<T, F>(&'static self, f: F, helper: fn(helper_signal::signal, Receiver<M>, T)) where
@@ -1160,6 +1182,7 @@ clone			        fn clone(&self) -> Dropable
 clone			    fn clone(&self) -> Iter<'a, K, V> 
 clone			    fn clone(&self) -> Keys<'a, K, V> 
 clone			    fn clone(&self) -> Values<'a, K, V> 
+clone			    fn clone(&self) -> DefaultState<H> { DefaultState }
 clone			    fn clone(&self) -> Iter<'a, K, V> 
 clone			    fn clone(&self) -> RawBuckets<'a, K, V> 
 clone			    fn clone(&self) -> RawTable<K, V> 
@@ -1325,9 +1348,10 @@ decode_error_detailed			pub fn decode_error_detailed(errno: i32) -> IoError
 decode_error_detailed			pub fn decode_error_detailed(errno: i32) -> IoError 
 decrement			    fn decrement(&mut self, token: SignalToken) -> StartResult 
 decrement			    fn decrement(&mut self, token: SignalToken) -> Result<(), SignalToken> 
-default			    fn default() -> HashMap<K, V, H> 
-default			    fn default() -> HashSet<T, H> 
-default			    fn default() -> RandomSipHasher 
+default			    fn default() -> HashMap<K, V, S> 
+default			    fn default() -> RandomState 
+default			    fn default() -> HashSet<T, S> 
+default			    fn default() -> DefaultState<H> { DefaultState }
 default			    fn default() -> FilePermission { FilePermission::empty() }
 default_sched_threads			pub fn default_sched_threads() -> uint 
 demangle			    fn demangle() 
@@ -1378,7 +1402,7 @@ detail			    fn detail(&self) -> Option<String> { None }
 detail			    fn detail(&self) -> Option<String> { Some(self.to_string()) }
 detail			    fn detail(&self) -> Option<String> 
 detail			    fn detail(&self) -> Option<String> { Some(format!("{:?}", self)) }
-difference			    pub fn difference<'a>(&'a self, other: &'a HashSet<T, H>) -> Difference<'a, T, H> 
+difference			    pub fn difference<'a>(&'a self, other: &'a HashSet<T, S>) -> Difference<'a, T, S> 
 digits			    fn digits(unused_self: Option<f32>) -> uint { num::Float::digits(unused_self) }
 digits			    fn digits(unused_self: Option<f64>) -> uint { num::Float::digits(unused_self) }
 digits			    fn digits(unused_self: Option<Self>) -> uint;
@@ -1506,8 +1530,8 @@ epipe			fn epipe() -> IoError
 epsilon			    fn epsilon() -> f32 { num::Float::epsilon() }
 epsilon			    fn epsilon() -> f64 { num::Float::epsilon() }
 epsilon			    fn epsilon() -> Self;
-eq			    fn eq(&self, other: &HashMap<K, V, H>) -> bool 
-eq			    fn eq(&self, other: &HashSet<T, H>) -> bool 
+eq			    fn eq(&self, other: &HashMap<K, V, S>) -> bool 
+eq			    fn eq(&self, other: &HashSet<T, S>) -> bool 
 eq			    fn eq(&self, other: &EnvKey) -> bool 
 eq			    fn eq(&self, other: &Path) -> bool 
 eq			    fn eq(&self, other: &Path) -> bool 
@@ -1613,6 +1637,7 @@ fill_bytes			    fn fill_bytes(&mut self, v: &mut [u8])
 fill_utf16_buf_and_decode			pub fn fill_utf16_buf_and_decode<F>(mut f: F) -> Option<String> where
 find_existing			fn find_existing(b: &mut Bencher) 
 find_nonexisting			fn find_nonexisting(b: &mut Bencher) 
+finish			    fn finish(&self) -> u64 { self.inner.finish() }
 first			        fn first<A, B>((a, _): (A, B)) -> A { a }
 first			        fn first<A, B>((a, _): (A, B)) -> A { a }
 first			    pub fn first(table: M) -> Bucket<K, V, M> 
@@ -1647,6 +1672,7 @@ fmodf			        pub fn fmodf(a: c_float, b: c_float) -> c_float;
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1660,10 +1686,14 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Show for BufferedReader			impl<R> fmt::Show for BufferedReader<R> where R: fmt::Show 
+fmt::Show for BufferedStream			impl<S> fmt::Show for BufferedStream<S> where S: fmt::Show 
+fmt::Show for BufferedWriter			impl<W> fmt::Show for BufferedWriter<W> where W: fmt::Show 
 fmt::Show for CString			impl fmt::Show for CString 
-fmt::Show for Command			impl fmt::Show for Command 
 fmt::Show for Display			impl<'a, P: GenericPath> fmt::Show for Display<'a, P> 
 fmt::Show for FilePermission			impl fmt::Show for FilePermission 
+fmt::Show for HashSet			impl<T, S, H> fmt::Show for HashSet<T, S>
+fmt::Show for LineBufferedWriter			impl<W> fmt::Show for LineBufferedWriter<W> where W: fmt::Show 
 fmt::Show for MapError			impl fmt::Show for MapError 
 fmt::Show for Path			impl fmt::Show for Path 
 fmt::Show for Path			impl fmt::Show for Path 
@@ -1712,8 +1742,8 @@ from_error			    fn from_error(err: PoisonError<T>) -> TryLockError<T>
 from_filedesc			    pub fn from_filedesc(fd: FileDesc) -> PipeStream 
 from_fn			    pub fn from_fn<F>(f: F) -> Future<A>
 from_i64			        fn from_i64(n: i64) -> Option<Value> { Some(Value { x: n as int }) }
-from_iter			    fn from_iter<T: Iterator<Item=(K, V)>>(iter: T) -> HashMap<K, V, H> 
-from_iter			    fn from_iter<I: Iterator<Item=T>>(iter: I) -> HashSet<T, H> 
+from_iter			    fn from_iter<T: Iterator<Item=(K, V)>>(iter: T) -> HashMap<K, V, S> 
+from_iter			    fn from_iter<I: Iterator<Item=T>>(iter: I) -> HashSet<T, S> 
 from_receiver			    pub fn from_receiver(rx: Receiver<A>) -> Future<A> 
 from_seed			    fn from_seed(seed: &'a [uint]) -> StdRng 
 from_slice			    pub fn from_slice(v: &[u8]) -> CString 
@@ -1823,16 +1853,21 @@ handle			    pub fn handle(&self) -> c::WSAEVENT { let Event(handle) = *self; ha
 has_nonsemantic_trailing_slash			    fn has_nonsemantic_trailing_slash(&self) -> bool 
 hash			    pub fn hash(&self) -> SafeHash 
 hash			mod hash;
-hash			    fn hash<T: ?Sized + Hash<sip::SipState>>(&self, value: &T) -> u64 
-hash			    fn hash(&self, state: &mut SipState) 
-hash			pub mod hash;
+hash			    fn hash(&self, state: &mut H) 
 hash			    fn hash(&self, state: &mut S) 
 hash			    fn hash(&self, _: &mut S) 
 hash			    fn hash(&self, state: &mut S) 
-hash::Hash for Path			impl<S: hash::Writer> hash::Hash<S> for Path 
-hash::Hash for Path			impl<S: hash::Writer> hash::Hash<S> for Path 
+hash::Hash for EnvKey			impl<H: hash::Writer + hash::Hasher> hash::Hash<H> for EnvKey 
+hash::Hash for Path			impl<S: hash::Writer + hash::Hasher> hash::Hash<S> for Path 
+hash::Hash for Path			impl<S: hash::Writer + hash::Hasher> hash::Hash<S> for Path 
+hash::Hasher for Hasher			impl hash::Hasher for Hasher 
+hash::Writer for Hasher			impl hash::Writer for Hasher 
 hash_map			pub mod hash_map 
 hash_set			pub mod hash_set 
+hash_state			pub mod hash_state 
+hasher			    fn hasher(&self) -> Hasher 
+hasher			    fn hasher(&self) -> H { Default::default() }
+hasher			    fn hasher(&self) -> Self::Hasher;
 hashmap			    fn hashmap() 
 hashmap_as_queue			fn hashmap_as_queue(b: &mut Bencher) 
 helper			fn helper(input: libc::c_int, messages: Receiver<Req>, _: ()) 
@@ -1910,7 +1945,7 @@ int_to_str_bytes_common			fn int_to_str_bytes_common<T, F>(num: T, radix: uint, 
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8) { num::Float::integer_decode(self) }
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8) { num::Float::integer_decode(self) }
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8);
-intersection			    pub fn intersection<'a>(&'a self, other: &'a HashSet<T, H>) -> Intersection<'a, T, H> 
+intersection			    pub fn intersection<'a>(&'a self, other: &'a HashSet<T, S>) -> Intersection<'a, T, S> 
 intersects			            pub fn intersects(&self, other: 
 into_ascii_lowercase			    fn into_ascii_lowercase(mut self) -> Vec<u8> 
 into_ascii_lowercase			    fn into_ascii_lowercase(self) -> Self;
@@ -1968,7 +2003,7 @@ is_ascii			    fn is_ascii(&self) -> bool;
 is_cwd_relative			pub fn is_cwd_relative(path: &Path) -> bool 
 is_dir			    fn is_dir(&self) -> bool 
 is_dir			    fn is_dir(&self) -> bool;
-is_disjoint			    pub fn is_disjoint(&self, other: &HashSet<T, H>) -> bool 
+is_disjoint			    pub fn is_disjoint(&self, other: &HashSet<T, S>) -> bool 
 is_empty			            pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool { self.len() == 0 }
 is_empty			    pub fn is_empty(&self) -> bool { self.map.len() == 0 }
@@ -2011,8 +2046,8 @@ is_str			    fn is_str(_: Option<&Self>) -> bool { false }
 is_str			    fn is_str(_: Option<&String>) -> bool { true }
 is_str			    fn is_str(_: Option<&str>) -> bool { true }
 is_str			    fn is_str(_: Option<&Path>) -> bool { true }
-is_subset			    pub fn is_subset(&self, other: &HashSet<T, H>) -> bool 
-is_superset			    pub fn is_superset(&self, other: &HashSet<T, H>) -> bool 
+is_subset			    pub fn is_subset(&self, other: &HashSet<T, S>) -> bool 
+is_superset			    pub fn is_superset(&self, other: &HashSet<T, S>) -> bool 
 is_tty			pub fn is_tty(fd: c_int) -> bool 
 is_verbatim			pub fn is_verbatim(path: &Path) -> bool 
 is_vol_abs			        fn is_vol_abs(path: &str, prefix: Option<PathPrefix>) -> bool 
@@ -2148,7 +2183,7 @@ lstat			pub fn lstat(p: &Path) -> IoResult<FileStat>
 lstat			pub fn lstat(_p: &Path) -> IoResult<FileStat> 
 mach_absolute_time			        pub fn mach_absolute_time() -> u64;
 mach_timebase_info			        pub fn mach_timebase_info(info: *mut mach_timebase_info) -> c_int;
-macros			pub mod macros;
+macros			mod macros;
 macros			mod macros;
 main			    pub unsafe fn main() -> uint 
 main			    pub unsafe fn main() -> uint 
@@ -2157,8 +2192,8 @@ make_command_line			fn make_command_line(prog: &CString, args: &[CString]) -> St
 make_handler			    pub unsafe fn make_handler() -> Handler 
 make_handler			    pub unsafe fn make_handler() -> super::Handler 
 make_handler			pub unsafe fn make_handler() -> Handler 
-make_hash			    fn make_hash<X: ?Sized + Hash<S>>(&self, x: &X) -> SafeHash 
-make_hash			pub fn make_hash<T: ?Sized + Hash<S>, S, H: Hasher<S>>(hasher: &H, t: &T) -> SafeHash 
+make_hash			    fn make_hash<X: ?Sized>(&self, x: &X) -> SafeHash where X: Hash<H> 
+make_hash			pub fn make_hash<T: ?Sized, S, H>(hash_state: &S, t: &T) -> SafeHash
 make_non_verbatim			pub fn make_non_verbatim(path: &Path) -> Option<Path> 
 make_rand_name			    fn make_rand_name() -> String 
 mantissa_digits			    fn mantissa_digits(unused_self: Option<f32>) -> uint 
@@ -2259,11 +2294,11 @@ net			pub mod net;
 net			pub mod net;
 new			        fn new(k: uint) -> Dropable 
 new			    fn new() -> DefaultResizePolicy 
-new			    pub fn new() -> HashMap<K, V, RandomSipHasher> 
-new			    pub fn new() -> HashSet<T, RandomSipHasher> 
+new			    pub fn new() -> HashMap<K, V, RandomState> 
+new			    pub fn new() -> RandomState 
+new			    pub fn new() -> HashSet<T, RandomState> 
 new			    pub fn new(capacity: uint) -> RawTable<K, V> 
 new			    pub fn new(table: M, hash: SafeHash) -> Bucket<K, V, M> 
-new			    pub fn new() -> RandomSipHasher 
 new			    pub fn new(inner: R) -> BufferedReader<R> 
 new			    pub fn new(inner: S) -> BufferedStream<S> 
 new			    pub fn new(inner: W) -> BufferedWriter<W> 
@@ -2285,7 +2320,7 @@ new			    pub fn new(iter: T) -> IterReader<T>
 new			    pub fn new(mut readers: I) -> ChainedReader<I, R> 
 new			    pub fn new(r: R, limit: uint) -> LimitReader<R> 
 new			    pub fn new(r: R, w: W) -> TeeReader<R, W> 
-new			    pub fn new(writers: Vec<Box<Writer+'static>>) -> MultiWriter 
+new			    pub fn new(writers: Vec<W>) -> MultiWriter<W> 
 new			    pub fn new(min_len: uint, options: &[MapOption]) -> Result<MemoryMap, MapError> 
 new			    fn new<T: BytesContainer>(path: T) -> Self 
 new			    pub fn new<T: BytesContainer>(path: T) -> Path 
@@ -2385,6 +2420,7 @@ next_test_ip4			pub fn next_test_ip4() -> SocketAddr
 next_test_ip6			pub fn next_test_ip6() -> SocketAddr 
 next_test_port			pub fn next_test_port() -> u16 
 next_test_unix			pub fn next_test_unix() -> Path 
+next_test_unix_socket			fn next_test_unix_socket() -> String 
 next_u32			        fn next_u32(&mut self) -> u32 { self.i as u32 }
 next_u32			    fn next_u32(&mut self) -> u32 
 next_u32			        fn next_u32(&mut self) -> u32 
@@ -2831,6 +2867,7 @@ reseed			    fn reseed(&mut self, seed: &'a [uint])
 reseeding::Reseeder for ThreadRngReseeder			impl reseeding::Reseeder<StdRng> for ThreadRngReseeder 
 reserve			    pub fn reserve(&mut self, additional: uint) 
 reserve			    pub fn reserve(&mut self, additional: uint) 
+reset			    fn reset(&mut self) { self.inner.reset() }
 reset_doesnt_switch_tasks			    fn reset_doesnt_switch_tasks() 
 reset_doesnt_switch_tasks2			    fn reset_doesnt_switch_tasks2() 
 resize			    fn resize(&mut self, new_capacity: uint) 
@@ -3153,6 +3190,7 @@ stat			    pub fn stat(&self) -> IoResult<FileStat>
 stat			pub fn stat(path: &Path) -> IoResult<FileStat> 
 stat			pub fn stat(p: &Path) -> IoResult<FileStat> 
 stat			pub fn stat(p: &Path) -> IoResult<FileStat> 
+state			pub mod state;
 state			    pub fn state(&'static self) -> State 
 states			    fn states() 
 static_smoke			    fn static_smoke() 
@@ -3191,7 +3229,7 @@ stress_bound			        unsafe fn stress_bound(bound: uint)
 stress_factor			    pub fn stress_factor() -> uint 
 stress_shared			    fn stress_shared() 
 sub			            fn sub(self, other: 
-sub			    fn sub(self, rhs: &HashSet<T, H>) -> HashSet<T, H> 
+sub			    fn sub(self, rhs: &HashSet<T, S>) -> HashSet<T, S> 
 sub			    fn sub(self, rhs: Duration) -> Duration 
 success			    pub fn success(&self) -> bool 
 symbol			    pub unsafe fn symbol(handle: *mut u8, symbol: *const libc::c_char) -> *mut u8 
@@ -3203,7 +3241,7 @@ symlink			pub fn symlink(src: &Path, dst: &Path) -> IoResult<()>
 symlink			pub fn symlink(src: &Path, dst: &Path) -> IoResult<()> 
 symlink_noexist			    fn symlink_noexist() 
 symlinks_work			    fn symlinks_work() 
-symmetric_difference			    pub fn symmetric_difference<'a>(&'a self, other: &'a HashSet<T, H>)
+symmetric_difference			    pub fn symmetric_difference<'a>(&'a self, other: &'a HashSet<T, S>)
 sync			pub mod sync;
 sync			mod sync;
 sync			pub mod sync;
@@ -3472,7 +3510,7 @@ unicode_path_exists			    fn unicode_path_exists()
 unicode_path_is_dir			    fn unicode_path_is_dir() 
 unimpl			pub fn unimpl() -> IoError 
 unimpl			pub fn unimpl() -> IoError 
-union			    pub fn union<'a>(&'a self, other: &'a HashSet<T, H>) -> Union<'a, T, H> 
+union			    pub fn union<'a>(&'a self, other: &'a HashSet<T, S>) -> Union<'a, T, S> 
 unit			mod unit;
 unix_clone_smoke			    fn unix_clone_smoke() 
 unix_clone_two_read			    fn unix_clone_two_read() 
@@ -3554,24 +3592,25 @@ with_addresses			fn with_addresses<A, T, F>(addr: A, mut action: F) -> IoResult<
 with_arg			    pub fn with_arg<F>(func: F) -> Thunk<A,R>
 with_argv			fn with_argv<T,F>(prog: &CString, args: &[CString],
 with_capacities			    pub fn with_capacities(reader_cap: uint, writer_cap: uint, inner: S)
-with_capacity			    pub fn with_capacity(capacity: uint) -> HashMap<K, V, RandomSipHasher> 
-with_capacity			    pub fn with_capacity(capacity: uint) -> HashSet<T, RandomSipHasher> 
+with_capacity			    pub fn with_capacity(capacity: uint) -> HashMap<K, V, RandomState> 
+with_capacity			    pub fn with_capacity(capacity: uint) -> HashSet<T, RandomState> 
 with_capacity			    pub fn with_capacity(cap: uint, inner: R) -> BufferedReader<R> 
 with_capacity			    pub fn with_capacity(cap: uint, inner: W) -> BufferedWriter<W> 
 with_capacity			    pub fn with_capacity(n: uint) -> MemWriter 
-with_capacity_and_hasher			    pub fn with_capacity_and_hasher(capacity: uint, hasher: H) -> HashMap<K, V, H> 
-with_capacity_and_hasher			    pub fn with_capacity_and_hasher(capacity: uint, hasher: H) -> HashSet<T, H> 
+with_capacity_and_hash_state			    pub fn with_capacity_and_hash_state(capacity: uint, hash_state: S)
+with_capacity_and_hash_state			    pub fn with_capacity_and_hash_state(capacity: uint, hash_state: S)
 with_dirp			fn with_dirp<T, F>(d: Option<&CString>, cb: F) -> T where
 with_env_lock			fn with_env_lock<T, F>(f: F) -> T where
-with_envp			fn with_envp<K,V,T,F>(env: Option<&collections::HashMap<K, V>>,
-with_envp			fn with_envp<K, V, T, F>(env: Option<&collections::HashMap<K, V>>, cb: F) -> T where
+with_envp			fn with_envp<K,V,T,F>(env: Option<&HashMap<K, V>>,
+with_envp			fn with_envp<K, V, T, F>(env: Option<&collections::HashMap<K, V>>, cb: F) -> T
 with_extension			    fn with_extension<T: BytesContainer>(&self, extension: T) -> Self 
 with_filename			    fn with_filename<T: BytesContainer>(&self, filename: T) -> Self 
-with_hasher			    pub fn with_hasher(hasher: H) -> HashMap<K, V, H> 
-with_hasher			    pub fn with_hasher(hasher: H) -> HashSet<T, H> 
+with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashMap<K, V, S> 
+with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashSet<T, S> 
 with_task_stdout			fn with_task_stdout<F>(f: F) where F: FnOnce(&mut Writer) -> IoResult<()> 
 wouldblock			pub fn wouldblock() -> bool 
 wouldblock			pub fn wouldblock() -> bool 
+write			    fn write(&mut self, data: &[u8]) { self.inner.write(data) }
 write			    fn write(&mut self, bytes: &[u8]) -> IoResult<()> 
 write			            fn write(&mut self, _: &[u8]) -> io::IoResult<()> { Ok(()) }
 write			            fn write(&mut self, _buf: &[u8]) -> IoResult<()> { Ok(()) }

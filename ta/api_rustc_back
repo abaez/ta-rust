@@ -1,3 +1,5 @@
+Arch			impl Arch 
+Arch			pub enum Arch 
 Archive			impl<'a> Archive<'a> 
 Archive			pub struct Archive<'a> 
 ArchiveBuilder			impl<'a> ArchiveBuilder<'a> 
@@ -35,6 +37,7 @@ Test			    struct Test
 ToBits			trait ToBits 
 ToBits for u64			impl ToBits for u64 
 Visitor for StrictVersionHashVisitor			    impl<'a, 'v> Visitor<'v> for StrictVersionHashVisitor<'a> 
+aarch64_apple_ios			mod aarch64_apple_ios;
 aarch64_unknown_linux_gnu			mod aarch64_unknown_linux_gnu;
 abi			pub mod abi;
 add_archive			    fn add_archive<F>(&mut self, archive: &Path, name: &str, mut skip: F) -> io::IoResult<()> where
@@ -44,12 +47,14 @@ add_native_library			    pub fn add_native_library(&mut self, name: &str) -> io:
 add_rlib			    pub fn add_rlib(&mut self, rlib: &Path, name: &str,
 adjust_abi			    pub fn adjust_abi(&self, abi: abi::Abi) -> abi::Abi 
 apple_base			mod apple_base;
+apple_ios_base			mod apple_ios_base;
 archive			pub mod archive;
 arm			pub mod arm;
-arm_apple_ios			mod arm_apple_ios;
 arm_linux_androideabi			mod arm_linux_androideabi;
 arm_unknown_linux_gnueabi			mod arm_unknown_linux_gnueabi;
 arm_unknown_linux_gnueabihf			mod arm_unknown_linux_gnueabihf;
+armv7_apple_ios			mod armv7_apple_ios;
+armv7s_apple_ios			mod armv7s_apple_ios;
 as_str			    pub fn as_str<'a>(&'a self) -> &'a str 
 bench			mod bench 
 build			    pub fn build(self) -> Archive<'a> 
@@ -78,6 +83,7 @@ get_rpath_flags			pub fn get_rpath_flags<F, G>(config: RPathConfig<F, G>) -> Vec
 get_rpath_relative_to_output			fn get_rpath_relative_to_output<F, G>(config: &mut RPathConfig<F, G>, lib: &Path) -> String where
 get_rpaths			fn get_rpaths<F, G>(mut config: RPathConfig<F, G>, libs: &[Path]) -> Vec<String> where
 get_rpaths_relative_to_output			fn get_rpaths_relative_to_output<F, G>(config: &mut RPathConfig<F, G>,
+get_sdk_root			pub fn get_sdk_root(sdk_name: &str) -> String 
 get_target_strs			pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t 
 get_target_strs			pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t 
 get_target_strs			pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t 
@@ -100,7 +106,7 @@ load_file			        fn load_file(path: &Path) -> Result<Target, String>
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 macro_name			            fn macro_name(mac: &Mac) -> token::InternedString 
 maj			        fn maj(x: u32, y: u32, z: u32) -> u32 
-make			    pub fn make<'a>(st: &'a mut SipState) -> StrictVersionHashVisitor<'a> 
+make			    pub fn make<'a>(st: &'a mut SipHasher) -> StrictVersionHashVisitor<'a> 
 minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
 mips			pub mod mips;
 mips_unknown_linux_gnu			mod mips_unknown_linux_gnu;
@@ -117,6 +123,7 @@ next			    fn next<'s>(&'s mut self, len: uint) -> &'s mut [u8]
 next			    fn next<'s>(&'s mut self, len: uint) -> &'s mut [u8];
 open			    pub fn open(config: ArchiveConfig<'a>) -> Archive<'a> 
 opts			pub fn opts() -> TargetOptions 
+opts			pub fn opts(arch: Arch) -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
@@ -125,6 +132,7 @@ output_bits			    fn output_bits(&self) -> uint { 256 }
 output_bits			    fn output_bits(&self) -> uint;
 position			    fn position(&self) -> uint { self.buffer_idx }
 position			    fn position(&self) -> uint;
+pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String> 
 process_block			    fn process_block(&mut self, data: &[u8]) 
 read_u32_be			fn read_u32_be(input: &[u8]) -> u32 
 read_u32v_be			fn read_u32v_be(dst: &mut[u32], input: &[u8]) 
@@ -180,12 +188,17 @@ target			pub fn target() -> Target
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
+target			pub fn target() -> Target 
+target			pub fn target() -> Target 
+target			pub fn target() -> Target 
+target_cpu			fn target_cpu(arch: Arch) -> String 
 target_strs			pub mod target_strs;
 test			mod test 
 test			mod test 
 tests			mod tests 
 to_bits			    fn to_bits(self) -> (Self, Self);
 to_bits			    fn to_bits(self) -> (u64, u64) 
+to_string			    pub fn to_string(&self) -> &'static str 
 update_symbols			    pub fn update_symbols(&mut self) 
 visit_arm			        fn visit_arm(&mut self, a: &Arm) 
 visit_block			        fn visit_block(&mut self, b: &Block) 
@@ -218,6 +231,7 @@ write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32)
 x86			pub mod x86;
 x86_64			pub mod x86_64;
 x86_64_apple_darwin			mod x86_64_apple_darwin;
+x86_64_apple_ios			mod x86_64_apple_ios;
 x86_64_pc_windows_gnu			mod x86_64_pc_windows_gnu;
 x86_64_unknown_dragonfly			mod x86_64_unknown_dragonfly;
 x86_64_unknown_freebsd			mod x86_64_unknown_freebsd;

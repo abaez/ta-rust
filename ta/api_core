@@ -10,6 +10,7 @@ Any			pub trait Any: 'static
 Any for T			impl<T: 'static> Any for T 
 Argument			impl<'a> Argument<'a> 
 Argument			pub struct Argument<'a> 
+Argument			pub struct Argument 
 Argument			pub struct Argument<'a> 
 Arguments			impl<'a> Arguments<'a> 
 Arguments			pub struct Arguments<'a> 
@@ -46,7 +47,6 @@ BorrowRef			struct BorrowRef<'b>
 BorrowRefMut			impl<'b> BorrowRefMut<'b> 
 BorrowRefMut			struct BorrowRefMut<'b> 
 ByRef			pub struct ByRef<'a, I:'a> 
-Bytes			    struct Bytes<'a>(&'a [u8]);
 Bytes			pub struct Bytes<'a>(Map<&'a u8, u8, slice::Iter<'a, u8>, BytesDeref>);
 BytesDeref			struct BytesDeref;
 Cell			impl<T:Copy> Cell<T> 
@@ -89,7 +89,7 @@ Clone for Iter			impl<'a, T> Clone for Iter<'a, T>
 Clone for Map			impl<A, B, I, F> Clone for Map<A, B, I, F> where
 Clone for RefCell			impl<T: Clone> Clone for RefCell<T> 
 Clone for Scan			impl<A, B, I, St, F> Clone for Scan<A, B, I, St, F> where
-Clone for SipState			impl Clone for SipState 
+Clone for SipHasher			impl Clone for SipHasher 
 Clone for SkipWhile			impl<A, I, P> Clone for SkipWhile<A, I, P> where
 Clone for Split			impl<'a, T, P> Clone for Split<'a, T, P> where P: Clone + FnMut(&T) -> bool 
 Clone for TakeWhile			impl<A, I, P> Clone for TakeWhile<A, I, P> where
@@ -122,7 +122,6 @@ Default for Cell			impl<T:Default + Copy> Default for Cell<T>
 Default for Option			impl<T> Default for Option<T> 
 Default for RefCell			impl<T:Default> Default for RefCell<T> 
 Default for SipHasher			impl Default for SipHasher 
-Default for SipState			impl Default for SipState 
 Deref			impl<'a, T: ?Sized> Deref for &'a T 
 Deref			impl<'a, T: ?Sized> Deref for &'a mut T 
 Deref			pub trait Deref 
@@ -249,19 +248,28 @@ GenericRadix			        impl GenericRadix for
 GenericRadix			trait GenericRadix 
 GenericRadix for Radix			impl GenericRadix for Radix 
 GenericSplitN			struct GenericSplitN<I> 
-Hash			        impl<S: Writer> Hash<S> for 
-Hash			        impl<S: Writer> Hash<S> for () 
-Hash			impl<S: Writer, T> Hash<S> for *const T 
-Hash			impl<S: Writer, T> Hash<S> for *mut T 
-Hash			pub trait Hash<S = sip::SipState> 
-Hash for Bytes			    impl<'a, S: Writer> Hash<S> for Bytes<'a> 
-Hash for Cow			impl<'a, T, B: ?Sized, S> Hash<S> for Cow<'a, T, B> where B: Hash<S> + ToOwned<T> 
-Hash for TypeId			impl<S: Writer> Hash<S> for TypeId 
-Hash for bool			impl<S: Writer> Hash<S> for bool 
-Hash for char			impl<S: Writer> Hash<S> for char 
-Hash for str			impl<S: Writer> Hash<S> for str 
-Hasher			pub trait Hasher<S> 
-Hasher for SipHasher			impl Hasher<SipState> for SipHasher 
+Hash			            impl<S: Hasher> Hash<S> for () 
+Hash			            impl<S: Writer + Hasher> Hash<S> for 
+Hash			            impl<S: Writer> Hash<S> for 
+Hash			            impl<S> Hash<S> for () 
+Hash			    impl<S: Writer + Hasher, T> Hash<S> for *const T 
+Hash			    impl<S: Writer + Hasher, T> Hash<S> for *mut T 
+Hash			    impl<S: Writer, T> Hash<S> for *const T 
+Hash			    impl<S: Writer, T> Hash<S> for *mut T 
+Hash			pub trait Hash<H: Hasher> 
+Hash			pub trait Hash<H> 
+Hash for Cow			    impl<'a, T, B: ?Sized, S: Hasher> Hash<S> for Cow<'a, T, B>
+Hash for Cow			    impl<'a, T, B: ?Sized, S> Hash<S> for Cow<'a, T, B>
+Hash for TypeId			    impl<S: Writer + Hasher> Hash<S> for TypeId 
+Hash for TypeId			    impl<S: Writer> Hash<S> for TypeId 
+Hash for bool			    impl<S: Writer + Hasher> Hash<S> for bool 
+Hash for bool			    impl<S: Writer> Hash<S> for bool 
+Hash for char			    impl<S: Writer + Hasher> Hash<S> for char 
+Hash for char			    impl<S: Writer> Hash<S> for char 
+Hash for str			    impl<S: Writer + Hasher> Hash<S> for str 
+Hash for str			    impl<S: Writer> Hash<S> for str 
+Hasher			pub trait Hasher 
+Hasher for SipHasher			impl Hasher for SipHasher 
 Index			pub trait Index<Index: ?Sized> 
 IndexMut			pub trait IndexMut<Index: ?Sized> 
 Inspect			impl<A, I, F> Inspect<A, I, F> where I: Iterator<Item=A>, F: FnMut(&A) 
@@ -513,8 +521,6 @@ SignedInt			pub trait SignedInt
 SignificantDigits			pub enum SignificantDigits 
 SipHasher			impl SipHasher 
 SipHasher			pub struct SipHasher 
-SipState			impl SipState 
-SipState			pub struct SipState 
 SizeHint			        struct SizeHint<A>(uint, Option<uint>);
 Sized			pub trait Sized 
 Skip			pub struct Skip<I> 
@@ -541,11 +547,6 @@ Str for str			impl Str for str
 StrExt			pub trait StrExt 
 StrExt for str			impl StrExt for str 
 String			    impl String for 
-String			impl String for () 
-String			impl<T: Show> String for [T] 
-String			impl<T: String> String for [T] 
-String			impl<T> String for *const T 
-String			impl<T> String for *mut T 
 String			pub trait String 
 String for Arguments			impl<'a> String for Arguments<'a> 
 String for Utf8Error			impl String for Utf8Error 
@@ -588,7 +589,7 @@ Windows			pub struct Windows<'a, T:'a>
 Writer			pub trait Writer 
 Writer			pub trait Writer 
 Writer for Adapter			        impl<'a, T: ?Sized> Writer for Adapter<'a, T>
-Writer for SipState			impl Writer for SipState 
+Writer for SipHasher			impl Writer for SipHasher 
 Zip			pub struct Zip<A, B> 
 abort			    pub fn abort() -> !;
 abs			    fn abs(self) -> f32 
@@ -737,11 +738,6 @@ atomic_xsub_relaxed			    pub fn atomic_xsub_relaxed<T>(dst: *mut T, src: T) -> 
 base			            fn base(&self) -> u8 { 
 base			    fn base(&self) -> u8 { self.base }
 base			    fn base(&self) -> u8;
-bench_long_str			    fn bench_long_str(b: &mut Bencher) 
-bench_str_of_8_bytes			    fn bench_str_of_8_bytes(b: &mut Bencher) 
-bench_str_over_8_bytes			    fn bench_str_over_8_bytes(b: &mut Bencher) 
-bench_str_under_8_bytes			    fn bench_str_under_8_bytes(b: &mut Bencher) 
-bench_u64			    fn bench_u64(b: &mut Bencher) 
 binary_search			    fn binary_search(&self, x: &Self::Item) -> Result<uint, uint> where Self::Item: Ord;
 binary_search			    fn binary_search(&self, x: &T) -> Result<uint, uint> where T: Ord 
 binary_search_by			    fn binary_search_by<F>(&self, f: F) -> Result<uint, uint> where
@@ -826,7 +822,7 @@ clone			            fn clone(&self) ->
 clone			            fn clone(&self) -> extern "Rust" fn(
 clone			    fn clone(&self) -> &'a T { *self }
 clone			    fn clone(&self) -> Self;
-clone			    fn clone(&self) -> SipState 
+clone			    fn clone(&self) -> SipHasher 
 clone			    fn clone(&self) -> Filter<A, I, P> 
 clone			    fn clone(&self) -> FilterMap<A, B, I, F> 
 clone			    fn clone(&self) -> FlatMap<A, B, I, U, F> 
@@ -916,7 +912,6 @@ default			    fn default() -> RefCell<T>
 default			            fn default() -> 
 default			    fn default() -> Self;
 default			    fn default() -> SipHasher 
-default			    fn default() -> SipState 
 default			pub mod default;
 default			    fn default() -> Option<T> { None }
 default			    fn default() -> &'a [T] { &[] }
@@ -1029,6 +1024,8 @@ find			    fn find<P: CharEq>(&self, mut pat: P) -> Option<uint>
 find			    fn find<P: CharEq>(&self, pat: P) -> Option<uint>;
 find_str			    fn find_str(&self, needle: &str) -> Option<uint> 
 find_str			    fn find_str(&self, pat: &str) -> Option<uint>;
+finish			    fn finish(&self) -> Self::Output;
+finish			    fn finish(&self) -> u64 
 finish			    fn finish(&mut self) -> Option<&'a [T]> 
 finish			    fn finish(&mut self) -> Option<&'a mut [T]> 
 finish			    fn finish(&mut self) -> Option<Self::Item>;
@@ -1063,8 +1060,12 @@ fmt			            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			        impl fmt::
 fmt			        impl fmt::Show for 
 fmt			pub mod fmt;
-fmt::Show for Cow			impl<'a, T, B: ?Sized> fmt::Show for Cow<'a, T, B> where
+fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt::Show for FullRange			impl fmt::Show for FullRange 
 fmt::Show for RadixFmt			        impl fmt::Show for RadixFmt<
+fmt::Show for Range			impl<Idx: fmt::Show> fmt::Show for Range<Idx> 
+fmt::Show for RangeFrom			impl<Idx: fmt::Show> fmt::Show for RangeFrom<Idx> 
+fmt::Show for RangeTo			impl<Idx: fmt::Show> fmt::Show for RangeTo<Idx> 
 fmt::String for Cow			impl<'a, T, B: ?Sized> fmt::String for Cow<'a, T, B> where
 fmt::String for RadixFmt			        impl fmt::String for RadixFmt<
 fmt::Writer for Filler			            impl<'a> fmt::Writer for Filler<'a> 
@@ -1156,16 +1157,13 @@ gt			    fn gt(&self, other: &*const T) -> bool { *self > *other }
 gt			    fn gt(&self, other: &*mut T) -> bool { *self > *other }
 gt			    fn gt(&self, other: &[T]) -> bool 
 gt			                fn gt(&self, other: &(
-hash			            fn hash(&self, state: &mut S) 
-hash			    fn hash(&self, state: &mut S) 
-hash			    fn hash(&self, state: &mut S);
-hash			    fn hash<T: ?Sized + Hash<S>>(&self, value: &T) -> u64;
+hash			                fn hash(&self, _state: &mut S) {}
+hash			                fn hash(&self, state: &mut S) 
 hash			        fn hash(&self, state: &mut S) 
-hash			    fn hash<T: ?Sized + Hash<SipState>>(&self, value: &T) -> u64 
-hash			pub fn hash<T: ?Sized + Hash<SipState>>(value: &T) -> u64 
+hash			    fn hash(&self, state: &mut H);
+hash			pub fn hash<T: Hash<H>, H: Hasher + Default>(value: &T) -> H::Output 
 hash			    pub fn hash(&self) -> u64 { self.t }
 hash			pub mod hash;
-hash_with_keys			pub fn hash_with_keys<T: ?Sized + Hash<SipState>>(k0: u64, k1: u64, value: &T) -> u64 
 i16_add_with_overflow			    pub fn i16_add_with_overflow(x: i16, y: i16) -> (i16, bool);
 i16_mul_with_overflow			    pub fn i16_mul_with_overflow(x: i16, y: i16) -> (i16, bool);
 i16_sub_with_overflow			    pub fn i16_sub_with_overflow(x: i16, y: i16) -> (i16, bool);
@@ -1192,6 +1190,7 @@ idx			    fn idx(&mut self, index: uint) -> Option<Self::Item>;
 idx			    fn idx(&mut self, index: uint) -> Option<T> 
 idx			    fn idx(&mut self, index: uint) -> Option<&'a T> 
 idx			    fn idx(&mut self, index: uint) -> Option<&'a [T]> 
+impls			mod impls 
 impls			mod impls 
 index			    fn index<'a>(&'a self, index: &Index) -> &'a Self::Output;
 index			    fn index(&self, &index: &uint) -> &T 
@@ -1454,14 +1453,12 @@ new			    fn new<'b, T>(x: &'b T, f: fn(&T, &mut Formatter) -> Result) -> Argume
 new			    pub fn new(pieces: &'a [&'a str],
 new			    fn new(base: u8) -> Radix 
 new			    pub fn new() -> SipHasher 
-new			    pub fn new() -> SipState 
 new			    pub fn new(initial_state: St, f: F) -> Unfold<A, St, F> 
 new			    pub unsafe fn new(inner: T) -> NonZero<T> 
 new			    fn new() -> NaiveSearcher 
 new			    fn new(haystack: &[u8], needle: &[u8]) -> Searcher 
 new			    fn new(needle: &[u8]) -> TwoWaySearcher 
 new_with_keys			    pub fn new_with_keys(key0: u64, key1: u64) -> SipHasher 
-new_with_keys			    pub fn new_with_keys(key0: u64, key1: u64) -> SipState 
 next			    fn next(&mut self) -> Option<char> 
 next			            fn next(&mut self) -> Option<A> { None }
 next			    fn next(&mut self) -> Option<(T, U)> 
@@ -1537,6 +1534,7 @@ null_mut			pub fn null_mut<T>() -> *mut T { 0 as *mut T }
 num			mod num;
 num			pub mod num;
 of			    pub fn of<T: 'static>() -> TypeId 
+of			    pub fn of<T: ?Sized + 'static>() -> TypeId 
 offset			    pub fn offset<T>(dst: *const T, offset: int) -> *const T;
 offset			    pub unsafe fn offset(self, offset: int) -> *mut T 
 offset			    unsafe fn offset(self, count: int) -> *const T 
@@ -1659,12 +1657,11 @@ repeat			pub fn repeat<T: Clone>(elt: T) -> Repeat<T>
 replace			pub fn replace<T>(dest: &mut T, mut src: T) -> T 
 replace			pub unsafe fn replace<T>(dest: *mut T, mut src: T) -> T 
 repr			    fn repr(&self) -> T { unsafe { mem::transmute_copy(&self) } }
-reset			    pub fn reset(&mut self) 
+reset			    fn reset(&mut self);
+reset			    fn reset(&mut self) 
 reset_fuse			    pub fn reset_fuse(&mut self) 
-result			    pub fn result(&self) -> u64 
+result			    pub fn result(&self) -> u64 { self.finish() }
 result			pub mod result;
-result_bytes			        fn result_bytes(h: u64) -> Vec<u8> 
-result_str			        fn result_str(h: u64) -> String 
 return_address			    pub fn return_address() -> *const u8;
 rev			    fn rev(self) -> Rev<Self> 
 reverse			    pub fn reverse(self) -> Ordering 
@@ -1720,7 +1717,7 @@ signum			    fn signum(self) -> Self;
 simd			pub mod simd;
 sinf32			    pub fn sinf32(x: f32) -> f32;
 sinf64			    pub fn sinf64(x: f64) -> f64;
-sip			pub mod sip;
+sip			mod sip;
 size_hint			            fn size_hint(&self) -> (uint, Option<uint>) 
 size_hint			    fn size_hint(&self) -> (uint, Option<uint>) { (0, None) }
 size_hint			    fn size_hint(&self) -> (uint, Option<uint>) { (uint::MAX, None) }
@@ -1825,14 +1822,13 @@ swap			    fn swap(&mut self, a: uint, b: uint);
 swap_bytes			            fn swap_bytes(self) -> 
 swap_bytes			            fn swap_bytes(self) -> 
 swap_bytes			    fn swap_bytes(self) -> Self;
-tail			    fn tail(&self) -> &[T] { self.index(&(1..)) }
+tail			    fn tail(&self) -> &[T] { &self[1..] }
 tail			    fn tail<'a>(&'a self) -> &'a [Self::Item];
 tail_mut			    fn tail_mut(&mut self) -> &mut [T] 
 tail_mut			    fn tail_mut<'a>(&'a mut self) -> &'a mut [Self::Item];
 take			    fn take(self, n: uint) -> Take<Self> 
 take			    pub fn take(&mut self) -> Option<T> 
 take_while			    fn take_while<P>(self, predicate: P) -> TakeWhile<Self::Item, Self, P> where
-tests			mod tests 
 to_be			    fn to_be(self) -> Self { \/\/ or not to be?
 to_degrees			    fn to_degrees(self) -> f32 { self * (180.0f32 \/ consts::PI) }
 to_degrees			    fn to_degrees(self) -> f64 { self * (180.0f64 \/ consts::PI) }
@@ -1845,7 +1841,6 @@ to_f32			    fn to_f32(&self) -> Option<f32>
 to_f64			            fn to_f64(&self) -> Option<f64> { Some(*self as f64) }
 to_f64			            fn to_f64(&self) -> Option<f64> { impl_to_primitive_float_to_float!(
 to_f64			    fn to_f64(&self) -> Option<f64> 
-to_hex_str			        fn to_hex_str(r: &[u8; 8]) -> String 
 to_i16			            fn to_i16(&self) -> Option<i16> { Some(*self as i16) }
 to_i16			            fn to_i16(&self) -> Option<i16> { impl_to_primitive_int_to_int!(
 to_i16			            fn to_i16(&self) -> Option<i16> { impl_to_primitive_uint_to_int!(i16, *self) }
@@ -1915,6 +1910,7 @@ try_borrow_mut			    pub fn try_borrow_mut<'a>(&'a self) -> Option<RefMut<'a, T>
 try_finally			pub fn try_finally<T, U, R, F, G>(mutate: &mut T, drop: U, try_fn: F, finally_fn: G) -> R where
 tuple			mod tuple;
 type_id			    pub fn type_id<T: 'static>() -> TypeId;
+type_id			    pub fn type_id<T: ?Sized + 'static>() -> TypeId;
 u16_add_with_overflow			    pub fn u16_add_with_overflow(x: u16, y: u16) -> (u16, bool);
 u16_mul_with_overflow			    pub fn u16_mul_with_overflow(x: u16, y: u16) -> (u16, bool);
 u16_sub_with_overflow			    pub fn u16_sub_with_overflow(x: u16, y: u16) -> (u16, bool);
@@ -1970,8 +1966,6 @@ zero			    fn zero() -> f32 { 0.0 }
 zero			    fn zero() -> f64 { 0.0 }
 zero			            fn zero() -> 
 zero			    fn zero() -> Self;
-zero_byte			        fn zero_byte(val: u32, byte: uint) -> u32 
-zero_byte			        fn zero_byte(val: u64, byte: uint) -> u64 
 zero_memory			pub unsafe fn zero_memory<T>(dst: *mut T, count: uint) 
 zeroed			pub unsafe fn zeroed<T>() -> T 
 zip			    fn zip<B, U>(self, other: U) -> Zip<Self, U> where

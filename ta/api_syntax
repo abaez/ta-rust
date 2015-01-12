@@ -189,7 +189,6 @@ IntType			impl IntType
 IntType			pub enum IntType 
 InternedString			impl InternedString 
 InternedString			pub struct InternedString 
-Interner			impl<T: Eq + Hash + Clone + 'static> Interner<T> 
 Interner			pub struct Interner<T> 
 IntoIter			pub struct IntoIter<T> 
 IntoIterRepr			enum IntoIterRepr<T> 
@@ -321,10 +320,12 @@ ParserObsoleteMethods			pub trait ParserObsoleteMethods
 ParserObsoleteMethods for parser			impl<'a> ParserObsoleteMethods for parser::Parser<'a> 
 PartialEq			impl<'a> PartialEq<InternedString > for &'a str 
 PartialEq for Ident			impl PartialEq for Ident 
+PartialEq for IntTy			impl PartialEq for IntTy 
 PartialEq for InternedString			impl<'a> PartialEq<&'a str> for InternedString 
 PartialEq for MetaItem_			impl PartialEq for MetaItem_ 
 PartialEq for P			impl<T: PartialEq> PartialEq for P<T> 
 PartialEq for Span			impl PartialEq for Span 
+PartialEq for UintTy			impl PartialEq for UintTy 
 Pat			pub struct Pat 
 PatIdentFinder			struct PatIdentFinder 
 PatIdentRenamer			pub struct PatIdentRenamer<'a> 
@@ -606,7 +607,6 @@ bump_expecting_char			        fn bump_expecting_char<'a,D:fmt::Show>(r: &mut Str
 byte_lit			pub fn byte_lit(lit: &str) -> (u8, uint) 
 byte_offset			    fn byte_offset(&self, pos: BytePos) -> BytePos 
 bytepos_to_file_charpos			    pub fn bytepos_to_file_charpos(&self, bpos: BytePos) -> CharPos 
-bytes			    pub mod bytes;
 call_site			    pub fn call_site(&self) -> Span 
 call_substructure_method			    fn call_substructure_method(&self,
 can_begin_expr			    pub fn can_begin_expr(&self) -> bool 
@@ -629,6 +629,7 @@ check_for_macros			pub fn check_for_macros(sess: &parse::ParseSess, krate: &ast:
 check_lhs_nt_follows			fn check_lhs_nt_follows(cx: &mut ExtCtxt, lhs: &NamedMatch, sp: Span) 
 check_matcher			fn check_matcher<'a, I>(cx: &mut ExtCtxt, matcher: I, follow: &Token)
 check_name			    fn check_name(&self, name: &str) -> bool 
+check_no_chained_comparison			    fn check_no_chained_comparison(&mut self, lhs: &Expr, outer_op: ast::BinOp) 
 check_positional_ok			    fn check_positional_ok(&mut self) -> bool 
 check_reserved_keywords			    pub fn check_reserved_keywords(&mut self) 
 check_stack			    pub fn check_stack(&mut self, k: int) 
@@ -721,7 +722,7 @@ default_substructure			fn default_substructure(cx: &mut ExtCtxt, trait_span: Spa
 deref			    fn deref(&self) -> &[T] 
 deref			    fn deref(&self) -> &str { &*self.string }
 deref			    fn deref<'a>(&'a self) -> &'a T 
-deref			    fn deref(&self) -> &str { self.string.index(&FullRange) }
+deref			    fn deref(&self) -> &str { &self.string[] }
 deriving			    pub mod deriving;
 describe_num_args			    fn describe_num_args(&self) -> String 
 descriptive_variant			    pub fn descriptive_variant(&self) -> &str 
@@ -763,7 +764,9 @@ entry_count			    fn entry_count(&self) -> uint
 env			    pub mod env;
 eof			pub fn eof(p: &mut Printer) -> io::IoResult<()> { p.pretty_print(Eof) }
 eq			    fn eq(&self, other: &Ident) -> bool 
+eq			    fn eq(&self, other: &IntTy) -> bool 
 eq			    fn eq(&self, other: &MetaItem_) -> bool 
+eq			    fn eq(&self, other: &UintTy) -> bool 
 eq			    fn eq(&self, other: &Span) -> bool 
 eq			pub mod eq;
 eq			    fn eq(&self, other: & &'a str) -> bool 
@@ -821,7 +824,6 @@ expand_expr			pub fn expand_expr(e: P<ast::Expr>, fld: &mut MacroExpander) -> P<
 expand_file			pub fn expand_file(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_format_args			pub fn expand_format_args<'cx>(ecx: &'cx mut ExtCtxt, sp: Span,
 expand_include			pub fn expand_include<'cx>(cx: &'cx mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
-expand_include_bin			pub fn expand_include_bin(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_include_bytes			pub fn expand_include_bytes(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_include_str			pub fn expand_include_str(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_item			pub fn expand_item(it: P<ast::Item>, fld: &mut MacroExpander)
@@ -832,7 +834,6 @@ expand_line			pub fn expand_line(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTr
 expand_loop_block			fn expand_loop_block(loop_block: P<Block>,
 expand_mac_invoc			fn expand_mac_invoc<T, F, G>(mac: ast::Mac, span: codemap::Span,
 expand_meta_derive			pub fn expand_meta_derive(cx: &mut ExtCtxt,
-expand_meta_deriving			pub fn expand_meta_deriving(cx: &mut ExtCtxt,
 expand_method			fn expand_method(m: P<ast::Method>, fld: &mut MacroExpander) -> SmallVector<P<ast::Method>> 
 expand_mod			pub fn expand_mod(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_non_macro_stmt			fn expand_non_macro_stmt(Spanned {node, span: stmt_span}: Stmt, fld: &mut MacroExpander)
@@ -855,10 +856,8 @@ expand_stmt			fn expand_stmt(s: Stmt, fld: &mut MacroExpander) -> SmallVector<P<
 expand_stringify			pub fn expand_stringify(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_struct_def			    fn expand_struct_def(&self,
 expand_struct_method_body			    fn expand_struct_method_body(&self,
-expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &'cx mut ExtCtxt,
 expand_syntax_ext			pub fn expand_syntax_ext(cx: &mut base::ExtCtxt,
 expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
-expand_syntax_ext			pub fn expand_syntax_ext(ecx: &mut base::ExtCtxt,
 expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &'cx mut base::ExtCtxt,
 expand_trace_macros			pub fn expand_trace_macros(cx: &mut ExtCtxt,
 expand_tts			fn expand_tts(cx: &ExtCtxt, sp: Span, tts: &[ast::TokenTree])
@@ -1014,7 +1013,6 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			    pub mod fmt;
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1030,7 +1028,6 @@ fmt::Show for Nonterminal			impl fmt::Show for Nonterminal
 fmt::Show for Onceness			impl fmt::Show for Onceness 
 fmt::Show for Os			impl fmt::Show for Os 
 fmt::Show for OwnedSlice			impl<T:fmt::Show> fmt::Show for OwnedSlice<T> 
-fmt::Show for PathElem			impl fmt::Show for PathElem 
 fmt::Show for RcStr			impl fmt::Show for RcStr 
 fmt::Show for UintTy			impl fmt::Show for UintTy 
 fmt::String for Abi			impl fmt::String for Abi 
@@ -1290,6 +1287,7 @@ is_block_doc_comment			pub fn is_block_doc_comment(s: &str) -> bool
 is_bol			    pub fn is_bol(&mut self) -> bool 
 is_by_value_binop			pub fn is_by_value_binop(b: BinOp) -> bool 
 is_by_value_unop			pub fn is_by_value_unop(u: UnOp) -> bool 
+is_comparison_binop			pub fn is_comparison_binop(b: BinOp) -> bool 
 is_dec_digit			fn is_dec_digit(c: Option<char>) -> bool { return in_range(c, '0', '9'); }
 is_doc_comment			pub fn is_doc_comment(s: &str) -> bool 
 is_doc_comment			pub fn is_doc_comment(s: &str) -> bool 
@@ -1425,7 +1423,6 @@ main			              fn main() { let outer!(g) = 13; g;}",
 main			             fn main() { println!(\\"zebra\\"); }\\n".to_string());
 main			        pub fn main() 
 main			  fn main() 
-make_dummy_attr			    fn make_dummy_attr(s: &str) -> ast::Attribute 
 make_expr			    fn make_expr(self: Box<DummyResult>) -> Option<P<ast::Expr>> 
 make_expr			    fn make_expr(self: Box<MacExpr>) -> Option<P<ast::Expr>> 
 make_expr			    fn make_expr(self: Box<Self>) -> Option<P<ast::Expr>> 
@@ -2516,6 +2513,7 @@ walk_variant			pub fn walk_variant<'v, V: Visitor<'v>>(visitor: &mut V,
 walk_view_item			pub fn walk_view_item<'v, V: Visitor<'v>>(visitor: &mut V, vi: &'v ViewItem) 
 warn			    pub fn warn(&self, msg: &str) 
 warn			    pub fn warn(&mut self, m: &str) 
+warn_feature			    fn warn_feature(&self, feature: &str, span: Span, explain: &str) 
 wb			    fn wb() -> c_int { O_WRONLY as c_int }
 wb			    fn wb() -> c_int 
 with_attrs			    pub fn with_attrs<T, F>(&self, id: NodeId, f: F) -> T where

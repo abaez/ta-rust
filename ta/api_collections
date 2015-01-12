@@ -377,8 +377,7 @@ Taggypar			    enum Taggypar<T>
 ToOwned			impl<T: Clone> ToOwned<Vec<T>> for [T] 
 ToOwned for str			impl ToOwned<String> for str 
 ToString			pub trait ToString 
-ToString for T			impl<T: fmt::Show> ToString for T 
-ToString for T			impl<T: fmt::String> ToString for T 
+ToString for T			impl<T: fmt::String + ?Sized> ToString for T 
 TraversalImpl			impl<K, V> TraversalImpl<K, V, Node<K, V>> for MoveTraversalImpl<K, V> 
 TraversalImpl			trait TraversalImpl<K, V, E> 
 TraversalItem			pub enum TraversalItem<K, V, E> 
@@ -410,7 +409,7 @@ add			    fn add(mut self, rhs: &[T]) -> Vec<T>
 all			    pub fn all(&self) -> bool 
 alloc_or_realloc			unsafe fn alloc_or_realloc<T>(ptr: *mut T, old_size: uint, size: uint) -> *mut T 
 any			    pub fn any(&self) -> bool 
-append			    pub fn append(&mut self, mut other: DList<T>) 
+append			    pub fn append(&mut self, other: &mut DList<T>) 
 as_bytes			    fn as_bytes(&self) -> &[u8] 
 as_bytes			    pub fn as_bytes<'a>(&'a self) -> &'a [u8] 
 as_mut_ptr			    fn as_mut_ptr(&mut self) -> *mut Self::Item;
@@ -575,9 +574,9 @@ bitxor			    fn bitxor(self, e: EnumSet<E>) -> EnumSet<E>
 blocks			    fn blocks(&self) -> Blocks 
 blocks_for_bits			fn blocks_for_bits(bits: uint) -> uint 
 blocks_mut			    fn blocks_mut(&mut self) -> MutBlocks 
-borrow_from			    fn borrow_from(owned: &Vec<T>) -> &[T] { owned.index(&FullRange) }
-borrow_from			    fn borrow_from(owned: &String) -> &str { owned.index(&FullRange) }
-borrow_from_mut			    fn borrow_from_mut(owned: &mut Vec<T>) -> &mut [T] { owned.index_mut(&FullRange) }
+borrow_from			    fn borrow_from(owned: &Vec<T>) -> &[T] { &owned[] }
+borrow_from			    fn borrow_from(owned: &String) -> &str { &owned[] }
+borrow_from_mut			    fn borrow_from_mut(owned: &mut Vec<T>) -> &mut [T] { &mut owned[] }
 btree			mod btree;
 btree_map			pub mod btree_map 
 btree_set			pub mod btree_set 
@@ -819,8 +818,6 @@ fmt::Show for VecMap			impl<V: fmt::Show> fmt::Show for VecMap<V>
 fmt::String for FromUtf16Error			impl fmt::String for FromUtf16Error 
 fmt::String for FromUtf8Error			impl fmt::String for FromUtf8Error 
 fmt::String for String			impl fmt::String for String 
-fmt::String for Vec			impl<T: fmt::Show> fmt::String for Vec<T> 
-fmt::String for Vec			impl<T: fmt::String> fmt::String for Vec<T> 
 fmt::Writer for String			impl fmt::Writer for String 
 fmt::Writer for Vec			impl<'a> fmt::Writer for Vec<u8> 
 force			    pub fn force(self) -> ForceResult<NodeRef, Type> 
@@ -905,8 +902,9 @@ hash			    fn hash(&self, state: &mut S)
 hash			    fn hash(&self, hasher: &mut H) 
 hash			    fn hash(&self, state: &mut S) 
 hash			    fn hash(&self, state: &mut S) 
-hash::Hash for Bitv			impl<S: hash::Writer> hash::Hash<S> for Bitv 
-hash::Hash for BitvSet			impl<S: hash::Writer> hash::Hash<S> for BitvSet 
+hash::Hash for Bitv			impl<S: hash::Writer + hash::Hasher> hash::Hash<S> for Bitv 
+hash::Hash for BitvSet			impl<S: hash::Writer + hash::Hasher> hash::Hash<S> for BitvSet 
+hash::Hash for String			impl<H: hash::Writer + hash::Hasher> hash::Hash<H> for String 
 hash::Hash for String			impl<H: hash::Writer> hash::Hash<H> for String 
 hoist_lone_child			    pub fn hoist_lone_child(&mut self) 
 idx			    fn idx(&mut self, index: uint) -> Option<bool> 
@@ -1411,6 +1409,7 @@ split_extern_fn			    fn split_extern_fn(b: &mut Bencher)
 split_mut			    fn split_mut<F>(&mut self, pred: F) -> SplitMut<Self::Item, F>
 split_mut			    fn split_mut<F>(&mut self, pred: F) -> SplitMut<T, F>
 split_not_ascii			    fn split_not_ascii(b: &mut Bencher) 
+split_off			    pub fn split_off(&mut self, at: uint) -> DList<T> 
 split_slice			    fn split_slice(b: &mut Bencher) 
 split_str			    fn split_str<'a>(&'a self, pat: &'a str) -> SplitStr<'a> 
 split_terminator			    fn split_terminator<P: CharEq>(&self, pat: P) -> SplitTerminator<P> 
