@@ -44,10 +44,13 @@ events.connect(events.FILE_AFTER_SAVE, function()
 
   local proj = builder.get_project_name() or
     ((buffer.filename or ''):match('[^//]+$')):match('[%w_]+')
+  local proj_tag = _USERHOME .. "/tags/" .. proj
 
-  if not io.open(_USERHOME .. "/tags/" .. proj) then
+  if not io.open(proj_tag) then
     builder.build(proj)
   end
+
+  _M.ctags[io.get_project_root()] = proj_tag
 end)
 
 events.connect(events.LEXER_LOADED, function (lang)
