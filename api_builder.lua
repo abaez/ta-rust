@@ -20,14 +20,27 @@ local function parse_ctags(f)
   return ctag_options
 end
 
-function build(project)
-  fw = io.open(io.get_project_root() .. "." .. project, "w")
+function build_api(project)
+  local fstr = string.format("%s/.api_%s", io.get_project_root(), project)
+  local fapi = io.open(fstr, "w")
 
   for line in io.popen(string.format(
     "ctags -f - %s -R --rust-kinds=-c-d-T %s/*",
     parse_ctags(_CTAGS),
     io.get_project_root()
   ), 'r'):lines() do
+    local tmpline = line
+    tmpline = tmpline:gsub("/.+%prs", "\t")
+    tmpline = tmpline:gsub("{?$.+", "")
+    tmpline = tmpline:gsub("/%^", "")
 
+    if line:find("(!_).+") or line:find("^test_") then
+      ; -- purposely left blank to ignore
+    else
+      fapi:write(tmpline, "\n")
+    end
   end
+
+  fapi:close()
+  return fstr
 end
