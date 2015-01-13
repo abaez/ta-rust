@@ -132,3 +132,7 @@ function main()
 end
 
 main()
+
+return {
+  parse_ctags = parse_ctags
+}
