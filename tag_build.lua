@@ -1,9 +1,10 @@
 local parser = require("modules.rust.taparser")
 
-local tags_dir = _USERHOME .. "tags"
+local tags_dir = _USERHOME .. "/tags"
 
 local function get_project_name()
-  return (io.get_project_root()):gsub("%/.+%/", "")
+  local check = io.get_project_root()
+  return check and (check):gsub("%/.+%/", "") or nil
 end
 
 local function build(project)
@@ -14,5 +15,6 @@ local function build(project)
 end
 
 return {
-  build = build
+  build = build,
+  get_project_name = get_project_name
 }
