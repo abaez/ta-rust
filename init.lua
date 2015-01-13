@@ -8,6 +8,8 @@
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
 
+local builder = require("modules.rust.tag_build")
+
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
 
@@ -37,6 +39,16 @@ if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
 end
 
+events.connect(events.FILE_AFTER_SAVE, function()
+  if buffer:get_lexer() ~= 'rust' then return end
+
+  local proj = builder.get_project_name() or
+    ((buffer.filename or ''):match('[^//]+$')):match('[%w_]+')
+
+  if not io.open(_USERHOME .. "/tags/" .. proj) then
+    builder.build(proj)
+  end
+end)
 
 events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
