@@ -8,10 +8,12 @@ local function get_project_name()
 end
 
 local function build(project)
-  os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s -f %s",
-    parser.parse_ctags(_USERHOME .. "/modules/rust/ctags.rust"),
+  os.execute(string.format(
+    "ctags -f %s %s -R --rust-kinds=-c-d-T %s/*",
     tags_dir .. "/" .. project,
-    project))
+    parser.parse_ctags(_USERHOME .. "/modules/rust/ctags.rust"),
+    io.get_project_root())
+  )
 end
 
 return {
