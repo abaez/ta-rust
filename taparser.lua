@@ -119,7 +119,7 @@ end
 
 
 function main()
-  local ctag_rust = "/src/etc/ctags.rust"
+  local ctag_rust = _USERHOME .. "/modules/rust/ctags.rust"
   local rust_path = get_location()
   local parsed = parse_ctags(rust_path .. ctag_rust)
 
