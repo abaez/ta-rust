@@ -131,4 +131,8 @@ function main()
   os.remove("tags")
 end
 
-main()
+--main()
+
+return {
+  parse_ctags = parse_ctags
+}

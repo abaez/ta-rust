@@ -16,6 +16,8 @@ if project_name and io.open(user_api) then
   table.insert(textadept.editing.api_files.rust, user_api)
 end
 
+local builder = require("modules.rust.tag_build")
+
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
 
@@ -48,6 +50,19 @@ if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
 end
 
+events.connect(events.FILE_AFTER_SAVE, function()
+  if buffer:get_lexer() ~= 'rust' then return end
+
+  local proj = builder.get_project_name() or
+    ((buffer.filename or ''):match('[^//]+$')):match('[%w_]+')
+  local proj_tag = _USERHOME .. "/tags/" .. proj
+
+  if not io.open(proj_tag) then
+    builder.build(proj)
+  end
+
+  _M.ctags[io.get_project_root()] = proj_tag
+end)
 
 events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
