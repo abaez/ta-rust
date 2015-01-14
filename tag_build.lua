@@ -1,22 +1,23 @@
-local parser = require("modules.rust.taparser")
 
-local tags_dir = _USERHOME .. "/tags"
 
-local function get_project_name()
-  local check = io.get_project_root()
-  return check and (check):gsub("%/.+%/", "") or nil
-end
 
-local function build(project)
-  os.execute(string.format(
-    "ctags -f %s %s -R --rust-kinds=-c-d-T %s/*",
-    tags_dir .. "/" .. project,
-    parser.parse_ctags(_USERHOME .. "/modules/rust/ctags.rust"),
-    io.get_project_root())
-  )
+local function build_tags(project_name, project_path, raw_tag)
+  local ftag = io.open(project_path .. "/.tag_" .. project_name, "w")
+
+  for line in raw_tag:lines() do
+    local tmpline = line
+
+    tmpline = tline:gsub("/%^.+\"", "0")
+    if line:find("(!_).+") or line:find("^test_") then
+      ; -- purposely left blank to ignore
+    else
+      ftag:write(tmpline, "\n")
+    end
+  end
+
+  ftag:close()
 end
 
 return {
-  build = build,
-  get_project_name = get_project_name
+  build_tags = build_tags
 }

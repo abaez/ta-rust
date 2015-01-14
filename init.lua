@@ -8,12 +8,15 @@
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
 local ua = require("modules/rust/api_builder")
+local ut = require("modules/rust/tag_builder")
 
 local project_name, project_path = ua.get_project_name(io.get_project_root())
 local user_api = project_path .. "/.api_" .. project_name
+local user_tag = project_path .. "/.tag_" .. project_name
 
-if project_name and io.open(user_api) then
+if project_name and io.open(user_api) and io.open(user_tag) then
   table.insert(textadept.editing.api_files.rust, user_api)
+  _M.ctags[project_path] = user_tag
 end
 
 local builder = require("modules.rust.tag_build")
@@ -27,7 +30,8 @@ textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
 textadept.run.build_commands[project_path] = function()
-  ua.build_api(project_name, project_path)
+  raw_tag = ua.build_api(project_name, project_path)
+  ut.build_tag(project_name, project_path, raw_tag)
   return "cargo build"
 end
 
@@ -50,19 +54,7 @@ if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
 end
 
-events.connect(events.FILE_AFTER_SAVE, function()
-  if buffer:get_lexer() ~= 'rust' then return end
 
-  local proj = builder.get_project_name() or
-    ((buffer.filename or ''):match('[^//]+$')):match('[%w_]+')
-  local proj_tag = _USERHOME .. "/tags/" .. proj
-
-  if not io.open(proj_tag) then
-    builder.build(proj)
-  end
-
-  _M.ctags[io.get_project_root()] = proj_tag
-end)
 
 events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end

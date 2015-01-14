@@ -39,12 +39,13 @@ end
 -- @param project_full_path the relative/absolute location of the project.
 local function build_api(project_name, project_full_path)
   local fapi = io.open(project_path .. "/.api_" .. project_name, "w")
-
-  for line in io.popen(string.format(
+  local raw_tag =  io.popen(string.format(
     "ctags -f - %s --languages=Rust -R --rust-kinds=-c-d-T %s/*",
     parse_ctags(_CTAGS),
     project_full_path
-  ), 'r'):lines() do
+  ), 'r')
+
+  for line in raw_tag:lines() do
     local tmpline = line
     tmpline = tmpline:gsub("/.+%prs", "\t")
     tmpline = tmpline:gsub("{?$.+", "")
@@ -58,6 +59,7 @@ local function build_api(project_name, project_full_path)
   end
 
   fapi:close()
+  return raw_tag
 end
 
 -- @export get_project_name, build_api
