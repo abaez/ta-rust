@@ -6,14 +6,14 @@
 
 local crates, config = require("modules.rust.config")
 
+local _RUSTSRC = _USERHOME .. '/modules/rust/ta/'
 
 local tags = {}
-local rust_api = {}
-local ta_path = _USERHOME .. '/modules/rust/ta/'
+local api = {}
 
 for _, lib in ipairs(crates) do
-  table.insert(rust_api, ta_path .. 'api_' .. lib)
-  tags[#tags + 1] = ta_path .. 'tags_' .. lib
+  api[#api + 1] = _RUSTSRC .. 'api_' .. lib
+  tags[#tags + 1] = _RUSTSRC .. 'tags_' .. lib
 end
 
 local XPM = textadept.editing.XPM_IMAGES
@@ -23,26 +23,17 @@ local xpms = setmetatable({
   T = XPM.TYPEDEF
 }, {__index = function(t, k) return 0 end})
 
-
 --- potentially builds autocomplete using tags.
-local autocomplete = function()
+local function autocomplete()
   local list = {}
-  local line, pos = buffer:get_cur_line()
-  local symbol, op, part = line:sub(1, pos):match(
-    "([%w_%d]+)%b<[%w_]+>%s?:[%s%*%&]+[%w_%d]+")
 
+  -- symbol behind caret
+  local line, pos = buffer:get_cur_line()
+  local symbol, op, part  line:sub(1, pos):match('([%w_]*)([%.%:]*)([%w_]*)$')
   if symbol == '' and part == '' and op ~= '' then return nil end -- lone ., ->
   if op ~= '' and op ~= '.' and op ~= '::' then return nil end
 
-
-  local buffer = buffer
-  local declaration = "([%w_%d]+)%s?:[%s'*~@&]+%_[^%w_]"
-
-  for i = buffer:line_from_position(buffer.current_pos) - 1, 0, -1 do
-    local class = buffer:get_line(i):match(declaration)
-    if class then symbol = class break end
-  end
-    -- Search through ctags for completions for that symbol.
+  -- Search through ctags for completions for that symbol.
   local name_patt = '^'..part
   local sep = string.char(buffer.auto_c_type_separator)
   for i = 1, #tags do
@@ -64,5 +55,4 @@ local autocomplete = function()
   return #part, list
 end
 
-
-return rust_api, autocomplete
+return api, autocomplete()
