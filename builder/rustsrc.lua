@@ -5,7 +5,7 @@
 -- @author Alejandro Baez <alejan.baez@gmail.com>
 -- @copyright 2014
 -- @license MIT (see LICENSE)
--- @module taparser
+-- @module rustsrc
 
 --- all crates as of v1.0.0 (rev: 9f1ead8fad).
 -- @table crates
@@ -131,8 +131,4 @@ function main()
   os.remove("tags")
 end
 
---main()
-
-return {
-  parse_ctags = parse_ctags
-}
+main()

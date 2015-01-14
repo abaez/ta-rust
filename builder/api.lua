@@ -2,7 +2,7 @@
 -- @author Alejandro Baez <alejan.baez@gmail.com>
 -- @copyright 2015
 -- @license MIT (see LICENSE)
--- @module build_api
+-- @module api
 
 local _CTAGS = _USERHOME .. "/modules/rust/ctags.rust"
 

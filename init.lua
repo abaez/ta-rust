@@ -7,8 +7,8 @@
 
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
-local ua = require("modules/rust/api_builder")
-local ut = require("modules/rust/tag_builder")
+local ua = require("modules.rust.builder.api")
+local ut = require("modules.rust.builder.tag")
 
 local project_name, project_path = ua.get_project_name(io.get_project_root())
 local user_api = project_path .. "/.api_" .. project_name
@@ -18,8 +18,6 @@ if project_name and io.open(user_api) and io.open(user_tag) then
   table.insert(textadept.editing.api_files.rust, user_api)
   _M.ctags[project_path] = user_tag
 end
-
-local builder = require("modules.rust.tag_build")
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
@@ -31,7 +29,7 @@ textadept.run.run_commands.rust = '%d%(filename_noext)'
 -- build project
 textadept.run.build_commands[project_path] = function()
   raw_tag = ua.build_api(project_name, project_path)
-  ut.build_tag(project_name, project_path, raw_tag)
+  ut.build_tags(project_name, project_path, raw_tag)
   return "cargo build"
 end
 
@@ -53,8 +51,6 @@ keys.rust = {
 if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
 end
-
-
 
 events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
