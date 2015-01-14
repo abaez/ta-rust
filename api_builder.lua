@@ -1,3 +1,9 @@
+--- the module to build user api when building the project.
+-- @author Alejandro Baez <alejan.baez@gmail.com>
+-- @copyright 2015
+-- @license MIT (see LICENSE)
+-- @module build_api
+
 local _CTAGS = _USERHOME .. "/modules/rust/ctags.rust"
 
 --- gets project name. -_-
@@ -32,11 +38,10 @@ end
 -- @param project_name the name of the project.
 -- @param project_full_path the relative/absolute location of the project.
 local function build_api(project_name, project_full_path)
-  local fstr = string.format("%s/.api_%s", project_full_path, project_name)
-  local fapi = io.open(fstr, "w")
+  local fapi = io.open(project_path .. "/.api_" .. project_name, "w")
 
   for line in io.popen(string.format(
-    "ctags -f - %s -R --rust-kinds=-c-d-T %s/*",
+    "ctags -f - %s --languages=Rust -R --rust-kinds=-c-d-T %s/*",
     parse_ctags(_CTAGS),
     project_full_path
   ), 'r'):lines() do
@@ -53,9 +58,9 @@ local function build_api(project_name, project_full_path)
   end
 
   fapi:close()
-  return fstr
 end
 
+-- @export get_project_name, build_api
 return {
   get_project_name = get_project_name,
   build_api = build_api

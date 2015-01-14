@@ -7,6 +7,14 @@
 
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
+local ua = require("modules/rust/api_builder")
+
+local project_name, project_path = ua.get_project_name(io.get_project_root())
+local user_api = project_path .. "/.api_" .. project_name
+
+if project_name and io.open(user_api) then
+  table.insert(textadept.editing.api_files.rust, user_api)
+end
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
@@ -16,7 +24,10 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
-textadept.run.build_commands["Cargo.toml"] = "cargo build"
+textadept.run.build_commands[project_path] = function()
+  ua.build_api(project_name, project_path)
+  return "cargo build"
+end
 
 --- Table of Rust-specific key bindings.
 -- @table keys.rust
