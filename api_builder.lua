@@ -1,5 +1,12 @@
 local _CTAGS = _USERHOME .. "/modules/rust/ctags.rust"
 
+--- gets project name. -_-
+-- @function get_project_name
+-- @return project_name, project_full_path
+local function get_project_name()
+  local check = io.get_project_root()
+  return check and check:gsub("%/.+%/", "") or nil, check
+end
 
 --- converts ctags.rust into correct formatting for use.
 -- @function parse_ctags
@@ -20,14 +27,18 @@ local function parse_ctags(f)
   return ctag_options
 end
 
-function build_api(project)
-  local fstr = string.format("%s/.api_%s", io.get_project_root(), project)
+--- builds the api and places in project/.api_projectname.
+-- @function build_api
+-- @param project_name the name of the project.
+-- @param project_full_path the relative/absolute location of the project.
+local function build_api(project_name, project_full_path)
+  local fstr = string.format("%s/.api_%s", project_full_path, project_name)
   local fapi = io.open(fstr, "w")
 
   for line in io.popen(string.format(
     "ctags -f - %s -R --rust-kinds=-c-d-T %s/*",
     parse_ctags(_CTAGS),
-    io.get_project_root()
+    project_full_path
   ), 'r'):lines() do
     local tmpline = line
     tmpline = tmpline:gsub("/.+%prs", "\t")
@@ -44,3 +55,8 @@ function build_api(project)
   fapi:close()
   return fstr
 end
+
+return {
+  get_project_name = get_project_name,
+  build_api = build_api
+}
