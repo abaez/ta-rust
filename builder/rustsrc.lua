@@ -81,8 +81,8 @@ local function formatter(crate, path, parsed)
   os.execute(string.format("ctags %s -R --rust-kinds=-c-d-T %s/src/lib%s/*",
     parsed, path, crate))
 
-  local fapi = io.open("ta/api_" .. crate, "w")
-  local ftag = io.open("ta/tag_" .. crate, "w")
+  local fapi = io.open("../ta/api_" .. crate, "w")
+  local ftag = io.open("../ta/tag_" .. crate, "w")
 
   for line in io.input("tags"):lines("*l") do
     local tline, aline = line, line
