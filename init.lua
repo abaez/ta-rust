@@ -11,13 +11,17 @@ local ua = require("modules.rust.builder.api")
 local ut = require("modules.rust.builder.tag")
 
 local project_name, project_path = ua.get_project_name(io.get_project_root())
-local user_api = project_path .. "/.api_" .. project_name
-local user_tag = project_path .. "/.tag_" .. project_name
 
-if project_name and io.open(user_api) and io.open(user_tag) then
-  table.insert(textadept.editing.api_files.rust, user_api)
-  _M.ctags[project_path] = user_tag
+if project_name then
+  local user_api = project_path .. "/.api_" .. project_name
+  local user_tag = project_path .. "/.tag_" .. project_name
+
+  if io.open(user_api) and io.open(user_tag) then
+    table.insert(textadept.editing.api_files.rust, user_api)
+    _M.ctags[project_path] = user_tag
+  end
 end
+
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
@@ -27,7 +31,7 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
-textadept.run.build_commands[project_path] = function()
+textadept.run.build_commands[project_path or "none"] = function()
   raw_tag = ua.build_api(project_name, project_path)
   ut.build_tags(project_name, project_path, raw_tag)
   return "cargo build"
