@@ -5,6 +5,7 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
+
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
 local ua = require("modules.rust.builder.api")
@@ -25,6 +26,9 @@ end
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
+textadept.editing.char_matches.rust = {
+  [40] = ')', [91] = ']', [123] = '}', [34] = '"'
+}
 
 -- compiler
 textadept.run.compile_commands.rust = 'rustc %(filename)'
