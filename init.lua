@@ -45,9 +45,6 @@ end
 -- @table keys.rust
 -- @name _G.keys.rust
 keys.rust = {
-  [keys.LANGUAGE_MODULE_PREFIX] = {
-    m = {io.open_file, _USERHOME..'/modules/rust/init.lua'},
-  },
   ['s\n'] = function()
     buffer:line_end()
     buffer:add_text(';')
