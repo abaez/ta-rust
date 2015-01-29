@@ -7,13 +7,13 @@
 
 
 textadept.editing.api_files.rust,
-textadept.editing.autocompleters.rust = require("modules.rust.autocomplete")
-local ua = require("modules.rust.builder.api")
-local ut = require("modules.rust.builder.tag")
+textadept.editing.autocompleters.rust = require("rust.autocomplete")
+local ua = require("rust.builder.api")
+local ut = require("rust.builder.tag")
 
-local project_name, project_path = ua.get_project_name(io.get_project_root())
+project_name, project_path = ua.get_project_name(io.get_project_root())
 
-if project_name then
+if project_name and project_path then
   local user_api = project_path .. "/.api_" .. project_name
   local user_tag = project_path .. "/.tag_" .. project_name
 
@@ -35,7 +35,7 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
-textadept.run.build_commands[project_path or "none"] = function()
+textadept.run.build_commands[project_path] = function()
   raw_tag = ua.build_api(project_name, project_path)
   ut.build_tags(project_name, project_path, raw_tag)
   return "cargo build"
