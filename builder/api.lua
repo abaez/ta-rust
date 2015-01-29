@@ -4,7 +4,9 @@
 -- @license MIT (see LICENSE)
 -- @module api
 
-local raw = require("rust.builder.raw")
+local M = {
+  raw
+}
 
 --- builds the api and places in project/.api_projectname.
 -- @function build
@@ -13,7 +15,7 @@ local raw = require("rust.builder.raw")
 local function build(project_name, project_full_path)
   local fapi = io.open(project_full_path .. "/.api_" .. project_name, "w")
 
-  for line in raw.build(project_full_path):lines() do
+  for line in self.raw:lines() do
     local tmpline = line
     tmpline = tmpline:gsub("/.+%prs", "\t")
     tmpline = tmpline:gsub("{?$.+", "")
@@ -29,6 +31,4 @@ local function build(project_name, project_full_path)
   fapi:close()
 end
 
-return {
-  build = build
-}
+return M
