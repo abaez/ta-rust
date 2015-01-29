@@ -8,10 +8,11 @@
 
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("rust.autocomplete")
-local ua = require("rust.builder.api")
-local ut = require("rust.builder.tag")
+local api = require("rust.builder.api")
+local tag = require("rust.builder.tag")
+local raw = require("rust.builder.raw")
 
-project_name, project_path = ua.get_project_name(io.get_project_root())
+project_name, project_path = raw.get_project_name(io.get_project_root())
 
 if project_name and project_path then
   local user_api = project_path .. "/.api_" .. project_name
@@ -36,8 +37,12 @@ textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
 textadept.run.build_commands[project_path] = function()
-  raw_tag = ua.build_api(project_name, project_path)
-  ut.build_tags(project_name, project_path, raw_tag)
+  local tmp = raw.build(project_name, project_path)
+  api.raw, tag.raw = tmp, tmp
+
+  api:build(project_name, project_path)
+  tag:build(project_name, project_path)
+
   return "cargo build"
 end
 
