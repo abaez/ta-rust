@@ -36,11 +36,14 @@ end
 --- builds raw tag for use with api/tags modules.
 -- @param project_full_path see @{api.build}.
 local function build(project_full_path)
-  return io.popen(string.format(
-    "ctags -f - %s --languages=Rust -R --rust-kinds=-c-d-T %s/*",
+  os.execute(string.format(
+    "ctags -f %s %s --languages=Rust -R --rust-kinds=-c-d-T %s/*",
+    project_full_path .. "/tags",
     parse_ctags(_CTAGS),
     project_full_path
-  ), 'r')
+  ), 'w')
+
+  return project_full_path .. "/tags"
 end
 
 return {

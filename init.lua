@@ -37,11 +37,11 @@ textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
 textadept.run.build_commands[project_path] = function()
-  local tmp = raw.build(project_name, project_path)
-  api.raw, tag.raw = tmp, tmp
+  local tmp = raw.build(project_path)
 
-  api:build(project_name, project_path)
-  tag:build(project_name, project_path)
+  api.build(project_name, project_path, tmp)
+  tag.build(project_name, project_path, tmp)
+  os.remove(tmp)
 
   return "cargo build"
 end

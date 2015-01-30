@@ -4,18 +4,14 @@
 -- @license MIT (see LICENSE)
 -- @module api
 
-local M = {
-  raw
-}
-
 --- builds the api and places in project/.api_projectname.
 -- @function build
 -- @param project_name the name of the project.
 -- @param project_full_path the relative/absolute location of the project.
-function M:build(project_name, project_full_path)
+local function build(project_name, project_full_path, raw)
   local fapi = io.open(project_full_path .. "/.api_" .. project_name, "w")
 
-  for line in self.raw:lines() do
+  for line in io.open(raw):lines() do
     local tmpline = line
     tmpline = tmpline:gsub("/.+%prs", "\t")
     tmpline = tmpline:gsub("{?$.+", "")
@@ -31,4 +27,6 @@ function M:build(project_name, project_full_path)
   fapi:close()
 end
 
-return M
+return {
+  build = build
+}
