@@ -36,7 +36,7 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
-textadept.run.build_commands[project_path] = function()
+textadept.run.build_commands[project_path or "none"] = function()
   local tmp = raw.build(project_path)
 
   api.build(project_name, project_path, tmp)
