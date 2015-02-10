@@ -12,16 +12,19 @@ local api = require("rust.builder.api")
 local tag = require("rust.builder.tag")
 local raw = require("rust.builder.raw")
 
-project_name, project_path = raw.get_project_name(io.get_project_root())
 
-if project_name and project_path then
-  local user_api = project_path .. "/.api_" .. project_name
-  local user_tag = project_path .. "/.tag_" .. project_name
+local function add_apitag(name, path)
+  local user_api = path .. "/.api_" .. name
+  local user_tag = path .. "/.tag_" .. name
 
   if io.open(user_api) and io.open(user_tag) then
     table.insert(textadept.editing.api_files.rust, user_api)
-    _M.ctags[project_path] = user_tag
+    _M.ctags[path] = user_tag
   end
+end
+
+if io.get_project_root() then
+  add_apitag(raw.get_project_name())
 end
 
 
@@ -58,12 +61,16 @@ events.connect(events.LEXER_LOADED, function (lang)
     buffer:new_line()
   end
   keys['cB'] = function()
+    local project_name, project_path = raw.get_project_name()
+
     if project_path then
-      local tmp = raw.build(io.get_project_root())
+      local tmp = raw.build(project_path)
 
       api.build(project_name, project_path, tmp)
       tag.build(project_name, project_path, tmp)
       os.remove(tmp)
+
+      add_apitag(project_name, project_path)
     end
 
     return textadept.run.build()
