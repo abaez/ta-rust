@@ -58,7 +58,7 @@ return {
   crate     = "extern crate %1(name);%0",
   static    = "static %1(name): %2(type) = %0;",
   ["/*"]    = "/*\n\t%0\n*/",
-  ["print"] = 'println!("{%1(name)}\\n", %1);%0',
+  ["print"] = 'println!("{%1}\\n", %2);%0',
 
   -- tasks and communication
   ["spawn"]   = "spawn(move || {\n\t%0\n});",

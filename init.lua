@@ -36,27 +36,8 @@ textadept.run.compile_commands.rust = 'rustc %(filename)'
 textadept.run.run_commands.rust = '%d%(filename_noext)'
 
 -- build project
-textadept.run.build_commands[project_path or "none"] = function()
-  local tmp = raw.build(project_path)
+textadept.run.build_commands["Cargo.toml"] = "cargo build"
 
-  api.build(project_name, project_path, tmp)
-  tag.build(project_name, project_path, tmp)
-  os.remove(tmp)
-
-  return "cargo build"
-end
-
---- Table of Rust-specific key bindings.
--- @table keys.rust
--- @name _G.keys.rust
-keys.rust = {
-  ['s\n'] = function()
-    buffer:line_end()
-    buffer:add_text(';')
-    buffer:new_line()
-  end,
-
-}
 
 if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
@@ -68,6 +49,25 @@ events.connect(events.LEXER_LOADED, function (lang)
   buffer.tab_width = 4
   buffer.use_tabs = false
 --  buffer.edge_column = 99
+
+
+  --- Table of Rust-specific key bindings.
+  keys['s\n'] = function()
+    buffer:line_end()
+    buffer:add_text(';')
+    buffer:new_line()
+  end
+  keys['cB'] = function()
+    if project_path then
+      local tmp = raw.build(io.get_project_root())
+
+      api.build(project_name, project_path, tmp)
+      tag.build(project_name, project_path, tmp)
+      os.remove(tmp)
+    end
+
+    return textadept.run.build()
+  end
 end)
 
 return {}
