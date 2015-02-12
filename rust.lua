@@ -31,16 +31,16 @@ local number = token(l.NUMBER, l.float +
 
 -- Keywords.
 local keyword = token(l.KEYWORD, word_match{
-  'abstract', 'alignof', 'as', 'box',
-  'break', 'const', 'continue', 'crate', 'do',
-  'else', 'enum', 'extern', 'false', 'final',
-  'fn', 'for', 'if', 'impl', 'in',
-  'let', 'loop', 'match', 'mod', 'move',
-  'mut', "offsetof", 'override', 'priv', 'pub',
-  'pure', 'ref', 'return', 'sizeof', 'static',
-  'self', 'struct', 'super', 'true', 'trait',
-  'type', 'typeof', 'unsafe', 'unsized', 'use',
-  'virtual', 'where', 'while', 'yield'
+  'abstract',   'alignof',    'as',       'become',   'box',
+  'break',      'const',      'continue', 'crate',    'do',
+  'else',       'enum',       'extern',   'false',    'final',
+  'fn',         'for',        'if',       'impl',     'in',
+  'let',        'loop',       'macro',    'match',    'mod',
+  'move',       'mut',        "offsetof", 'override', 'priv',
+  'pub',        'pure',       'ref',      'return',   'sizeof',
+  'static',     'self',       'struct',   'super',    'true',
+  'trait',      'type',       'typeof',   'unsafe',   'unsized',
+  'use',        'virtual',    'where',    'while',    'yield'
 })
 
 -- Library types
@@ -53,7 +53,7 @@ local func = token(l.FUNCTION, extension)
 
 -- Types.
 local type = token(l.TYPE, word_match{
-  '()', 'bool', 'int', 'uint', 'char', 'str',
+  '()', 'bool', 'isize', 'usize', 'char', 'str',
   'u8', 'u16', 'u32', 'u64', 'i8', 'i16', 'i32', 'i64',
   'f32','f64',
 })
