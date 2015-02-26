@@ -7,7 +7,6 @@ ConsoleTestState			impl<T: Writer> ConsoleTestState<T>
 ConsoleTestState			struct ConsoleTestState<T> 
 Metric			impl Metric 
 Metric			pub struct Metric 
-MetricChange			pub enum MetricChange 
 MetricMap			impl MetricMap 
 MetricMap			pub struct MetricMap(BTreeMap<String,Metric>);
 NamePadding			enum NamePadding 
@@ -35,12 +34,11 @@ bench			pub mod bench
 bench			mod bench 
 bench_n			    pub fn bench_n<F>(&mut self, n: u64, f: F) where F: FnOnce(&mut Bencher) 
 benchmark			    pub fn benchmark<F>(f: F) -> BenchSamples where F: FnMut(&mut Bencher) 
-black_box			pub fn black_box<T>(dummy: T) 
+black_box			pub fn black_box<T>(dummy: T) -> T 
 calc_result			fn calc_result(desc: &TestDesc, task_result: Result<(), Box<Any+Send>>) -> TestResult 
-callback			    fn callback<T: Writer>(event: &TestEvent, st: &mut ConsoleTestState<T>) -> io::IoResult<()> 
+callback			    fn callback<T: Writer>(event: &TestEvent,
 check			    fn check(samples: &[f64], summ: &Summary<f64>) 
 clone			    fn clone(&self) -> MetricMap 
-compare_to_old			    pub fn compare_to_old(&self, old: &MetricMap,
 do_not_run_ignored_tests			    pub fn do_not_run_ignored_tests() 
 f			        fn f() { panic!("an error message"); }
 f			        fn f() { panic!(); }
@@ -48,14 +46,12 @@ f			        fn f() { }
 filter			        fn filter(test: TestDescAndFn) -> Option<TestDescAndFn> 
 filter_for_ignored_option			    pub fn filter_for_ignored_option() 
 filter_tests			pub fn filter_tests(opts: &TestOpts, tests: Vec<TestDescAndFn>) -> Vec<TestDescAndFn> 
-filter_tests_regex			    pub fn filter_tests_regex() 
-first_free_arg_should_be_a_filter			    fn first_free_arg_should_be_a_filter() 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Show for TestFn			impl fmt::Show for TestFn 
-fmt::String for TestName			impl fmt::String for TestName 
+fmt::Debug for TestFn			impl fmt::Debug for TestFn 
+fmt::Display for TestName			impl fmt::Display for TestName 
 fmt_bench_samples			pub fn fmt_bench_samples(bs: &BenchSamples) -> String 
-fmt_metrics			pub fn fmt_metrics(mm: &MetricMap) -> String 
-freq_count			pub fn freq_count<T, U>(mut iter: T) -> hash_map::HashMap<U, uint>
+fmt_metrics			    pub fn fmt_metrics(&self) -> String 
+freq_count			pub fn freq_count<T, U>(iter: T) -> hash_map::HashMap<U, uint>
 get_concurrency			fn get_concurrency() -> uint 
 ignored_tests_result_in_ignored			    pub fn ignored_tests_result_in_ignored() 
 insert_metric			    pub fn insert_metric(&mut self, name: &str, value: f64, noise: f64) 
@@ -63,7 +59,6 @@ iqr			    fn iqr(&self) -> T
 iqr			    fn iqr(&self) -> T;
 iter			    pub fn iter<T, F>(&mut self, mut inner: F) where F: FnMut() -> T 
 len_if_padded			    fn len_if_padded(t: &TestDescAndFn) -> uint 
-load			    pub fn load(p: &Path) -> MetricMap 
 local_cmp			fn local_cmp<T:Float>(x: T, y: T) -> Ordering 
 local_sort			fn local_sort<T: Float>(v: &mut [T]) 
 max			    fn max(&self) -> T 
@@ -85,7 +80,6 @@ new			    pub fn new(value: f64, noise: f64) -> Metric
 new			    pub fn new(samples: &[T]) -> Summary<T> 
 ns_elapsed			    pub fn ns_elapsed(&mut self) -> u64 
 ns_per_iter			    pub fn ns_per_iter(&mut self) -> u64 
-opt_shard			pub fn opt_shard(maybestr: Option<String>) -> Option<(uint,uint)> 
 optgroups			fn optgroups() -> Vec<getopts::OptGroup> 
 padded_name			    fn padded_name(&self, column_count: uint, align: NamePadding) -> String 
 padding			    fn padding(&self) -> NamePadding 
@@ -96,14 +90,11 @@ percentile			    fn percentile(&self, pct: T) -> T;
 percentile_of_sorted			fn percentile_of_sorted<T: Float + FromPrimitive>(sorted_samples: &[T],
 quartiles			    fn quartiles(&self) -> (T,T,T) 
 quartiles			    fn quartiles(&self) -> (T,T,T);
-ratchet			    pub fn ratchet(&self, p: &Path, pct: Option<f64>) -> (MetricDiff, bool) 
-ratchet_test			    pub fn ratchet_test() 
 run			    fn run(&self, harness: &mut Bencher);
 run_test			pub fn run_test(opts: &TestOpts,
 run_test_inner			    fn run_test_inner(desc: TestDesc,
 run_tests			fn run_tests<F>(opts: &TestOpts,
-run_tests_console			pub fn run_tests_console(opts: &TestOpts, tests: Vec<TestDescAndFn> ) -> io::IoResult<bool> 
-save			    pub fn save(&self, p: &Path) -> io::IoResult<()> 
+run_tests_console			pub fn run_tests_console(opts: &TestOpts, tests: Vec<TestDescAndFn> ) -> old_io::IoResult<bool> 
 should_sort_failures_before_printing_them			fn should_sort_failures_before_printing_them() 
 sort_tests			    pub fn sort_tests() 
 stats			pub mod stats;
@@ -115,7 +106,6 @@ sum			    fn sum(&self) -> T
 sum			    fn sum(&self) -> T;
 sum_many_f64			    pub fn sum_many_f64(b: &mut Bencher) 
 sum_three_items			    pub fn sum_three_items(b: &mut Bencher) 
-t			        fn t(s: &Summary<f64>, expected: String) 
 test			pub mod test 
 testfn			            fn testfn() { }
 tests			mod tests 
@@ -125,23 +115,16 @@ use_color			fn use_color(opts: &TestOpts) -> bool
 var			    fn var(&self) -> T 
 var			    fn var(&self) -> T;
 winsorize			pub fn winsorize<T: Float + FromPrimitive>(samples: &mut [T], pct: T) 
-write_5_number_summary			pub fn write_5_number_summary<W: Writer, T: Float + fmt::String + fmt::Show>(w: &mut W,
-write_added			    pub fn write_added(&mut self) -> io::IoResult<()> 
-write_bench			    pub fn write_bench(&mut self) -> io::IoResult<()> 
-write_boxplot			pub fn write_boxplot<W: Writer, T: Float + fmt::String + fmt::Show + FromPrimitive>(
-write_failed			    pub fn write_failed(&mut self) -> io::IoResult<()> 
-write_failures			    pub fn write_failures(&mut self) -> io::IoResult<()> 
-write_ignored			    pub fn write_ignored(&mut self) -> io::IoResult<()> 
-write_improved			    pub fn write_improved(&mut self) -> io::IoResult<()> 
+write_bench			    pub fn write_bench(&mut self) -> old_io::IoResult<()> 
+write_failed			    pub fn write_failed(&mut self) -> old_io::IoResult<()> 
+write_failures			    pub fn write_failures(&mut self) -> old_io::IoResult<()> 
+write_ignored			    pub fn write_ignored(&mut self) -> old_io::IoResult<()> 
 write_log			    pub fn write_log(&mut self, test: &TestDesc,
-write_metric			    pub fn write_metric(&mut self) -> io::IoResult<()> 
-write_metric_diff			    pub fn write_metric_diff(&mut self, diff: &MetricDiff) -> io::IoResult<()> 
-write_ok			    pub fn write_ok(&mut self) -> io::IoResult<()> 
-write_plain			    pub fn write_plain(&mut self, s: &str) -> io::IoResult<()> 
+write_metric			    pub fn write_metric(&mut self) -> old_io::IoResult<()> 
+write_ok			    pub fn write_ok(&mut self) -> old_io::IoResult<()> 
+write_plain			    pub fn write_plain(&mut self, s: &str) -> old_io::IoResult<()> 
 write_pretty			    pub fn write_pretty(&mut self,
-write_regressed			    pub fn write_regressed(&mut self) -> io::IoResult<()> 
-write_removed			    pub fn write_removed(&mut self) -> io::IoResult<()> 
-write_result			    pub fn write_result(&mut self, result: &TestResult) -> io::IoResult<()> 
-write_run_finish			    pub fn write_run_finish(&mut self,
-write_run_start			    pub fn write_run_start(&mut self, len: uint) -> io::IoResult<()> 
+write_result			    pub fn write_result(&mut self, result: &TestResult) -> old_io::IoResult<()> 
+write_run_finish			    pub fn write_run_finish(&mut self) -> old_io::IoResult<bool> 
+write_run_start			    pub fn write_run_start(&mut self, len: uint) -> old_io::IoResult<()> 
 write_test_start			    pub fn write_test_start(&mut self, test: &TestDesc,

@@ -27,7 +27,7 @@ numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.0.0 (rev: [e7b397b02e](https://github.com/rust-lang/rust/commit/e7b397b02e49ab6af5bc2a30dd04c19c38e0e266))
+*   Rust >= v1.0.0.alpha2 (rev: [4db0b324](https://github.com/rust-lang/rust/commit/4db0b32467535d718d6474de7ae8d1007d900818))
 *   Textadept >= v7.3
 
 ### INSTALL

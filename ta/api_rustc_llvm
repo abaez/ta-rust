@@ -19,7 +19,7 @@ CodeGenOptLevel			pub enum CodeGenOptLevel
 ConstFCmp			pub fn ConstFCmp(pred: RealPredicate, v1: ValueRef, v2: ValueRef) -> ValueRef 
 ConstICmp			pub fn ConstICmp(pred: IntPredicate, v1: ValueRef, v2: ValueRef) -> ValueRef 
 Context_opaque			pub enum Context_opaque {}
-Copy for OptimizationDiagnostic			impl Copy for OptimizationDiagnostic {}
+Copy for InlineAsmDiagnostic			impl Copy for InlineAsmDiagnostic {}
 DIBuilder_opaque			    pub enum DIBuilder_opaque {}
 DIDescriptorFlags			    pub enum DIDescriptorFlags 
 DebugLoc_opaque			pub enum DebugLoc_opaque {}
@@ -34,6 +34,8 @@ Drop for SectionIter			impl Drop for SectionIter
 Drop for TargetData			impl Drop for TargetData 
 ExecutionEngine_opaque			pub enum ExecutionEngine_opaque {}
 FileType			pub enum FileType 
+InlineAsmDiagnostic			impl InlineAsmDiagnostic 
+InlineAsmDiagnostic			pub struct InlineAsmDiagnostic 
 IntPredicate			pub enum IntPredicate 
 LLVMABIAlignmentOfType			    pub fn LLVMABIAlignmentOfType(TD: TargetDataRef, Ty: TypeRef)
 LLVMABISizeOfType			    pub fn LLVMABISizeOfType(TD: TargetDataRef, Ty: TypeRef) -> c_ulonglong;
@@ -283,23 +285,23 @@ LLVMDIBuilderCreate			    pub fn LLVMDIBuilderCreate(M: ModuleRef) -> DIBuilderR
 LLVMDIBuilderCreateArrayType			    pub fn LLVMDIBuilderCreateArrayType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateBasicType			    pub fn LLVMDIBuilderCreateBasicType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateCompileUnit			    pub fn LLVMDIBuilderCreateCompileUnit(Builder: DIBuilderRef,
-LLVMDIBuilderCreateComplexVariable			    pub fn LLVMDIBuilderCreateComplexVariable(Builder: DIBuilderRef,
+LLVMDIBuilderCreateDebugLocation			    pub fn LLVMDIBuilderCreateDebugLocation(Context: ContextRef,
 LLVMDIBuilderCreateEnumerationType			    pub fn LLVMDIBuilderCreateEnumerationType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateEnumerator			    pub fn LLVMDIBuilderCreateEnumerator(Builder: DIBuilderRef,
 LLVMDIBuilderCreateFile			    pub fn LLVMDIBuilderCreateFile(Builder: DIBuilderRef,
 LLVMDIBuilderCreateFunction			    pub fn LLVMDIBuilderCreateFunction(Builder: DIBuilderRef,
 LLVMDIBuilderCreateLexicalBlock			    pub fn LLVMDIBuilderCreateLexicalBlock(Builder: DIBuilderRef,
-LLVMDIBuilderCreateLocalVariable			    pub fn LLVMDIBuilderCreateLocalVariable(Builder: DIBuilderRef,
 LLVMDIBuilderCreateMemberType			    pub fn LLVMDIBuilderCreateMemberType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateNameSpace			    pub fn LLVMDIBuilderCreateNameSpace(Builder: DIBuilderRef,
-LLVMDIBuilderCreateOpDeref			    pub fn LLVMDIBuilderCreateOpDeref(IntType: TypeRef) -> ValueRef;
-LLVMDIBuilderCreateOpPlus			    pub fn LLVMDIBuilderCreateOpPlus(IntType: TypeRef) -> ValueRef;
+LLVMDIBuilderCreateOpDeref			    pub fn LLVMDIBuilderCreateOpDeref() -> i64;
+LLVMDIBuilderCreateOpPlus			    pub fn LLVMDIBuilderCreateOpPlus() -> i64;
 LLVMDIBuilderCreatePointerType			    pub fn LLVMDIBuilderCreatePointerType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateStaticVariable			    pub fn LLVMDIBuilderCreateStaticVariable(Builder: DIBuilderRef,
 LLVMDIBuilderCreateStructType			    pub fn LLVMDIBuilderCreateStructType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateSubroutineType			    pub fn LLVMDIBuilderCreateSubroutineType(Builder: DIBuilderRef,
 LLVMDIBuilderCreateTemplateTypeParameter			    pub fn LLVMDIBuilderCreateTemplateTypeParameter(Builder: DIBuilderRef,
 LLVMDIBuilderCreateUnionType			    pub fn LLVMDIBuilderCreateUnionType(Builder: DIBuilderRef,
+LLVMDIBuilderCreateVariable			    pub fn LLVMDIBuilderCreateVariable(Builder: DIBuilderRef,
 LLVMDIBuilderCreateVectorType			    pub fn LLVMDIBuilderCreateVectorType(Builder: DIBuilderRef,
 LLVMDIBuilderDispose			    pub fn LLVMDIBuilderDispose(Builder: DIBuilderRef);
 LLVMDIBuilderFinalize			    pub fn LLVMDIBuilderFinalize(Builder: DIBuilderRef);
@@ -307,7 +309,7 @@ LLVMDIBuilderGetOrCreateArray			    pub fn LLVMDIBuilderGetOrCreateArray(Builder
 LLVMDIBuilderGetOrCreateSubrange			    pub fn LLVMDIBuilderGetOrCreateSubrange(Builder: DIBuilderRef,
 LLVMDIBuilderInsertDeclareAtEnd			    pub fn LLVMDIBuilderInsertDeclareAtEnd(Builder: DIBuilderRef,
 LLVMDIBuilderInsertDeclareBefore			    pub fn LLVMDIBuilderInsertDeclareBefore(Builder: DIBuilderRef,
-LLVMDICompositeTypeSetTypeArray			    pub fn LLVMDICompositeTypeSetTypeArray(CompositeType: ValueRef, TypeArray: ValueRef);
+LLVMDICompositeTypeSetTypeArray			    pub fn LLVMDICompositeTypeSetTypeArray(Builder: DIBuilderRef,
 LLVMDeleteBasicBlock			    pub fn LLVMDeleteBasicBlock(BB: BasicBlockRef);
 LLVMDeleteFunction			    pub fn LLVMDeleteFunction(Fn: ValueRef);
 LLVMDeleteGlobal			    pub fn LLVMDeleteGlobal(GlobalVar: ValueRef);
@@ -423,6 +425,11 @@ LLVMInitializeMipsTarget			    pub fn LLVMInitializeMipsTarget();
 LLVMInitializeMipsTargetInfo			    pub fn LLVMInitializeMipsTargetInfo();
 LLVMInitializeMipsTargetMC			    pub fn LLVMInitializeMipsTargetMC();
 LLVMInitializePasses			    pub fn LLVMInitializePasses();
+LLVMInitializePowerPCAsmParser			    pub fn LLVMInitializePowerPCAsmParser();
+LLVMInitializePowerPCAsmPrinter			    pub fn LLVMInitializePowerPCAsmPrinter();
+LLVMInitializePowerPCTarget			    pub fn LLVMInitializePowerPCTarget();
+LLVMInitializePowerPCTargetInfo			    pub fn LLVMInitializePowerPCTargetInfo();
+LLVMInitializePowerPCTargetMC			    pub fn LLVMInitializePowerPCTargetMC();
 LLVMInitializeX86AsmParser			    pub fn LLVMInitializeX86AsmParser();
 LLVMInitializeX86AsmPrinter			    pub fn LLVMInitializeX86AsmPrinter();
 LLVMInitializeX86Target			    pub fn LLVMInitializeX86Target();
@@ -441,6 +448,7 @@ LLVMInt8TypeInContext			    pub fn LLVMInt8TypeInContext(C: ContextRef) -> TypeR
 LLVMIntTypeInContext			    pub fn LLVMIntTypeInContext(C: ContextRef, NumBits: c_uint)
 LLVMIsAAllocaInst			    pub fn LLVMIsAAllocaInst(value_ref: ValueRef) -> ValueRef;
 LLVMIsAArgument			    pub fn LLVMIsAArgument(value_ref: ValueRef) -> ValueRef;
+LLVMIsAGlobalVariable			    pub fn LLVMIsAGlobalVariable(GlobalVar: ValueRef) -> ValueRef;
 LLVMIsAStoreInst			    pub fn LLVMIsAStoreInst(Inst: ValueRef) -> ValueRef;
 LLVMIsATerminatorInst			    pub fn LLVMIsATerminatorInst(Inst: ValueRef) -> ValueRef;
 LLVMIsConstant			    pub fn LLVMIsConstant(Val: ValueRef) -> Bool;
@@ -455,8 +463,6 @@ LLVMIsTailCall			    pub fn LLVMIsTailCall(CallInst: ValueRef) -> Bool;
 LLVMIsThreadLocal			    pub fn LLVMIsThreadLocal(GlobalVar: ValueRef) -> Bool;
 LLVMIsUndef			    pub fn LLVMIsUndef(Val: ValueRef) -> Bool;
 LLVMLabelTypeInContext			    pub fn LLVMLabelTypeInContext(C: ContextRef) -> TypeRef;
-LLVMLinkInInterpreter			        fn LLVMLinkInInterpreter();
-LLVMLinkInMCJIT			        fn LLVMLinkInMCJIT();
 LLVMMDNodeInContext			    pub fn LLVMMDNodeInContext(C: ContextRef,
 LLVMMDStringInContext			    pub fn LLVMMDStringInContext(C: ContextRef,
 LLVMMetadataTypeInContext			    pub fn LLVMMetadataTypeInContext(C: ContextRef) -> TypeRef;
@@ -550,6 +556,7 @@ LLVMStructCreateNamed			    pub fn LLVMStructCreateNamed(C: ContextRef, Name: *c
 LLVMStructSetBody			    pub fn LLVMStructSetBody(StructTy: TypeRef,
 LLVMStructTypeInContext			    pub fn LLVMStructTypeInContext(C: ContextRef,
 LLVMTypeOf			    pub fn LLVMTypeOf(Val: ValueRef) -> TypeRef;
+LLVMUnpackInlineAsmDiagnostic			    pub fn LLVMUnpackInlineAsmDiagnostic(DI: DiagnosticInfoRef,
 LLVMUnpackOptimizationDiagnostic			    pub fn LLVMUnpackOptimizationDiagnostic(DI: DiagnosticInfoRef,
 LLVMValueAsBasicBlock			    pub fn LLVMValueAsBasicBlock(Val: ValueRef) -> BasicBlockRef;
 LLVMValueIsBasicBlock			    pub fn LLVMValueIsBasicBlock(Val: ValueRef) -> Bool;
@@ -568,6 +575,7 @@ LLVMX86FP80TypeInContext			    pub fn LLVMX86FP80TypeInContext(C: ContextRef) ->
 Linkage			pub enum Linkage 
 MemoryBuffer_opaque			pub enum MemoryBuffer_opaque {}
 MetadataType			pub enum MetadataType 
+Metadata_opaque			pub enum Metadata_opaque {}
 Module_opaque			pub enum Module_opaque {}
 ObjectFile			impl ObjectFile 
 ObjectFile			pub struct ObjectFile 
@@ -627,7 +635,7 @@ open			    pub fn open(dst: &Path) -> Option<ArchiveRO>
 read			    pub fn read<'a>(&'a self, file: &str) -> Option<&'a [u8]> 
 ret			    pub fn ret<'a, T: AttrHelper + 'static>(&'a mut self, a: T) -> &'a mut AttrBuilder 
 set_thread_local			pub fn set_thread_local(global: ValueRef, is_thread_local: bool) 
-static_link_hack_this_sucks			pub unsafe fn static_link_hack_this_sucks() 
 twine_to_string			pub unsafe fn twine_to_string(tr: TwineRef) -> String 
 unpack			    pub unsafe fn unpack(di: DiagnosticInfoRef) -> Diagnostic 
+unpack			    unsafe fn unpack(di: DiagnosticInfoRef)
 unpack			    unsafe fn unpack(kind: OptimizationDiagnosticKind, di: DiagnosticInfoRef)

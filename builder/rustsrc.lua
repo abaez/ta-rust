@@ -119,9 +119,10 @@ end
 
 
 function main()
+  local _USERHOME = os.getenv("HOME") .. "/.textadept"
   local ctag_rust = _USERHOME .. "/modules/rust/ctags.rust"
   local rust_path = get_location()
-  local parsed = parse_ctags(rust_path .. ctag_rust)
+  local parsed = parse_ctags(ctag_rust)
 
   for _, lib in ipairs(crates) do
     print("building:", lib)

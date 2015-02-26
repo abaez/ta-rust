@@ -12,16 +12,16 @@ SetConsoleTextAttribute			    fn SetConsoleTextAttribute(handle: libc::HANDLE, a
 States			enum States 
 TermInfo			pub struct TermInfo 
 Terminal			pub trait Terminal<T: Writer>: Writer 
-Terminal for TerminfoTerminal			impl<T: Writer+Send> Terminal<T> for TerminfoTerminal<T> 
-Terminal for WinConsole			impl<T: Writer+Send> Terminal<T> for WinConsole<T> 
-TerminfoTerminal			impl<T: Writer+Send> TerminfoTerminal<T> 
+Terminal for TerminfoTerminal			impl<T: Writer+Send+'static> Terminal<T> for TerminfoTerminal<T> 
+Terminal for WinConsole			impl<T: Writer+Send+'static> Terminal<T> for WinConsole<T> 
+TerminfoTerminal			impl<T: Writer+Send+'static> TerminfoTerminal<T> 
 TerminfoTerminal			pub struct TerminfoTerminal<T> 
 UnwrappableTerminal			pub trait UnwrappableTerminal<T: Writer>: Terminal<T> 
-UnwrappableTerminal for TerminfoTerminal			impl<T: Writer+Send> UnwrappableTerminal<T> for TerminfoTerminal<T> 
-UnwrappableTerminal for WinConsole			impl<T: Writer+Send> UnwrappableTerminal<T> for WinConsole<T> 
+UnwrappableTerminal for TerminfoTerminal			impl<T: Writer+Send+'static> UnwrappableTerminal<T> for TerminfoTerminal<T> 
+UnwrappableTerminal for WinConsole			impl<T: Writer+Send+'static> UnwrappableTerminal<T> for WinConsole<T> 
 Variables			impl Variables 
 Variables			pub struct Variables 
-WinConsole			impl<T: Writer+Send> WinConsole<T> 
+WinConsole			impl<T: Writer+Send+'static> WinConsole<T> 
 WinConsole			pub struct WinConsole<T> 
 Writer for TerminfoTerminal			impl<T: Writer> Writer for TerminfoTerminal<T> 
 Writer for WinConsole			impl<T: Writer> Writer for WinConsole<T> 
@@ -65,7 +65,7 @@ new			    pub fn new() -> Variables
 new			    pub fn new(out: T) -> Option<Box<Terminal<T>+Send+'static>> 
 open			pub fn open(term: &str) -> Result<File, String> 
 parm			pub mod parm;
-parse			pub fn parse(file: &mut io::Reader, longnames: bool)
+parse			pub fn parse(file: &mut old_io::Reader, longnames: bool)
 parser			pub mod parser 
 reset			    fn reset(&mut self) -> IoResult<()>;
 reset			    fn reset(&mut self) -> IoResult<()> 
@@ -84,7 +84,7 @@ unwrap			    fn unwrap(self) -> T;
 unwrap			    fn unwrap(self) -> T { self.out }
 unwrap			    fn unwrap(self) -> T { self.buf }
 win			mod win;
-write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
-write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
-write			    fn write(&mut self, buf: &[u8]) -> IoResult<()> 
+write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
+write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
+write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
 x			    fn x(t: &str) -> String 

@@ -77,10 +77,11 @@ Rand for u32			impl Rand for u32
 Rand for u64			impl Rand for u64 
 Rand for u8			impl Rand for u8 
 Rand for uint			impl Rand for uint 
-RandSample			pub struct RandSample<Sup>;
+RandSample			impl<Sup> RandSample<Sup> 
+RandSample			pub struct RandSample<Sup> { _marker: PhantomData<Sup> }
 Range			impl<X: SampleRange + PartialOrd> Range<X> 
 Range			pub struct Range<X> 
-ReseedWithDefault			pub struct ReseedWithDefault;
+ReseedWithDefault			pub struct ReseedWithDefault { __hack: [u8; 0] }
 Reseeder			pub trait Reseeder<R> 
 Reseeder for ReseedWithDefault			impl<R: Rng + Default> Reseeder<R> for ReseedWithDefault 
 ReseedingRng			pub struct ReseedingRng<R, Rsdr> 
@@ -170,6 +171,7 @@ new			    pub fn new(k: f64) -> ChiSquared
 new			    pub fn new(m: f64, n: f64) -> FisherF 
 new			    pub fn new(n: f64) -> StudentT 
 new			    pub fn new(shape: f64, scale: f64) -> Gamma 
+new			    pub fn new() -> RandSample<Sup> 
 new			    pub fn new(items: &'a mut [Weighted<T>]) -> WeightedChoice<'a, T> 
 new			    pub fn new(mean: f64, std_dev: f64) -> LogNormal 
 new			    pub fn new(mean: f64, std_dev: f64) -> Normal 
@@ -258,7 +260,6 @@ sample_range			            fn sample_range<R: Rng>(r: &Range<
 sample_range			    fn sample_range<R: Rng>(r: &Range<Self>, rng: &mut R) -> Self;
 set_counter			    pub fn set_counter(&mut self, counter_low: u64, counter_high: u64) 
 shuffle			    fn shuffle<T>(&mut self, values: &mut [T]) 
-std			mod std 
 test			mod test 
 test			mod test 
 test			mod test 

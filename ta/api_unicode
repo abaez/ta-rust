@@ -2,8 +2,6 @@ Alphabetic			    pub fn Alphabetic(c: char) -> bool
 Cc			    pub fn Cc(c: char) -> bool 
 CharExt			pub trait CharExt 
 CharExt for char			impl CharExt for char 
-Copy for GraphemeCat			    impl Copy for GraphemeCat {}
-Copy for Utf16Item			impl Copy for Utf16Item {}
 DoubleEndedIterator for GraphemeIndices			impl<'a> DoubleEndedIterator for GraphemeIndices<'a> 
 DoubleEndedIterator for Graphemes			impl<'a> DoubleEndedIterator for Graphemes<'a> 
 DoubleEndedIterator for Words			impl<'a> DoubleEndedIterator for Words<'a> 
@@ -30,7 +28,7 @@ White_Space			    pub fn White_Space(c: char) -> bool
 Words			pub struct Words<'a> 
 XID_Continue			    pub fn XID_Continue(c: char) -> bool 
 XID_Start			    pub fn XID_Start(c: char) -> bool 
-bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, char)]) -> Option<uint> 
+bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, char)]) -> Option<usize> 
 bsearch_range_table			fn bsearch_range_table(c: char, r: &'static [(char,char)]) -> bool 
 bsearch_range_value_table			    fn bsearch_range_value_table(c: char, is_cjk: bool, r: &'static [(char, char, u8, u8)]) -> u8 
 bsearch_range_value_table			    fn bsearch_range_value_table(c: char, r: &'static [(char, char, GraphemeCat)]) -> GraphemeCat 
@@ -47,10 +45,10 @@ decompose_canonical			pub fn decompose_canonical<F>(c: char, mut i: F) where F: 
 decompose_compatible			pub fn decompose_compatible<F>(c: char, mut i: F) where F: FnMut(char) { d(c, &mut i, true); }
 decompose_hangul			fn decompose_hangul<F>(s: char, f: &mut F) where F: FnMut(char) 
 derived_property			pub mod derived_property 
-encode_utf16			    fn encode_utf16(self, dst: &mut [u16]) -> Option<uint> { C::encode_utf16(self, dst) }
-encode_utf16			    fn encode_utf16(self, dst: &mut [u16]) -> Option<uint>;
-encode_utf8			    fn encode_utf8(self, dst: &mut [u8]) -> Option<uint> { C::encode_utf8(self, dst) }
-encode_utf8			    fn encode_utf8(self, dst: &mut [u8]) -> Option<uint>;
+encode_utf16			    fn encode_utf16(self, dst: &mut [u16]) -> Option<usize> { C::encode_utf16(self, dst) }
+encode_utf16			    fn encode_utf16(self, dst: &mut [u16]) -> Option<usize>;
+encode_utf8			    fn encode_utf8(self, dst: &mut [u8]) -> Option<usize> { C::encode_utf8(self, dst) }
+encode_utf8			    fn encode_utf8(self, dst: &mut [u8]) -> Option<usize>;
 escape_default			    fn escape_default(self) -> char::EscapeDefault { C::escape_default(self) }
 escape_default			    fn escape_default(self) -> char::EscapeDefault;
 escape_unicode			    fn escape_unicode(self) -> char::EscapeUnicode { C::escape_unicode(self) }
@@ -70,8 +68,8 @@ is_alphanumeric			    fn is_alphanumeric(&self) -> bool { self.chars().all(|c| c
 is_alphanumeric			    fn is_alphanumeric(&self) -> bool;
 is_control			    fn is_control(self) -> bool { general_category::Cc(self) }
 is_control			    fn is_control(self) -> bool;
-is_digit			    fn is_digit(self, radix: uint) -> bool { C::is_digit(self, radix) }
-is_digit			    fn is_digit(self, radix: uint) -> bool;
+is_digit			    fn is_digit(self, radix: u32) -> bool { C::is_digit(self, radix) }
+is_digit			    fn is_digit(self, radix: u32) -> bool;
 is_lowercase			    fn is_lowercase(self) -> bool 
 is_lowercase			    fn is_lowercase(self) -> bool;
 is_not_empty			        fn is_not_empty(s: &&str) -> bool { !s.is_empty() }
@@ -89,31 +87,30 @@ is_xid_continue			    fn is_xid_continue(self) -> bool { derived_property::XID_C
 is_xid_continue			    fn is_xid_continue(self) -> bool;
 is_xid_start			    fn is_xid_start(self) -> bool { derived_property::XID_Start(self) }
 is_xid_start			    fn is_xid_start(self) -> bool;
-len_utf16			    fn len_utf16(self) -> uint { C::len_utf16(self) }
-len_utf16			    fn len_utf16(self) -> uint;
-len_utf8			    fn len_utf8(self) -> uint { C::len_utf8(self) }
-len_utf8			    fn len_utf8(self) -> uint;
+len_utf16			    fn len_utf16(self) -> usize { C::len_utf16(self) }
+len_utf16			    fn len_utf16(self) -> usize;
+len_utf8			    fn len_utf8(self) -> usize { C::len_utf8(self) }
+len_utf8			    fn len_utf8(self) -> usize;
 new			    pub fn new(chars: I) -> Utf16Encoder<I> where I: Iterator<Item=char> 
 next			    fn next(&mut self) -> Option<&'a str> { self.inner.next() }
 next			    fn next(&mut self) -> Option<&'a str> 
-next			    fn next(&mut self) -> Option<(uint, &'a str)> 
+next			    fn next(&mut self) -> Option<(usize, &'a str)> 
 next			    fn next(&mut self) -> Option<Utf16Item> 
 next			    fn next(&mut self) -> Option<u16> 
 next_back			    fn next_back(&mut self) -> Option<&'a str> { self.inner.next_back() }
 next_back			    fn next_back(&mut self) -> Option<&'a str> 
-next_back			    fn next_back(&mut self) -> Option<(uint, &'a str)> 
+next_back			    fn next_back(&mut self) -> Option<(usize, &'a str)> 
 normalization			pub mod normalization 
 normalize			mod normalize;
 property			pub mod property 
 regex			pub mod regex 
 script			pub mod script 
-size_hint			    fn size_hint(&self) -> (uint, Option<uint>) 
-std			mod std 
+size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 str			pub mod str 
 tables			mod tables;
 to_char_lossy			    pub fn to_char_lossy(&self) -> char 
-to_digit			    fn to_digit(self, radix: uint) -> Option<uint> { C::to_digit(self, radix) }
-to_digit			    fn to_digit(self, radix: uint) -> Option<uint>;
+to_digit			    fn to_digit(self, radix: u32) -> Option<u32> { C::to_digit(self, radix) }
+to_digit			    fn to_digit(self, radix: u32) -> Option<u32>;
 to_lower			    pub fn to_lower(c: char) -> char 
 to_lowercase			    fn to_lowercase(self) -> char { conversions::to_lower(self) }
 to_lowercase			    fn to_lowercase(self) -> char;
@@ -129,11 +126,11 @@ trim_right			    fn trim_right<'a>(&'a self) -> &'a str;
 u_char			mod u_char;
 u_str			mod u_str;
 utf16_items			pub fn utf16_items<'a>(v: &'a [u16]) -> Utf16Items<'a> 
-utf8_char_width			pub fn utf8_char_width(b: u8) -> uint 
-width			    pub fn width(c: char, is_cjk: bool) -> Option<uint> 
-width			    fn width(self, is_cjk: bool) -> Option<uint> { charwidth::width(self, is_cjk) }
-width			    fn width(self, is_cjk: bool) -> Option<uint>;
-width			    fn width(&self, is_cjk: bool) -> uint 
-width			    fn width(&self, is_cjk: bool) -> uint;
+utf8_char_width			pub fn utf8_char_width(b: u8) -> usize 
+width			    pub fn width(c: char, is_cjk: bool) -> Option<usize> 
+width			    fn width(self, is_cjk: bool) -> Option<usize> { charwidth::width(self, is_cjk) }
+width			    fn width(self, is_cjk: bool) -> Option<usize>;
+width			    fn width(&self, is_cjk: bool) -> usize 
+width			    fn width(&self, is_cjk: bool) -> usize;
 words			    fn words(&self) -> Words 
 words			    fn words<'a>(&'a self) -> Words<'a>;
