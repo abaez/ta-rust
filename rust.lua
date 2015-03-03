@@ -44,10 +44,10 @@ local keyword = token(l.KEYWORD, word_match{
 })
 
 -- Library types
-local library = token(l.LABEL, l.upper * l.lower^0)
+local library = token(l.LABEL, l.upper * (l.lower + l.dec_num)^1)
 
 -- syntax extensions
-local extension = l.word^0 * S("!")
+local extension = l.word^1 * S("!")
 
 local func = token(l.FUNCTION, extension)
 
