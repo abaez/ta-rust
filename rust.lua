@@ -1,7 +1,7 @@
 --- Rust LPeg lexer.
 -- See @{README.md} for details on usage.
--- @author Alejandro Baez <alejan.baez@gmail.com>
--- @copyright 2014
+-- @author [Alejandro Baez](https://twitter.com/a_baez)
+-- @copyright 2015
 -- @license MIT (see LICENSE)
 -- @module rust
 
