@@ -46,21 +46,15 @@ if type(snippets) == 'table' then
   snippets.rust = require("modules.rust.snippets")
 end
 
-events.connect(events.LEXER_LOADED, function (lang)
-  if lang ~= 'rust' then return end
-
-  buffer.tab_width = 4
-  buffer.use_tabs = false
---  buffer.edge_column = 99
-
-
-  --- Table of Rust-specific key bindings.
-  keys['s\n'] = function()
+--- Table of Rust-specific key bindings.
+keys.rust = {
+  ['s\n'] = function()
     buffer:line_end()
     buffer:add_text(';')
     buffer:new_line()
-  end
-  keys['cB'] = function()
+  end,
+
+  ['cB'] = function()
     local project_name, project_path = raw.get_project_name()
 
     if project_path then
@@ -75,6 +69,14 @@ events.connect(events.LEXER_LOADED, function (lang)
 
     return textadept.run.build()
   end
+}
+
+events.connect(events.LEXER_LOADED, function (lang)
+  if lang ~= 'rust' then return end
+
+  buffer.tab_width = 4
+  buffer.use_tabs = false
+--  buffer.edge_column = 99
 end)
 
 return {}
