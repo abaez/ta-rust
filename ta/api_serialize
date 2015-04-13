@@ -2,10 +2,10 @@
 ::Encoder for Encoder			impl<'a> ::Encoder for Encoder<'a> 
 ::Encoder for PrettyEncoder			impl<'a> ::Encoder for PrettyEncoder<'a> 
 Animal			    enum Animal 
-ArbitraryType			        struct ArbitraryType(uint);
+ArbitraryType			        struct ArbitraryType(usize);
 AsJson			pub struct AsJson<'a, T: 'a> { inner: &'a T }
 AsPrettyJson			impl<'a, T> AsPrettyJson<'a, T> 
-AsPrettyJson			pub struct AsPrettyJson<'a, T: 'a> { inner: &'a T, indent: Option<uint> }
+AsPrettyJson			pub struct AsPrettyJson<'a, T: 'a> { inner: &'a T, indent: Option<usize> }
 Builder			pub struct Builder<T> 
 Decodable			        impl<
 Decodable			impl Decodable for () 
@@ -32,14 +32,15 @@ Decodable for i16			impl Decodable for i16
 Decodable for i32			impl Decodable for i32 
 Decodable for i64			impl Decodable for i64 
 Decodable for i8			impl Decodable for i8 
-Decodable for int			impl Decodable for int 
+Decodable for isize			impl Decodable for isize 
 Decodable for old_path			impl Decodable for old_path::posix::Path 
 Decodable for old_path			impl Decodable for old_path::windows::Path 
+Decodable for path			impl Decodable for path::PathBuf 
 Decodable for u16			impl Decodable for u16 
 Decodable for u32			impl Decodable for u32 
 Decodable for u64			impl Decodable for u64 
 Decodable for u8			impl Decodable for u8 
-Decodable for uint			impl Decodable for uint 
+Decodable for usize			impl Decodable for usize 
 DecodeEnum			    enum DecodeEnum 
 DecodeStruct			    struct DecodeStruct 
 Decoder			impl Decoder 
@@ -74,15 +75,16 @@ Encodable for i16			impl Encodable for i16
 Encodable for i32			impl Encodable for i32 
 Encodable for i64			impl Encodable for i64 
 Encodable for i8			impl Encodable for i8 
-Encodable for int			impl Encodable for int 
+Encodable for isize			impl Encodable for isize 
 Encodable for old_path			impl Encodable for old_path::posix::Path 
 Encodable for old_path			impl Encodable for old_path::windows::Path 
+Encodable for path			impl Encodable for path::PathBuf 
 Encodable for str			impl Encodable for str 
 Encodable for u16			impl Encodable for u16 
 Encodable for u32			impl Encodable for u32 
 Encodable for u64			impl Encodable for u64 
 Encodable for u8			impl Encodable for u8 
-Encodable for uint			impl Encodable for uint 
+Encodable for usize			impl Encodable for usize 
 Encoder			impl<'a> Encoder<'a> 
 Encoder			pub struct Encoder<'a> 
 Encoder			pub trait Encoder 
@@ -93,11 +95,12 @@ Enum			        enum Enum
 ErrorCode			pub enum ErrorCode 
 FloatStruct			    struct FloatStruct 
 FormatShim			struct FormatShim<'a, 'b: 'a> 
+From for EncoderError			impl From<fmt::Error> for EncoderError 
 FromHex			pub trait FromHex 
 FromHex for str			impl FromHex for str 
 FromHexError			pub enum FromHexError 
 FromStr for Json			impl FromStr for Json 
-Index for Json			impl Index<uint> for Json 
+Index for Json			impl Index<usize> for Json 
 Index for Json			impl<'a> Index<&'a str>  for Json 
 Inner			    struct Inner 
 InternalStackElement			enum InternalStackElement 
@@ -187,14 +190,15 @@ decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i16, D::Error>
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i32, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i64, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i8, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<int, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<isize, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<old_path::posix::Path, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<old_path::windows::Path, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<path::PathBuf, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u16, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u32, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u64, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u8, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<uint, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<usize, D::Error> 
 decode_hex_escape			    fn decode_hex_escape(&mut self) -> Result<u16, ParserError> 
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str { "decoder error" }
@@ -211,8 +215,8 @@ emit_enum_struct_variant_field			    fn emit_enum_struct_variant_field<F>(&mut s
 emit_enum_struct_variant_field			    fn emit_enum_struct_variant_field<F>(&mut self,
 emit_enum_variant			    fn emit_enum_variant<F>(&mut self,
 emit_enum_variant			    fn emit_enum_variant<F>(&mut self, v_name: &str,
-emit_enum_variant_arg			    fn emit_enum_variant_arg<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_enum_variant_arg			    fn emit_enum_variant_arg<F>(&mut self, a_idx: uint, f: F)
+emit_enum_variant_arg			    fn emit_enum_variant_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_enum_variant_arg			    fn emit_enum_variant_arg<F>(&mut self, a_idx: usize, f: F)
 emit_f32			    fn emit_f32(&mut self, v: f32) -> EncodeResult 
 emit_f32			    fn emit_f32(&mut self, v: f32) -> Result<(), Self::Error>;
 emit_f64			    fn emit_f64(&mut self, v: f64) -> EncodeResult 
@@ -227,15 +231,15 @@ emit_i64			    fn emit_i64(&mut self, v: i64) -> EncodeResult { emit_enquoted_if
 emit_i64			    fn emit_i64(&mut self, v: i64) -> Result<(), Self::Error>;
 emit_i8			    fn emit_i8(&mut self, v: i8) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
 emit_i8			    fn emit_i8(&mut self, v: i8) -> Result<(), Self::Error>;
-emit_int			    fn emit_int(&mut self, v: int) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
-emit_int			    fn emit_int(&mut self, v: int) -> Result<(), Self::Error>;
-emit_map			    fn emit_map<F>(&mut self, _len: uint, f: F) -> EncodeResult where
-emit_map			    fn emit_map<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_map			    fn emit_map<F>(&mut self, len: uint, f: F) -> Result<(), Self::Error>
-emit_map_elt_key			    fn emit_map_elt_key<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_map_elt_key			    fn emit_map_elt_key<F>(&mut self, idx: uint, f: F) -> Result<(), Self::Error>
-emit_map_elt_val			    fn emit_map_elt_val<F>(&mut self, _idx: uint, f: F) -> EncodeResult where
-emit_map_elt_val			    fn emit_map_elt_val<F>(&mut self, idx: uint, f: F) -> Result<(), Self::Error>
+emit_int			    fn emit_int(&mut self, v: isize) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
+emit_int			    fn emit_int(&mut self, v: isize) -> Result<(), Self::Error>;
+emit_map			    fn emit_map<F>(&mut self, _len: usize, f: F) -> EncodeResult where
+emit_map			    fn emit_map<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_map			    fn emit_map<F>(&mut self, len: usize, f: F) -> Result<(), Self::Error>
+emit_map_elt_key			    fn emit_map_elt_key<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_map_elt_key			    fn emit_map_elt_key<F>(&mut self, idx: usize, f: F) -> Result<(), Self::Error>
+emit_map_elt_val			    fn emit_map_elt_val<F>(&mut self, _idx: usize, f: F) -> EncodeResult where
+emit_map_elt_val			    fn emit_map_elt_val<F>(&mut self, idx: usize, f: F) -> Result<(), Self::Error>
 emit_nil			    fn emit_nil(&mut self) -> EncodeResult 
 emit_nil			    fn emit_nil(&mut self) -> Result<(), Self::Error>;
 emit_option			    fn emit_option<F>(&mut self, f: F) -> EncodeResult where
@@ -244,27 +248,27 @@ emit_option_none			    fn emit_option_none(&mut self) -> EncodeResult
 emit_option_none			    fn emit_option_none(&mut self) -> Result<(), Self::Error>;
 emit_option_some			    fn emit_option_some<F>(&mut self, f: F) -> EncodeResult where
 emit_option_some			    fn emit_option_some<F>(&mut self, f: F) -> Result<(), Self::Error>
-emit_seq			    fn emit_seq<F>(&mut self, _len: uint, f: F) -> EncodeResult where
-emit_seq			    fn emit_seq<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_seq			    fn emit_seq<F>(&mut self, len: uint, f: F) -> Result<(), Self::Error>
-emit_seq_elt			    fn emit_seq_elt<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_seq_elt			    fn emit_seq_elt<F>(&mut self, idx: uint, f: F) -> Result<(), Self::Error>
+emit_seq			    fn emit_seq<F>(&mut self, _len: usize, f: F) -> EncodeResult where
+emit_seq			    fn emit_seq<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_seq			    fn emit_seq<F>(&mut self, len: usize, f: F) -> Result<(), Self::Error>
+emit_seq_elt			    fn emit_seq_elt<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_seq_elt			    fn emit_seq_elt<F>(&mut self, idx: usize, f: F) -> Result<(), Self::Error>
 emit_str			    fn emit_str(&mut self, v: &str) -> EncodeResult 
 emit_str			    fn emit_str(&mut self, v: &str) -> Result<(), Self::Error>;
-emit_struct			    fn emit_struct<F>(&mut self, _: &str, _: uint, f: F) -> EncodeResult where
-emit_struct			    fn emit_struct<F>(&mut self, _: &str, len: uint, f: F) -> EncodeResult where
-emit_struct			    fn emit_struct<F>(&mut self, name: &str, len: uint, f: F)
-emit_struct_field			    fn emit_struct_field<F>(&mut self, name: &str, idx: uint, f: F) -> EncodeResult where
-emit_struct_field			    fn emit_struct_field<F>(&mut self, f_name: &str, f_idx: uint, f: F)
-emit_tuple			    fn emit_tuple<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_tuple			    fn emit_tuple<F>(&mut self, len: uint, f: F) -> Result<(), Self::Error>
-emit_tuple_arg			    fn emit_tuple_arg<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_tuple_arg			    fn emit_tuple_arg<F>(&mut self, idx: uint, f: F) -> Result<(), Self::Error>
-emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _: &str, len: uint, f: F) -> EncodeResult where
-emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _name: &str, len: uint, f: F) -> EncodeResult where
-emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, name: &str, len: uint, f: F)
-emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, f_idx: uint, f: F)
+emit_struct			    fn emit_struct<F>(&mut self, _: &str, _: usize, f: F) -> EncodeResult where
+emit_struct			    fn emit_struct<F>(&mut self, _: &str, len: usize, f: F) -> EncodeResult where
+emit_struct			    fn emit_struct<F>(&mut self, name: &str, len: usize, f: F)
+emit_struct_field			    fn emit_struct_field<F>(&mut self, name: &str, idx: usize, f: F) -> EncodeResult where
+emit_struct_field			    fn emit_struct_field<F>(&mut self, f_name: &str, f_idx: usize, f: F)
+emit_tuple			    fn emit_tuple<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_tuple			    fn emit_tuple<F>(&mut self, len: usize, f: F) -> Result<(), Self::Error>
+emit_tuple_arg			    fn emit_tuple_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_tuple_arg			    fn emit_tuple_arg<F>(&mut self, idx: usize, f: F) -> Result<(), Self::Error>
+emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _: &str, len: usize, f: F) -> EncodeResult where
+emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _name: &str, len: usize, f: F) -> EncodeResult where
+emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, name: &str, len: usize, f: F)
+emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, f_idx: usize, f: F)
 emit_u16			    fn emit_u16(&mut self, v: u16) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
 emit_u16			    fn emit_u16(&mut self, v: u16) -> Result<(), Self::Error>;
 emit_u32			    fn emit_u32(&mut self, v: u32) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
@@ -273,8 +277,8 @@ emit_u64			    fn emit_u64(&mut self, v: u64) -> EncodeResult { emit_enquoted_if
 emit_u64			    fn emit_u64(&mut self, v: u64) -> Result<(), Self::Error>;
 emit_u8			    fn emit_u8(&mut self, v: u8) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
 emit_u8			    fn emit_u8(&mut self, v: u8) -> Result<(), Self::Error>;
-emit_uint			    fn emit_uint(&mut self, v: uint) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
-emit_uint			    fn emit_uint(&mut self, v: uint) -> Result<(), Self::Error>;
+emit_uint			    fn emit_uint(&mut self, v: usize) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
+emit_uint			    fn emit_uint(&mut self, v: usize) -> Result<(), Self::Error>;
 encode			    fn encode<E: Encoder>(&self, e: &mut E) -> Result<(), E::Error> 
 encode			    fn encode<E: Encoder>(&self, s: &mut E) -> Result<(), E::Error> 
 encode			    fn encode<S: Encoder>(&self, e: &mut S) -> Result<(), S::Error> 
@@ -310,19 +314,19 @@ fmt::Display for ParserError			impl fmt::Display for ParserError
 fmt::Display for PrettyJson			impl<'a> fmt::Display for PrettyJson<'a> 
 fmt::Write for FormatShim			impl<'a, 'b> fmt::Write for FormatShim<'a, 'b> 
 fmt_number_or_null			fn fmt_number_or_null(v: f64) -> string::String 
-from_error			    fn from_error(err: fmt::Error) -> EncoderError { EncoderError::FmtError(err) }
+from			    fn from(err: fmt::Error) -> EncoderError { EncoderError::FmtError(err) }
 from_hex			    fn from_hex(&self) -> Result<Vec<u8>, FromHexError> 
 from_hex			    fn from_hex(&self) -> Result<Vec<u8>, FromHexError>;
-from_reader			pub fn from_reader(rdr: &mut old_io::Reader) -> Result<Json, BuilderError> 
+from_reader			pub fn from_reader(rdr: &mut Read) -> Result<Json, BuilderError> 
 from_str			    fn from_str(s: &str) -> Result<Json, BuilderError> 
 from_str			pub fn from_str(s: &str) -> Result<Json, BuilderError> 
-get			    pub fn get<'l>(&'l self, idx: uint) -> StackElement<'l> 
+get			    pub fn get<'l>(&'l self, idx: usize) -> StackElement<'l> 
 hex			pub mod hex;
-indent			    pub fn indent(mut self, indent: uint) -> AsPrettyJson<'a, T> 
-indents			        fn indents(source: &str) -> uint 
-index			    fn index(&self, idx: & &str) -> &Json 
-index			    fn index<'a>(&'a self, idx: &uint) -> &'a Json 
-io_error_to_error			fn io_error_to_error(io: old_io::IoError) -> ParserError 
+indent			    pub fn indent(mut self, indent: usize) -> AsPrettyJson<'a, T> 
+indents			        fn indents(source: &str) -> usize 
+index			    fn index(&self, idx: &'a str) -> &Json 
+index			    fn index<'a>(&'a self, idx: usize) -> &'a Json 
+io_error_to_error			fn io_error_to_error(io: io::Error) -> ParserError 
 is_array			    pub fn is_array<'a>(&'a self) -> bool 
 is_boolean			    pub fn is_boolean(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool { self.stack.is_empty() }
@@ -337,7 +341,7 @@ is_u64			    pub fn is_u64(&self) -> bool
 json			pub mod json;
 last_event			    fn last_event(src: &str) -> JsonEvent 
 last_is_index			    fn last_is_index(&self) -> bool 
-len			    pub fn len(&self) -> uint { self.stack.len() }
+len			    pub fn len(&self) -> usize { self.stack.len() }
 mk_object			    fn mk_object(items: &[(string::String, Json)]) -> Json 
 new			    pub fn new() -> Stack 
 new			    pub fn new(json: Json) -> Decoder 
@@ -378,8 +382,8 @@ read_enum_struct_variant_field			    fn read_enum_struct_variant_field<T, F>(&mu
 read_enum_struct_variant_field			    fn read_enum_struct_variant_field<T, F>(&mut self,
 read_enum_variant			    fn read_enum_variant<T, F>(&mut self, names: &[&str],
 read_enum_variant			    fn read_enum_variant<T, F>(&mut self, names: &[&str], f: F)
-read_enum_variant_arg			    fn read_enum_variant_arg<T, F>(&mut self, _idx: uint, f: F) -> DecodeResult<T> where
-read_enum_variant_arg			    fn read_enum_variant_arg<T, F>(&mut self, a_idx: uint, f: F)
+read_enum_variant_arg			    fn read_enum_variant_arg<T, F>(&mut self, _idx: usize, f: F) -> DecodeResult<T> where
+read_enum_variant_arg			    fn read_enum_variant_arg<T, F>(&mut self, a_idx: usize, f: F)
 read_f32			    fn read_f32(&mut self) -> DecodeResult<f32> { self.read_f64().map(|x| x as f32) }
 read_f32			    fn read_f32(&mut self) -> Result<f32, Self::Error>;
 read_f64			    fn read_f64(&mut self) -> DecodeResult<f64> 
@@ -388,58 +392,55 @@ read_i16			    fn read_i16(&mut self) -> Result<i16, Self::Error>;
 read_i32			    fn read_i32(&mut self) -> Result<i32, Self::Error>;
 read_i64			    fn read_i64(&mut self) -> Result<i64, Self::Error>;
 read_i8			    fn read_i8(&mut self) -> Result<i8, Self::Error>;
-read_int			    fn read_int(&mut self) -> Result<int, Self::Error>;
+read_int			    fn read_int(&mut self) -> Result<isize, Self::Error>;
 read_map			    fn read_map<T, F>(&mut self, f: F) -> DecodeResult<T> where
 read_map			    fn read_map<T, F>(&mut self, f: F) -> Result<T, Self::Error>
-read_map_elt_key			    fn read_map_elt_key<T, F>(&mut self, _idx: uint, f: F) -> DecodeResult<T> where
-read_map_elt_key			    fn read_map_elt_key<T, F>(&mut self, idx: uint, f: F)
-read_map_elt_val			    fn read_map_elt_val<T, F>(&mut self, _idx: uint, f: F) -> DecodeResult<T> where
-read_map_elt_val			    fn read_map_elt_val<T, F>(&mut self, idx: uint, f: F)
+read_map_elt_key			    fn read_map_elt_key<T, F>(&mut self, _idx: usize, f: F) -> DecodeResult<T> where
+read_map_elt_key			    fn read_map_elt_key<T, F>(&mut self, idx: usize, f: F)
+read_map_elt_val			    fn read_map_elt_val<T, F>(&mut self, _idx: usize, f: F) -> DecodeResult<T> where
+read_map_elt_val			    fn read_map_elt_val<T, F>(&mut self, idx: usize, f: F)
 read_nil			    fn read_nil(&mut self) -> DecodeResult<()> 
 read_nil			    fn read_nil(&mut self) -> Result<(), Self::Error>;
 read_option			    fn read_option<T, F>(&mut self, mut f: F) -> DecodeResult<T> where
 read_option			    fn read_option<T, F>(&mut self, f: F) -> Result<T, Self::Error>
 read_seq			    fn read_seq<T, F>(&mut self, f: F) -> DecodeResult<T> where
 read_seq			    fn read_seq<T, F>(&mut self, f: F) -> Result<T, Self::Error>
-read_seq_elt			    fn read_seq_elt<T, F>(&mut self, _idx: uint, f: F) -> DecodeResult<T> where
-read_seq_elt			    fn read_seq_elt<T, F>(&mut self, idx: uint, f: F) -> Result<T, Self::Error>
+read_seq_elt			    fn read_seq_elt<T, F>(&mut self, _idx: usize, f: F) -> DecodeResult<T> where
+read_seq_elt			    fn read_seq_elt<T, F>(&mut self, idx: usize, f: F) -> Result<T, Self::Error>
 read_str			    fn read_str(&mut self) -> DecodeResult<string::String> 
 read_str			    fn read_str(&mut self) -> Result<String, Self::Error>;
-read_struct			    fn read_struct<T, F>(&mut self, _name: &str, _len: uint, f: F) -> DecodeResult<T> where
-read_struct			    fn read_struct<T, F>(&mut self, s_name: &str, len: uint, f: F)
+read_struct			    fn read_struct<T, F>(&mut self, _name: &str, _len: usize, f: F) -> DecodeResult<T> where
+read_struct			    fn read_struct<T, F>(&mut self, s_name: &str, len: usize, f: F)
 read_struct_field			    fn read_struct_field<T, F>(&mut self,
 read_struct_field			    fn read_struct_field<T, F>(&mut self,
 read_to_vec			    fn read_to_vec<T, F>(&mut self, f: F)
 read_to_vec			    fn read_to_vec<T, F>(&mut self, mut f: F) -> Result<Vec<T>, D::Error> where F:
-read_tuple			    fn read_tuple<T, F>(&mut self, tuple_len: uint, f: F) -> DecodeResult<T> where
-read_tuple			    fn read_tuple<T, F>(&mut self, len: uint, f: F) -> Result<T, Self::Error>
-read_tuple_arg			    fn read_tuple_arg<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
-read_tuple_arg			    fn read_tuple_arg<T, F>(&mut self, a_idx: uint, f: F)
+read_tuple			    fn read_tuple<T, F>(&mut self, tuple_len: usize, f: F) -> DecodeResult<T> where
+read_tuple			    fn read_tuple<T, F>(&mut self, len: usize, f: F) -> Result<T, Self::Error>
+read_tuple_arg			    fn read_tuple_arg<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
+read_tuple_arg			    fn read_tuple_arg<T, F>(&mut self, a_idx: usize, f: F)
 read_tuple_struct			    fn read_tuple_struct<T, F>(&mut self,
-read_tuple_struct			    fn read_tuple_struct<T, F>(&mut self, s_name: &str, len: uint, f: F)
+read_tuple_struct			    fn read_tuple_struct<T, F>(&mut self, s_name: &str, len: usize, f: F)
 read_tuple_struct_arg			    fn read_tuple_struct_arg<T, F>(&mut self,
-read_tuple_struct_arg			    fn read_tuple_struct_arg<T, F>(&mut self, a_idx: uint, f: F)
+read_tuple_struct_arg			    fn read_tuple_struct_arg<T, F>(&mut self, a_idx: usize, f: F)
 read_u16			    fn read_u16(&mut self) -> Result<u16, Self::Error>;
 read_u32			    fn read_u32(&mut self) -> Result<u32, Self::Error>;
 read_u64			    fn read_u64(&mut self) -> Result<u64, Self::Error>;
 read_u8			    fn read_u8(&mut self) -> Result<u8, Self::Error>;
-read_uint			    fn read_uint(&mut self) -> Result<uint, Self::Error>;
+read_uint			    fn read_uint(&mut self) -> Result<usize, Self::Error>;
 rustc_serialize			mod rustc_serialize 
 search			    pub fn search<'a>(&'a self, key: &str) -> Option<&'a Json> 
 serialize			mod serialize;
-set_indent			    pub fn set_indent(&mut self, indent: uint) 
-spaces			fn spaces(wr: &mut fmt::Write, mut n: uint) -> EncodeResult 
+set_indent			    pub fn set_indent(&mut self, indent: usize) 
+spaces			fn spaces(wr: &mut fmt::Write, mut n: usize) -> EncodeResult 
 stack			    pub fn stack<'l>(&'l self) -> &'l Stack 
 starts_with			    pub fn starts_with(&self, rhs: &[StackElement]) -> bool 
 std::error::Error for DecoderError			impl std::error::Error for DecoderError 
 std::error::Error for EncoderError			impl std::error::Error for EncoderError 
-std::error::FromError for EncoderError			impl std::error::FromError<fmt::Error> for EncoderError 
 tests			mod tests 
 tests			mod tests 
 to_hex			    fn to_hex(&self) -> String 
 to_hex			    fn to_hex(&self) -> String;
-to_json			            fn to_json(&self) -> Json { Json::I64(*self as i64) }
-to_json			            fn to_json(&self) -> Json { Json::U64(*self as u64) }
 to_json			            fn to_json(&self) -> Json 
 to_json			    fn to_json(&self) -> Json { (*self as f64).to_json() }
 to_json			    fn to_json(&self) -> Json { Json::Array(self.iter().map(|elt| elt.to_json()).collect()) }

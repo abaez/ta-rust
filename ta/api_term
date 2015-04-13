@@ -11,30 +11,30 @@ Param			pub enum Param
 SetConsoleTextAttribute			    fn SetConsoleTextAttribute(handle: libc::HANDLE, attr: libc::WORD) -> libc::BOOL;
 States			enum States 
 TermInfo			pub struct TermInfo 
-Terminal			pub trait Terminal<T: Writer>: Writer 
-Terminal for TerminfoTerminal			impl<T: Writer+Send+'static> Terminal<T> for TerminfoTerminal<T> 
-Terminal for WinConsole			impl<T: Writer+Send+'static> Terminal<T> for WinConsole<T> 
-TerminfoTerminal			impl<T: Writer+Send+'static> TerminfoTerminal<T> 
+Terminal			pub trait Terminal<T: Write>: Write 
+Terminal for TerminfoTerminal			impl<T: Write+Send+'static> Terminal<T> for TerminfoTerminal<T> 
+Terminal for WinConsole			impl<T: Write+Send+'static> Terminal<T> for WinConsole<T> 
+TerminfoTerminal			impl<T: Write+Send+'static> TerminfoTerminal<T> 
 TerminfoTerminal			pub struct TerminfoTerminal<T> 
-UnwrappableTerminal			pub trait UnwrappableTerminal<T: Writer>: Terminal<T> 
-UnwrappableTerminal for TerminfoTerminal			impl<T: Writer+Send+'static> UnwrappableTerminal<T> for TerminfoTerminal<T> 
-UnwrappableTerminal for WinConsole			impl<T: Writer+Send+'static> UnwrappableTerminal<T> for WinConsole<T> 
+UnwrappableTerminal			pub trait UnwrappableTerminal<T: Write>: Terminal<T> 
+UnwrappableTerminal for TerminfoTerminal			impl<T: Write+Send+'static> UnwrappableTerminal<T> for TerminfoTerminal<T> 
+UnwrappableTerminal for WinConsole			impl<T: Write+Send+'static> UnwrappableTerminal<T> for WinConsole<T> 
 Variables			impl Variables 
 Variables			pub struct Variables 
-WinConsole			impl<T: Writer+Send+'static> WinConsole<T> 
+WinConsole			impl<T: Write+Send+'static> WinConsole<T> 
 WinConsole			pub struct WinConsole<T> 
-Writer for TerminfoTerminal			impl<T: Writer> Writer for TerminfoTerminal<T> 
-Writer for WinConsole			impl<T: Writer> Writer for WinConsole<T> 
-Writer for WriterWrapper			impl Writer for WriterWrapper 
+Write for TerminfoTerminal			impl<T: Write> Write for TerminfoTerminal<T> 
+Write for WinConsole			impl<T: Write> Write for WinConsole<T> 
+Write for WriterWrapper			impl Write for WriterWrapper 
 WriterWrapper			pub struct WriterWrapper 
 apply			    fn apply(&mut self) 
-attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool>;
+attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool>;
 attr			pub mod attr 
-attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool> 
-attr			    fn attr(&mut self, attr: attr::Attr) -> IoResult<bool> 
-bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool>;
-bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool> 
-bg			    fn bg(&mut self, color: color::Color) -> IoResult<bool> 
+attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool> 
+attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool> 
+bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool>;
+bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool> 
+bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool> 
 bits_to_color			fn bits_to_color(bits: u16) -> color::Color 
 cap_for_attr			fn cap_for_attr(attr: attr::Attr) -> &'static str 
 color			pub mod color 
@@ -42,15 +42,15 @@ color_to_bits			fn color_to_bits(color: color::Color) -> u16
 compiled			    pub mod compiled;
 dim_if_necessary			    fn dim_if_necessary(&self, color: color::Color) -> color::Color 
 expand			pub fn expand(cap: &[u8], params: &[Param], vars: &mut Variables)
-fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool>;
-fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool> 
-fg			    fn fg(&mut self, color: color::Color) -> IoResult<bool> 
-flush			    fn flush(&mut self) -> IoResult<()> 
-flush			    fn flush(&mut self) -> IoResult<()> 
-flush			    fn flush(&mut self) -> IoResult<()> 
+fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool>;
+fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool> 
+fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool> 
+flush			    fn flush(&mut self) -> io::Result<()> 
+flush			    fn flush(&mut self) -> io::Result<()> 
+flush			    fn flush(&mut self) -> io::Result<()> 
 format			fn format(val: Param, op: FormatOp, flags: Flags) -> Result<Vec<u8> ,String> 
 from_char			    fn from_char(c: char) -> FormatOp 
-get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<Box<Path>> 
+get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<Box<PathBuf>> 
 get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T;
 get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.out }
 get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.buf }
@@ -65,11 +65,14 @@ new			    pub fn new() -> Variables
 new			    pub fn new(out: T) -> Option<Box<Terminal<T>+Send+'static>> 
 open			pub fn open(term: &str) -> Result<File, String> 
 parm			pub mod parm;
-parse			pub fn parse(file: &mut old_io::Reader, longnames: bool)
+parse			pub fn parse(file: &mut Read, longnames: bool)
 parser			pub mod parser 
-reset			    fn reset(&mut self) -> IoResult<()>;
-reset			    fn reset(&mut self) -> IoResult<()> 
-reset			    fn reset(&mut self) -> IoResult<()> 
+read_byte			fn read_byte<R: Read + ?Sized>(r: &mut R) -> io::Result<u8> 
+read_exact			fn read_exact<R: Read + ?Sized>(r: &mut R, sz: usize) -> io::Result<Vec<u8>> 
+read_le_u16			fn read_le_u16<R: Read + ?Sized>(r: &mut R) -> io::Result<u16> 
+reset			    fn reset(&mut self) -> io::Result<()>;
+reset			    fn reset(&mut self) -> io::Result<()> 
+reset			    fn reset(&mut self) -> io::Result<()> 
 searcher			pub mod searcher;
 stderr			pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send>> 
 stdout			pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> 
@@ -84,7 +87,7 @@ unwrap			    fn unwrap(self) -> T;
 unwrap			    fn unwrap(self) -> T { self.out }
 unwrap			    fn unwrap(self) -> T { self.buf }
 win			mod win;
-write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
-write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
-write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
+write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
+write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
+write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 x			    fn x(t: &str) -> String 

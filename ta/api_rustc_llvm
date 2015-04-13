@@ -19,7 +19,6 @@ CodeGenOptLevel			pub enum CodeGenOptLevel
 ConstFCmp			pub fn ConstFCmp(pred: RealPredicate, v1: ValueRef, v2: ValueRef) -> ValueRef 
 ConstICmp			pub fn ConstICmp(pred: IntPredicate, v1: ValueRef, v2: ValueRef) -> ValueRef 
 Context_opaque			pub enum Context_opaque {}
-Copy for InlineAsmDiagnostic			impl Copy for InlineAsmDiagnostic {}
 DIBuilder_opaque			    pub enum DIBuilder_opaque {}
 DIDescriptorFlags			    pub enum DIDescriptorFlags 
 DebugLoc_opaque			pub enum DebugLoc_opaque {}
@@ -371,6 +370,7 @@ LLVMGetMetadata			    pub fn LLVMGetMetadata(Val: ValueRef, KindID: c_uint) -> V
 LLVMGetModuleContext			    pub fn LLVMGetModuleContext(M: ModuleRef) -> ContextRef;
 LLVMGetNamedFunction			    pub fn LLVMGetNamedFunction(M: ModuleRef, Name: *const c_char) -> ValueRef;
 LLVMGetNamedGlobal			    pub fn LLVMGetNamedGlobal(M: ModuleRef, Name: *const c_char) -> ValueRef;
+LLVMGetNamedValue			    pub fn LLVMGetNamedValue(M: ModuleRef, Name: *const c_char) -> ValueRef;
 LLVMGetNextBasicBlock			    pub fn LLVMGetNextBasicBlock(BB: BasicBlockRef) -> BasicBlockRef;
 LLVMGetNextFunction			    pub fn LLVMGetNextFunction(Fn: ValueRef) -> ValueRef;
 LLVMGetNextGlobal			    pub fn LLVMGetNextGlobal(GlobalVar: ValueRef) -> ValueRef;
@@ -380,6 +380,7 @@ LLVMGetNextUse			    pub fn LLVMGetNextUse(U: UseRef) -> UseRef;
 LLVMGetNumOperands			    pub fn LLVMGetNumOperands(Val: ValueRef) -> c_int;
 LLVMGetOperand			    pub fn LLVMGetOperand(Val: ValueRef, Index: c_uint) -> ValueRef;
 LLVMGetOrInsertFunction			    pub fn LLVMGetOrInsertFunction(M: ModuleRef,
+LLVMGetOrInsertGlobal			    pub fn LLVMGetOrInsertGlobal(M: ModuleRef, Name: *const c_char, T: TypeRef) -> ValueRef;
 LLVMGetParam			    pub fn LLVMGetParam(Fn: ValueRef, Index: c_uint) -> ValueRef;
 LLVMGetParamParent			    pub fn LLVMGetParamParent(Inst: ValueRef) -> ValueRef;
 LLVMGetParamTypes			    pub fn LLVMGetParamTypes(FunctionTy: TypeRef, Dest: *mut TypeRef);
@@ -448,6 +449,7 @@ LLVMInt8TypeInContext			    pub fn LLVMInt8TypeInContext(C: ContextRef) -> TypeR
 LLVMIntTypeInContext			    pub fn LLVMIntTypeInContext(C: ContextRef, NumBits: c_uint)
 LLVMIsAAllocaInst			    pub fn LLVMIsAAllocaInst(value_ref: ValueRef) -> ValueRef;
 LLVMIsAArgument			    pub fn LLVMIsAArgument(value_ref: ValueRef) -> ValueRef;
+LLVMIsAConstantInt			    pub fn LLVMIsAConstantInt(value_ref: ValueRef) -> ValueRef;
 LLVMIsAGlobalVariable			    pub fn LLVMIsAGlobalVariable(GlobalVar: ValueRef) -> ValueRef;
 LLVMIsAStoreInst			    pub fn LLVMIsAStoreInst(Inst: ValueRef) -> ValueRef;
 LLVMIsATerminatorInst			    pub fn LLVMIsATerminatorInst(Inst: ValueRef) -> ValueRef;
@@ -489,6 +491,7 @@ LLVMPositionBuilderAtEnd			    pub fn LLVMPositionBuilderAtEnd(Builder: BuilderR
 LLVMPositionBuilderBefore			    pub fn LLVMPositionBuilderBefore(Builder: BuilderRef,
 LLVMPreferredAlignmentOfType			    pub fn LLVMPreferredAlignmentOfType(TD: TargetDataRef, Ty: TypeRef)
 LLVMRemoveAttribute			    pub fn LLVMRemoveAttribute(Arg: ValueRef, PA: c_uint);
+LLVMRemoveFunctionAttr			    pub fn LLVMRemoveFunctionAttr(Fn: ValueRef, val: c_ulonglong);
 LLVMRemoveFunctionAttrString			    pub fn LLVMRemoveFunctionAttrString(Fn: ValueRef, index: c_uint, Name: *const c_char);
 LLVMRemoveInstrAttribute			    pub fn LLVMRemoveInstrAttribute(Instr: ValueRef,
 LLVMReplaceAllUsesWith			    pub fn LLVMReplaceAllUsesWith(OldVal: ValueRef, NewVal: ValueRef);
@@ -617,7 +620,7 @@ apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef)
 apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef);
 apply_llfn			    pub fn apply_llfn(&self, llfn: ValueRef) 
 archive_ro			pub mod archive_ro;
-arg			    pub fn arg<'a, T: AttrHelper + 'static>(&'a mut self, idx: uint, a: T) -> &'a mut AttrBuilder 
+arg			    pub fn arg<'a, T: AttrHelper + 'static>(&'a mut self, idx: usize, a: T) -> &'a mut AttrBuilder 
 build_string			pub fn build_string<F>(f: F) -> Option<String> where F: FnOnce(RustStringRef)
 debug_loc_to_string			pub unsafe fn debug_loc_to_string(c: ContextRef, tr: DebugLocRef) -> String 
 debuginfo			pub mod debuginfo 
@@ -632,6 +635,7 @@ mk_target_data			pub fn mk_target_data(string_rep: &str) -> TargetData
 new			    pub fn new() -> AttrBuilder 
 new			    pub fn new(llmb: MemoryBufferRef) -> Option<ObjectFile> 
 open			    pub fn open(dst: &Path) -> Option<ArchiveRO> 
+path2cstr			        fn path2cstr(p: &Path) -> CString 
 read			    pub fn read<'a>(&'a self, file: &str) -> Option<&'a [u8]> 
 ret			    pub fn ret<'a, T: AttrHelper + 'static>(&'a mut self, a: T) -> &'a mut AttrBuilder 
 set_thread_local			pub fn set_thread_local(global: ValueRef, is_thread_local: bool) 

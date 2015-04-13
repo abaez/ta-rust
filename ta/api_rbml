@@ -3,32 +3,17 @@ Decoder			    pub struct Decoder<'a>
 Doc			impl<'doc> Doc<'doc> 
 Doc			pub struct Doc<'a> 
 EbmlEncoderTag			pub enum EbmlEncoderTag 
-Encoder			    impl<'a, W: Writer + Seek> Encoder<'a, W> 
-Encoder			    pub struct Encoder<'a, W:'a> 
+Encoder			    impl<'a> Encoder<'a> 
+Encoder			    pub struct Encoder<'a> 
 Error			pub enum Error 
 Res			    pub struct Res 
-Seek for SeekableMemWriter			impl Seek for SeekableMemWriter 
-SeekableMemWriter			impl SeekableMemWriter 
-SeekableMemWriter			pub struct SeekableMemWriter 
 TaggedDoc			pub struct TaggedDoc<'a> 
-Writer for SeekableMemWriter			impl Writer for SeekableMemWriter 
-_check_label			        fn _check_label(&mut self, lbl: &str) -> DecodeResult<()> 
-_emit_label			        fn _emit_label(&mut self, label: &str) -> EncodeResult 
-_emit_tagged_uint			        fn _emit_tagged_uint(&mut self, t: EbmlEncoderTag, v: uint) -> EncodeResult 
-_next_uint			        fn _next_uint(&mut self, exp_tag: EbmlEncoderTag) -> DecodeResult<uint> 
+_emit_tagged_sub			        fn _emit_tagged_sub(&mut self, v: usize) -> EncodeResult 
+_next_int			        fn _next_int(&mut self,
+_next_sub			        fn _next_sub(&mut self) -> DecodeResult<usize> 
 as_str			    pub fn as_str(&self) -> String 
 as_str_slice			    pub fn as_str_slice<'a>(&'a self) -> &'a str 
 bench			mod bench 
-bench_seekable_mem_writer_001_0000			    fn bench_seekable_mem_writer_001_0000(b: &mut Bencher) 
-bench_seekable_mem_writer_001_0010			    fn bench_seekable_mem_writer_001_0010(b: &mut Bencher) 
-bench_seekable_mem_writer_001_0100			    fn bench_seekable_mem_writer_001_0100(b: &mut Bencher) 
-bench_seekable_mem_writer_001_1000			    fn bench_seekable_mem_writer_001_1000(b: &mut Bencher) 
-bench_seekable_mem_writer_100_0000			    fn bench_seekable_mem_writer_100_0000(b: &mut Bencher) 
-bench_seekable_mem_writer_100_0010			    fn bench_seekable_mem_writer_100_0010(b: &mut Bencher) 
-bench_seekable_mem_writer_100_0100			    fn bench_seekable_mem_writer_100_0100(b: &mut Bencher) 
-bench_seekable_mem_writer_100_1000			    fn bench_seekable_mem_writer_100_1000(b: &mut Bencher) 
-combine			fn combine(seek: SeekStyle, cur: uint, end: uint, offset: i64) -> IoResult<u64> 
-do_bench_seekable_mem_writer			    fn do_bench_seekable_mem_writer(b: &mut Bencher, times: uint, len: uint) 
 doc_as_i16			    pub fn doc_as_i16(d: Doc) -> i16 { doc_as_u16(d) as i16 }
 doc_as_i32			    pub fn doc_as_i32(d: Doc) -> i32 { doc_as_u32(d) as i32 }
 doc_as_i64			    pub fn doc_as_i64(d: Doc) -> i64 { doc_as_u64(d) as i64 }
@@ -37,56 +22,55 @@ doc_as_u16			    pub fn doc_as_u16(d: Doc) -> u16
 doc_as_u32			    pub fn doc_as_u32(d: Doc) -> u32 
 doc_as_u64			    pub fn doc_as_u64(d: Doc) -> u64 
 doc_as_u8			    pub fn doc_as_u8(d: Doc) -> u8 
-doc_at			    pub fn doc_at<'a>(data: &'a [u8], start: uint) -> DecodeResult<TaggedDoc<'a>> 
+doc_at			    pub fn doc_at<'a>(data: &'a [u8], start: usize) -> DecodeResult<TaggedDoc<'a>> 
 docs			    pub fn docs<F>(d: Doc, mut it: F) -> bool where
 emit_bool			        fn emit_bool(&mut self, v: bool) -> EncodeResult 
 emit_char			        fn emit_char(&mut self, v: char) -> EncodeResult 
-emit_enum			        fn emit_enum<F>(&mut self, name: &str, f: F) -> EncodeResult where
+emit_enum			        fn emit_enum<F>(&mut self, _name: &str, f: F) -> EncodeResult where
 emit_enum_struct_variant			        fn emit_enum_struct_variant<F>(&mut self,
 emit_enum_struct_variant_field			        fn emit_enum_struct_variant_field<F>(&mut self,
 emit_enum_variant			        fn emit_enum_variant<F>(&mut self,
-emit_enum_variant_arg			        fn emit_enum_variant_arg<F>(&mut self, _: uint, f: F) -> EncodeResult where
+emit_enum_variant_arg			        fn emit_enum_variant_arg<F>(&mut self, _: usize, f: F) -> EncodeResult where
 emit_f32			        fn emit_f32(&mut self, v: f32) -> EncodeResult 
 emit_f64			        fn emit_f64(&mut self, v: f64) -> EncodeResult 
 emit_i16			        fn emit_i16(&mut self, v: i16) -> EncodeResult 
 emit_i32			        fn emit_i32(&mut self, v: i32) -> EncodeResult 
 emit_i64			        fn emit_i64(&mut self, v: i64) -> EncodeResult 
 emit_i8			        fn emit_i8(&mut self, v: i8) -> EncodeResult 
-emit_int			        fn emit_int(&mut self, v: int) -> EncodeResult 
-emit_map			        fn emit_map<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_map_elt_key			        fn emit_map_elt_key<F>(&mut self, _idx: uint, f: F) -> EncodeResult where
-emit_map_elt_val			        fn emit_map_elt_val<F>(&mut self, _idx: uint, f: F) -> EncodeResult where
+emit_int			        fn emit_int(&mut self, v: isize) -> EncodeResult 
+emit_map			        fn emit_map<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_map_elt_key			        fn emit_map_elt_key<F>(&mut self, _idx: usize, f: F) -> EncodeResult where
+emit_map_elt_val			        fn emit_map_elt_val<F>(&mut self, _idx: usize, f: F) -> EncodeResult where
 emit_nil			        fn emit_nil(&mut self) -> EncodeResult 
 emit_opaque			        pub fn emit_opaque<F>(&mut self, f: F) -> EncodeResult where
 emit_option			        fn emit_option<F>(&mut self, f: F) -> EncodeResult where
 emit_option_none			        fn emit_option_none(&mut self) -> EncodeResult 
 emit_option_some			        fn emit_option_some<F>(&mut self, f: F) -> EncodeResult where
-emit_seq			        fn emit_seq<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_seq_elt			        fn emit_seq_elt<F>(&mut self, _idx: uint, f: F) -> EncodeResult where
+emit_seq			        fn emit_seq<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_seq_elt			        fn emit_seq_elt<F>(&mut self, _idx: usize, f: F) -> EncodeResult where
 emit_str			        fn emit_str(&mut self, v: &str) -> EncodeResult 
-emit_struct			        fn emit_struct<F>(&mut self, _: &str, _len: uint, f: F) -> EncodeResult where
-emit_struct_field			        fn emit_struct_field<F>(&mut self, name: &str, _: uint, f: F) -> EncodeResult where
-emit_tuple			        fn emit_tuple<F>(&mut self, len: uint, f: F) -> EncodeResult where
-emit_tuple_arg			        fn emit_tuple_arg<F>(&mut self, idx: uint, f: F) -> EncodeResult where
-emit_tuple_struct			        fn emit_tuple_struct<F>(&mut self, _: &str, len: uint, f: F) -> EncodeResult where
-emit_tuple_struct_arg			        fn emit_tuple_struct_arg<F>(&mut self, idx: uint, f: F) -> EncodeResult where
+emit_struct			        fn emit_struct<F>(&mut self, _: &str, _len: usize, f: F) -> EncodeResult where
+emit_struct_field			        fn emit_struct_field<F>(&mut self, _name: &str, _: usize, f: F) -> EncodeResult where
+emit_tuple			        fn emit_tuple<F>(&mut self, len: usize, f: F) -> EncodeResult where
+emit_tuple_arg			        fn emit_tuple_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
+emit_tuple_struct			        fn emit_tuple_struct<F>(&mut self, _: &str, len: usize, f: F) -> EncodeResult where
+emit_tuple_struct_arg			        fn emit_tuple_struct_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
 emit_u16			        fn emit_u16(&mut self, v: u16) -> EncodeResult 
 emit_u32			        fn emit_u32(&mut self, v: u32) -> EncodeResult 
 emit_u64			        fn emit_u64(&mut self, v: u64) -> EncodeResult 
 emit_u8			        fn emit_u8(&mut self, v: u8) -> EncodeResult 
-emit_uint			        fn emit_uint(&mut self, v: uint) -> EncodeResult 
+emit_uint			        fn emit_uint(&mut self, v: usize) -> EncodeResult 
 end_tag			        pub fn end_tag(&mut self) -> EncodeResult 
 error			        fn error(&mut self, err: &str) -> Error 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Display for Error			impl fmt::Display for Error 
-get			    pub fn get<'a>(&'a self, tag: uint) -> Doc<'a> 
-get_doc			    pub fn get_doc<'a>(d: Doc<'a>, tg: uint) -> Doc<'a> 
-get_ref			    pub fn get_ref<'a>(&'a self) -> &'a [u8] { &self.buf }
-io			pub mod io;
-maybe_get_doc			    pub fn maybe_get_doc<'a>(d: Doc<'a>, tg: uint) -> Option<Doc<'a>> 
-new			    pub fn new() -> SeekableMemWriter 
+get			    pub fn get<'a>(&'a self, tag: usize) -> Doc<'a> 
+get_doc			    pub fn get_doc<'a>(d: Doc<'a>, tg: usize) -> Doc<'a> 
+is_empty			    pub fn is_empty(&self) -> bool 
+mark_stable_position			        pub fn mark_stable_position(&mut self) -> u64 
+maybe_get_doc			    pub fn maybe_get_doc<'a>(d: Doc<'a>, tg: usize) -> Option<Doc<'a>> 
 new			        pub fn new(d: Doc<'doc>) -> Decoder<'doc> 
-new			        pub fn new(w: &'a mut W) -> Encoder<'a, W> 
+new			        pub fn new(w: &'a mut Cursor<Vec<u8>>) -> Encoder<'a> 
 new			    pub fn new(data: &'doc [u8]) -> Doc<'doc> 
 next_doc			        fn next_doc(&mut self, exp_tag: EbmlEncoderTag) -> DecodeResult<Doc<'doc>> 
 push_doc			        fn push_doc<T, F>(&mut self, exp_tag: EbmlEncoderTag, f: F) -> DecodeResult<T> where
@@ -96,69 +80,73 @@ read_enum			        fn read_enum<T, F>(&mut self, name: &str, f: F) -> DecodeRes
 read_enum_struct_variant			        fn read_enum_struct_variant<T, F>(&mut self, _: &[&str],
 read_enum_struct_variant_field			        fn read_enum_struct_variant_field<T, F>(&mut self,
 read_enum_variant			        fn read_enum_variant<T, F>(&mut self, _: &[&str],
-read_enum_variant_arg			        fn read_enum_variant_arg<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
+read_enum_variant_arg			        fn read_enum_variant_arg<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
 read_f32			        fn read_f32(&mut self) -> DecodeResult<f32> 
 read_f64			        fn read_f64(&mut self) -> DecodeResult<f64> 
-read_i16			        fn read_i16(&mut self) -> DecodeResult<i16> 
-read_i32			        fn read_i32(&mut self) -> DecodeResult<i32> 
-read_i64			        fn read_i64(&mut self) -> DecodeResult<i64> 
-read_i8			        fn read_i8 (&mut self) -> DecodeResult<i8> 
-read_int			        fn read_int(&mut self) -> DecodeResult<int> 
+read_i16			        fn read_i16(&mut self) -> DecodeResult<i16> { Ok(try!(self._next_int(EsI8, EsI16)) as i16) }
+read_i32			        fn read_i32(&mut self) -> DecodeResult<i32> { Ok(try!(self._next_int(EsI8, EsI32)) as i32) }
+read_i64			        fn read_i64(&mut self) -> DecodeResult<i64> { Ok(try!(self._next_int(EsI8, EsI64)) as i64) }
+read_i8			        fn read_i8(&mut self) -> DecodeResult<i8> { Ok(doc_as_u8(try!(self.next_doc(EsI8))) as i8) }
+read_int			        fn read_int(&mut self) -> DecodeResult<isize> 
 read_map			        fn read_map<T, F>(&mut self, f: F) -> DecodeResult<T> where
-read_map_elt_key			        fn read_map_elt_key<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
-read_map_elt_val			        fn read_map_elt_val<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
+read_map_elt_key			        fn read_map_elt_key<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
+read_map_elt_val			        fn read_map_elt_val<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
 read_nil			        fn read_nil(&mut self) -> DecodeResult<()> { Ok(()) }
 read_opaque			        pub fn read_opaque<R, F>(&mut self, op: F) -> DecodeResult<R> where
 read_option			        fn read_option<T, F>(&mut self, mut f: F) -> DecodeResult<T> where
 read_seq			        fn read_seq<T, F>(&mut self, f: F) -> DecodeResult<T> where
-read_seq_elt			        fn read_seq_elt<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
+read_seq_elt			        fn read_seq_elt<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
 read_str			        fn read_str(&mut self) -> DecodeResult<String> 
-read_struct			        fn read_struct<T, F>(&mut self, name: &str, _: uint, f: F) -> DecodeResult<T> where
-read_struct_field			        fn read_struct_field<T, F>(&mut self, name: &str, idx: uint, f: F) -> DecodeResult<T> where
-read_tuple			        fn read_tuple<T, F>(&mut self, tuple_len: uint, f: F) -> DecodeResult<T> where
-read_tuple_arg			        fn read_tuple_arg<T, F>(&mut self, idx: uint, f: F) -> DecodeResult<T> where
-read_tuple_struct			        fn read_tuple_struct<T, F>(&mut self, name: &str, len: uint, f: F) -> DecodeResult<T> where
+read_struct			        fn read_struct<T, F>(&mut self, name: &str, _: usize, f: F) -> DecodeResult<T> where
+read_struct_field			        fn read_struct_field<T, F>(&mut self, name: &str, idx: usize, f: F) -> DecodeResult<T> where
+read_tuple			        fn read_tuple<T, F>(&mut self, tuple_len: usize, f: F) -> DecodeResult<T> where
+read_tuple_arg			        fn read_tuple_arg<T, F>(&mut self, idx: usize, f: F) -> DecodeResult<T> where
+read_tuple_struct			        fn read_tuple_struct<T, F>(&mut self, name: &str, len: usize, f: F) -> DecodeResult<T> where
 read_tuple_struct_arg			        fn read_tuple_struct_arg<T, F>(&mut self,
-read_u16			        fn read_u16(&mut self) -> DecodeResult<u16> { Ok(doc_as_u16(try!(self.next_doc(EsU16)))) }
-read_u32			        fn read_u32(&mut self) -> DecodeResult<u32> { Ok(doc_as_u32(try!(self.next_doc(EsU32)))) }
-read_u64			        fn read_u64(&mut self) -> DecodeResult<u64> { Ok(doc_as_u64(try!(self.next_doc(EsU64)))) }
-read_u8			        fn read_u8 (&mut self) -> DecodeResult<u8 > { Ok(doc_as_u8 (try!(self.next_doc(EsU8 )))) }
-read_uint			        fn read_uint(&mut self) -> DecodeResult<uint> 
+read_u16			        fn read_u16(&mut self) -> DecodeResult<u16> { Ok(try!(self._next_int(EsU8, EsU16)) as u16) }
+read_u32			        fn read_u32(&mut self) -> DecodeResult<u32> { Ok(try!(self._next_int(EsU8, EsU32)) as u32) }
+read_u64			        fn read_u64(&mut self) -> DecodeResult<u64> { self._next_int(EsU8, EsU64) }
+read_u8			        fn read_u8(&mut self) -> DecodeResult<u8> { Ok(doc_as_u8(try!(self.next_doc(EsU8)))) }
+read_uint			        fn read_uint(&mut self) -> DecodeResult<usize> 
 reader			pub mod reader 
-seek			    fn seek(&mut self, pos: i64, style: SeekStyle) -> IoResult<()> 
-seek_before_0			    fn seek_before_0() 
-seek_past_end			    fn seek_past_end() 
 serialize::Decoder for Decoder			    impl<'doc> serialize::Decoder for Decoder<'doc> 
-serialize::Encoder for Encoder			    impl<'a, W: Writer + Seek> serialize::Encoder for Encoder<'a, W> 
-start_tag			        pub fn start_tag(&mut self, tag_id: uint) -> EncodeResult 
-tagged_docs			    pub fn tagged_docs<F>(d: Doc, tg: uint, mut it: F) -> bool where
-tell			    fn tell(&self) -> IoResult<u64> { Ok(self.pos as u64) }
+serialize::Encoder for Encoder			    impl<'a> serialize::Encoder for Encoder<'a> 
+start_tag			        pub fn start_tag(&mut self, tag_id: usize) -> EncodeResult 
+tag_at			    pub fn tag_at(data: &[u8], start: usize) -> DecodeResult<Res> 
+tag_len_at			    pub fn tag_len_at(data: &[u8], tag: Res) -> DecodeResult<Res> 
+tagged_docs			    pub fn tagged_docs<F>(d: Doc, tg: usize, mut it: F) -> bool where
 tests			mod tests 
-tests			mod tests 
-unsafe_clone			        pub unsafe fn unsafe_clone(&self) -> Encoder<'a, W> 
-unwrap			    pub fn unwrap(self) -> Vec<u8> { self.buf }
-vuint_at			    pub fn vuint_at(data: &[u8], start: uint) -> DecodeResult<Res> 
+unsafe_clone			        pub unsafe fn unsafe_clone(&self) -> Encoder<'a> 
+vuint_at			    pub fn vuint_at(data: &[u8], start: usize) -> DecodeResult<Res> 
 vuint_at_A_aligned			    pub fn vuint_at_A_aligned(b: &mut Bencher) 
 vuint_at_A_unaligned			    pub fn vuint_at_A_unaligned(b: &mut Bencher) 
 vuint_at_D_aligned			    pub fn vuint_at_D_aligned(b: &mut Bencher) 
 vuint_at_D_unaligned			    pub fn vuint_at_D_unaligned(b: &mut Bencher) 
-vuint_at_slow			    fn vuint_at_slow(data: &[u8], start: uint) -> DecodeResult<Res> 
-with_capacity			    pub fn with_capacity(n: uint) -> SeekableMemWriter 
+vuint_at_slow			    fn vuint_at_slow(data: &[u8], start: usize) -> DecodeResult<Res> 
 with_doc_data			    pub fn with_doc_data<T, F>(d: Doc, f: F) -> T where
 wr_bytes			        pub fn wr_bytes(&mut self, b: &[u8]) -> EncodeResult 
 wr_str			        pub fn wr_str(&mut self, s: &str) -> EncodeResult 
-wr_tag			        pub fn wr_tag<F>(&mut self, tag_id: uint, blk: F) -> EncodeResult where
-wr_tagged_bytes			        pub fn wr_tagged_bytes(&mut self, tag_id: uint, b: &[u8]) -> EncodeResult 
-wr_tagged_i16			        pub fn wr_tagged_i16(&mut self, tag_id: uint, v: i16) -> EncodeResult 
-wr_tagged_i32			        pub fn wr_tagged_i32(&mut self, tag_id: uint, v: i32) -> EncodeResult 
-wr_tagged_i64			        pub fn wr_tagged_i64(&mut self, tag_id: uint, v: i64) -> EncodeResult 
-wr_tagged_i8			        pub fn wr_tagged_i8(&mut self, tag_id: uint, v: i8) -> EncodeResult 
-wr_tagged_str			        pub fn wr_tagged_str(&mut self, tag_id: uint, v: &str) -> EncodeResult 
-wr_tagged_u16			        pub fn wr_tagged_u16(&mut self, tag_id: uint, v: u16) -> EncodeResult 
-wr_tagged_u32			        pub fn wr_tagged_u32(&mut self, tag_id: uint, v: u32)  -> EncodeResult
-wr_tagged_u64			        pub fn wr_tagged_u64(&mut self, tag_id: uint, v: u64) -> EncodeResult 
-wr_tagged_u8			        pub fn wr_tagged_u8(&mut self, tag_id: uint, v: u8) -> EncodeResult 
-write_all			    fn write_all(&mut self, buf: &[u8]) -> IoResult<()> 
-write_sized_vuint			    fn write_sized_vuint<W: Writer>(w: &mut W, n: uint, size: uint) -> EncodeResult 
-write_vuint			    fn write_vuint<W: Writer>(w: &mut W, n: uint) -> EncodeResult 
+wr_tag			        pub fn wr_tag<F>(&mut self, tag_id: usize, blk: F) -> EncodeResult where
+wr_tagged_bytes			        pub fn wr_tagged_bytes(&mut self, tag_id: usize, b: &[u8]) -> EncodeResult 
+wr_tagged_i16			        pub fn wr_tagged_i16(&mut self, tag_id: usize, v: i16) -> EncodeResult 
+wr_tagged_i32			        pub fn wr_tagged_i32(&mut self, tag_id: usize, v: i32) -> EncodeResult 
+wr_tagged_i64			        pub fn wr_tagged_i64(&mut self, tag_id: usize, v: i64) -> EncodeResult 
+wr_tagged_i8			        pub fn wr_tagged_i8(&mut self, tag_id: usize, v: i8) -> EncodeResult 
+wr_tagged_raw_bytes			        fn wr_tagged_raw_bytes(&mut self, tag_id: usize, b: &[u8]) -> EncodeResult 
+wr_tagged_raw_i16			        fn wr_tagged_raw_i16(&mut self, tag_id: usize, v: i16) -> EncodeResult 
+wr_tagged_raw_i32			        fn wr_tagged_raw_i32(&mut self, tag_id: usize, v: i32) -> EncodeResult 
+wr_tagged_raw_i64			        fn wr_tagged_raw_i64(&mut self, tag_id: usize, v: i64) -> EncodeResult 
+wr_tagged_raw_i8			        fn wr_tagged_raw_i8(&mut self, tag_id: usize, v: i8) -> EncodeResult 
+wr_tagged_raw_u16			        fn wr_tagged_raw_u16(&mut self, tag_id: usize, v: u16) -> EncodeResult 
+wr_tagged_raw_u32			        fn wr_tagged_raw_u32(&mut self, tag_id: usize, v: u32)  -> EncodeResult
+wr_tagged_raw_u64			        fn wr_tagged_raw_u64(&mut self, tag_id: usize, v: u64) -> EncodeResult 
+wr_tagged_raw_u8			        fn wr_tagged_raw_u8(&mut self, tag_id: usize, v: u8) -> EncodeResult 
+wr_tagged_str			        pub fn wr_tagged_str(&mut self, tag_id: usize, v: &str) -> EncodeResult 
+wr_tagged_u16			        pub fn wr_tagged_u16(&mut self, tag_id: usize, v: u16) -> EncodeResult 
+wr_tagged_u32			        pub fn wr_tagged_u32(&mut self, tag_id: usize, v: u32)  -> EncodeResult
+wr_tagged_u64			        pub fn wr_tagged_u64(&mut self, tag_id: usize, v: u64) -> EncodeResult 
+wr_tagged_u8			        pub fn wr_tagged_u8(&mut self, tag_id: usize, v: u8) -> EncodeResult 
+write_sized_vuint			    fn write_sized_vuint<W: Write>(w: &mut W, n: usize, size: usize) -> EncodeResult 
+write_tag			    fn write_tag<W: Write>(w: &mut W, n: usize) -> EncodeResult 
+write_vuint			    fn write_vuint<W: Write>(w: &mut W, n: usize) -> EncodeResult 
 writer			pub mod writer 

@@ -1,3 +1,8 @@
+::core::clone::Clone for WIN32_FIND_DATAW			                impl ::core::clone::Clone for WIN32_FIND_DATAW 
+::core::clone::Clone for WSAPROTOCOL_INFO			                impl ::core::clone::Clone for WSAPROTOCOL_INFO 
+::core::clone::Clone for pthread_attr_t			                impl ::core::clone::Clone for pthread_attr_t 
+::core::clone::Clone for sockaddr_storage			                impl ::core::clone::Clone for sockaddr_storage 
+::core::clone::Clone for sockaddr_un			                impl ::core::clone::Clone for sockaddr_un 
 CloseHandle			                pub fn CloseHandle(hObject: HANDLE) -> BOOL;
 ConnectNamedPipe			                pub fn ConnectNamedPipe(hNamedPipe: HANDLE,
 CopyFileW			                pub fn CopyFileW(lpExistingFileName: LPCWSTR,
@@ -65,6 +70,7 @@ atof			                pub fn atof(s: *const c_char) -> c_double;
 atoi			                pub fn atoi(s: *const c_char) -> c_int;
 bind			            pub fn bind(socket: SOCKET, address: *const sockaddr,
 bind			            pub fn bind(socket: c_int, address: *const sockaddr,
+bsd43			            pub mod bsd43 
 bsd43			    pub mod bsd43 
 bsd44			            pub mod bsd44 
 bsd44			            pub mod bsd44 {}
@@ -82,6 +88,11 @@ chdir			                pub fn chdir(dir: *const c_char) -> c_int;
 chmod			                pub fn chmod(path: *const c_char, mode: c_int) -> c_int;
 chmod			                pub fn chmod(path: *const c_char, mode: mode_t) -> c_int;
 chown			                pub fn chown(path: *const c_char, uid: uid_t,
+clone			                    fn clone(&self) -> WIN32_FIND_DATAW { *self }
+clone			                    fn clone(&self) -> WSAPROTOCOL_INFO { *self }
+clone			                    fn clone(&self) -> pthread_attr_t { *self }
+clone			                    fn clone(&self) -> sockaddr_storage { *self }
+clone			                    fn clone(&self) -> sockaddr_un { *self }
 close			                pub fn close(fd: c_int) -> c_int;
 closedir			                pub fn closedir(dirp: *mut DIR) -> c_int;
 closesocket			            pub fn closesocket(socket: SOCKET) -> c_int;
@@ -154,6 +165,8 @@ getpgrp			                pub fn getpgrp() -> pid_t;
 getpid			                pub fn getpid() -> c_int;
 getpid			                pub fn getpid() -> pid_t;
 getppid			                pub fn getppid() -> pid_t;
+getrlimit			                pub fn getrlimit(resource: c_int, rlim: *mut rlimit) -> c_int;
+getrusage			                pub fn getrusage(resource: c_int, usage: *mut rusage) -> c_int;
 getsid			                pub fn getsid(pid: pid_t) -> pid_t;
 getsockname			            pub fn getsockname(socket: SOCKET, address: *mut sockaddr,
 getsockname			            pub fn getsockname(socket: c_int, address: *mut sockaddr,
@@ -207,9 +220,11 @@ munlockall			                pub fn munlockall() -> c_int;
 munmap			                pub fn munmap(addr: *mut c_void, len: size_t) -> c_int;
 nanosleep			                pub fn nanosleep(rqtp: *const timespec,
 net			        pub mod net 
+open			                    pub fn open(path: *const ::c_char, oflag: ::c_int, ...)
+open			                    pub fn open(path: *const ::c_char, oflag: ::c_int, mode: ::mode_t)
 open			                pub fn open(path: *const c_char, oflag: c_int, mode: c_int)
-open			                pub fn open(path: *const c_char, oflag: c_int, mode: mode_t)
 open_osfhandle			                pub fn open_osfhandle(osfhandle: intptr_t,
+open_shim			            mod open_shim 
 opendir			                pub fn opendir(dirname: *const c_char) -> *mut DIR;
 os			    pub mod os 
 pathconf			                pub fn pathconf(path: *mut c_char, name: c_int) -> c_long;
@@ -249,9 +264,12 @@ recvfrom			            pub fn recvfrom(socket: SOCKET, buf: *mut c_void, len: c_
 recvfrom			            pub fn recvfrom(socket: c_int, buf: *mut c_void, len: size_t,
 remove			                pub fn remove(filename: *const c_char) -> c_int;
 rename			                pub fn rename(oldname: *const c_char,
+resource			        pub mod resource 
 rewind			                pub fn rewind(stream: *mut FILE);
 rewinddir			                pub fn rewinddir(dirp: *mut DIR);
+rlimit			                pub struct rlimit 
 rmdir			                pub fn rmdir(path: *const c_char) -> c_int;
+rusage			                pub struct rusage 
 seekdir			                pub fn seekdir(dirp: *mut DIR, loc: c_long);
 send			            pub fn send(socket: SOCKET, buf: *const c_void, len: c_int,
 send			            pub fn send(socket: c_int, buf: *const c_void, len: size_t,
@@ -261,6 +279,7 @@ setbuf			                pub fn setbuf(stream: *mut FILE, buf: *mut c_char);
 setenv			                pub fn setenv(name: *const c_char, val: *const c_char,
 setgid			                pub fn setgid(gid: gid_t) -> c_int;
 setpgid			                pub fn setpgid(pid: pid_t, pgid: pid_t) -> c_int;
+setrlimit			                pub fn setrlimit(resource: c_int, rlim: *const rlimit) -> c_int;
 setsid			                pub fn setsid() -> pid_t;
 setsockopt			            pub fn setsockopt(socket: SOCKET, level: c_int, name: c_int,
 setsockopt			            pub fn setsockopt(socket: c_int, level: c_int, name: c_int,
@@ -310,6 +329,7 @@ sysctlnametomib			            pub fn sysctlnametomib(name: *const c_char,
 system			                pub fn system(s: *const c_char) -> c_int;
 tcgetpgrp			                pub fn tcgetpgrp(fd: c_int) -> pid_t;
 telldir			                pub fn telldir(dirp: *mut DIR) -> c_long;
+timezone			                pub enum timezone {}
 tmpfile			                pub fn tmpfile() -> *mut FILE;
 tolower			                pub fn tolower(c: c_char) -> c_char;
 toupper			                pub fn toupper(c: c_char) -> c_char;

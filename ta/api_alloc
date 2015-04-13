@@ -1,18 +1,18 @@
-Arc			impl<T: Send + Sync + Clone> Arc<T> 
+Arc			impl<T: Clone> Arc<T> 
 Arc			impl<T> Arc<T> 
 Arc			pub struct Arc<T> 
 ArcInner			struct ArcInner<T> 
 Bar			    struct Bar(u32);
+Box			impl Box<Any+Send> 
+Box			impl Box<Any> 
 Box			impl<T : ?Sized> Box<T> 
 Box			impl<T> Box<T> 
 Box			pub struct Box<T>(Unique<T>);
-BoxAny			pub trait BoxAny 
-BoxAny for Box			impl BoxAny for Box<Any> 
 Canary			    struct Canary(*mut atomic::AtomicUsize);
 Clone for Arc			impl<T> Clone for Arc<T> 
 Clone for Box			impl<T: Clone> Clone for Box<T> 
 Clone for Rc			impl<T> Clone for Rc<T> 
-Clone for Weak			impl<T: Sync + Send> Clone for Weak<T> 
+Clone for Weak			impl<T> Clone for Weak<T> 
 Clone for Weak			impl<T> Clone for Weak<T> 
 Cycle			        struct Cycle 
 Cycle			        struct Cycle 
@@ -25,19 +25,22 @@ Deref for Box			impl<T: ?Sized> Deref for Box<T>
 Deref for Rc			impl<T> Deref for Rc<T> 
 DerefMut for Box			impl<T: ?Sized> DerefMut for Box<T> 
 DoubleEndedIterator for Box			impl<I: DoubleEndedIterator + ?Sized> DoubleEndedIterator for Box<I> 
-Drop for Arc			impl<T: Sync + Send> Drop for Arc<T> 
+Drop for Arc			impl<T> Drop for Arc<T> 
 Drop for Canary			    impl Drop for Canary
 Drop for Rc			impl<T> Drop for Rc<T> 
-Drop for Weak			impl<T: Sync + Send> Drop for Weak<T> 
+Drop for Weak			impl<T> Drop for Weak<T> 
 Drop for Weak			impl<T> Drop for Weak<T> 
 Eq for Arc			impl<T: Eq> Eq for Arc<T> {}
 Eq for Box			impl<T: ?Sized + Eq> Eq for Box<T> {}
 Eq for Rc			impl<T: Eq> Eq for Rc<T> {}
 ExactSizeIterator for Box			impl<I: ExactSizeIterator + ?Sized> ExactSizeIterator for Box<I> {}
+FnBox			pub trait FnBox<A> 
+FnBox for F			impl<A,F> FnBox<A> for F
+FnOnce for Box			impl<'a,A,R> FnOnce<A> for Box<FnBox<A,Output=R>+'a> 
+FnOnce for Box			impl<'a,A,R> FnOnce<A> for Box<FnBox<A,Output=R>+Send+'a> 
 Foo			    struct Foo { inner: Arc<i32> }
 Foo			    trait Foo 
 Foo for Bar			    impl Foo for Bar 
-FromError for Box			impl<'a, E: Error + 'a> FromError<E> for Box<Error + 'a> 
 Hash for Arc			impl<T: Hash> Hash for Arc<T> 
 Hash for Box			impl<T: ?Sized + Hash> Hash for Box<T> 
 Hash for Rc			impl<T: Hash> Hash for Rc<T> 
@@ -59,7 +62,7 @@ RcBoxPtr			trait RcBoxPtr<T>
 RcBoxPtr for Rc			impl<T> RcBoxPtr<T> for Rc<T> 
 RcBoxPtr for Weak			impl<T> RcBoxPtr<T> for Weak<T> 
 Test			struct Test;
-Weak			impl<T: Sync + Send> Weak<T> 
+Weak			impl<T> Weak<T> 
 Weak			pub struct Weak<T> 
 Weak			impl<T> Weak<T> 
 Weak			pub struct Weak<T> 
@@ -73,8 +76,12 @@ allocate			pub unsafe fn allocate(size: usize, align: usize) -> *mut u8
 any_move			fn any_move() 
 arc			pub mod arc;
 basic_reallocate_inplace_noop			    fn basic_reallocate_inplace_noop() 
+boxed			mod boxed { pub use std::boxed::{Box, HEAP}; }
 boxed			pub mod boxed;
 boxed_test			mod boxed_test;
+call_box			    fn call_box(self: Box<F>, args: A) -> F::Output 
+call_box			    fn call_box(self: Box<Self>, args: A) -> Self::Output;
+call_once			    extern "rust-call" fn call_once(self, args: A) -> R 
 clone			    fn clone(&self) -> Arc<T> 
 clone			    fn clone(&self) -> Weak<T> 
 clone			    fn clone(&self) -> Box<T> { box {(**self).clone()} }
@@ -92,15 +99,14 @@ dec_strong			    fn dec_strong(&self) { self.inner().strong.set(self.strong() - 
 dec_weak			    fn dec_weak(&self) { self.inner().weak.set(self.weak() - 1); }
 default			    fn default() -> Arc<T> { Arc::new(Default::default()) }
 default			    fn default() -> Box<T> { box Default::default() }
-default			    fn default() -> Box<[T]> { box [] }
+default			    fn default() -> Box<[T]> { Box::<[T; 0]>::new([]) }
 default			    fn default() -> Rc<T> 
 deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &T { &**self }
 deref			fn deref() 
 deref			    fn deref(&self) -> &T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T { &mut **self }
-downcast			    fn downcast<T: 'static>(self) -> Result<Box<T>, Box<Any>> 
-downcast			    fn downcast<T: 'static>(self) -> Result<Box<T>, Self>;
+downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any>> 
 downgrade			    pub fn downgrade(&self) -> Weak<T> 
 downgrade			    pub fn downgrade(&self) -> Weak<T> 
 drop			        fn drop(&mut self) 
@@ -108,6 +114,7 @@ drop			    fn drop(&mut self)
 drop			    fn drop(&mut self) 
 drop_arc			    fn drop_arc() 
 drop_arc_weak			    fn drop_arc_weak() 
+drop_slow			    unsafe fn drop_slow(&mut self) 
 eq			    fn eq(&self, other: &Arc<T>) -> bool { *(*self) == *(*other) }
 eq			    fn eq(&self, other: &Box<T>) -> bool { PartialEq::eq(&**self, &**other) }
 eq			    fn eq(&self, other: &Rc<T>) -> bool { **self == **other }
@@ -118,22 +125,25 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for Arc			impl<T: fmt::Debug> fmt::Debug for Arc<T> 
-fmt::Debug for Box			impl fmt::Debug for Box<Any> 
 fmt::Debug for Box			impl<T: fmt::Debug + ?Sized> fmt::Debug for Box<T> 
 fmt::Debug for Rc			impl<T: fmt::Debug> fmt::Debug for Rc<T> 
+fmt::Debug for Weak			impl<T: fmt::Debug> fmt::Debug for Weak<T> 
 fmt::Debug for Weak			impl<T: fmt::Debug> fmt::Debug for Weak<T> 
 fmt::Display for Arc			impl<T: fmt::Display> fmt::Display for Arc<T> 
 fmt::Display for Box			impl<T: fmt::Display + ?Sized> fmt::Display for Box<T> 
 fmt::Display for Rc			impl<T: fmt::Display> fmt::Display for Rc<T> 
-from_error			    fn from_error(err: E) -> Box<Error + 'a> 
+fmt::Pointer for Arc			impl<T> fmt::Pointer for Arc<T> 
+fmt::Pointer for Box			impl<T> fmt::Pointer for Box<T> 
+fmt::Pointer for Rc			impl<T> fmt::Pointer for Rc<T> 
 from_raw			    pub unsafe fn from_raw(raw: *mut T) -> Self 
 ge			    fn ge(&self, other: &Arc<T>) -> bool { *(*self) >= *(*other) }
 ge			    fn ge(&self, other: &Box<T>) -> bool { PartialOrd::ge(&**self, &**other) }
 ge			    fn ge(&self, other: &Rc<T>) -> bool { **self >= **other }
 get			        fn get(&self) -> u32 
 get			        fn get(&self) -> u32;
+get_mut			pub fn get_mut<T>(this: &mut Arc<T>) -> Option<&mut T> 
 get_mut			    fn get_mut() 
-get_mut			pub fn get_mut<'a, T>(rc: &'a mut Rc<T>) -> Option<&'a mut T> 
+get_mut			pub fn get_mut<T>(rc: &mut Rc<T>) -> Option<&mut T> 
 gt			    fn gt(&self, other: &Arc<T>) -> bool { *(*self) > *(*other) }
 gt			    fn gt(&self, other: &Box<T>) -> bool { PartialOrd::gt(&**self, &**other) }
 gt			    fn gt(&self, other: &Rc<T>) -> bool { **self > **other }

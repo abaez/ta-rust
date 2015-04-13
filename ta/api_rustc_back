@@ -8,6 +8,7 @@ ArchiveConfig			pub struct ArchiveConfig<'a>
 Default for TargetOptions			impl Default for TargetOptions 
 Digest			pub trait Digest 
 Digest for Sha256			impl Digest for Sha256 
+Drop for TempDir			impl Drop for TempDir 
 Engine256			impl Engine256 
 Engine256			struct Engine256 
 Engine256State			impl Engine256State 
@@ -19,7 +20,7 @@ FixedBuffer64			struct FixedBuffer64
 InternKey			    trait InternKey { fn get_content(self) -> token::InternedString; }
 InternKey for Ident			    impl InternKey for Ident 
 InternKey for Name			    impl InternKey for Name 
-RPathConfig			pub struct RPathConfig<F, G> where
+RPathConfig			pub struct RPathConfig<'a> 
 SawAbiComponent			    enum SawAbiComponent<'a> 
 SawExprComponent			    pub enum SawExprComponent<'a> 
 SawStmtComponent			    pub enum SawStmtComponent 
@@ -33,6 +34,8 @@ Svh			pub struct Svh
 Target			impl Target 
 Target			pub struct Target 
 TargetOptions			pub struct TargetOptions 
+TempDir			impl TempDir 
+TempDir			pub struct TempDir 
 Test			    struct Test 
 ToBits			trait ToBits 
 ToBits for u64			impl ToBits for u64 
@@ -43,8 +46,8 @@ aarch64_unknown_linux_gnu			mod aarch64_unknown_linux_gnu;
 abi			pub mod abi;
 add_archive			    fn add_archive<F>(&mut self, archive: &Path, name: &str,
 add_bytes_to_bits			fn add_bytes_to_bits<T: Int + ToBits>(bits: T, bytes: T) -> T 
-add_file			    pub fn add_file(&mut self, file: &Path) -> old_io::IoResult<()> 
-add_native_library			    pub fn add_native_library(&mut self, name: &str) -> old_io::IoResult<()> 
+add_file			    pub fn add_file(&mut self, file: &Path) -> io::Result<()> 
+add_native_library			    pub fn add_native_library(&mut self, name: &str) -> io::Result<()> 
 add_rlib			    pub fn add_rlib(&mut self, rlib: &Path, name: &str,
 adjust_abi			    pub fn adjust_abi(&self, abi: abi::Abi) -> abi::Abi 
 apple_base			mod apple_base;
@@ -62,10 +65,13 @@ bitrig_base			mod bitrig_base;
 build			    pub fn build(self) -> Archive<'a> 
 calculate			    pub fn calculate(metadata: &Vec<String>, krate: &ast::Crate) -> Svh 
 ch			        fn ch(x: u32, y: u32, z: u32) -> u32 
+cleanup_dir			    fn cleanup_dir(&mut self) -> io::Result<()> 
+close			    pub fn close(mut self) -> io::Result<()> 
 content			    fn content<K:InternKey>(k: K) -> token::InternedString { k.get_content() }
 create			    pub fn create(config: ArchiveConfig<'a>) -> ArchiveBuilder<'a> 
 default			    fn default() -> TargetOptions 
 dragonfly_base			mod dragonfly_base;
+drop			    fn drop(&mut self) 
 extend			    pub fn extend(self) -> ArchiveBuilder<'a> 
 files			    pub fn files(&self) -> Vec<String> 
 find_library			pub fn find_library(name: &str, osprefix: &str, ossuffix: &str,
@@ -79,11 +85,11 @@ full_buffer			    fn full_buffer<'s>(&'s mut self) -> &'s [u8]
 full_buffer			    fn full_buffer<'s>(&'s mut self) -> &'s [u8];
 get_content			        fn get_content(self) -> token::InternedString { token::get_ident(self) }
 get_content			        fn get_content(self) -> token::InternedString { token::get_name(self) }
-get_install_prefix_rpath			fn get_install_prefix_rpath<F, G>(config: RPathConfig<F, G>) -> String where
-get_rpath_flags			pub fn get_rpath_flags<F, G>(config: RPathConfig<F, G>) -> Vec<String> where
-get_rpath_relative_to_output			fn get_rpath_relative_to_output<F, G>(config: &mut RPathConfig<F, G>, lib: &Path) -> String where
-get_rpaths			fn get_rpaths<F, G>(mut config: RPathConfig<F, G>, libs: &[Path]) -> Vec<String> where
-get_rpaths_relative_to_output			fn get_rpaths_relative_to_output<F, G>(config: &mut RPathConfig<F, G>,
+get_install_prefix_rpath			fn get_install_prefix_rpath(config: &mut RPathConfig) -> String 
+get_rpath_flags			pub fn get_rpath_flags(config: &mut RPathConfig) -> Vec<String> 
+get_rpath_relative_to_output			fn get_rpath_relative_to_output(config: &mut RPathConfig, lib: &Path) -> String 
+get_rpaths			fn get_rpaths(config: &mut RPathConfig, libs: &[PathBuf]) -> Vec<String> 
+get_rpaths_relative_to_output			fn get_rpaths_relative_to_output(config: &mut RPathConfig,
 get_sdk_root			pub fn get_sdk_root(sdk_name: &str) -> String 
 get_target_strs			pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t 
 get_target_strs			pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t 
@@ -102,6 +108,7 @@ input			    fn input(&mut self, input: &[u8]);
 input			    fn input<F>(&mut self, input: &[u8], func: F) where
 input			    fn input<F>(&mut self, input: &[u8], mut func: F) where
 input_str			    fn input_str(&mut self, input: &str) 
+into_path			    pub fn into_path(mut self) -> PathBuf 
 linux_base			mod linux_base;
 load_file			        fn load_file(path: &Path) -> Result<Target, String> 
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
@@ -120,8 +127,11 @@ new			    fn new(h: &[u32; 8]) -> Engine256
 new			    fn new(h: &[u32; 8]) -> Engine256State 
 new			    pub fn new() -> Sha256 
 new			    pub fn new(hash: &str) -> Svh 
-next			    fn next<'s>(&'s mut self, len: uint) -> &'s mut [u8] 
-next			    fn next<'s>(&'s mut self, len: uint) -> &'s mut [u8];
+new			    pub fn new(prefix: &str) -> io::Result<TempDir> 
+new_in			    pub fn new_in<P: AsRef<Path>>(tmpdir: P, prefix: &str)
+next			    fn next<'s>(&'s mut self, len: usize) -> &'s mut [u8] 
+next			    fn next<'s>(&'s mut self, len: usize) -> &'s mut [u8];
+old_realpath			fn old_realpath(original: &old_path::Path) -> old_io::IoResult<old_path::Path> 
 open			    pub fn open(config: ArchiveConfig<'a>) -> Archive<'a> 
 openbsd_base			mod openbsd_base;
 opts			pub fn opts() -> TargetOptions 
@@ -132,20 +142,22 @@ opts			pub fn opts() -> TargetOptions
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
-output_bits			    fn output_bits(&self) -> uint { 256 }
-output_bits			    fn output_bits(&self) -> uint;
-position			    fn position(&self) -> uint { self.buffer_idx }
-position			    fn position(&self) -> uint;
+output_bits			    fn output_bits(&self) -> usize { 256 }
+output_bits			    fn output_bits(&self) -> usize;
+path			    pub fn path(&self) -> &path::Path 
+path_relative_from			fn path_relative_from(path: &Path, base: &Path) -> Option<PathBuf> 
+position			    fn position(&self) -> usize { self.buffer_idx }
+position			    fn position(&self) -> usize;
 powerpc_unknown_linux_gnu			mod powerpc_unknown_linux_gnu;
 pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String> 
 process_block			    fn process_block(&mut self, data: &[u8]) 
 read_u32_be			fn read_u32_be(input: &[u8]) -> u32 
 read_u32v_be			fn read_u32v_be(dst: &mut[u32], input: &[u8]) 
-realpath			pub fn realpath(original: &Path) -> old_io::IoResult<Path> 
+realpath			pub fn realpath(original: &Path) -> io::Result<PathBuf> 
 realpath_works			    fn realpath_works() 
 realpath_works_tricky			    fn realpath_works_tricky() 
-remaining			    fn remaining(&self) -> uint { 64 - self.buffer_idx }
-remaining			    fn remaining(&self) -> uint;
+remaining			    fn remaining(&self) -> usize { 64 - self.buffer_idx }
+remaining			    fn remaining(&self) -> usize;
 remove_file			    pub fn remove_file(&mut self, file: &str) 
 reset			    fn reset(&mut self) 
 reset			    fn reset(&mut self);
@@ -166,10 +178,10 @@ sha256_1k			    pub fn sha256_1k(b: &mut Bencher)
 sha256_64k			    pub fn sha256_64k(b: &mut Bencher) 
 sigma0			        fn sigma0(x: u32) -> u32 
 sigma1			        fn sigma1(x: u32) -> u32 
-size			    fn size(&self) -> uint { 64 }
-size			    fn size(&self) -> uint;
-standard_padding			    fn standard_padding<F>(&mut self, rem: uint, func: F) where F: FnMut(&[u8]);
-standard_padding			    fn standard_padding<F>(&mut self, rem: uint, mut func: F) where F: FnMut(&[u8]) 
+size			    fn size(&self) -> usize { 64 }
+size			    fn size(&self) -> usize;
+standard_padding			    fn standard_padding<F>(&mut self, rem: usize, func: F) where F: FnMut(&[u8]);
+standard_padding			    fn standard_padding<F>(&mut self, rem: usize, mut func: F) where F: FnMut(&[u8]) 
 sum0			        fn sum0(x: u32) -> u32 
 sum1			        fn sum1(x: u32) -> u32 
 svh			pub mod svh;
@@ -202,6 +214,7 @@ target			pub fn target() -> Target
 target			pub fn target() -> Target 
 target_cpu			fn target_cpu(arch: Arch) -> String 
 target_strs			pub mod target_strs;
+tempdir			pub mod tempdir;
 test			mod test 
 test			mod test 
 tests			mod tests 
@@ -218,6 +231,7 @@ visit_fn			        fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
 visit_foreign_item			        fn visit_foreign_item(&mut self, i: &ForeignItem) 
 visit_generics			        fn visit_generics(&mut self, g: &Generics) 
 visit_ident			        fn visit_ident(&mut self, _: Span, ident: Ident) 
+visit_impl_item			        fn visit_impl_item(&mut self, ii: &ImplItem) 
 visit_item			        fn visit_item(&mut self, i: &Item) 
 visit_lifetime_def			        fn visit_lifetime_def(&mut self, l: &LifetimeDef) 
 visit_lifetime_ref			        fn visit_lifetime_ref(&mut self, l: &Lifetime) 
@@ -230,9 +244,8 @@ visit_path			        fn visit_path(&mut self, path: &Path, _: ast::NodeId)
 visit_stmt			        fn visit_stmt(&mut self, s: &Stmt) 
 visit_struct_def			        fn visit_struct_def(&mut self, s: &StructDef, ident: Ident,
 visit_struct_field			        fn visit_struct_field(&mut self, s: &StructField) 
-visit_trait_item			        fn visit_trait_item(&mut self, t: &TraitItem) 
+visit_trait_item			        fn visit_trait_item(&mut self, ti: &TraitItem) 
 visit_ty			        fn visit_ty(&mut self, t: &Ty) 
-visit_ty_method			        fn visit_ty_method(&mut self, t: &TypeMethod) 
 visit_variant			        fn visit_variant(&mut self, v: &Variant, g: &Generics) 
 windows_base			mod windows_base;
 write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32) 
@@ -246,5 +259,5 @@ x86_64_unknown_dragonfly			mod x86_64_unknown_dragonfly;
 x86_64_unknown_freebsd			mod x86_64_unknown_freebsd;
 x86_64_unknown_linux_gnu			mod x86_64_unknown_linux_gnu;
 x86_64_unknown_openbsd			mod x86_64_unknown_openbsd;
-zero_until			    fn zero_until(&mut self, idx: uint) 
-zero_until			    fn zero_until(&mut self, idx: uint);
+zero_until			    fn zero_until(&mut self, idx: usize) 
+zero_until			    fn zero_until(&mut self, idx: usize);
