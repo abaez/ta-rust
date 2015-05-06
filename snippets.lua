@@ -14,6 +14,8 @@ return {
   divfn = "fn %1(name)(%2(param)) ! {\n\t%0\n}",
 
   -- closures
+  ["|"]   = "|%1(:)| %0",
+  move    = "move |%1(:)| {\n\t%0\n})",
   -- :&
   fns     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
             "where %2: Fn(&%4) -> %5\n{\n\t%0\n}",
@@ -23,8 +25,6 @@ return {
   -- :
   fno     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
             "where %2: FnOnce(%6) -> %7\n{\n\t%0\n}",
-  ["|"]   = "|%1(:)| %0",
-  move    = "move |%1(:)| {\n\t%0\n})",
 
   -- Data Structures
   extern  = "extern %1(\"ABI\") {\n\t%0\n}",
@@ -34,11 +34,12 @@ return {
   trait   = "trait %1(name) {\n\t%0\n}",
   impl    = "impl %1(name) %2(for %3(type) ){\n\t%0\n}",
 
-  -- Expressions
+  -- Conditionals
   ["while"]   = "while %1(expr) {\n\t%0\n}",
   loop        = "loop {\n\t%0\n}",
   ["for"]     = "for %1(i) in %2(iterator) {\n\t%0\n}",
   ["forr"]    = "for %1(i) in range(%2(0), %3(10)) {\n\t%0\n}",
+  ["whilel"]  = "while let %1(destructor) = %2(expr) {\n\t%0\n}",
 
   -- if
   ["if"]      = "if %1(expr) {\n\t%2\n} %0",
