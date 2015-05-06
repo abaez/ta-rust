@@ -54,6 +54,12 @@ keys.rust = {
     buffer:new_line()
   end,
 
+  ['a\n'] = function()
+    buffer:line_end()
+    buffer:new_line()
+    buffer:add_text("/// ");
+  end,
+
   ['cB'] = function()
     local project_name, project_path = raw.get_project_name()
 
@@ -68,7 +74,7 @@ keys.rust = {
     end
 
     return textadept.run.build()
-  end
+  end,
 }
 
 events.connect(events.LEXER_LOADED, function (lang)
