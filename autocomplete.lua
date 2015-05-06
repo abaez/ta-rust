@@ -6,14 +6,15 @@
 
 local crates, config = require("modules.rust.config")
 
-local _RUSTSRC = _USERHOME .. '/modules/rust/ta/'
+local _RUST = _USERHOME .. '/modules/rust/ta/'
+local _RUSTSRC = "/data/Code/rust/src"
 
 local tags = {}
 local api = {}
 
 for _, lib in ipairs(crates) do
-  api[#api + 1] = _RUSTSRC .. 'api_' .. lib
-  tags[#tags + 1] = _RUSTSRC .. 'tags_' .. lib
+  api[#api + 1] = _RUST .. 'api_' .. lib
+  tags[#tags + 1] = _RUST .. 'tags_' .. lib
 end
 
 local XPM = textadept.editing.XPM_IMAGES

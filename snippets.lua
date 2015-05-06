@@ -35,7 +35,6 @@ return {
   impl    = "impl %1(name) %2(for %3(type) ){\n\t%0\n}",
 
   -- Expressions
-  v           = "[%1(start), %2(.. %3(range_end))]%0",
   ["while"]   = "while %1(expr) {\n\t%0\n}",
   loop        = "loop {\n\t%0\n}",
   ["for"]     = "for %1(i) in %2(iterator) {\n\t%0\n}",
@@ -53,11 +52,24 @@ return {
   lvec    = "let %1(mut) %2(name): Vec<%3(T)> = Vec::new();%0",
   lbox    = "let %1(mut) %2(name): Box<%3(T)> = box %4(value);%0",
 
+  -- comments
+  ["/*"]    = "/*\n\t%0\n*/",
+  ["/"]     = "/// %0",
+  ["?"]     = "//! %0",
+
+  -- tests
+  test      = "#[test]%0",
+  sp        = "#[should_panic]%0",
+  a         = "assert!(%1(boolean));%0",
+  aq        = "assert_eq!(%1(result), %2(check));%0",
+  panic     = "panic!(%1(error_message));%0",
+  try       = "try!(%1(testing));%0",
+
   -- random
   ["#"]     = "#%1(!)[%2(attribute)]%0",
   crate     = "extern crate %1(name);%0",
   static    = "static %1(name): %2(type) = %0;",
-  ["/*"]    = "/*\n\t%0\n*/",
+  ["type"]     = "type %1(alias) = %2(type);%0",
   ["print"] = 'println!("{%1}\\n", %2);%0',
 
   -- tasks and communication
