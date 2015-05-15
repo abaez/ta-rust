@@ -7,7 +7,7 @@
 -- @license MIT (see LICENSE)
 -- @module rustsrc
 
---- all crates as of v1.0.0 (rev: 9f1ead8fad).
+--- all crates as of v1.0.0 (rev: daabc8a0).
 -- @table crates
 local crates = {
   "alloc",
@@ -26,6 +26,7 @@ local crates = {
   "rustc_back",
   "rustc_bitflags",
   "rustc_borrowck",
+  "rustc_data_structures",
   "rustc_driver",
   "rustc_lint",
   "rustc_llvm",
@@ -33,13 +34,13 @@ local crates = {
   "rustc_resolve",
   "rustc_trans",
   "rustc_typeck",
+  "rustc_unicode",
   "rustdoc",
   "serialize",
   "std",
   "syntax",
   "term",
   "test",
-  "unicode",
 }
 
 
