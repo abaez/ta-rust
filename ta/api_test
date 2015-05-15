@@ -15,11 +15,11 @@ NamePadding			enum NamePadding
 OutputLocation			enum OutputLocation<T> 
 ShouldPanic			pub enum ShouldPanic 
 Sink			        struct Sink(Arc<Mutex<Vec<u8>>>);
-Stats			impl<T: Float + FromPrimitive> Stats<T> for [T] 
-Stats			pub trait Stats <T: Float + FromPrimitive> 
-Summary			impl<T: Float + FromPrimitive> Summary<T> 
-Summary			pub struct Summary<T> 
-TDynBenchFn			pub trait TDynBenchFn 
+Stats			impl Stats for [f64] 
+Stats			pub trait Stats 
+Summary			impl Summary 
+Summary			pub struct Summary 
+TDynBenchFn			pub trait TDynBenchFn: Send 
 TestDesc			impl TestDesc 
 TestDesc			pub struct TestDesc 
 TestDescAndFn			pub struct TestDescAndFn 
@@ -33,7 +33,7 @@ TestOpts			pub struct TestOpts
 TestResult			pub enum TestResult 
 Write for Sink			        impl Write for Sink 
 as_slice			    fn as_slice<'a>(&'a self) -> &'a str 
-auto_bench			    pub fn auto_bench<F>(&mut self, mut f: F) -> stats::Summary<f64> where F: FnMut(&mut Bencher) 
+auto_bench			    pub fn auto_bench<F>(&mut self, mut f: F) -> stats::Summary where F: FnMut(&mut Bencher) 
 bench			pub mod bench 
 bench			mod bench 
 bench_n			    pub fn bench_n<F>(&mut self, n: u64, f: F) where F: FnOnce(&mut Bencher) 
@@ -41,8 +41,9 @@ benchmark			    pub fn benchmark<F>(f: F) -> BenchSamples where F: FnMut(&mut Be
 black_box			pub fn black_box<T>(dummy: T) -> T 
 calc_result			fn calc_result(desc: &TestDesc, task_result: Result<(), Box<Any+Send>>) -> TestResult 
 callback			    fn callback<T: Write>(event: &TestEvent,
-check			    fn check(samples: &[f64], summ: &Summary<f64>) 
+check			    fn check(samples: &[f64], summ: &Summary) 
 clone			    fn clone(&self) -> MetricMap 
+convert_benchmarks_to_tests			pub fn convert_benchmarks_to_tests(tests: Vec<TestDescAndFn>) -> Vec<TestDescAndFn> 
 do_not_run_ignored_tests			    pub fn do_not_run_ignored_tests() 
 f			        fn f() { panic!("an error message"); }
 f			        fn f() { panic!(); }
@@ -59,29 +60,29 @@ fmt_metrics			    pub fn fmt_metrics(&self) -> String
 get_concurrency			fn get_concurrency() -> usize 
 ignored_tests_result_in_ignored			    pub fn ignored_tests_result_in_ignored() 
 insert_metric			    pub fn insert_metric(&mut self, name: &str, value: f64, noise: f64) 
-iqr			    fn iqr(&self) -> T 
-iqr			    fn iqr(&self) -> T;
+iqr			    fn iqr(&self) -> f64 
+iqr			    fn iqr(&self) -> f64;
 iter			    pub fn iter<T, F>(&mut self, mut inner: F) where F: FnMut() -> T 
 len_if_padded			    fn len_if_padded(t: &TestDescAndFn) -> usize 
-local_cmp			fn local_cmp<T:Float>(x: T, y: T) -> Ordering 
-local_sort			fn local_sort<T: Float>(v: &mut [T]) 
-max			    fn max(&self) -> T 
-max			    fn max(&self) -> T;
-mean			    fn mean(&self) -> T 
-mean			    fn mean(&self) -> T;
-median			    fn median(&self) -> T 
-median			    fn median(&self) -> T;
-median_abs_dev			    fn median_abs_dev(&self) -> T 
-median_abs_dev			    fn median_abs_dev(&self) -> T;
-median_abs_dev_pct			    fn median_abs_dev_pct(&self) -> T 
-median_abs_dev_pct			    fn median_abs_dev_pct(&self) -> T;
-min			    fn min(&self) -> T 
-min			    fn min(&self) -> T;
+local_cmp			fn local_cmp(x: f64, y: f64) -> Ordering 
+local_sort			fn local_sort(v: &mut [f64]) 
+max			    fn max(&self) -> f64 
+max			    fn max(&self) -> f64;
+mean			    fn mean(&self) -> f64 
+mean			    fn mean(&self) -> f64;
+median			    fn median(&self) -> f64 
+median			    fn median(&self) -> f64;
+median_abs_dev			    fn median_abs_dev(&self) -> f64 
+median_abs_dev			    fn median_abs_dev(&self) -> f64;
+median_abs_dev_pct			    fn median_abs_dev_pct(&self) -> f64 
+median_abs_dev_pct			    fn median_abs_dev_pct(&self) -> f64;
+min			    fn min(&self) -> f64 
+min			    fn min(&self) -> f64;
 new			    fn new() -> TestOpts 
 new			    pub fn new() -> MetricMap 
 new			    pub fn new(opts: &TestOpts,
 new			    pub fn new(value: f64, noise: f64) -> Metric 
-new			    pub fn new(samples: &[T]) -> Summary<T> 
+new			    pub fn new(samples: &[f64]) -> Summary 
 ns_elapsed			    pub fn ns_elapsed(&mut self) -> u64 
 ns_per_iter			    pub fn ns_per_iter(&mut self) -> u64 
 optgroups			fn optgroups() -> Vec<getopts::OptGroup> 
@@ -89,12 +90,13 @@ padded_name			    fn padded_name(&self, column_count: usize, align: NamePadding)
 padding			    fn padding(&self) -> NamePadding 
 parse_ignored_flag			    fn parse_ignored_flag() 
 parse_opts			pub fn parse_opts(args: &[String]) -> Option<OptRes> 
-percentile			    fn percentile(&self, pct: T) -> T 
-percentile			    fn percentile(&self, pct: T) -> T;
-percentile_of_sorted			fn percentile_of_sorted<T: Float + FromPrimitive>(sorted_samples: &[T],
-quartiles			    fn quartiles(&self) -> (T,T,T) 
-quartiles			    fn quartiles(&self) -> (T,T,T);
+percentile			    fn percentile(&self, pct: f64) -> f64 
+percentile			    fn percentile(&self, pct: f64) -> f64;
+percentile_of_sorted			fn percentile_of_sorted(sorted_samples: &[f64], pct: f64) -> f64 
+quartiles			    fn quartiles(&self) -> (f64,f64,f64) 
+quartiles			    fn quartiles(&self) -> (f64,f64,f64);
 run			    fn run(&self, harness: &mut Bencher);
+run_once			    pub fn run_once<F>(f: F) where F: FnOnce(&mut Bencher) 
 run_test			pub fn run_test(opts: &TestOpts,
 run_test_inner			    fn run_test_inner(desc: TestDesc,
 run_tests			fn run_tests<F>(opts: &TestOpts,
@@ -102,13 +104,13 @@ run_tests_console			pub fn run_tests_console(opts: &TestOpts, tests: Vec<TestDes
 should_sort_failures_before_printing_them			fn should_sort_failures_before_printing_them() 
 sort_tests			    pub fn sort_tests() 
 stats			pub mod stats;
-std_dev			    fn std_dev(&self) -> T 
-std_dev			    fn std_dev(&self) -> T;
-std_dev_pct			    fn std_dev_pct(&self) -> T 
-std_dev_pct			    fn std_dev_pct(&self) -> T;
+std_dev			    fn std_dev(&self) -> f64 
+std_dev			    fn std_dev(&self) -> f64;
+std_dev_pct			    fn std_dev_pct(&self) -> f64 
+std_dev_pct			    fn std_dev_pct(&self) -> f64;
 stdout_isatty			fn stdout_isatty() -> bool 
-sum			    fn sum(&self) -> T 
-sum			    fn sum(&self) -> T;
+sum			    fn sum(&self) -> f64 
+sum			    fn sum(&self) -> f64;
 sum_many_f64			    pub fn sum_many_f64(b: &mut Bencher) 
 sum_three_items			    pub fn sum_three_items(b: &mut Bencher) 
 test			pub mod test 
@@ -117,9 +119,9 @@ tests			mod tests
 tests			mod tests 
 usage			fn usage(binary: &str) 
 use_color			fn use_color(opts: &TestOpts) -> bool 
-var			    fn var(&self) -> T 
-var			    fn var(&self) -> T;
-winsorize			pub fn winsorize<T: Float + FromPrimitive>(samples: &mut [T], pct: T) 
+var			    fn var(&self) -> f64 
+var			    fn var(&self) -> f64;
+winsorize			pub fn winsorize(samples: &mut [f64], pct: f64) 
 write			            fn write(&mut self, data: &[u8]) -> io::Result<usize> 
 write_bench			    pub fn write_bench(&mut self) -> io::Result<()> 
 write_failed			    pub fn write_failed(&mut self) -> io::Result<()> 

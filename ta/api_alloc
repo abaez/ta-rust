@@ -3,7 +3,7 @@ Arc			impl<T> Arc<T>
 Arc			pub struct Arc<T> 
 ArcInner			struct ArcInner<T> 
 Bar			    struct Bar(u32);
-Box			impl Box<Any+Send> 
+Box			impl Box<Any + Send> 
 Box			impl Box<Any> 
 Box			impl<T : ?Sized> Box<T> 
 Box			impl<T> Box<T> 
@@ -11,24 +11,29 @@ Box			pub struct Box<T>(Unique<T>);
 Canary			    struct Canary(*mut atomic::AtomicUsize);
 Clone for Arc			impl<T> Clone for Arc<T> 
 Clone for Box			impl<T: Clone> Clone for Box<T> 
+Clone for Rc			impl<T: ?Sized> Clone for Rc<T> 
 Clone for Rc			impl<T> Clone for Rc<T> 
 Clone for Weak			impl<T> Clone for Weak<T> 
+Clone for Weak			impl<T: ?Sized> Clone for Weak<T> 
 Clone for Weak			impl<T> Clone for Weak<T> 
 Cycle			        struct Cycle 
 Cycle			        struct Cycle 
-Default for Arc			impl<T: Default + Sync + Send> Default for Arc<T> 
+Default for Arc			impl<T: Default> Default for Arc<T> 
 Default for Box			impl<T: Default> Default for Box<T> 
 Default for Box			impl<T> Default for Box<[T]> 
 Default for Rc			impl<T: Default> Default for Rc<T> 
 Deref for Arc			impl<T> Deref for Arc<T> 
 Deref for Box			impl<T: ?Sized> Deref for Box<T> 
+Deref for Rc			impl<T: ?Sized> Deref for Rc<T> 
 Deref for Rc			impl<T> Deref for Rc<T> 
 DerefMut for Box			impl<T: ?Sized> DerefMut for Box<T> 
 DoubleEndedIterator for Box			impl<I: DoubleEndedIterator + ?Sized> DoubleEndedIterator for Box<I> 
 Drop for Arc			impl<T> Drop for Arc<T> 
 Drop for Canary			    impl Drop for Canary
+Drop for Rc			impl<T: ?Sized> Drop for Rc<T> 
 Drop for Rc			impl<T> Drop for Rc<T> 
 Drop for Weak			impl<T> Drop for Weak<T> 
+Drop for Weak			impl<T: ?Sized> Drop for Weak<T> 
 Drop for Weak			impl<T> Drop for Weak<T> 
 Eq for Arc			impl<T: Eq> Eq for Arc<T> {}
 Eq for Box			impl<T: ?Sized + Eq> Eq for Box<T> {}
@@ -43,6 +48,7 @@ Foo			    trait Foo
 Foo for Bar			    impl Foo for Bar 
 Hash for Arc			impl<T: Hash> Hash for Arc<T> 
 Hash for Box			impl<T: ?Sized + Hash> Hash for Box<T> 
+Hash for Rc			impl<T: ?Sized+Hash> Hash for Rc<T> 
 Hash for Rc			impl<T: Hash> Hash for Rc<T> 
 Iterator for Box			impl<I: Iterator + ?Sized> Iterator for Box<I> 
 Ord for Arc			impl<T: Ord> Ord for Arc<T> 
@@ -54,17 +60,25 @@ PartialEq for Rc			impl<T: PartialEq> PartialEq for Rc<T>
 PartialOrd for Arc			impl<T: PartialOrd> PartialOrd for Arc<T> 
 PartialOrd for Box			impl<T: ?Sized + PartialOrd> PartialOrd for Box<T> 
 PartialOrd for Rc			impl<T: PartialOrd> PartialOrd for Rc<T> 
+Rc			impl<T: ?Sized> Rc<T> 
 Rc			impl<T: Clone> Rc<T> 
 Rc			impl<T> Rc<T> 
+Rc			pub struct Rc<T: ?Sized> 
 Rc			pub struct Rc<T> 
+RcBox			struct RcBox<T: ?Sized> 
 RcBox			struct RcBox<T> 
+RcBoxPtr			trait RcBoxPtr<T: ?Sized> 
 RcBoxPtr			trait RcBoxPtr<T> 
+RcBoxPtr for Rc			impl<T: ?Sized> RcBoxPtr<T> for Rc<T> 
 RcBoxPtr for Rc			impl<T> RcBoxPtr<T> for Rc<T> 
+RcBoxPtr for Weak			impl<T: ?Sized> RcBoxPtr<T> for Weak<T> 
 RcBoxPtr for Weak			impl<T> RcBoxPtr<T> for Weak<T> 
 Test			struct Test;
 Weak			impl<T> Weak<T> 
 Weak			pub struct Weak<T> 
+Weak			impl<T: ?Sized> Weak<T> 
 Weak			impl<T> Weak<T> 
+Weak			pub struct Weak<T: ?Sized> 
 Weak			pub struct Weak<T> 
 _aligned_free			        fn _aligned_free(ptr: *mut c_void);
 _aligned_malloc			        fn _aligned_malloc(size: size_t, align: size_t) -> *mut c_void;
@@ -82,6 +96,7 @@ boxed_test			mod boxed_test;
 call_box			    fn call_box(self: Box<F>, args: A) -> F::Output 
 call_box			    fn call_box(self: Box<Self>, args: A) -> Self::Output;
 call_once			    extern "rust-call" fn call_once(self, args: A) -> R 
+check_size_and_alignment			fn check_size_and_alignment(size: usize, align: usize) 
 clone			    fn clone(&self) -> Arc<T> 
 clone			    fn clone(&self) -> Weak<T> 
 clone			    fn clone(&self) -> Box<T> { box {(**self).clone()} }
@@ -106,6 +121,7 @@ deref			    fn deref(&self) -> &T { &**self }
 deref			fn deref() 
 deref			    fn deref(&self) -> &T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T { &mut **self }
+downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any + Send>> 
 downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any>> 
 downgrade			    pub fn downgrade(&self) -> Weak<T> 
 downgrade			    pub fn downgrade(&self) -> Weak<T> 
@@ -126,11 +142,14 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for Arc			impl<T: fmt::Debug> fmt::Debug for Arc<T> 
 fmt::Debug for Box			impl<T: fmt::Debug + ?Sized> fmt::Debug for Box<T> 
+fmt::Debug for Rc			impl<T: ?Sized+fmt::Debug> fmt::Debug for Rc<T> 
 fmt::Debug for Rc			impl<T: fmt::Debug> fmt::Debug for Rc<T> 
 fmt::Debug for Weak			impl<T: fmt::Debug> fmt::Debug for Weak<T> 
+fmt::Debug for Weak			impl<T: ?Sized+fmt::Debug> fmt::Debug for Weak<T> 
 fmt::Debug for Weak			impl<T: fmt::Debug> fmt::Debug for Weak<T> 
 fmt::Display for Arc			impl<T: fmt::Display> fmt::Display for Arc<T> 
 fmt::Display for Box			impl<T: fmt::Display + ?Sized> fmt::Display for Box<T> 
+fmt::Display for Rc			impl<T: ?Sized+fmt::Display> fmt::Display for Rc<T> 
 fmt::Display for Rc			impl<T: fmt::Display> fmt::Display for Rc<T> 
 fmt::Pointer for Arc			impl<T> fmt::Pointer for Arc<T> 
 fmt::Pointer for Box			impl<T> fmt::Pointer for Box<T> 
@@ -215,8 +234,9 @@ stats_print			    pub fn stats_print() {}
 stats_print			pub fn stats_print() 
 strong			    fn strong(&self) -> usize { self.inner().strong.get() }
 strong_count			pub fn strong_count<T>(this: &Arc<T>) -> usize { this.inner().strong.load(SeqCst) }
+strong_count			pub fn strong_count<T: ?Sized>(this: &Rc<T>) -> usize { this.strong() }
 strong_count			pub fn strong_count<T>(this: &Rc<T>) -> usize { this.strong() }
-test			mod test 
+tests			mod tests 
 tests			mod tests 
 tests			mod tests 
 try_unwrap			    fn try_unwrap() 
@@ -228,6 +248,7 @@ usable_size			    pub fn usable_size(size: usize, align: usize) -> usize
 usable_size			pub fn usable_size(size: usize, align: usize) -> usize 
 weak			    fn weak(&self) -> usize { self.inner().weak.get() }
 weak_count			pub fn weak_count<T>(this: &Arc<T>) -> usize { this.inner().weak.load(SeqCst) - 1 }
+weak_count			pub fn weak_count<T: ?Sized>(this: &Rc<T>) -> usize { this.weak() - 1 }
 weak_count			pub fn weak_count<T>(this: &Rc<T>) -> usize { this.weak() - 1 }
 weak_self_cyclic			    fn weak_self_cyclic() 
 weak_self_cyclic			    fn weak_self_cyclic() 

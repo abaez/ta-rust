@@ -27,7 +27,7 @@ numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.0.0 (rev: [4db0b324](https://github.com/rust-lang/rust/commit/4db0b32467535d718d6474de7ae8d1007d900818))
+*   Rust >= v1.0.0 (rev: [daabc8a0](https://github.com/rust-lang/rust/commit/daabc8a0c70693aaec3a424768ee216f59997acb))
 *   Textadept >= v7.9
 *   (optional) [textadept ctags](http://foicica.com/hg/ctags/)
 
@@ -74,7 +74,7 @@ If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 ### KEYBINDINGS
 
     Keys        Action
-    cB          cargo build && api/tags generation or update
+    cB          cargo build and api/tags generation or update
     cl+i        quick edit for snippets
     s\n         adds `;` to the end of the current line and inserts newline
     a\n         appends `///` to the next line. (good for documentation)
