@@ -61,6 +61,9 @@ A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
 references. These api/tags will also be read whenever you open a rust file in
 a project containing the generated files.
 
+If you have the [ctags](http://foicica.com/hg/ctags/) you will be also to
+navigate directly to the source of the api reference.
+
 The generated tag/api files are updated each time you run `cargo build`
 from the `cB` command on textadept. This allows you to have one heck of an easy
 way to deal with api lookups on a project directly from textadept!
@@ -68,7 +71,13 @@ way to deal with api lookups on a project directly from textadept!
 If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 `s` key.
 
+### KEYBINDINGS
 
+    Keys        Action
+    cB          cargo build && api/tags generation or update
+    cl+i        quick edit for snippets
+    s\n         adds `;` to the end of the current line and inserts newline
+    a\n         appends `///` to the next line. (good for documentation)
 
 
 
