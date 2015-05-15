@@ -48,6 +48,12 @@ end
 
 --- Table of Rust-specific key bindings.
 keys.rust = {
+  [not OSX and not CURSES and 'cl' or 'ml'] = {
+    -- Open this module for editing: `Alt/⌘-L` `M`
+    s = { io.open_file,
+        (_USERHOME..'/modules/rust/snippets.lua') },
+  },
+
   ['s\n'] = function()
     buffer:line_end()
     buffer:add_text(';')
