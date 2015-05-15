@@ -29,6 +29,23 @@ numbers lexer definitions.
 ### REQUIREMENT
 *   Rust >= v1.0.0 (rev: [4db0b324](https://github.com/rust-lang/rust/commit/4db0b32467535d718d6474de7ae8d1007d900818))
 *   Textadept >= v7.9
+*   (optional) [textadept ctags](http://foicica.com/hg/ctags/)
+
+### USAGE
+A couple of things to know. The module currently allows you to have
+cargo project built api and tags. In other words, you have access to api
+references from any cargo built library/program you build through textadept.
+
+Any time you run `cargo build`, from the `cB` keys, you will see
+`.tag_{project_name}` and `.api_{project_name}` files generated for that
+specific project on the root directory of the project.
+A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
+references. These api/tags will also be read whenever you open a rust file in
+a project containing the generated files.
+
+The generated tag/api files are updated each time you run `cargo build`
+from the `cB` command on textadept. This allows you to have one heck of an easy
+way to deal with api lookups on a project directly from textadept!
 
 ### INSTALL
 Clone the repository to your `~/.textadept/modules` directory:
@@ -38,16 +55,16 @@ cd ~/.textadept/modules
 hg clone https://bitbucket.org/a_baez/ta-rust rust
 ```
 
-Then copy the `rust.lua` lexer file into your `~/.textadept/lexers` directory:
+You are done! If you want to use the latest in development version of the lexer
+(follows the rust nightlies), then continue along.
+
+#### rust nightlies lexer
+Copy the `rust.lua` lexer file into your `~/.textadept/lexers` directory:
 
 ```
 cp ~/.textadept/modules/rust/rust.lua ~/.textadept/lexers/rust.lua
 ```
 
-Finally, append to your `~/.textadept/init.lua` file the module through the
-file extension. Need to do this, since the file type extension declares the
-lexer:
 
-```
-textadept.file_types.extensions.rs = 'rust'
-```
+
+
