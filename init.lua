@@ -35,8 +35,8 @@ textadept.editing.char_matches.rust = {
 }
 
 -- compiler
-textadept.run.compile_commands.rust = 'rustc %(filename)'
-textadept.run.run_commands.rust = '%d%(filename_noext)'
+textadept.run.compile_commands.rust = 'rustc %f'
+textadept.run.run_commands.rust = '%d%e'
 
 -- build project
 textadept.run.build_commands["Cargo.toml"] = "cargo build"
