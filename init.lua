@@ -5,6 +5,8 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
+-- enable [rustfmt](https://github.com/nrc/rustfmt)
+local _RUSTFMT = true
 
 textadept.editing.api_files.rust,
 textadept.editing.autocompleters.rust = require("rust.autocomplete")
@@ -57,6 +59,16 @@ events.connect(events.LEXER_LOADED, function (lang)
   buffer.tab_width = 4
   buffer.use_tabs = false
 --  buffer.edge_column = 99
+end)
+
+-- Go files are run through `gofmt` before saving and the text is formatted
+-- accordingly. If a syntax error is found it is displayed as an annotation.
+events.connect(events.FILE_BEFORE_SAVE, function()
+  if buffer:get_lexer() ~= 'rust' and _RUSTFMT then return end
+  local text = buffer:get_text()
+  spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
+
+
 end)
 
 return {}
