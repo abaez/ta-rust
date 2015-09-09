@@ -7,21 +7,22 @@ A module/lexer for Rust.
 Currently, this module holds all keywords, types, and any other standard lexer
 definition described by the [Rust reference](http://doc.rust-lang.org/reference.html)
 manual. It also encompasses the vast list of snippets I use when coding,
-ctags for semi auto-complete, and api references.
+ctags for semi auto-complete, api references, and lint support with
+[rustfmt](https://github.com/nrc/rustfmt).
 
 Now that Rust is finally stable, I'll be taking some time to put some real nice
-autocomplete using [Racer](https://github.com/phildawes/racer) and post lint
-support with [rustfmt](https://github.com/nrc/rustfmt) later on.
+autocomplete using [Racer](https://github.com/phildawes/racer) and any other
+support later on.
 
 #### Completed:
 *   lexer: All keywords, types, library types, syntax extensions, strings, and
 numbers lexer definitions.
 *   module: *.rs, massive list of snippets, and API reference to all crates.
 *   build: using cargo to make a build of a project.
+*   lint: Basic lint support. (rustfmt ftw!)
 
 #### To Do:
 *   autocomplete: An actual autocomplete working...(anyone say racer?)
-*   lint: Basic lint from post compile. (rustfmt ftw!)
 *   unit test: somehow get unit test integrated better.
 *   rustdoc: Make some rustdoc integration as well, while we at it.
 *   Make this module the damn bloody best way to code in Rust.
@@ -30,6 +31,7 @@ numbers lexer definitions.
 *   Rust >= v1.0.0 (rev: [daabc8a0](https://github.com/rust-lang/rust/commit/daabc8a0c70693aaec3a424768ee216f59997acb))
 *   Textadept >= v7.9
 *   (optional) [textadept ctags](http://foicica.com/hg/ctags/)
+*   (optional) [rustfmt](https://github.com/nrc/rustfmt)
 
 ### INSTALL
 Clone the repository to your `~/.textadept/modules` directory:
@@ -67,6 +69,10 @@ navigate directly to the source of the api reference.
 The generated tag/api files are updated each time you run `cargo build`
 from the `cB` command on textadept. This allows you to have one heck of an easy
 way to deal with api lookups on a project directly from textadept!
+
+If you have [rustfmt](https://github.com/nrc/rustfmt) installed or in your
+path, then you can enable the init setting `_RUSTFMT` to true, to have auto
+correct for formatting of your rust code.
 
 If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 `s` key.
