@@ -67,8 +67,7 @@ events.connect(events.FILE_BEFORE_SAVE, function()
   if buffer:get_lexer() ~= 'rust' and _RUSTFMT then return end
   local text = buffer:get_text()
   spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
-
-
+  io.reload_file()
 end)
 
 return {}
