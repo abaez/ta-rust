@@ -12,6 +12,9 @@ local api = require("rust.builder.api")
 local tag = require("rust.builder.tag")
 local raw = require("rust.builder.raw")
 
+local _keys = require("modules.rust.keys")
+local _snippets = require("modules.rust.snippets")
+
 local function add_apitag(name, path)
   local user_api = path .. "/.api_" .. name
   local user_tag = path .. "/.tag_" .. name
@@ -42,11 +45,11 @@ textadept.run.build_commands["Cargo.toml"] = "cargo build"
 
 
 if type(snippets) == 'table' then
-  snippets.rust = require("modules.rust.snippets")
+  snippets.rust = _snippets
 end
 
 --- Table of Rust-specific key bindings.
-keys.rust = require("modules.rust.keys")
+keys.rust = _keys
 
 events.connect(events.LEXER_LOADED, function (lang)
   if lang ~= 'rust' then return end
