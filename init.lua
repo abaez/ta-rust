@@ -45,7 +45,6 @@ textadept.run.run_commands.rust = '%d%e'
 -- build project
 textadept.run.build_commands["Cargo.toml"] = "cargo build"
 
-
 if type(snippets) == 'table' then
   snippets.rust = _snippets
 end
@@ -61,12 +60,17 @@ events.connect(events.LEXER_LOADED, function (lang)
 --  buffer.edge_column = 99
 end)
 
+local function fmt()
+  spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
+  io.reload_file()
+end
+
 -- Rust files are run through `rustfmt` after saving and the text is formatted
 -- accordingly. If a syntax error is found it is displayed as an annotation.
 events.connect(events.FILE_AFTER_SAVE, function()
   if buffer:get_lexer() ~= 'rust' and _RUSTFMT then return end
-  io.popen([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
-  io.reload_file()
+  fmt()
 end)
+
 
 return {}
