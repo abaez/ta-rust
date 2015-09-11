@@ -1,3 +1,4 @@
+Action			enum Action<'a> 
 Arch			impl Arch 
 Arch			pub enum Arch 
 Archive			impl<'a> Archive<'a> 
@@ -127,6 +128,7 @@ opts			pub fn opts() -> TargetOptions
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
+opts			pub fn opts() -> TargetOptions 
 output_bits			    fn output_bits(&self) -> usize { 256 }
 output_bits			    fn output_bits(&self) -> usize;
 path			    pub fn path(&self) -> &path::Path 
@@ -134,6 +136,7 @@ path_relative_from			fn path_relative_from(path: &Path, base: &Path) -> Option<P
 position			    fn position(&self) -> usize { self.buffer_idx }
 position			    fn position(&self) -> usize;
 pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String> 
+prepare_ar_action			    fn prepare_ar_action(&self, cmd: &mut Command, dst: &Path, action: Action) 
 process_block			    fn process_block(&mut self, data: &[u8]) 
 read_u32_be			fn read_u32_be(input: &[u8]) -> u32 
 read_u32v_be			fn read_u32v_be(dst: &mut[u32], input: &[u8]) 
@@ -149,7 +152,7 @@ result_bytes			    fn result_bytes(&mut self) -> Vec<u8>
 result_str			    fn result_str(&mut self) -> String 
 rpath			pub mod rpath;
 rpaths_to_flags			fn rpaths_to_flags(rpaths: &[String]) -> Vec<String> 
-run_ar			fn run_ar(handler: &ErrorHandler, maybe_ar_prog: &Option<String>,
+run			    fn run(&self, cwd: Option<&Path>, action: Action) -> Output 
 saw_expr			    fn saw_expr<'a>(node: &'a Expr_) -> SawExprComponent<'a> 
 saw_stmt			    fn saw_stmt(node: &Stmt_) -> SawStmtComponent 
 search			    pub fn search(target: &str) -> Result<Target, String> 
@@ -169,6 +172,7 @@ svh			pub mod svh;
 svh_visitor			mod svh_visitor 
 t			pub struct t 
 target			pub mod target;
+target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
@@ -229,6 +233,7 @@ visit_trait_item			        fn visit_trait_item(&mut self, ti: &TraitItem)
 visit_ty			        fn visit_ty(&mut self, t: &Ty) 
 visit_variant			        fn visit_variant(&mut self, v: &Variant, g: &Generics) 
 windows_base			mod windows_base;
+windows_msvc_base			mod windows_msvc_base;
 write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32) 
 x86			pub mod x86;
 x86_64			pub mod x86_64;

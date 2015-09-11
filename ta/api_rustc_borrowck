@@ -56,9 +56,6 @@ MovePathIndex			pub struct MovePathIndex(usize);
 MoveSpanAndPath			pub struct MoveSpanAndPath 
 MovedValueUseKind			pub enum MovedValueUseKind 
 PartialEq for LoanPath			impl<'tcx> PartialEq for LoanPath<'tcx> 
-Repr for InteriorKind			impl<'tcx> Repr<'tcx> for InteriorKind 
-Repr for Loan			impl<'tcx> Repr<'tcx> for Loan<'tcx> 
-Repr for LoanPath			impl<'tcx> Repr<'tcx> for LoanPath<'tcx> 
 RestrictionResult			pub enum RestrictionResult<'tcx> 
 RestrictionsContext			impl<'a, 'tcx> RestrictionsContext<'a, 'tcx> 
 RestrictionsContext			struct RestrictionsContext<'a, 'tcx: 'a> 
@@ -66,7 +63,6 @@ StaticInitializerCtxt			struct StaticInitializerCtxt<'a, 'tcx: 'a>
 ToInteriorKind			trait ToInteriorKind { fn cleaned(self) -> InteriorKind; }
 ToInteriorKind for mc			impl ToInteriorKind for mc::InteriorKind 
 UseError			enum UseError<'tcx> 
-UserString for LoanPath			impl<'tcx> UserString<'tcx> for LoanPath<'tcx> 
 Variant			impl Variant 
 Variant			pub enum Variant 
 VariantMatch			pub struct VariantMatch 
@@ -160,6 +156,11 @@ extend			    fn extend(&self,
 fileline_help			    pub fn fileline_help(&self, s: Span, m: &str) 
 fixup_fragment_sets			pub fn fixup_fragment_sets<'tcx>(this: &MoveData<'tcx>, tcx: &ty::ctxt<'tcx>) 
 fixup_fragment_sets			    fn fixup_fragment_sets(&self, tcx: &ty::ctxt<'tcx>) 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Debug for InteriorKind			impl<'tcx> fmt::Debug for InteriorKind 
+fmt::Debug for Loan			impl<'tcx> fmt::Debug for Loan<'tcx> 
+fmt::Debug for LoanPath			impl<'tcx> fmt::Debug for LoanPath<'tcx> 
+fmt::Display for LoanPath			impl<'tcx> fmt::Display for LoanPath<'tcx> 
 fragments			pub mod fragments;
 from_fn_like			    pub fn from_fn_like(f: &'a FnLikeNode,
 gather_assignment			pub fn gather_assignment<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
@@ -185,7 +186,6 @@ initial_value			    fn initial_value(&self) -> bool
 initial_value			    fn initial_value(&self) -> bool 
 instrument_move_fragments			pub fn instrument_move_fragments<'tcx>(this: &MoveData<'tcx>,
 is_local_variable_or_arg			    fn is_local_variable_or_arg(&self, cmt: mc::cmt<'tcx>) -> bool 
-is_statement_scope			fn is_statement_scope(tcx: &ty::ctxt, region: ty::Region) -> bool 
 is_subregion_of			    pub fn is_subregion_of(&self, r_sub: ty::Region, r_sup: ty::Region)
 is_var_path			    fn is_var_path(&self, index: MovePathIndex) -> bool 
 join			    fn join(&self, succ: usize, pred: usize) -> usize 
@@ -196,10 +196,11 @@ kind_of_move_of_path			    pub fn kind_of_move_of_path(&self,
 lifetime			mod lifetime;
 loan_path			    pub fn loan_path(&self) -> Rc<LoanPath<'tcx>> 
 loan_path_is_precise			fn loan_path_is_precise(loan_path: &LoanPath) -> bool 
-loan_path_repr			    fn loan_path_repr<'tcx>(&self, move_data: &MoveData<'tcx>, tcx: &ty::ctxt<'tcx>) -> String 
+loan_path_repr			    fn loan_path_repr(&self, move_data: &MoveData) -> String 
 loan_path_to_string			    pub fn loan_path_to_string(&self, loan_path: &LoanPath<'tcx>) -> String 
-loan_path_user_string			    fn loan_path_user_string<'tcx>(&self,
+loan_path_user_string			    fn loan_path_user_string(&self, move_data: &MoveData) -> String 
 loans_generated_by			    pub fn loans_generated_by(&self, scope: region::CodeExtent) -> Vec<usize> 
+main			fn main() 
 make_stat			    fn make_stat(bccx: &BorrowckCtxt, stat: usize) -> String 
 mark_loan_path_as_mutated			    pub fn mark_loan_path_as_mutated(&self, loan_path: &LoanPath) 
 mark_variable_as_used_mut			        fn mark_variable_as_used_mut<'a, 'tcx>(this: &CheckLoanCtxt<'a, 'tcx>,
@@ -245,8 +246,6 @@ report_potential_errors			    pub fn report_potential_errors(&self)
 report_potential_errors			    pub fn report_potential_errors<'a>(&self, bccx: &BorrowckCtxt<'a, 'tcx>) 
 report_reassigned_immutable_variable			    pub fn report_reassigned_immutable_variable(&self,
 report_use_of_moved_value			    pub fn report_use_of_moved_value<'b>(&self,
-repr			    fn repr(&self, _tcx: &ty::ctxt<'tcx>) -> String 
-repr			    fn repr(&self, tcx: &ty::ctxt<'tcx>) -> String 
 restrict			    fn restrict(&self,
 restrictions			mod restrictions;
 scope			    fn scope(&self, cmt: &mc::cmt) -> ty::Region 
@@ -259,11 +258,11 @@ span_end_note			    pub fn span_end_note(&self, s: Span, m: &str)
 span_err			    pub fn span_err(&self, s: Span, m: &str) 
 span_help			    pub fn span_help(&self, s: Span, m: &str) 
 span_note			    pub fn span_note(&self, s: Span, m: &str) 
+statement_scope_span			fn statement_scope_span(tcx: &ty::ctxt, region: ty::Region) -> Option<Span> 
 target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.target(edge) }
 tcx			    pub fn tcx(&self) -> &'a ty::ctxt<'tcx> { self.bccx.tcx }
 tcx			    pub fn tcx(&self) -> &'a ty::ctxt<'tcx> { self.bccx.tcx }
 to_type			    fn to_type(&self) -> ty::Ty<'tcx> { self.ty }
-user_string			    fn user_string(&self, tcx: &ty::ctxt<'tcx>) -> String 
 visit_expr			    fn visit_expr(&mut self, ex: &Expr) 
 visit_fn			    fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &ast::ImplItem) 

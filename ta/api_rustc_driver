@@ -27,14 +27,14 @@ PrinterSupport			trait PrinterSupport<'ast>: pprust::PpAnn
 PrinterSupport for HygieneAnnotation			impl<'ast> PrinterSupport<'ast> for HygieneAnnotation<'ast> 
 PrinterSupport for IdentifiedAnnotation			impl<'ast> PrinterSupport<'ast> for IdentifiedAnnotation<'ast> 
 PrinterSupport for NoAnn			impl<'ast> PrinterSupport<'ast> for NoAnn<'ast> 
-PrinterSupport for TypedAnnotation			impl<'tcx> PrinterSupport<'tcx> for TypedAnnotation<'tcx> 
+PrinterSupport for TypedAnnotation			impl<'b, 'tcx> PrinterSupport<'tcx> for TypedAnnotation<'b, 'tcx> 
 RH			struct RH<'a> 
 ReplaceBodyWithLoop			impl ReplaceBodyWithLoop 
 ReplaceBodyWithLoop			struct ReplaceBodyWithLoop 
 RustcDefaultCalls			impl RustcDefaultCalls 
 RustcDefaultCalls			pub struct RustcDefaultCalls;
 Sink			    struct Sink(Arc<Mutex<Vec<u8>>>);
-TypedAnnotation			struct TypedAnnotation<'tcx> 
+TypedAnnotation			struct TypedAnnotation<'a, 'tcx: 'a> 
 UserIdentifiedItem			impl UserIdentifiedItem 
 UserIdentifiedItem			pub enum UserIdentifiedItem 
 Write for Sink			    impl Write for Sink 
@@ -53,7 +53,6 @@ basic			    pub fn basic() -> CompileController<'a>
 basic			    pub fn basic() -> PhaseController<'a> 
 build_controller			    fn build_controller(&mut self, &Session) -> CompileController<'a>;
 build_controller			    fn build_controller(&mut self, sess: &Session) -> CompileController<'a> 
-build_date_str			pub fn build_date_str() -> Option<&'static str> 
 build_output_filenames			pub fn build_output_filenames(input: &Input,
 call_with_pp_support			    fn call_with_pp_support<'tcx, A, B, F>(&self,
 check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'tcx>) 
@@ -130,8 +129,8 @@ parse_pretty			    fn parse_pretty(&mut self,
 parse_pretty			pub fn parse_pretty(sess: &Session,
 phase_1_parse_input			pub fn phase_1_parse_input(sess: &Session, cfg: ast::CrateConfig, input: &Input)
 phase_2_configure_and_expand			pub fn phase_2_configure_and_expand(sess: &Session,
-phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx>(sess: Session,
-phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'tcx>(analysis: ty::CrateAnalysis<'tcx>)
+phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: Session,
+phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm(tcx: &ty::ctxt, analysis: ty::CrateAnalysis)
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
 phase_6_link_output			pub fn phase_6_link_output(sess: &Session,
 post			    fn post(&self,
@@ -140,7 +139,7 @@ pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust::PpAnn;
 pprust::PpAnn for HygieneAnnotation			impl<'ast> pprust::PpAnn for HygieneAnnotation<'ast> 
 pprust::PpAnn for IdentifiedAnnotation			impl<'ast> pprust::PpAnn for IdentifiedAnnotation<'ast> 
 pprust::PpAnn for NoAnn			impl<'ast> pprust::PpAnn for NoAnn<'ast> {}
-pprust::PpAnn for TypedAnnotation			impl<'tcx> pprust::PpAnn for TypedAnnotation<'tcx> 
+pprust::PpAnn for TypedAnnotation			impl<'a, 'tcx> pprust::PpAnn for TypedAnnotation<'a, 'tcx> 
 pre			    fn pre(&self,
 pretty			pub mod pretty;
 pretty_print_input			pub fn pretty_print_input(sess: Session,
@@ -156,8 +155,8 @@ run			pub fn run(args: Vec<String>) -> isize
 run_compiler			pub fn run_compiler<'a>(args: &[String],
 search			        fn search(this: &Env,
 search_mod			        fn search_mod(this: &Env,
-sess			    fn sess<'a>(&'a self) -> &'a Session { &self.analysis.ty_cx.sess }
 sess			    fn sess<'a>(&'a self) -> &'a Session { &self.sess }
+sess			    fn sess<'a>(&'a self) -> &'a Session { &self.tcx.sess }
 sess			    fn sess<'a>(&'a self) -> &'a Session;
 some_input			    fn some_input(&mut self, input: Input, input_path: Option<PathBuf>)
 sort_lint_groups			    fn sort_lint_groups(lints: Vec<(&'static str, Vec<lint::LintId>, bool)>)
@@ -188,7 +187,6 @@ t_rptr_static			    pub fn t_rptr_static(&self) -> Ty<'tcx>
 tcx			    pub fn tcx(&self) -> &ty::ctxt<'tcx> 
 test			pub mod test;
 to_one_node_id			    fn to_one_node_id(self, user_option: &str, sess: &Session, map: &ast_map::Map) -> ast::NodeId 
-ty_to_string			    pub fn ty_to_string(&self, a: Ty<'tcx>) -> String 
 unw			        fn unw(x: Option<&str>) -> &str { x.unwrap_or("unknown") }
 usage			fn usage(verbose: bool, include_unstable_options: bool) 
 version			pub fn version(binary: &str, matches: &getopts::Matches) 

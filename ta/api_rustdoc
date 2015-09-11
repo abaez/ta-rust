@@ -15,10 +15,10 @@ Clean			impl Clean<Vec<Item>> for doctree::Impl
 Clean			impl Clean<Vec<Item>> for doctree::Import 
 Clean			impl<'a, 'tcx> Clean<FnDecl> for (ast::DefId, &'a ty::PolyFnSig<'tcx>) 
 Clean			impl<'a, 'tcx> Clean<Generics> for (&'a ty::Generics<'tcx>,
+Clean			impl<'a> Clean<Stability> for &'a attr::Stability 
 Clean			impl<'a> Clean<Typedef> for (ty::TypeScheme<'a>, ty::GenericPredicates<'a>,
 Clean			impl<'tcx> Clean<(Vec<TyParamBound>, Vec<TypeBinding>)> for ty::ExistentialBounds<'tcx> 
 Clean			impl<'tcx> Clean<Option<Vec<TyParamBound>>> for subst::Substs<'tcx> 
-Clean			impl<'tcx> Clean<Vec<TyParamBound>> for ty::ParamBounds<'tcx> 
 Clean			pub trait Clean<T> 
 Clean for ast			impl Clean<Argument> for ast::Arg 
 Clean for ast			impl Clean<Attribute> for ast::Attribute 
@@ -68,7 +68,6 @@ Clean for doctree			impl Clean<Item> for doctree::Typedef
 Clean for doctree			impl Clean<Item> for doctree::Variant 
 Clean for syntax			impl Clean<Span> for syntax::codemap::Span 
 Clean for syntax			impl Clean<VariantStruct> for syntax::ast::StructDef 
-Clean for ty			impl Clean<Item> for ty::AssociatedType 
 Clean for ty			impl Clean<Item> for ty::field_ty 
 Clean for ty			impl Clean<Lifetime> for ty::RegionParameterDef 
 Clean for ty			impl Clean<TyParamBound> for ty::BuiltinBound 
@@ -76,6 +75,7 @@ Clean for ty			impl Clean<WherePredicate> for ty::OutlivesPredicate<ty::Region, 
 Clean for ty			impl<'a> Clean<WherePredicate> for ty::Predicate<'a> 
 Clean for ty			impl<'a> Clean<WherePredicate> for ty::TraitPredicate<'a> 
 Clean for ty			impl<'tcx> Clean<Item> for ty::AssociatedConst<'tcx> 
+Clean for ty			impl<'tcx> Clean<Item> for ty::AssociatedType<'tcx> 
 Clean for ty			impl<'tcx> Clean<Item> for ty::ImplOrTraitItem<'tcx> 
 Clean for ty			impl<'tcx> Clean<Item> for ty::Method<'tcx> 
 Clean for ty			impl<'tcx> Clean<Item> for ty::VariantInfo<'tcx> 
@@ -96,14 +96,16 @@ CommaSep			pub struct CommaSep<'a, T: 'a>(pub &'a [T]);
 CommentCleaner			    struct CommentCleaner;
 Constant			pub struct Constant 
 Constant			pub struct Constant 
+ConstnessSpace			impl ConstnessSpace 
+ConstnessSpace			pub struct ConstnessSpace(pub ast::Constness);
 Context			impl Context 
 Context			pub struct Context 
 Crate			pub struct Crate 
 CrateAnalysis			pub struct CrateAnalysis 
 DefaultImpl			pub struct DefaultImpl 
 DefaultImpl			pub struct DefaultImpl 
-DocContext			impl<'tcx> DocContext<'tcx> 
-DocContext			pub struct DocContext<'tcx> 
+DocContext			impl<'b, 'tcx> DocContext<'b, 'tcx> 
+DocContext			pub struct DocContext<'a, 'tcx: 'a> 
 DocFolder			pub trait DocFolder : Sized 
 DocFolder for Cache			impl DocFolder for Cache 
 DocFolder for Collector			impl DocFolder for Collector 
@@ -156,7 +158,7 @@ Macro			pub struct Macro
 Macro			pub struct Macro 
 Markdown			pub struct Markdown<'a>(pub &'a str);
 MarkdownWithToc			pub struct MarkdownWithToc<'a>(pub &'a str);
-MaybeTyped			pub enum MaybeTyped<'tcx> 
+MaybeTyped			pub enum MaybeTyped<'a, 'tcx: 'a> 
 Method			pub struct Method 
 Method			pub struct Method<'a>(pub &'a clean::SelfTy, pub &'a clean::FnDecl);
 Module			pub struct Module 
@@ -196,6 +198,7 @@ Struct			pub struct Struct
 Struct			pub struct Struct 
 StructField			pub enum StructField 
 StructType			pub enum StructType 
+TY_PRIMITIVE	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var TY_PRIMITIVE = itemTypes.indexOf("primitive");
 TestOptions			pub struct TestOptions 
 ToSource			trait ToSource 
 ToSource for syntax			impl ToSource for syntax::codemap::Span 
@@ -295,7 +298,6 @@ clean			    fn clean(&self, cx: &DocContext) -> U
 clean			    fn clean(&self, cx: &DocContext) -> VariantKind 
 clean			    fn clean(&self, cx: &DocContext) -> VariantStruct 
 clean			    fn clean(&self, cx: &DocContext) -> Vec<Item> 
-clean			    fn clean(&self, cx: &DocContext) -> Vec<TyParamBound> 
 clean			    fn clean(&self, cx: &DocContext) -> Vec<U> 
 clean			    fn clean(&self, cx: &DocContext) -> VecPerParamSpace<U> 
 clean			    fn clean(&self, cx: &DocContext) -> ViewListIdent 
@@ -344,6 +346,7 @@ fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result
 fmt::Debug for Toc			impl fmt::Debug for Toc 
 fmt::Display for AbiSpace			impl fmt::Display for AbiSpace 
 fmt::Display for CommaSep			impl<'a, T: fmt::Display> fmt::Display for CommaSep<'a, T> 
+fmt::Display for ConstnessSpace			impl fmt::Display for ConstnessSpace 
 fmt::Display for Escape			impl<'a> fmt::Display for Escape<'a> 
 fmt::Display for IndexItemFunctionType			impl fmt::Display for IndexItemFunctionType 
 fmt::Display for Initializer			impl<'a> fmt::Display for Initializer<'a> 
@@ -401,6 +404,7 @@ from_type_kind			    pub fn from_type_kind(kind: clean::TypeKind) -> ItemType
 full_path			fn full_path(cx: &Context, item: &clean::Item) -> String 
 generics			    fn generics(&mut self, generics: &clean::Generics) 
 get			    pub fn get(&self) -> Option<ast::Visibility> 
+get			    pub fn get(&self) -> ast::Constness 
 get			    pub fn get(&self) -> ast::Unsafety 
 getQueryStringParams	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getQueryStringParams() 
 get_basic_keywords			fn get_basic_keywords() -> &'static str 
@@ -441,6 +445,7 @@ is_fn			    pub fn is_fn(&self) -> bool
 is_hidden_from_doc			    pub fn is_hidden_from_doc(&self) -> bool 
 is_mod			    pub fn is_mod(&self) -> bool 
 is_sized_bound			    fn is_sized_bound(&self, cx: &DocContext) -> bool 
+is_static_method			        fn is_static_method(item: &clean::Item) -> bool 
 is_struct			    pub fn is_struct(&self) -> bool 
 is_trait			    pub fn is_trait(&self) -> bool 
 ismodule			    fn ismodule(&self) -> bool 
@@ -482,7 +487,7 @@ markdown			pub mod markdown;
 maybe_sized			    fn maybe_sized(cx: &DocContext) -> TyParamBound 
 meta_item_list			    fn meta_item_list(&self) -> Option<&[P<ast::MetaItem>]> { None }
 meta_item_list			    fn meta_item_list<'a>(&'a self) -> Option<&'a [P<ast::MetaItem>]> { None }
-method			    fn method(w: &mut fmt::Formatter, it: &clean::Item,
+method			    fn method(w: &mut fmt::Formatter,
 mkdir			fn mkdir(path: &Path) -> io::Result<()> 
 name			    fn name(&self) -> InternedString { (**self).name() }
 name			    fn name(&self) -> InternedString 
@@ -492,7 +497,7 @@ new			        pub fn new(p: &Path) -> Lock
 new			    pub fn new() -> TocBuilder 
 new			    pub fn new(prefix: PathBuf) -> PluginManager 
 new			    pub fn new(cratename: String, libs: SearchPaths, externs: core::Externs,
-new			    pub fn new(cx: &'a core::DocContext<'tcx>,
+new			    pub fn new(cx: &'a core::DocContext<'a, 'tcx>,
 normal_text			    extern fn normal_text(_ob: *mut hoedown_buffer,
 opts			pub fn opts() -> Vec<getopts::OptGroup> 
 os			    mod os 
@@ -528,7 +533,6 @@ render_sources			fn render_sources(cx: &mut Context,
 render_struct			fn render_struct(w: &mut fmt::Formatter, it: &clean::Item,
 reorder			    fn reorder(ty: ItemType) -> u8 
 reset_headers			pub fn reset_headers() 
-resizeTimeout	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var resizeTimeout, interval;
 resolve_def			fn resolve_def(cx: &DocContext, id: ast::NodeId) -> Option<ast::DefId> 
 resolve_id			    fn resolve_id(&mut self, id: ast::NodeId, renamed: Option<ast::Ident>,
 resolve_type			fn resolve_type(cx: &DocContext,

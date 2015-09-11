@@ -2,12 +2,16 @@ Decoder			    impl<'doc> Decoder<'doc>
 Decoder			    pub struct Decoder<'a> 
 Doc			impl<'doc> Doc<'doc> 
 Doc			pub struct Doc<'a> 
+DocsIterator			    pub struct DocsIterator<'a> 
 EbmlEncoderTag			pub enum EbmlEncoderTag 
 Encoder			    impl<'a> Encoder<'a> 
 Encoder			    pub struct Encoder<'a> 
 Error			pub enum Error 
+Iterator for DocsIterator			    impl<'a> Iterator for DocsIterator<'a> 
+Iterator for TaggedDocsIterator			    impl<'a> Iterator for TaggedDocsIterator<'a> 
 Res			    pub struct Res 
 TaggedDoc			pub struct TaggedDoc<'a> 
+TaggedDocsIterator			    pub struct TaggedDocsIterator<'a> 
 _emit_tagged_sub			        fn _emit_tagged_sub(&mut self, v: usize) -> EncodeResult 
 _next_int			        fn _next_int(&mut self,
 _next_sub			        fn _next_sub(&mut self) -> DecodeResult<usize> 
@@ -23,7 +27,7 @@ doc_as_u32			    pub fn doc_as_u32(d: Doc) -> u32
 doc_as_u64			    pub fn doc_as_u64(d: Doc) -> u64 
 doc_as_u8			    pub fn doc_as_u8(d: Doc) -> u8 
 doc_at			    pub fn doc_at<'a>(data: &'a [u8], start: usize) -> DecodeResult<TaggedDoc<'a>> 
-docs			    pub fn docs<F>(d: Doc, mut it: F) -> bool where
+docs			    pub fn docs<'a>(d: Doc<'a>) -> DocsIterator<'a> 
 emit_bool			        fn emit_bool(&mut self, v: bool) -> EncodeResult 
 emit_char			        fn emit_char(&mut self, v: char) -> EncodeResult 
 emit_enum			        fn emit_enum<F>(&mut self, _name: &str, f: F) -> EncodeResult where
@@ -72,6 +76,8 @@ maybe_get_doc			    pub fn maybe_get_doc<'a>(d: Doc<'a>, tg: usize) -> Option<Do
 new			        pub fn new(d: Doc<'doc>) -> Decoder<'doc> 
 new			        pub fn new(w: &'a mut Cursor<Vec<u8>>) -> Encoder<'a> 
 new			    pub fn new(data: &'doc [u8]) -> Doc<'doc> 
+next			        fn next(&mut self) -> Option<(usize, Doc<'a>)> 
+next			        fn next(&mut self) -> Option<Doc<'a>> 
 next_doc			        fn next_doc(&mut self, exp_tag: EbmlEncoderTag) -> DecodeResult<Doc<'doc>> 
 push_doc			        fn push_doc<T, F>(&mut self, exp_tag: EbmlEncoderTag, f: F) -> DecodeResult<T> where
 read_bool			        fn read_bool(&mut self) -> DecodeResult<bool> 
@@ -114,7 +120,7 @@ serialize::Encoder for Encoder			    impl<'a> serialize::Encoder for Encoder<'a>
 start_tag			        pub fn start_tag(&mut self, tag_id: usize) -> EncodeResult 
 tag_at			    pub fn tag_at(data: &[u8], start: usize) -> DecodeResult<Res> 
 tag_len_at			    pub fn tag_len_at(data: &[u8], tag: Res) -> DecodeResult<Res> 
-tagged_docs			    pub fn tagged_docs<F>(d: Doc, tg: usize, mut it: F) -> bool where
+tagged_docs			    pub fn tagged_docs<'a>(d: Doc<'a>, tag: usize) -> TaggedDocsIterator<'a> 
 tests			mod tests 
 unsafe_clone			        pub unsafe fn unsafe_clone(&self) -> Encoder<'a> 
 vuint_at			    pub fn vuint_at(data: &[u8], start: usize) -> DecodeResult<Res> 

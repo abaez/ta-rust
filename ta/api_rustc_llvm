@@ -25,6 +25,7 @@ ConstICmp			pub fn ConstICmp(pred: IntPredicate, v1: ValueRef, v2: ValueRef) -> 
 Context_opaque			pub enum Context_opaque {}
 DIBuilder_opaque			    pub enum DIBuilder_opaque {}
 DIDescriptorFlags			    pub enum DIDescriptorFlags 
+DLLStorageClassTypes			pub enum DLLStorageClassTypes 
 DebugLoc_opaque			pub enum DebugLoc_opaque {}
 Diagnostic			impl Diagnostic 
 Diagnostic			pub enum Diagnostic 
@@ -65,6 +66,7 @@ LLVMAddDestination			    pub fn LLVMAddDestination(IndirectBr: ValueRef, Dest: B
 LLVMAddEarlyCSEPass			    pub fn LLVMAddEarlyCSEPass(PM: PassManagerRef);
 LLVMAddFunction			    pub fn LLVMAddFunction(M: ModuleRef,
 LLVMAddFunctionAttrString			    pub fn LLVMAddFunctionAttrString(Fn: ValueRef, index: c_uint, Name: *const c_char);
+LLVMAddFunctionAttrStringValue			    pub fn LLVMAddFunctionAttrStringValue(Fn: ValueRef, index: c_uint,
 LLVMAddFunctionAttribute			    pub fn LLVMAddFunctionAttribute(Fn: ValueRef, index: c_uint, PA: uint64_t);
 LLVMAddFunctionAttrsPass			    pub fn LLVMAddFunctionAttrsPass(PM: PassManagerRef);
 LLVMAddFunctionInliningPass			    pub fn LLVMAddFunctionInliningPass(PM: PassManagerRef);
@@ -107,8 +109,6 @@ LLVMBuildAdd			    pub fn LLVMBuildAdd(B: BuilderRef,
 LLVMBuildAggregateRet			    pub fn LLVMBuildAggregateRet(B: BuilderRef,
 LLVMBuildAlloca			    pub fn LLVMBuildAlloca(B: BuilderRef, Ty: TypeRef, Name: *const c_char)
 LLVMBuildAnd			    pub fn LLVMBuildAnd(B: BuilderRef,
-LLVMBuildArrayAlloca			    pub fn LLVMBuildArrayAlloca(B: BuilderRef,
-LLVMBuildArrayMalloc			    pub fn LLVMBuildArrayMalloc(B: BuilderRef,
 LLVMBuildAtomicCmpXchg			    pub fn LLVMBuildAtomicCmpXchg(B: BuilderRef,
 LLVMBuildAtomicFence			    pub fn LLVMBuildAtomicFence(B: BuilderRef,
 LLVMBuildAtomicLoad			    pub fn LLVMBuildAtomicLoad(B: BuilderRef,
@@ -121,7 +121,7 @@ LLVMBuildCall			    pub fn LLVMBuildCall(B: BuilderRef,
 LLVMBuildCast			    pub fn LLVMBuildCast(B: BuilderRef,
 LLVMBuildCondBr			    pub fn LLVMBuildCondBr(B: BuilderRef,
 LLVMBuildExactSDiv			    pub fn LLVMBuildExactSDiv(B: BuilderRef,
-LLVMBuildExecutionEngine			    pub fn LLVMBuildExecutionEngine(Mod: ModuleRef,
+LLVMBuildExecutionEngine			    pub fn LLVMBuildExecutionEngine(Mod: ModuleRef) -> ExecutionEngineRef;
 LLVMBuildExtractElement			    pub fn LLVMBuildExtractElement(B: BuilderRef,
 LLVMBuildExtractValue			    pub fn LLVMBuildExtractValue(B: BuilderRef,
 LLVMBuildFAdd			    pub fn LLVMBuildFAdd(B: BuilderRef,
@@ -153,7 +153,6 @@ LLVMBuildIsNull			    pub fn LLVMBuildIsNull(B: BuilderRef, Val: ValueRef, Name:
 LLVMBuildLShr			    pub fn LLVMBuildLShr(B: BuilderRef,
 LLVMBuildLandingPad			    pub fn LLVMBuildLandingPad(B: BuilderRef,
 LLVMBuildLoad			    pub fn LLVMBuildLoad(B: BuilderRef,
-LLVMBuildMalloc			    pub fn LLVMBuildMalloc(B: BuilderRef, Ty: TypeRef, Name: *const c_char)
 LLVMBuildMul			    pub fn LLVMBuildMul(B: BuilderRef,
 LLVMBuildNSWAdd			    pub fn LLVMBuildNSWAdd(B: BuilderRef,
 LLVMBuildNSWMul			    pub fn LLVMBuildNSWMul(B: BuilderRef,
@@ -517,9 +516,10 @@ LLVMRustArchiveIteratorFree			    pub fn LLVMRustArchiveIteratorFree(AIR: Archiv
 LLVMRustArchiveIteratorNew			    pub fn LLVMRustArchiveIteratorNew(AR: ArchiveRef) -> ArchiveIteratorRef;
 LLVMRustArchiveIteratorNext			    pub fn LLVMRustArchiveIteratorNext(AIR: ArchiveIteratorRef);
 LLVMRustArrayType			    pub fn LLVMRustArrayType(ElementType: TypeRef, ElementCount: u64) -> TypeRef;
-LLVMRustCreateJITMemoryManager			    pub fn LLVMRustCreateJITMemoryManager(morestack: *const ())
+LLVMRustConfigurePassManagerBuilder			    pub fn LLVMRustConfigurePassManagerBuilder(PMB: PassManagerBuilderRef,
 LLVMRustCreateMemoryBufferWithContentsOfFile			    pub fn LLVMRustCreateMemoryBufferWithContentsOfFile(Path: *const c_char)
 LLVMRustCreateTargetMachine			    pub fn LLVMRustCreateTargetMachine(Triple: *const c_char,
+LLVMRustDebugMetadataVersion			    pub fn LLVMRustDebugMetadataVersion() -> u32;
 LLVMRustDestroyArchive			    pub fn LLVMRustDestroyArchive(AR: ArchiveRef);
 LLVMRustDisposeTargetMachine			    pub fn LLVMRustDisposeTargetMachine(T: TargetMachineRef);
 LLVMRustGetLastError			    pub fn LLVMRustGetLastError() -> *const c_char;
@@ -533,7 +533,7 @@ LLVMRustPrintPassTimings			    pub fn LLVMRustPrintPassTimings();
 LLVMRustPrintPasses			    pub fn LLVMRustPrintPasses();
 LLVMRustRunFunctionPassManager			    pub fn LLVMRustRunFunctionPassManager(PM: PassManagerRef, M: ModuleRef);
 LLVMRustRunRestrictionPass			    pub fn LLVMRustRunRestrictionPass(M: ModuleRef,
-LLVMRustSetDLLExportStorageClass			    pub fn LLVMRustSetDLLExportStorageClass(V: ValueRef);
+LLVMRustSetDLLStorageClass			    pub fn LLVMRustSetDLLStorageClass(V: ValueRef,
 LLVMRustSetLLVMOptions			    pub fn LLVMRustSetLLVMOptions(Argc: c_int, Argv: *const *const c_char);
 LLVMRustSetNormalizedTarget			    pub fn LLVMRustSetNormalizedTarget(M: ModuleRef, triple: *const c_char);
 LLVMRustWriteOutputFile			    pub fn LLVMRustWriteOutputFile(T: TargetMachineRef,
@@ -576,6 +576,8 @@ LLVMUnpackOptimizationDiagnostic			    pub fn LLVMUnpackOptimizationDiagnostic(D
 LLVMValueAsBasicBlock			    pub fn LLVMValueAsBasicBlock(Val: ValueRef) -> BasicBlockRef;
 LLVMValueIsBasicBlock			    pub fn LLVMValueIsBasicBlock(Val: ValueRef) -> Bool;
 LLVMVectorType			    pub fn LLVMVectorType(ElementType: TypeRef, ElementCount: c_uint)
+LLVMVersionMajor			    pub fn LLVMVersionMajor() -> u32;
+LLVMVersionMinor			    pub fn LLVMVersionMinor() -> u32;
 LLVMVoidTypeInContext			    pub fn LLVMVoidTypeInContext(C: ContextRef) -> TypeRef;
 LLVMWriteBitcodeToFile			    pub fn LLVMWriteBitcodeToFile(M: ModuleRef, Path: *const c_char) -> c_int;
 LLVMWriteDebugLocToString			    pub fn LLVMWriteDebugLocToString(C: ContextRef, DL: DebugLocRef, s: RustStringRef);
@@ -603,11 +605,11 @@ PassManager_opaque			pub enum PassManager_opaque {}
 Pass_opaque			pub enum Pass_opaque {}
 RealPredicate			pub enum RealPredicate 
 RelocMode			pub enum RelocMode 
-RustJITMemoryManager_opaque			pub enum RustJITMemoryManager_opaque {}
 RustString_opaque			pub enum RustString_opaque {}
 SMDiagnostic_opaque			pub enum SMDiagnostic_opaque {}
 SectionIter			pub struct SectionIter 
 SectionIterator_opaque			pub enum SectionIterator_opaque {}
+SetDLLStorageClass			pub fn SetDLLStorageClass(global: ValueRef, class: DLLStorageClassTypes) 
 SetFunctionAttribute			pub fn SetFunctionAttribute(fn_: ValueRef, attr: Attribute) 
 SetFunctionCallConv			pub fn SetFunctionCallConv(fn_: ValueRef, cc: CallConv) 
 SetInstructionCallConv			pub fn SetInstructionCallConv(instr: ValueRef, cc: CallConv) 
@@ -641,6 +643,7 @@ diagnostic			pub mod diagnostic;
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 get_param			pub fn get_param(llfn: ValueRef, index: c_uint) -> ValueRef 
+get_params			pub fn get_params(llfn: ValueRef) -> Vec<ValueRef> 
 iter			    pub fn iter(&self) -> Iter 
 llvmdeps			mod llvmdeps 
 mk_section_iter			pub fn mk_section_iter(llof: ObjectFileRef) -> SectionIter 

@@ -1,4 +1,8 @@
 Alphabetic			    pub fn Alphabetic(c: char) -> bool 
+CaseMappingIter			enum CaseMappingIter 
+CaseMappingIter			impl CaseMappingIter 
+Case_Ignorable			    pub fn Case_Ignorable(c: char) -> bool 
+Cased			    pub fn Cased(c: char) -> bool 
 Cc			    pub fn Cc(c: char) -> bool 
 DoubleEndedIterator for GraphemeIndices			impl<'a> DoubleEndedIterator for GraphemeIndices<'a> 
 DoubleEndedIterator for Graphemes			impl<'a> DoubleEndedIterator for Graphemes<'a> 
@@ -7,18 +11,21 @@ GraphemeCat			    pub enum GraphemeCat
 GraphemeIndices			pub struct GraphemeIndices<'a> 
 GraphemeState			enum GraphemeState 
 Graphemes			pub struct Graphemes<'a> 
+Iterator for CaseMappingIter			impl Iterator for CaseMappingIter 
 Iterator for GraphemeIndices			impl<'a> Iterator for GraphemeIndices<'a> 
 Iterator for Graphemes			impl<'a> Iterator for Graphemes<'a> 
 Iterator for SplitWhitespace			impl<'a> Iterator for SplitWhitespace<'a> 
 Iterator for ToLowercase			impl Iterator for ToLowercase 
+Iterator for ToTitlecase			impl Iterator for ToTitlecase 
 Iterator for ToUppercase			impl Iterator for ToUppercase 
 Iterator for Utf16Encoder			impl<I> Iterator for Utf16Encoder<I> where I: Iterator<Item=char> 
 Iterator for Utf16Items			impl<'a> Iterator for Utf16Items<'a> 
 Lowercase			    pub fn Lowercase(c: char) -> bool 
 N			    pub fn N(c: char) -> bool 
 SplitWhitespace			pub struct SplitWhitespace<'a> 
-ToLowercase			pub struct ToLowercase(Option<char>);
-ToUppercase			pub struct ToUppercase(Option<char>);
+ToLowercase			pub struct ToLowercase(CaseMappingIter);
+ToTitlecase			pub struct ToTitlecase(CaseMappingIter);
+ToUppercase			pub struct ToUppercase(CaseMappingIter);
 UnicodeStr			pub trait UnicodeStr 
 UnicodeStr for str			impl UnicodeStr for str 
 Uppercase			    pub fn Uppercase(c: char) -> bool 
@@ -30,7 +37,7 @@ Utf16Items			pub struct Utf16Items<'a>
 White_Space			    pub fn White_Space(c: char) -> bool 
 XID_Continue			    pub fn XID_Continue(c: char) -> bool 
 XID_Start			    pub fn XID_Start(c: char) -> bool 
-bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, char)]) -> Option<usize> 
+bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, [char; 3])]) -> Option<usize> 
 bsearch_range_table			fn bsearch_range_table(c: char, r: &'static [(char,char)]) -> bool 
 bsearch_range_value_table			    fn bsearch_range_value_table(c: char, is_cjk: bool, r: &'static [(char, char, u8, u8)]) -> u8 
 bsearch_range_value_table			    fn bsearch_range_value_table(c: char, r: &'static [(char, char, GraphemeCat)]) -> GraphemeCat 
@@ -48,8 +55,9 @@ decompose_canonical			pub fn decompose_canonical<F>(c: char, mut i: F) where F: 
 decompose_compatible			pub fn decompose_compatible<F>(c: char, mut i: F) where F: FnMut(char) { d(c, &mut i, true); }
 decompose_hangul			fn decompose_hangul<F>(s: char, f: &mut F) where F: FnMut(char) 
 derived_property			pub mod derived_property 
-encode_utf16			    pub fn encode_utf16(self, dst: &mut [u16]) -> Option<usize> { C::encode_utf16(self, dst) }
-encode_utf8			    pub fn encode_utf8(self, dst: &mut [u8]) -> Option<usize> { C::encode_utf8(self, dst) }
+derived_property			pub mod derived_property 
+encode_utf16			    pub fn encode_utf16(self, dst: &mut [u16]) -> Option<usize> 
+encode_utf8			    pub fn encode_utf8(self, dst: &mut [u8]) -> Option<usize> 
 escape_default			    pub fn escape_default(self) -> EscapeDefault { C::escape_default(self) }
 escape_unicode			    pub fn escape_unicode(self) -> EscapeUnicode { C::escape_unicode(self) }
 general_category			pub mod general_category 
@@ -78,8 +86,10 @@ is_xid_continue			    pub fn is_xid_continue(self) -> bool { derived_property::X
 is_xid_start			    pub fn is_xid_start(self) -> bool { derived_property::XID_Start(self) }
 len_utf16			    pub fn len_utf16(self) -> usize { C::len_utf16(self) }
 len_utf8			    pub fn len_utf8(self) -> usize { C::len_utf8(self) }
+new			    fn new(chars: [char; 3]) -> CaseMappingIter 
 new			    pub fn new(chars: I) -> Utf16Encoder<I> where I: Iterator<Item=char> 
-next			    fn next(&mut self) -> Option<char> { self.0.take() }
+next			    fn next(&mut self) -> Option<char> { self.0.next() }
+next			    fn next(&mut self) -> Option<char> 
 next			    fn next(&mut self) -> Option<&'a str> { self.inner.next() }
 next			    fn next(&mut self) -> Option<&'a str> 
 next			    fn next(&mut self) -> Option<(usize, &'a str)> 
@@ -98,9 +108,11 @@ str			pub mod str
 tables			mod tables;
 to_char_lossy			    pub fn to_char_lossy(&self) -> char 
 to_digit			    pub fn to_digit(self, radix: u32) -> Option<u32> { C::to_digit(self, radix) }
-to_lower			    pub fn to_lower(c: char) -> char 
+to_lower			    pub fn to_lower(c: char) -> [char; 3] 
 to_lowercase			    pub fn to_lowercase(self) -> ToLowercase 
-to_upper			    pub fn to_upper(c: char) -> char 
+to_title			    pub fn to_title(c: char) -> [char; 3] 
+to_titlecase			    pub fn to_titlecase(self) -> ToTitlecase 
+to_upper			    pub fn to_upper(c: char) -> [char; 3] 
 to_uppercase			    pub fn to_uppercase(self) -> ToUppercase 
 trim			    fn trim(&self) -> &str 
 trim			    fn trim<'a>(&'a self) -> &'a str;
@@ -111,7 +123,7 @@ trim_right			    fn trim_right<'a>(&'a self) -> &'a str;
 u_str			mod u_str;
 utf16_items			pub fn utf16_items<'a>(v: &'a [u16]) -> Utf16Items<'a> 
 utf8_char_width			pub fn utf8_char_width(b: u8) -> usize 
-width			    pub fn width(self, is_cjk: bool) -> Option<usize> { charwidth::width(self, is_cjk) }
+width			    pub fn width(self, is_cjk: bool) -> Option<usize> 
 width			    pub fn width(c: char, is_cjk: bool) -> Option<usize> 
 width			    fn width(&self, is_cjk: bool) -> usize 
 width			    fn width(&self, is_cjk: bool) -> usize;
