@@ -61,7 +61,7 @@ events.connect(events.LEXER_LOADED, function (lang)
 end)
 
 local function fmt()
-  spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
+  spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename):wait()
   io.reload_file()
 end
 
