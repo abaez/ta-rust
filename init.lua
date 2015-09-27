@@ -8,11 +8,13 @@
 -- enable [rustfmt](https://github.com/nrc/rustfmt)
 local _RUSTFMT = true
 
-textadept.editing.api_files.rust,
-textadept.editing.autocompleters.rust = require("rust.autocomplete")
+local completer = require("rust.autocomplete")
 local api = require("rust.builder.api")
 local tag = require("rust.builder.tag")
 local raw = require("rust.builder.raw")
+
+textadept.editing.api_files.rust = completer.api_files
+textadept.editing.autocompleters.rust = completer.autocomplete
 
 local _keys = require("modules.rust.keys")
 local _snippets = require("modules.rust.snippets")

@@ -9,12 +9,12 @@ local crates, config = require("modules.rust.config")
 local _RUST = _USERHOME .. '/modules/rust/ta/'
 local _RUSTSRC = "/data/Code/rust/src"
 
-local tags = {}
-local api = {}
+local tag_files = {}
+local api_files = {}
 
 for _, lib in ipairs(crates) do
-  api[#api + 1] = _RUST .. 'api_' .. lib
-  tags[#tags + 1] = _RUST .. 'tags_' .. lib
+  api_files[#api_files + 1] = _RUST .. 'api_' .. lib
+  tag_files[#tag_files + 1] = _RUST .. 'tag_' .. lib
 end
 
 local XPM = textadept.editing.XPM_IMAGES
@@ -30,22 +30,19 @@ local function autocomplete()
 
   -- symbol behind caret
   local line, pos = buffer:get_cur_line()
-  local symbol, op, part  line:sub(1, pos):match('([%w_]*)([%.%:]*)([%w_]*)$')
-  if symbol == '' and part == '' and op ~= '' then return nil end -- lone ., ->
-  if op ~= '' and op ~= '.' and op ~= '::' then return nil end
+  local part = line:sub(1, pos):match('([%w_]*)$')
+  if part == '' then return nil end -- nothing to match against
 
   -- Search through ctags for completions for that symbol.
   local name_patt = '^'..part
   local sep = string.char(buffer.auto_c_type_separator)
-  for i = 1, #tags do
-    if lfs.attributes(tags[i]) then
-      for line in io.lines(tags[i]) do
+  for i = 1, #tag_files do
+    if lfs.attributes(tag_files[i]) then
+      for line in io.lines(tag_files[i]) do
         local name = line:match('^%S+')
         if name:find(name_patt) and not name:find('^!') and not list[name] then
-          local fields = line:match(';"\t(.*)$')
-          if (fields:match('impl') or fields:match('enum') or
-              fields:match('struct') or '') == symbol then
-            local k = xpms[fields:sub(1, 1)]
+          local k = line:match('\t(%a)$')
+          if k then
             list[#list + 1] = ("%s%s%d"):format(name, sep, xpms[k])
             list[name] = true
           end
@@ -56,4 +53,7 @@ local function autocomplete()
   return #part, list
 end
 
-return api, autocomplete()
+return {
+  api_files = api_files,
+  autocomplete = autocomplete,
+}
