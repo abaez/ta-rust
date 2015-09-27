@@ -17,18 +17,8 @@ local raw = require("rust.builder.raw")
 local _keys = require("modules.rust.keys")
 local _snippets = require("modules.rust.snippets")
 
-local function add_apitag(name, path)
-  local user_api = path .. "/.api_" .. name
-  local user_tag = path .. "/.tag_" .. name
-
-  if io.open(user_api) and io.open(user_tag) then
-    table.insert(textadept.editing.api_files.rust, user_api)
-    _M.ctags[path] = user_tag
-  end
-end
-
 if io.get_project_root() then
-  add_apitag(raw.get_project_name())
+  api.add_apitag(raw.get_project_name())
 end
 
 
@@ -61,7 +51,11 @@ events.connect(events.LEXER_LOADED, function (lang)
 end)
 
 local function fmt()
-  spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename):wait()
+  proc, err = spawn([[rustfmt --write-mode=overwrite ]] .. buffer.filename)
+  if not proc then
+    error(err)
+  end
+  proc:wait()
   io.reload_file()
 end
 

@@ -4,6 +4,18 @@
 -- @license MIT (see LICENSE)
 -- @module api
 
+local function add_apitag(name, path)
+  local user_api = path .. "/.api_" .. name
+  local user_tag = path .. "/.tag_" .. name
+
+  if io.open(user_api) and io.open(user_tag) then
+    table.insert(textadept.editing.api_files.rust, user_api)
+    if _M.ctags then
+      _M.ctags[path] = user_tag
+    end
+  end
+end
+
 --- builds the api and places in project/.api_projectname.
 -- @function build
 -- @param project_name the name of the project.
@@ -28,5 +40,6 @@ local function build(project_name, project_full_path, raw)
 end
 
 return {
-  build = build
+  build = build,
+  add_apitag = add_apitag
 }

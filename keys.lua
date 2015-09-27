@@ -1,3 +1,7 @@
+local api = require("rust.builder.api")
+local tag = require("rust.builder.tag")
+local raw = require("rust.builder.raw")
+
 return {
    [not OSX and not CURSES and 'cl' or 'ml'] = {
     -- Open this module for editing: `Alt/⌘-L` `M`
@@ -27,7 +31,7 @@ return {
       tag.build(project_name, project_path, tmp)
       os.remove(tmp)
 
-      add_apitag(project_name, project_path)
+      api.add_apitag(project_name, project_path)
     end
 
     return textadept.run.build()
