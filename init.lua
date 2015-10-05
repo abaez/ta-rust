@@ -5,8 +5,6 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
--- enable [rustfmt](https://github.com/nrc/rustfmt)
-local _RUSTFMT = true
 
 local completer = require("rust.autocomplete")
 local api = require("rust.builder.api")
@@ -64,9 +62,9 @@ end
 -- Rust files are run through `rustfmt` after saving and the text is formatted
 -- accordingly. If a syntax error is found it is displayed as an annotation.
 events.connect(events.FILE_AFTER_SAVE, function()
-  if buffer:get_lexer() ~= 'rust' or not _RUSTFMT then return end
+  -- enable [rustfmt](https://github.com/nrc/rustfmt)
+  if buffer:get_lexer() ~= 'rust' and not _RUSTFMT then return end
   fmt()
 end)
-
 
 return {}

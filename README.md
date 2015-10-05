@@ -20,9 +20,10 @@ numbers lexer definitions.
 *   module: *.rs, massive list of snippets, and API reference to all crates.
 *   build: using cargo to make a build of a project.
 *   lint: Basic lint support. (rustfmt ftw!)
+*   autocomplete: An autocomplete working!
 
 #### To Do:
-*   autocomplete: An actual autocomplete working...(anyone say racer?)
+*   autocomplete: level up the autocomplete to use [Racer](https://github.com/phildawes/racer).
 *   unit test: somehow get unit test integrated better.
 *   rustdoc: Make some rustdoc integration as well, while we at it.
 *   Make this module the damn bloody best way to code in Rust.
@@ -71,8 +72,13 @@ from the `cB` command on textadept. This allows you to have one heck of an easy
 way to deal with api lookups on a project directly from textadept!
 
 If you have [rustfmt](https://github.com/nrc/rustfmt) installed or in your
-path, then you can enable the init setting `_RUSTFMT` to true, to have auto
-correct for formatting of your rust code.
+path, then you can enable the init setting `_RUSTFMT` to true for your
+`_USERHOME/init.lua`, to have autocorrect for formatting of your rust code:
+
+```
+-- init.lua
+_RUSTFMT = true
+```
 
 If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 `s` key.
