@@ -8,7 +8,14 @@ AstConv			pub trait AstConv<'tcx>
 AstConv for FnCtxt			impl<'a, 'tcx> AstConv<'tcx> for FnCtxt<'a, 'tcx> 
 AstConv for ItemCtxt			impl<'a, 'tcx> AstConv<'tcx> for ItemCtxt<'a, 'tcx> 
 AstConvRequest			enum AstConvRequest 
+B			enum B 
+B			enum B {}
+B			impl B 
 Bad			enum Bad 
+Bad			struct Bad(String); \/\/ This will cause an error
+Bad			struct Bad(u16, u32, u32); \/\/ This will cause an error
+Bad			struct Bad; \/\/ This will cause an error
+Bad			struct Bad<T>(T, T, T); \/\/ This will cause an error
 Bar			enum Bar { A(u8), B(&bool), }        \/\/ error
 Bar			enum Bar { A, B, C }
 Bar			enum Bar<'a> { A(u8), B(&'a bool), } \/\/ correct
@@ -17,9 +24,12 @@ Bar			struct Bar;
 Bar			struct Bar<'a> 
 Bar			struct Bar<S, T> { x: Foo<S, T> }
 Bar			trait Bar { }
+Bar			trait Bar 
+Bar			trait Bar {}
 Bar			trait Bar: Foo { }
 Bar for Baz			impl Bar for Baz { } \/\/ error, `Baz` implements `Bar` by definition
 Bar for Foo			impl Bar for Foo { }
+Bar for u32			impl Bar for u32 
 Baz			struct Baz<'a> 
 Baz			trait Baz 
 Baz			trait Baz: Bar { }
@@ -71,10 +81,16 @@ CrateCtxt			pub struct CrateCtxt<'a, 'tcx: 'a>
 DeferredCallResolution			trait DeferredCallResolution<'tcx> 
 DeferredCallResolution for CallResolution			impl<'tcx> DeferredCallResolution<'tcx> for CallResolution<'tcx> 
 Dog			struct Dog 
+Drop for Foo			impl Drop for Foo { \/\/ and you can implement the trait on it!
 Drop for Foo			impl Drop for Foo 
-DtorKind			enum DtorKind<'tcx> 
+Drop for MyTrait			impl Drop for MyTrait 
+Drop for MyWrapper			impl <'a> Drop for MyWrapper<'a> 
+Drop for MyWrapper			impl <T: MyTrait> Drop for MyWrapper<T> 
+Drop for u32			impl Drop for u32 {}
+DropckContext			struct DropckContext<'a, 'b: 'a, 'tcx: 'b> 
 ElidableRscope			impl ElidableRscope 
 ElidableRscope			pub struct ElidableRscope 
+ElisionFailureInfo			pub struct ElisionFailureInfo 
 Empty			enum Empty {}
 Enum			enum Enum 
 Eq for TraitInfo			impl Eq for TraitInfo {}
@@ -82,12 +98,18 @@ Error			enum Error<'tcx>
 Expectation			impl<'tcx> Expectation<'tcx> 
 Expectation			pub enum Expectation<'tcx> 
 ExplicitRscope			pub struct ExplicitRscope;
+FirstTrait			trait FirstTrait : SecondTrait 
 FnCtxt			impl<'a, 'tcx> FnCtxt<'a, 'tcx> 
 FnCtxt			pub struct FnCtxt<'a, 'tcx: 'a> 
+Foo			enum Foo { FirstValue };
 Foo			enum Foo 
 Foo			enum Foo<'a> 
+Foo			enum Foo<T> 
 Foo			impl Foo { }
 Foo			impl Foo 
+Foo			pub struct Foo; \/\/ you define your type in your crate
+Foo			pub struct Foo<T=U, U=()> 
+Foo			pub struct Foo<U=(), T=U> 
 Foo			struct Foo { x: &bool }        \/\/ error
 Foo			struct Foo { x: Box<Foo> } \/\/ error
 Foo			struct Foo { x: Option<Box<Foo>> }
@@ -96,6 +118,8 @@ Foo			struct Foo
 Foo			struct Foo(u32);
 Foo			struct Foo(u8);
 Foo			struct Foo;
+Foo			struct Foo<'a, T: 'a> 
+Foo			struct Foo<'a, T> 
 Foo			struct Foo<'a> { x: &'a bool } \/\/ correct
 Foo			struct Foo<'a> 
 Foo			struct Foo<'a>(&'a str);
@@ -105,6 +129,12 @@ Foo			trait Foo
 Foo			trait Foo {}
 Foo for Bar			impl Foo for Bar 
 Foo for Baz			impl Foo for Baz { } \/\/ error, `Baz` implements `Bar` which implements `Foo`
+ForeignTrait for MyType			impl<T> ForeignTrait for MyType<T> { ... } \/\/ Ok
+ForeignTrait for T			impl<T> ForeignTrait for T { ... } \/\/ error
+ForeignTrait for T0			impl<P1, ..., Pm> ForeignTrait<T1, ..., Tn> for T0 { ... }
+ForeignTrait2			impl<T> ForeignTrait2<MyType<T>, T> for MyType2 { ... } \/\/ Ok
+ForeignTrait2			impl<T> ForeignTrait2<T, MyType<T>> for MyType2 { ... } \/\/ error
+From for i32			impl From<Foo> for i32 { \/\/ or you use a type from your crate as
 Fruit			enum Fruit 
 GatherLocalsVisitor			impl<'a, 'tcx> GatherLocalsVisitor<'a, 'tcx> 
 GatherLocalsVisitor			struct GatherLocalsVisitor<'a, 'tcx: 'a> 
@@ -113,10 +143,13 @@ GetTypeParameterBounds			impl<'tcx> GetTypeParameterBounds<'tcx> for ()
 GetTypeParameterBounds			trait GetTypeParameterBounds<'tcx> 
 GetTypeParameterBounds for ast			impl<'tcx> GetTypeParameterBounds<'tcx> for ast::Generics 
 GetTypeParameterBounds for ty			impl<'tcx> GetTypeParameterBounds<'tcx> for ty::GenericPredicates<'tcx> 
+Good			struct Good(u32); \/\/ This will not
+Good			struct Good(u32, u32, u32); \/\/ This will not
 InferredIndex			struct InferredIndex(usize);
 InferredInfo			struct InferredInfo<'a> 
 Inherited			impl<'a, 'tcx> Inherited<'a, 'tcx> 
 Inherited			pub struct Inherited<'a, 'tcx: 'a> 
+Inner			struct Inner 
 InstantiatedMethodSig			struct InstantiatedMethodSig<'tcx> 
 ItemCtxt			impl<'a,'tcx> ItemCtxt<'a,'tcx> 
 ItemCtxt			struct ItemCtxt<'a,'tcx:'a> 
@@ -126,6 +159,19 @@ LvaluePreference			impl LvaluePreference
 LvaluePreference			pub enum LvaluePreference 
 MethodError			pub enum MethodError<'tcx> 
 Mode			pub enum Mode 
+MyStruct			struct MyStruct;
+MyTrait			trait MyTrait 
+MyTrait			trait MyTrait {type X; }
+MyTrait			trait MyTrait {}
+MyTrait for Foo			impl MyTrait for Foo { \/\/ error: conflicting implementations for trait
+MyTrait for Foo			impl MyTrait for Foo 
+MyTrait for Foo			impl<T> MyTrait for Foo 
+MyTrait for MyStruct			impl MyTrait for MyStruct 
+MyTrait for T			impl<T> MyTrait for T 
+MyType			struct MyType<T>(T);
+MyType2			struct MyType2;
+MyWrapper			struct MyWrapper<'a> { foo: &'a MyTrait }
+MyWrapper			struct MyWrapper<T: MyTrait> { foo: T }
 NoMatchData			impl<'tcx> NoMatchData<'tcx> 
 NoMatchData			pub struct NoMatchData<'tcx> 
 Number			enum Number 
@@ -163,6 +209,7 @@ ResolveReason			enum ResolveReason
 ResolveReason			impl ResolveReason 
 Resolver			impl<'cx, 'tcx> Resolver<'cx, 'tcx> 
 Resolver			struct Resolver<'cx, 'tcx: 'cx> 
+SecondTrait			trait SecondTrait : FirstTrait 
 SeedBorrowKind			impl<'a,'tcx> SeedBorrowKind<'a,'tcx> 
 SeedBorrowKind			struct SeedBorrowKind<'a,'tcx:'a> 
 SelfInfo			struct SelfInfo<'a, 'tcx> 
@@ -179,19 +226,22 @@ Test			impl Test
 Test			struct Test;
 Thing			enum Thing 
 Thing			struct Thing 
+Trait			trait Trait 
+Trait for Foo			impl Trait for Foo 
 Trait1			trait Trait1 
 Trait1 for Test			impl Trait1 for Test { fn foo() {} }
 Trait2			trait Trait2 
 Trait2 for Test			impl Trait2 for Test { fn foo() {} }
 TraitInfo			impl TraitInfo 
 TraitInfo			pub struct TraitInfo 
+TraitNotAStruct			trait TraitNotAStruct {}
 TupleArgumentsFlag			enum TupleArgumentsFlag 
 TypeAndSubsts			pub struct TypeAndSubsts<'tcx> 
 TypeContext			enum TypeContext 
 TypeFolder for BoundsChecker			impl<'cx,'tcx> TypeFolder<'tcx> for BoundsChecker<'cx,'tcx> 
 TypeFolder for Resolver			impl<'cx, 'tcx> TypeFolder<'tcx> for Resolver<'cx, 'tcx> 
 UnelidableRscope			impl UnelidableRscope 
-UnelidableRscope			pub struct UnelidableRscope(Vec<(String, usize)>);
+UnelidableRscope			pub struct UnelidableRscope(Option<Vec<ElisionFailureInfo>>);
 UnresolvedTypeAction			pub enum UnresolvedTypeAction 
 UnsafetyChecker			impl<'cx, 'tcx, 'v> UnsafetyChecker<'cx, 'tcx> 
 UnsafetyChecker			struct UnsafetyChecker<'cx, 'tcx:'cx> 
@@ -243,9 +293,8 @@ adjust_upvar_borrow_kind			    fn adjust_upvar_borrow_kind(&self,
 adjust_upvar_borrow_kind_for_consume			    fn adjust_upvar_borrow_kind_for_consume(&self,
 adjust_upvar_borrow_kind_for_mut			    fn adjust_upvar_borrow_kind_for_mut(&mut self, cmt: mc::cmt<'tcx>) 
 adjust_upvar_borrow_kind_for_unique			    fn adjust_upvar_borrow_kind_for_unique(&self, cmt: mc::cmt<'tcx>) 
-adjustments			    fn adjustments(&self) -> &RefCell<NodeMap<ty::AutoAdjustment<'tcx>>> 
 all_traits			pub fn all_traits<'a>(ccx: &'a CrateCtxt) -> AllTraits<'a> 
-analyze_closure			    fn analyze_closure(&mut self, id: ast::NodeId, decl: &ast::FnDecl, body: &ast::Block) 
+analyze_closure			    fn analyze_closure(&mut self,
 anon_regions			    fn anon_regions(&self, span: Span, count: usize)
 anon_regions			    fn anon_regions(&self,
 assemble_closure_candidates			    fn assemble_closure_candidates(&mut self,
@@ -275,22 +324,26 @@ ast_ty_to_trait_ref			fn ast_ty_to_trait_ref<'tcx>(this: &AstConv<'tcx>,
 ast_ty_to_ty			pub fn ast_ty_to_ty<'tcx>(this: &AstConv<'tcx>,
 ast_type_binding_to_poly_projection_predicate			fn ast_type_binding_to_poly_projection_predicate<'tcx>(
 astconv			mod astconv;
+atomic_fence			    fn atomic_fence(); \/\/ ok!
+atomic_foo			    fn atomic_foo(); \/\/ error: unrecognized atomic operation
 autoderef			pub fn autoderef<'a, 'tcx, T, F>(fcx: &FnCtxt<'a, 'tcx>,
 bar			    fn bar(&mut self) { }
 bar			    fn bar(&self) -> bool { self.0 > 5 }
 bar			    fn bar(&self);
-bar			    fn bar() {}
+bar			    fn bar() {} \/\/ error: duplicate associated function
+bar			    fn bar<'a,'b:'a>(x: &'a str, y: &'b str);
+bar			    fn bar<'a,'b>(x: &'a str, y: &'b str) 
 bar			fn bar(x: &str, y: &str) -> &str { ... }
 base_def_to_ty			fn base_def_to_ty<'tcx>(this: &AstConv<'tcx>,
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: Span) -> ty::Region 
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, _span: Span) -> ty::Region 
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: Span) -> ty::Region 
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: Span) -> ty::Region;
-base_object_lifetime_default_differs			    fn base_object_lifetime_default_differs(&self) -> bool 
 baz			    fn baz(&self) -> bool { self.0 > 5 }
 baz			    fn baz(&self) -> bool { true }
 baz			    fn baz(&self) -> bool;
 baz			fn baz<'a>(x: &'a str, y: &str) -> &str { ... }
+bb			    fn bb() -> i32 { 0 }
 blank_fn_ctxt			pub fn blank_fn_ctxt<'a, 'tcx>(ccx: &'a CrateCtxt<'a, 'tcx>,
 borrow			    fn borrow(&mut self,
 callee			mod callee;
@@ -398,10 +451,6 @@ check_user_unop			pub fn check_user_unop<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 check_variances_for_type_defn			    fn check_variances_for_type_defn(&self,
 closure			mod closure;
 closure_analyze_fn			pub fn closure_analyze_fn(fcx: &FnCtxt,
-closure_kind			    fn closure_kind(&self,
-closure_must_outlive			fn closure_must_outlive<'a, 'tcx>(rcx: &mut Rcx<'a, 'tcx>,
-closure_type			    fn closure_type(&self,
-closure_upvars			    fn closure_upvars(&self,
 cmp			    fn cmp(&self, other: &TraitInfo) -> Ordering 
 coerce			    fn coerce(&self,
 coerce			pub fn coerce<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
@@ -453,6 +502,7 @@ conv_ty_poly_trait_ref			fn conv_ty_poly_trait_ref<'tcx>(
 convert_angle_bracketed_parameters			fn convert_angle_bracketed_parameters<'tcx>(this: &AstConv<'tcx>,
 convert_associated_const			fn convert_associated_const<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 convert_associated_type			fn convert_associated_type<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
+convert_default_type_parameter			fn convert_default_type_parameter<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 convert_field			fn convert_field<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 convert_foreign_item			fn convert_foreign_item<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 convert_item			fn convert_item(ccx: &CrateCtxt, it: &ast::Item) 
@@ -471,11 +521,13 @@ create_substs_for_ast_path			fn create_substs_for_ast_path<'tcx>(
 create_substs_for_ast_trait_ref			fn create_substs_for_ast_trait_ref<'a,'tcx>(this: &AstConv<'tcx>,
 cycle_check			    fn cycle_check<F,R>(&self,
 decl_without_init			    fn decl_without_init(&mut self,
+declaration			trait declaration. Ensure lifetime declarations match exactly in both trait
 declared_variance			    fn declared_variance(&self,
 deduce_expectations_from_expected_type			fn deduce_expectations_from_expected_type<'a,'tcx>(
 deduce_expectations_from_obligations			fn deduce_expectations_from_obligations<'a,'tcx>(
 deduce_sig_from_projection			fn deduce_sig_from_projection<'a,'tcx>(
-default_type_parameters			    pub fn default_type_parameters(&self) 
+default_type_parameters			    fn default_type_parameters(&self) 
+defined			trait defined in another crate) where
 demand			pub mod demand;
 determine_explicit_self_category			fn determine_explicit_self_category<'a, 'tcx>(this: &AstConv<'tcx>,
 determine_parameters_to_be_inferred			fn determine_parameters_to_be_inferred<'a, 'tcx>(tcx: &'a ty::ctxt<'tcx>,
@@ -484,6 +536,7 @@ disr_in_range			    fn disr_in_range(ccx: &CrateCtxt,
 do_check			    fn do_check<'a>(&self, fcx: &FnCtxt<'a, 'tcx>) -> Result<CastKind, CastError> 
 do_check			    fn do_check<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 drop			    fn drop(&mut self) 
+drop			    fn drop(&mut self) {}
 dropck			pub mod dropck;
 early_bound_lifetimes_from_generics			fn early_bound_lifetimes_from_generics(space: ParamSpace,
 elaborate_bounds			    fn elaborate_bounds<F>(
@@ -510,13 +563,15 @@ evaluate			    fn evaluate(&self, term: VarianceTermPtr<'a>) -> ty::Variance
 exists			pub fn exists<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 expected_types_for_fn_args			fn expected_types_for_fn_args<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 expr_ty			    pub fn expr_ty(&self, ex: &ast::Expr) -> Ty<'tcx> 
-expr_ty_adjusted			    fn expr_ty_adjusted(&self, expr: &ast::Expr) -> McResult<Ty<'tcx>> 
 extract_trait_ref			    fn extract_trait_ref<R, F>(&mut self, self_ty: Ty<'tcx>, mut closure: F) -> R where
+f			fn f() {}
 f			fn f(a: u16, b: &str) {}
 filter_to_trait_obligations			fn filter_to_trait_obligations<'tcx>(bounds: ty::InstantiatedPredicates<'tcx>)
+final_upvar_tys			    fn final_upvar_tys(&mut self, closure_id: ast::NodeId) -> Vec<Ty<'tcx>> 
 find_binding_for_lifetime			    fn find_binding_for_lifetime(&self, param_id: ast::NodeId) -> ast::NodeId 
 find_bound_for_assoc_item			fn find_bound_for_assoc_item<'tcx>(this: &AstConv<'tcx>,
-find_implied_output_region			fn find_implied_output_region(input_tys: &[Ty], input_pats: Vec<String>)
+find_conflicting_default			    fn find_conflicting_default(&self,
+find_implied_output_region			fn find_implied_output_region<'tcx>(tcx: &ty::ctxt<'tcx>,
 finish_resolving_def_to_ty			pub fn finish_resolving_def_to_ty<'tcx>(this: &AstConv<'tcx>,
 fix_scalar_binary_expr			    fn fix_scalar_binary_expr(&mut self, e: &ast::Expr) 
 fixup_derefs_on_method_receiver_if_necessary			    fn fixup_derefs_on_method_receiver_if_necessary(&self,
@@ -531,8 +586,12 @@ foo			    fn foo(&self) -> bool { true }
 foo			    fn foo(&self) {}
 foo			    fn foo(&self);
 foo			    fn foo(&self, x: u8) -> bool;
+foo			    fn foo((a, b): (u32, u32)); \/\/ error: patterns aren't allowed in foreign
 foo			    fn foo() {}
+foo			    fn foo(); \/\/ error: unrecognized intrinsic function: `foo`
 foo			    fn foo();
+foo			    fn foo(a: (u32, u32)); \/\/ ok!
+foo			    fn foo(s: SomeStruct); \/\/ ok!
 foo			    fn foo(x: bool) -> Self { Bar }
 foo			    fn foo(x: i16) { }
 foo			    fn foo(x: u16);
@@ -543,6 +602,8 @@ foo			fn foo() -> &str { ... }
 foo			fn foo() -> _ { 5 } \/\/ error, explicitly write out the return type instead
 foo			fn foo() -> u8 
 foo			fn foo() -> usize { 12 }
+foo			fn foo(bar: i32) {}
+foo			fn foo(bar: i32+std::fmt::Display) {}
 foo			fn foo(x: u8, ...) {}
 foo			fn foo<F: Fn()>(f: F) 
 foo			fn foo<F: Fn<(i32,)>>(f: F) -> F::Output { f(3) }
@@ -552,12 +613,17 @@ foo			fn foo<T, U>(x: T) {}
 foo			fn foo<T>() {}
 fresh_receiver_substs			    fn fresh_receiver_substs(&mut self,
 from			    fn from(op: ast::BinOp) -> BinOpCategory 
+from			    fn from(i: Foo) -> i32 
 from_bounds			    fn from_bounds<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 from_infcx			    fn from_infcx(infcx: &'cx infer::InferCtxt<'cx, 'tcx>,
 from_mutbl			    pub fn from_mutbl(m: ast::Mutability) -> Self 
 from_predicates			    fn from_predicates<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 function			    pub fn function(unsafety: ast::Unsafety, def: ast::NodeId) -> UnsafetyState 
 generic_must_outlive			fn generic_must_outlive<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
+get			    fn get(&self) -> usize { 0 }
+get			    fn get(&self) -> usize { self.value }
+get			    fn get(&self) -> usize 
+get			    fn get(&self) -> usize;
 get_base_type_def_id			fn get_base_type_def_id<'a, 'tcx>(inference_context: &InferCtxt<'a, 'tcx>,
 get_enum_variant_types			fn get_enum_variant_types<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 get_free_substs			    fn get_free_substs(&self) -> Option<&Substs<'tcx>> 
@@ -573,6 +639,7 @@ get_trait_def			    fn get_trait_def(&self, trait_id: ast::DefId)
 get_type_parameter_bounds			    fn get_type_parameter_bounds(&self, span: Span, def_id: ast::NodeId)
 get_type_parameter_bounds			    fn get_type_parameter_bounds(&self,
 get_type_parameter_bounds			    fn get_type_parameter_bounds(&self,
+get_value			    fn get_value<'a>(&'a self) -> &'a str { &self.value }
 glb			fn glb(v1: ty::Variance, v2: ty::Variance) -> ty::Variance 
 handle_external_def			        fn handle_external_def(traits: &mut AllTraitsVec,
 has_applicable_self			    fn has_applicable_self(&self, item: &ty::ImplOrTraitItem) -> bool 
@@ -606,13 +673,12 @@ invariant			    fn invariant(&mut self,
 is_builtin_binop			fn is_builtin_binop<'tcx>(cx: &ty::ctxt<'tcx>,
 is_lifetime			fn is_lifetime(map: &ast_map::Map, param_id: ast::NodeId) -> bool 
 is_local			    fn is_local(ty: Ty) -> bool 
-is_method_call			    fn is_method_call(&self, id: ast::NodeId) -> bool 
 is_param			fn is_param<'tcx>(tcx: &ty::ctxt<'tcx>,
 is_to_be_inferred			    fn is_to_be_inferred(&self, param_id: ast::NodeId) -> bool 
 is_ty_param			    fn is_ty_param(ty: ty::Ty) -> bool 
 item_substs			    pub fn item_substs(&self) -> Ref<NodeMap<ty::ItemSubsts<'tcx>>> 
 items			trait items like associated types or constants.
-iterate_over_potentially_unsafe_regions_in_type			fn iterate_over_potentially_unsafe_regions_in_type<'a, 'tcx>(
+iterate_over_potentially_unsafe_regions_in_type			fn iterate_over_potentially_unsafe_regions_in_type<'a, 'b, 'tcx>(
 lang_items			fn lang_items(tcx: &ty::ctxt) -> Vec<(ast::NodeId,Vec<ty::Variance>)> 
 liberate_early_bound_regions			    fn liberate_early_bound_regions<'tcx,T>(
 link_addr_of			fn link_addr_of(rcx: &mut Rcx, expr: &ast::Expr,
@@ -621,7 +687,7 @@ link_by_ref			fn link_by_ref(rcx: &Rcx,
 link_fn_args			fn link_fn_args(rcx: &Rcx, body_scope: CodeExtent, args: &[ast::Arg]) 
 link_local			fn link_local(rcx: &Rcx, local: &ast::Local) 
 link_match			fn link_match(rcx: &Rcx, discr: &ast::Expr, arms: &[ast::Arm]) 
-link_pattern			fn link_pattern<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
+link_pattern			fn link_pattern<'t, 'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 link_reborrowed_region			fn link_reborrowed_region<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 link_region			fn link_region<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 link_region_from_node_type			fn link_region_from_node_type<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
@@ -640,7 +706,6 @@ make_overloaded_lvalue_return_type			fn make_overloaded_lvalue_return_type<'a, '
 make_sub_ty			    fn make_sub_ty(&self, sub: Ty<'tcx>, sup: Ty<'tcx>) -> infer::UnitResult<'tcx> 
 matched_pat			    fn matched_pat(&mut self,
 may_break			pub fn may_break(cx: &ty::ctxt, id: ast::NodeId, b: &ast::Block) -> bool 
-mc::Typer for FnCtxt			impl<'a, 'tcx> mc::Typer<'tcx> for FnCtxt<'a, 'tcx> 
 method			pub mod method;
 method			    fn method(&self) {}
 method			    fn method<T>(&self, v: &[T]) -> usize 
@@ -671,12 +736,10 @@ new			    pub fn new() -> BindingRscope
 new			    pub fn new(base_scope: &'r (RegionScope+'r)) -> ShiftedRscope<'r> 
 new			    pub fn new(base_scope: &'r (RegionScope+'r),
 new			    pub fn new(r: ty::Region) -> ElidableRscope 
-new			    pub fn new(v: Vec<(String, usize)>) -> UnelidableRscope 
+new			    pub fn new(v: Option<Vec<ElisionFailureInfo>>) -> UnelidableRscope 
+new_select_all_obligations_and_apply_defaults			    fn new_select_all_obligations_and_apply_defaults(&self) 
 next			    fn next(&mut self) -> Option<TraitInfo> 
 next_region			    fn next_region(&self) -> ty::Region 
-node_method_origin			    fn node_method_origin(&self, method_call: ty::MethodCall)
-node_method_ty			    fn node_method_ty(&self, method_call: ty::MethodCall)
-node_ty			    fn node_ty(&self, id: ast::NodeId) -> McResult<Ty<'tcx>> 
 node_ty			    pub fn node_ty(&self, id: ast::NodeId) -> Ty<'tcx> 
 normalize_associated_type			    fn normalize_associated_type(&self,
 normalize_associated_types_in			pub fn normalize_associated_types_in<'a,'tcx,T>(infcx: &InferCtxt<'a,'tcx>,
@@ -686,8 +749,8 @@ num_inferred			    fn num_inferred(&self) -> usize
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region> 
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region> 
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region>;
-object_lifetime_default_will_change_in_1_3			    fn object_lifetime_default_will_change_in_1_3(&self) -> bool 
 object_path_to_poly_trait_ref			fn object_path_to_poly_trait_ref<'a,'tcx>(
+old_select_all_obligations_and_apply_defaults			    fn old_select_all_obligations_and_apply_defaults(&self) 
 one_bound_for_assoc_type			fn one_bound_for_assoc_type<'tcx>(tcx: &ty::ctxt<'tcx>,
 only_has_type			    fn only_has_type<'a>(self, fcx: &FnCtxt<'a, 'tcx>) -> Option<Ty<'tcx>> 
 op			mod op;
@@ -697,7 +760,6 @@ order_impls			    fn order_impls(&self, impl1_def_id: ast::DefId, impl2_def_id: 
 orphan			mod orphan;
 overlap			mod overlap;
 param			    fn param<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>, n: u32) -> Ty<'tcx> 
-param_env			    fn param_env<'b>(&'b self) -> &'b ty::ParameterEnvironment<'b,'tcx> 
 param_env			    pub fn param_env(&self) -> &ty::ParameterEnvironment<'a,'tcx> 
 param_ty			    fn param_ty(&self,
 parameters_for_region			fn parameters_for_region(region: &ty::Region) -> Option<Parameter> 
@@ -724,6 +786,7 @@ printf			    fn printf(_: *const c_char, ...) -> c_int;
 probe			mod probe;
 probe			pub fn probe<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 prohibit_projections			fn prohibit_projections<'tcx>(tcx: &ty::ctxt<'tcx>,
+project_item_susbts			        fn project_item_susbts<'a, 'tcx>(tables: &'a ty::Tables<'tcx>)
 projected_ty			    fn projected_ty(&self,
 projected_ty			    fn projected_ty(&self,
 projected_ty			    fn projected_ty(&self,
@@ -757,13 +820,15 @@ report_candidates			    fn report_candidates(fcx: &FnCtxt,
 report_cast_error			    fn report_cast_error<'a>(&self, fcx: &FnCtxt<'a, 'tcx>,
 report_cast_to_unsized_type			fn report_cast_to_unsized_type<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 report_cycle			    fn report_cycle(&self,
+report_elision_failure			fn report_elision_failure(
 report_error			pub fn report_error<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-report_error			    fn report_error(&self, e: infer::fixup_err) 
+report_error			    fn report_error(&self, e: infer::FixupError) 
 report_lifetime_number_error			fn report_lifetime_number_error(tcx: &ty::ctxt, span: Span, number: usize, expected: usize) 
 report_mismatched_types			    pub fn report_mismatched_types(&self,
 report_overlap_error			    fn report_overlap_error(&self, trait_def_id: ast::DefId,
 report_overlap_note			    fn report_overlap_note(&self, impl1: ast::DefId, impl2: ast::DefId) 
 report_unused_parameter			fn report_unused_parameter(tcx: &ty::ctxt,
+require_c_abi_if_variadic			fn require_c_abi_if_variadic(tcx: &ty::ctxt,
 require_expr_have_sized_type			    pub fn require_expr_have_sized_type(&self,
 require_same_types			fn require_same_types<'a, 'tcx, M>(tcx: &ty::ctxt<'tcx>,
 require_type_is_sized			    pub fn require_type_is_sized(&self,
@@ -782,10 +847,9 @@ resolve_type			    pub fn resolve_type(&self, unresolved_ty: Ty<'tcx>) -> Ty<'tc
 resolve_type_vars_if_possible			    fn resolve_type_vars_if_possible(&self, mut ty: Ty<'tcx>) -> Ty<'tcx> 
 resolve_type_vars_in_expr			pub fn resolve_type_vars_in_expr(fcx: &FnCtxt, e: &ast::Expr) 
 resolve_type_vars_in_fn			pub fn resolve_type_vars_in_fn(fcx: &FnCtxt,
-resolve_type_vars_or_error			    fn resolve_type_vars_or_error(&self, t: &Ty<'tcx>) -> mc::McResult<Ty<'tcx>> 
 resolve_ufcs			pub fn resolve_ufcs<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 rscope			mod rscope;
-rvalue_hint			    fn rvalue_hint(ty: Ty<'tcx>) -> Expectation<'tcx> 
+rvalue_hint			    fn rvalue_hint(tcx: &ty::ctxt<'tcx>, ty: Ty<'tcx>) -> Expectation<'tcx> 
 select_all_obligations_and_apply_defaults			    fn select_all_obligations_and_apply_defaults(&self) 
 select_all_obligations_or_error			    fn select_all_obligations_or_error(&self) 
 select_new_obligations			    fn select_new_obligations(&self) 
@@ -794,6 +858,10 @@ self_type_matches_expected_vid			fn self_type_matches_expected_vid<'a,'tcx>(
 sess			    pub fn sess(&self) -> &Session 
 set_body_id			    fn set_body_id(&mut self, body_id: ast::NodeId) -> ast::NodeId 
 set_repeating_scope			    fn set_repeating_scope(&mut self, scope: ast::NodeId) -> ast::NodeId 
+size_of			    fn size_of<T, U>() -> usize; \/\/ error: intrinsic has wrong number
+size_of			    fn size_of<T>() -> usize; \/\/ ok!
+size_of			    fn size_of<T>() -> usize;
+size_of			    fn size_of<T>(); \/\/ error: intrinsic has wrong type
 solve			    fn solve(&mut self) 
 solve_constraints			fn solve_constraints(constraints_cx: ConstraintContext) 
 some_func			fn some_func(i: &mut i32) 
@@ -802,7 +870,7 @@ some_function			fn some_function()
 some_other_func			fn some_other_func() {}
 span			    fn span(&self, tcx: &ty::ctxt) -> Span 
 span_of_impl			    fn span_of_impl(&self, impl_did: ast::DefId) -> Span 
-static_inherited_fields			fn static_inherited_fields<'a, 'tcx>(ccx: &'a CrateCtxt<'a, 'tcx>)
+static_inherited_fields			fn static_inherited_fields<'a, 'tcx>(ccx: &'a CrateCtxt<'a, 'tcx>,
 struct_variant			fn struct_variant<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 structurally_resolve_type_or_else			fn structurally_resolve_type_or_else<'a, 'tcx, F>(fcx: &FnCtxt<'a, 'tcx>,
 structurally_resolved_type			pub fn structurally_resolved_type<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
@@ -813,6 +881,8 @@ suggest_field_names			    fn suggest_field_names<'tcx>(id : DefId,
 suggest_traits_to_import			fn suggest_traits_to_import<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 suptype			pub fn suptype<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>, sp: Span,
 suptype_with_fn			pub fn suptype_with_fn<'a, 'tcx, F>(fcx: &FnCtxt<'a, 'tcx>,
+t			    fn t<'a,'b:'a>(x: &'a str, y: &'b str) { \/\/ ok!
+t			    fn t<'a,'b:'a>(x: &'a str, y: &'b str);
 tag			    pub fn tag(&self) -> String 
 tcx			    fn tcx<'a>(&'a self) -> &'a ty::ctxt<'tcx>;
 tcx			    fn tcx(&self) -> &ty::ctxt<'tcx> 
@@ -826,10 +896,8 @@ tcx			    fn tcx(&self) -> &'cx ty::ctxt<'tcx>
 tcx			    fn tcx<'a>(&'a self) -> &'a ty::ctxt<'tcx> 
 tcx			    fn tcx(&self) -> &ty::ctxt<'tcx> { self.ccx.tcx }
 tcx			    fn tcx(&self) -> &'a ty::ctxt<'tcx> 
-temporary_scope			    fn temporary_scope(&self, rvalue_id: ast::NodeId) -> Option<CodeExtent> 
 to_option			    fn to_option<'a>(self, fcx: &FnCtxt<'a, 'tcx>) -> Option<Ty<'tcx>> 
 to_source			    fn to_source(&self) -> CandidateSource 
-to_trait_data			    fn to_trait_data(&self) -> Option<(ast::DefId, ItemIndex)> 
 to_ty			    pub fn to_ty(&self, ast_t: &ast::Ty) -> Ty<'tcx> 
 to_ty			    fn to_ty<RS:RegionScope>(&self, rs: &RS, ast_ty: &ast::Ty) -> Ty<'tcx> 
 to_unadjusted_pick			    fn to_unadjusted_pick(&self) -> Pick<'tcx> 
@@ -850,7 +918,6 @@ try_index_step			fn try_index_step<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 try_overloaded_call_step			fn try_overloaded_call_step<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 try_overloaded_call_traits			fn try_overloaded_call_traits<'a,'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 try_overloaded_deref			fn try_overloaded_deref<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-ty::ClosureTyper for FnCtxt			impl<'a, 'tcx> ty::ClosureTyper<'tcx> for FnCtxt<'a, 'tcx> 
 ty_generic_predicates			fn ty_generic_predicates<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 ty_generic_predicates_for_fn			fn ty_generic_predicates_for_fn<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 ty_generic_predicates_for_type_or_impl			fn ty_generic_predicates_for_type_or_impl<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
@@ -858,9 +925,9 @@ ty_generics			fn ty_generics<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 ty_generics_for_fn			fn ty_generics_for_fn<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 ty_generics_for_trait			fn ty_generics_for_trait<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 ty_generics_for_type_or_impl			fn ty_generics_for_type_or_impl<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
-ty_infer			    fn ty_infer(&self, span: Span) -> Ty<'tcx>;
-ty_infer			    fn ty_infer(&self, _span: Span) -> Ty<'tcx> 
-ty_infer			    fn ty_infer(&self, span: Span) -> Ty<'tcx> 
+ty_infer			        fn ty_infer(&self,
+ty_infer			    fn ty_infer(&self,
+ty_infer			        fn ty_infer(&self,
 ty_of_arg			pub fn ty_of_arg<'tcx>(this: &AstConv<'tcx>,
 ty_of_bare_fn			pub fn ty_of_bare_fn<'tcx>(this: &AstConv<'tcx>, unsafety: ast::Unsafety, abi: abi::Abi,
 ty_of_closure			pub fn ty_of_closure<'tcx>(
@@ -870,7 +937,6 @@ ty_param_span			    fn ty_param_span(&self,
 type_derefs_to_local			fn type_derefs_to_local<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 type_error_message			    pub fn type_error_message<M>(&self,
 type_is_known_to_be_sized			    pub fn type_is_known_to_be_sized(&self,
-type_moves_by_default			    fn type_moves_by_default(&self, span: Span, ty: Ty<'tcx>) -> bool 
 type_must_outlive			pub fn type_must_outlive<'a, 'tcx>(rcx: &mut Rcx<'a, 'tcx>,
 type_of_node_must_outlive			fn type_of_node_must_outlive<'a, 'tcx>(
 type_scheme_and_predicates_for_def			fn type_scheme_and_predicates_for_def<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
@@ -884,7 +950,6 @@ unsafety			mod unsafety;
 unsize_kind			fn unsize_kind<'a,'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 upcast			    fn upcast(&mut self,
 upvar			mod upvar;
-upvar_capture			    fn upvar_capture(&self, upvar_id: ty::UpvarId) -> Option<ty::UpvarCapture> 
 values			enum values because there are no zero-variant enum values. There is no way to
 variance			pub mod variance;
 variant			enum variant, one of the fields was not provided. Each field should be
@@ -919,6 +984,7 @@ visit_item			    fn visit_item(&mut self, _: &ast::Item) { }
 visit_item			    fn visit_item(&mut self, i: &'tcx ast::Item) 
 visit_item			    fn visit_item(&mut self, i: &ast::Item) { visit_item(self, i); }
 visit_item			fn visit_item(_rcx: &mut Rcx, _item: &ast::Item) 
+visit_item			    fn visit_item(&mut self, _: &'v ast::Item) { }
 visit_item			    fn visit_item(&mut self, i: &ast::Item) 
 visit_item			    fn visit_item(&mut self, _: &ast::Item) 
 visit_item			    fn visit_item(&mut self, item: &Item) 
@@ -944,6 +1010,7 @@ visit_upvar_borrow_map			    fn visit_upvar_borrow_map(&self)
 walk_cast			    fn walk_cast<'a, 'tcx>(rcx: &mut Rcx<'a, 'tcx>,
 wf			pub mod wf;
 with_fcx			    fn with_fcx<F>(&mut self, item: &ast::Item, mut f: F) where
+without_lifetime			    fn without_lifetime(&self) -> &str { &self.value }
 write			    fn write(&self) 
 write_adjustment			    pub fn write_adjustment(&self,
 write_autoderef_adjustment			    pub fn write_autoderef_adjustment(&self,

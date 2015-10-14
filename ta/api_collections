@@ -90,12 +90,8 @@ Default for Vec			impl<T> Default for Vec<T>
 Default for VecDeque			impl<T> Default for VecDeque<T> 
 Default for VecMap			impl<V> Default for VecMap<V> 
 Deref for Cow			impl<'a, B: ?Sized> Deref for Cow<'a, B> where B: ToOwned 
-Deref for DerefString			impl<'a> Deref for DerefString<'a> 
-Deref for DerefVec			impl<'a, T> Deref for DerefVec<'a, T> 
 Deref for IdRef			    impl<'id, T> Deref for IdRef<'id, T> 
 DerefMut for IdRef			    impl<'id, T> DerefMut for IdRef<'id, T> 
-DerefString			pub struct DerefString<'a> 
-DerefVec			pub struct DerefVec<'a, T:'a> 
 Difference			pub struct Difference<'a>(BlockIter<TwoBitPositions<'a>>);
 Difference			pub struct Difference<'a, T:'a> 
 Direction			enum Direction { Pos, Neg }
@@ -136,7 +132,6 @@ Drain			pub struct Drain<'a>
 Drain			pub struct Drain<'a, T: 'a> 
 Drain			pub struct Drain<'a, T: 'a> 
 Drain			pub struct Drain<'a, V:'a> 
-Drop for DerefVec			impl<'a, T> Drop for DerefVec<'a, T> 
 Drop for Drain			impl<'a> Drop for Drain<'a> 
 Drop for Drain			impl<'a, T> Drop for Drain<'a, T> 
 Drop for Drain			impl<'a, T: 'a> Drop for Drain<'a, T> 
@@ -494,7 +489,6 @@ VecMap			pub struct VecMap<V>
 absorb			    fn absorb(&mut self, key: K, val: V, mut right: Node<K, V>) 
 add			    fn add(mut self, other: &str) -> String 
 all			    pub fn all(&self) -> bool 
-alloc_or_realloc			unsafe fn alloc_or_realloc<T>(ptr: *mut T, old_size: usize, size: usize) -> *mut T 
 any			    pub fn any(&self) -> bool 
 append			    pub fn append(&mut self, other: &mut Self) 
 append			    pub fn append(&mut self, other: &mut LinkedList<T>) 
@@ -522,8 +516,6 @@ as_slices_internal			    pub fn as_slices_internal<'b>(&'b self) -> NodeSlice<'b
 as_slices_internal_mut			    pub fn as_slices_internal_mut<'b>(&'b mut self) -> MutNodeSlice<'b, K, V> 
 as_slices_mut			    pub fn as_slices_mut<'a>(&'a mut self) -> (&'a mut [K], &'a mut [V]) 
 as_str			    pub fn as_str(&self) -> &str 
-as_string			pub fn as_string<'a>(x: &'a str) -> DerefString<'a> 
-as_vec			pub fn as_vec<'a, T>(x: &'a [T]) -> DerefVec<'a, T> 
 back			    pub fn back(&self) -> Option<&T> 
 back			    pub fn back(&self) -> Option<&T> 
 back_mut			    pub fn back_mut(&mut self) -> Option<&mut T> 
@@ -568,19 +560,20 @@ btree_set			pub mod btree_set
 buffer_as_mut_slice			    unsafe fn buffer_as_mut_slice(&mut self) -> &mut [T] 
 buffer_as_slice			    unsafe fn buffer_as_slice(&self) -> &[T] 
 buffer_read			    unsafe fn buffer_read(&mut self, off: usize) -> T 
-buffer_write			    unsafe fn buffer_write(&mut self, off: usize, t: T) 
+buffer_write			    unsafe fn buffer_write(&mut self, off: usize, value: T) 
 bytes			    pub fn bytes(&self) -> Bytes 
 calculate_allocation			fn calculate_allocation(keys_size: usize, keys_align: usize,
 calculate_allocation_generic			fn calculate_allocation_generic<K, V>(capacity: usize, is_leaf: bool) -> (usize, usize) 
 calculate_offsets			fn calculate_offsets(keys_size: usize,
 calculate_offsets_generic			fn calculate_offsets_generic<K, V>(capacity: usize, is_leaf: bool) -> (usize, usize) 
 canonical_sort			fn canonical_sort(comb: &mut [(char, u8)]) 
+cap			    fn cap(&self) -> usize 
 capacity			    pub fn capacity(&self) -> usize { self.data.capacity() }
 capacity			    pub fn capacity(&self) -> usize 
 capacity			    pub fn capacity(&self) -> usize 
 capacity			    pub fn capacity(&self) -> usize 
 capacity			    pub fn capacity(&self) -> usize 
-capacity			    pub fn capacity(&self) -> usize { self.cap - 1 }
+capacity			    pub fn capacity(&self) -> usize { self.cap() - 1 }
 capacity			    pub fn capacity(&self) -> usize 
 capacity_from_b			fn capacity_from_b(b: usize) -> usize 
 case_ignoreable_then_cased			        fn case_ignoreable_then_cased<I: Iterator<Item=char>>(iter: I) -> bool 
@@ -664,7 +657,6 @@ copy			    unsafe fn copy(&self, dst: usize, src: usize, len: usize)
 copy_nonoverlapping			    unsafe fn copy_nonoverlapping(&self, dst: usize, src: usize, len: usize) 
 count			    fn count(self) -> usize 
 count			fn count(tail: usize, head: usize, size: usize) -> usize 
-dealloc			unsafe fn dealloc<T>(ptr: *mut T, len: usize) 
 dedup			    pub fn dedup(&mut self) 
 default			    fn default() -> BinaryHeap<T> { BinaryHeap::new() }
 default			    fn default() -> BitSet { BitSet::new() }
@@ -679,10 +671,9 @@ default			    fn default() -> VecMap<V> { VecMap::new() }
 deref			    fn deref(&self) -> &B 
 deref			        fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &str 
-deref			    fn deref<'b>(&'b self) -> &'b String 
 deref			    fn deref(&self) -> &[T] 
-deref			    fn deref<'b>(&'b self) -> &'b Vec<T> 
 deref_mut			        fn deref_mut(&mut self) -> &mut T 
+deref_mut			    fn deref_mut(&mut self) -> &mut str 
 deref_mut			    fn deref_mut(&mut self) -> &mut [T] 
 destroy			    unsafe fn destroy(&mut self) 
 diff			        fn diff(w1: u32, w2: u32) -> u32 { w1 & !w2 }
@@ -750,6 +741,7 @@ extend			    fn extend<T: IntoIterator<Item=A>>(&mut self, iter: T)
 extend			    fn extend<I: IntoIterator<Item=(usize, &'a V)>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item=(usize, V)>>(&mut self, iter: I) 
 extend_desugared			    fn extend_desugared<I: Iterator<Item=T>>(&mut self, mut iterator: I) 
+extend_with_element			    fn extend_with_element(&mut self, n: usize, value: T) 
 filter			        fn filter<A>((i, v): (usize, Option<A>)) -> Option<(usize, A)> 
 find			    pub fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize> 
 first			        fn first<A, B>((a, _): (A, B)) -> A { a }
@@ -758,7 +750,6 @@ first			    pub fn first(&self) -> Option<&T>
 first			        fn first<A, B>((a, _): (A, B)) -> A { a }
 first_mut			    pub fn first_mut(&mut self) -> Option<&mut T> 
 fix_last_block			    fn fix_last_block(&mut self) 
-fixme_14344_be_sure_to_link_to_collections			pub fn fixme_14344_be_sure_to_link_to_collections() {}
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -840,14 +831,14 @@ get			    pub fn get(&self) -> &V
 get			    pub fn get(self) -> Result<&'a mut V, VacantEntry<'a, K, V>> 
 get			    pub fn get<Q: ?Sized>(&self, key: &Q) -> Option<&V> where K: Borrow<Q>, Q: Ord 
 get			    pub fn get(&self, index: usize) -> Option<&T> 
-get			    pub fn get(&self, i: usize) -> Option<&T> 
+get			    pub fn get(&self, index: usize) -> Option<&T> 
 get			    pub fn get(&self) -> &V 
 get			    pub fn get(&self, key: &usize) -> Option<&V> 
 get			    pub fn get(self) -> Result<&'a mut V, VacantEntry<'a, V>> 
 get_mut			    pub fn get_mut(&mut self) -> &mut V 
 get_mut			    pub fn get_mut<Q: ?Sized>(&mut self, key: &Q) -> Option<&mut V> where K: Borrow<Q>, Q: Ord 
 get_mut			    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> 
-get_mut			    pub fn get_mut(&mut self, i: usize) -> Option<&mut T> 
+get_mut			    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> 
 get_mut			    pub fn get_mut(&mut self) -> &mut V 
 get_mut			    pub fn get_mut(&mut self, key: &usize) -> Option<&mut V> 
 get_ref			    pub fn get_ref(&self) -> &BitVec 
@@ -856,9 +847,9 @@ get_unchecked_mut			    pub unsafe fn get_unchecked_mut(&mut self, index: usize)
 grapheme_indices			    pub fn grapheme_indices(&self, is_extended: bool) -> GraphemeIndices 
 graphemes			    pub fn graphemes(&self, is_extended: bool) -> Graphemes 
 grow			    pub fn grow(&mut self, n: usize, value: bool) 
-grow_capacity			    fn grow_capacity(&mut self, capacity: usize) 
 hack			mod hack 
 handle			pub mod handle 
+handle_cap_increase			    unsafe fn handle_cap_increase(&mut self, old_cap: usize) 
 handle_underflow			    pub fn handle_underflow(mut self) 
 handle_underflow_to_left			    unsafe fn handle_underflow_to_left(&mut self) 
 handle_underflow_to_right			    unsafe fn handle_underflow_to_right(&mut self) 
@@ -887,15 +878,19 @@ index			    fn index(&self, index: ops::Range<usize>) -> &[T]
 index			    fn index(&self, index: ops::RangeFrom<usize>) -> &[T] 
 index			    fn index(&self, index: ops::RangeTo<usize>) -> &[T] 
 index			    fn index(&self, index: usize) -> &T 
-index			    fn index(&self, i: usize) -> &A 
+index			    fn index(&self, index: usize) -> &A 
 index			    fn index(&self, i: &usize) -> &V 
 index			    fn index<'a>(&'a self, i: usize) -> &'a V 
+index_mut			    fn index_mut(&mut self, _index: ops::RangeFull) -> &mut str 
+index_mut			    fn index_mut(&mut self, index: ops::Range<usize>) -> &mut str 
+index_mut			    fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut str 
+index_mut			    fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut str 
 index_mut			    fn index_mut(&mut self, _index: ops::RangeFull) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::Range<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: usize) -> &mut T 
-index_mut			    fn index_mut(&mut self, i: usize) -> &mut A 
+index_mut			    fn index_mut(&mut self, index: usize) -> &mut A 
 index_mut			    fn index_mut(&mut self, i: &usize) -> &mut V 
 index_mut			    fn index_mut(&mut self, i: usize) -> &mut V 
 indexable			    fn indexable(&self) -> usize 
@@ -911,7 +906,7 @@ insert			    pub fn insert(&mut self, value: T) -> bool
 insert			    pub fn insert(&mut self, e: E) -> bool 
 insert			    pub fn insert(&mut self, idx: usize, ch: char) 
 insert			    pub fn insert(&mut self, index: usize, element: T) 
-insert			    pub fn insert(&mut self, i: usize, t: T) 
+insert			    pub fn insert(&mut self, index: usize, value: T) 
 insert			    pub fn insert(&mut self, key: usize, value: V) -> Option<V> 
 insert			    pub fn insert(&mut self, value: V) -> V 
 insert			    pub fn insert(self, value: V) -> &'a mut V 
@@ -929,6 +924,7 @@ intersection			    pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T>)
 intersection			    pub fn intersection(&self, e: EnumSet<E>) -> EnumSet<E> 
 into			    fn into(self) -> Vec<u8> 
 into_bit_vec			    pub fn into_bit_vec(self) -> BitVec 
+into_boxed_slice			    pub fn into_boxed_slice(self) -> Box<str> 
 into_boxed_slice			    pub fn into_boxed_slice(mut self) -> Box<[T]> 
 into_bytes			    pub fn into_bytes(self) -> Vec<u8> { self.bytes }
 into_bytes			    pub fn into_bytes(self) -> Vec<u8> 
@@ -954,8 +950,8 @@ into_iter			    fn into_iter(self) -> Iter<E>
 into_iter			    fn into_iter(mut self) -> IterMut<'a, T> 
 into_iter			    fn into_iter(self) -> IntoIter<T> 
 into_iter			    fn into_iter(self) -> Iter<'a, T> 
+into_iter			    fn into_iter(mut self) -> IntoIter<T> 
 into_iter			    fn into_iter(mut self) -> slice::IterMut<'a, T> 
-into_iter			    fn into_iter(self) -> IntoIter<T> 
 into_iter			    fn into_iter(self) -> slice::Iter<'a, T> 
 into_iter			    fn into_iter(mut self) -> IterMut<'a, T> 
 into_iter			    fn into_iter(self) -> IntoIter<T> 
@@ -972,6 +968,7 @@ into_mut			    pub fn into_mut(self) -> &'a mut V
 into_owned			    pub fn into_owned(self) -> <B as ToOwned>::Owned 
 into_searcher			    fn into_searcher(self, haystack: &'a str) -> <&'b str as Pattern<'a>>::Searcher 
 into_sorted_vec			    pub fn into_sorted_vec(mut self) -> Vec<T> 
+into_string			    pub fn into_string(self: Box<str>) -> String 
 into_top			        pub fn into_top(mut self) -> &'a mut V 
 into_vec			    pub fn into_vec(self) -> Vec<T> { self.data }
 into_vec			    pub fn into_vec(self: Box<Self>) -> Vec<T> 
@@ -997,7 +994,7 @@ is_empty			    pub fn is_empty(&self) -> bool { self.len() == 0 }
 is_empty			    pub fn is_empty(&self) -> bool { self.len() == 0 }
 is_empty			    pub fn is_empty(&self) -> bool 
 is_full			    pub fn is_full(&self) -> bool 
-is_full			    fn is_full(&self) -> bool { self.cap - self.len() == 1 }
+is_full			    fn is_full(&self) -> bool { self.cap() - self.len() == 1 }
 is_leaf			    pub fn is_leaf(&self) -> bool 
 is_prefix_of			    fn is_prefix_of(self, haystack: &'a str) -> bool 
 is_subset			    pub fn is_subset(&self, other: &BitSet) -> bool 
@@ -1024,6 +1021,9 @@ iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T>
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    pub fn iter_mut<'r>(&'r mut self) -> IterMut<'r, V> 
+join			    fn join(&self, sep: &T) -> Self::Output;
+join			    fn join(&self, sep: &T) -> Vec<T> 
+join			    fn join(&self, sep: &str) -> String 
 key_mut			    pub fn key_mut(&'a mut self) -> &'a mut K 
 keys			    pub fn keys<'a>(&'a self) -> Keys<'a, K, V> 
 keys			    pub fn keys<'a>(&'a self) -> &'a [K] 
@@ -1046,7 +1046,7 @@ len			    pub fn len(&self) -> usize
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize { self.vec.len() }
 len			    pub fn len(&self) -> usize { self.len }
-len			    pub fn len(&self) -> usize { count(self.tail, self.head, self.cap) }
+len			    pub fn len(&self) -> usize { count(self.tail, self.head, self.cap()) }
 len			    pub fn len(&self) -> usize 
 lines			    pub fn lines(&self) -> Lines 
 lines_any			    pub fn lines_any(&self) -> LinesAny 
@@ -1182,6 +1182,9 @@ none			    fn none() -> Rawlink<T>
 ops			impl ops::Index<ops::Range<usize>> for String 
 ops			impl ops::Index<ops::RangeFrom<usize>> for String 
 ops			impl ops::Index<ops::RangeTo<usize>> for String 
+ops			impl ops::IndexMut<ops::Range<usize>> for String 
+ops			impl ops::IndexMut<ops::RangeFrom<usize>> for String 
+ops			impl ops::IndexMut<ops::RangeTo<usize>> for String 
 ops			impl<T> ops::Index<ops::Range<usize>> for Vec<T> 
 ops			impl<T> ops::Index<ops::RangeFrom<usize>> for Vec<T> 
 ops			impl<T> ops::Index<ops::RangeTo<usize>> for Vec<T> 
@@ -1190,9 +1193,11 @@ ops			impl<T> ops::IndexMut<ops::RangeFrom<usize>> for Vec<T>
 ops			impl<T> ops::IndexMut<ops::RangeTo<usize>> for Vec<T> 
 ops::Deref for String			impl ops::Deref for String 
 ops::Deref for Vec			impl<T> ops::Deref for Vec<T> 
+ops::DerefMut for String			impl ops::DerefMut for String 
 ops::DerefMut for Vec			impl<T> ops::DerefMut for Vec<T> 
 ops::Index for String			impl ops::Index<ops::RangeFull> for String 
 ops::Index for Vec			impl<T> ops::Index<ops::RangeFull> for Vec<T> 
+ops::IndexMut for String			impl ops::IndexMut<ops::RangeFull> for String 
 ops::IndexMut for Vec			impl<T> ops::IndexMut<ops::RangeFull> for Vec<T> 
 or			        fn or(w1: u32, w2: u32) -> u32 { w1 | w2 }
 or_insert			    pub fn or_insert(self, default: V) -> &'a mut V 
@@ -1231,6 +1236,7 @@ pos			    fn pos(&self) -> usize { self.pos }
 position_elem			    pub fn position_elem(&self, t: &T) -> Option<usize> where T: PartialEq 
 prev_permutation			    pub fn prev_permutation(&mut self) -> bool where T: Ord 
 process			    fn process<F>(&mut self, other: &BitVec, mut op: F) -> bool where F: FnMut(u32, u32) -> u32 
+ptr			    fn ptr(&self) -> *mut T 
 push			    pub fn push(&mut self, item: T) 
 push			    pub fn push(&mut self, elem: bool) 
 push			        pub fn push(mut self, mut edge: node::Handle<IdRef<'id, Node<K, V>>,
@@ -1239,11 +1245,11 @@ push			    pub fn push(&mut self, ch: char)
 push			    pub fn push(&mut self, value: T) 
 push_all			    pub fn push_all(&mut self, other: &[T]) 
 push_back			    pub fn push_back(&mut self, elt: T) 
-push_back			    pub fn push_back(&mut self, t: T) 
+push_back			    pub fn push_back(&mut self, value: T) 
 push_back_node			    fn push_back_node(&mut self, new_tail: Box<Node<T>>) 
 push_edge			    unsafe fn push_edge(&mut self, edge: Node<K, V>) 
 push_front			    pub fn push_front(&mut self, elt: T) 
-push_front			    pub fn push_front(&mut self, t: T) 
+push_front			    pub fn push_front(&mut self, value: T) 
 push_front_node			    fn push_front_node(&mut self, mut new_head: Box<Node<T>>) 
 push_kv			    unsafe fn push_kv(&mut self, key: K, val: V) 
 push_pop			    pub fn push_pop(&mut self, mut item: T) -> T 
@@ -1260,7 +1266,7 @@ remove			    pub fn remove<Q: ?Sized>(&mut self, value: &Q) -> bool where T: Bor
 remove			    pub fn remove(&mut self, e: &E) -> bool 
 remove			    pub fn remove(&mut self, idx: usize) -> char 
 remove			    pub fn remove(&mut self, index: usize) -> T 
-remove			    pub fn remove(&mut self, i: usize) -> Option<T> 
+remove			    pub fn remove(&mut self, index: usize) -> Option<T> 
 remove			    pub fn remove(&mut self, key: &usize) -> Option<V> 
 remove			    pub fn remove(self) -> V 
 remove_as_leaf			    pub fn remove_as_leaf(mut self) -> (K, V) 
@@ -1284,7 +1290,6 @@ reserve_len			    pub fn reserve_len(&mut self, len: usize)
 reserve_len			    pub fn reserve_len(&mut self, len: usize) 
 reserve_len_exact			    pub fn reserve_len_exact(&mut self, len: usize) 
 reserve_len_exact			    pub fn reserve_len_exact(&mut self, len: usize) 
-resize			        fn resize<T>(vec: &mut Vec<T>) 
 resize			    pub fn resize(&mut self, new_len: usize, value: T) 
 resize			    pub fn resize(&mut self, new_len: usize, value: T) 
 resolve			    unsafe fn resolve<'a>(&self) -> Option<&'a T> 
@@ -1342,6 +1347,7 @@ size_hint			    fn size_hint(&self) -> (usize, Option<usize>) { self.iter.size_h
 slice			pub mod slice;
 slice_chars			    pub fn slice_chars(&self, begin: usize, end: usize) -> &str 
 slice_from			            pub fn slice_from(self, min_key: &K) -> 
+slice_mut_unchecked			    pub unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str 
 slice_shift_char			    pub fn slice_shift_char(&self) -> Option<(char, &str)> 
 slice_to			            pub fn slice_to(self, max_key: &K) -> 
 slice_unchecked			    pub unsafe fn slice_unchecked(&self, begin: usize, end: usize) -> &str 
@@ -1354,6 +1360,11 @@ split			    pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P>
 split_at			    pub fn split_at(&self, mid: usize) -> (&[T], &[T]) 
 split_at			    pub fn split_at(&self, mid: usize) -> (&str, &str) 
 split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut [T], &mut [T]) 
+split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) 
+split_first			    pub fn split_first(&self) -> Option<(&T, &[T])> 
+split_first_mut			    pub fn split_first_mut(&mut self) -> Option<(&mut T, &mut [T])> 
+split_last			    pub fn split_last(&self) -> Option<(&T, &[T])> 
+split_last_mut			    pub fn split_last_mut(&mut self) -> Option<(&mut T, &mut [T])> 
 split_mut			    pub fn split_mut<F>(&mut self, pred: F) -> SplitMut<T, F> where F: FnMut(&T) -> bool 
 split_off			    pub fn split_off(&mut self, at: usize) -> Self 
 split_off			    pub fn split_off(&mut self, at: usize) -> LinkedList<T> 
@@ -1452,7 +1463,7 @@ with_capacity			    pub fn with_capacity(n: usize) -> VecDeque<T>
 with_capacity			    pub fn with_capacity(capacity: usize) -> VecMap<V> 
 words			    pub fn words(&self) -> Words 
 wrap_add			    fn wrap_add(&self, idx: usize, addend: usize) -> usize 
-wrap_index			    fn wrap_index(&self, idx: usize) -> usize { wrap_index(idx, self.cap) }
+wrap_index			    fn wrap_index(&self, idx: usize) -> usize { wrap_index(idx, self.cap()) }
 wrap_index			fn wrap_index(index: usize, size: usize) -> usize 
 wrap_sub			    fn wrap_sub(&self, idx: usize, subtrahend: usize) -> usize 
 write_char			    fn write_char(&mut self, c: char) -> fmt::Result 

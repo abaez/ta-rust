@@ -83,6 +83,7 @@ analyze_restrictions_on_use			    pub fn analyze_restrictions_on_use(&self,
 append_autoderefd_loan_path_to_string			    pub fn append_autoderefd_loan_path_to_string(&self,
 append_loan_path_to_string			    pub fn append_loan_path_to_string(&self,
 append_to_grouped_errors			    fn append_to_grouped_errors<'tcx>(grouped_errors: &mut Vec<GroupedMoveErrors<'tcx>>,
+assigned_leaf_paths			    pub fn assigned_leaf_paths(&self) -> &[MovePathIndex] 
 bckerr_code			pub enum bckerr_code 
 bckerr_to_string			    pub fn bckerr_to_string(&self, err: &BckError<'tcx>) -> String 
 borrow			    fn borrow(&mut self,
@@ -93,14 +94,12 @@ borrowck_item			fn borrowck_item(this: &mut BorrowckCtxt, item: &ast::Item)
 build_borrowck_dataflow_data			fn build_borrowck_dataflow_data<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>,
 build_borrowck_dataflow_data_for_fn			pub fn build_borrowck_dataflow_data_for_fn<'a, 'tcx>(
 build_set			    fn build_set<O:DataFlowOperator, F>(&self,
+build_unfragmented_map			pub fn build_unfragmented_map(this: &mut borrowck::BorrowckCtxt,
 check			    fn check(&self, cmt: &mc::cmt<'tcx>, discr_scope: Option<ast::NodeId>) -> R 
 check_aliasability			fn check_aliasability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_and_get_illegal_move_origin			fn check_and_get_illegal_move_origin<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_assignment			    fn check_assignment(&self,
 check_crate			pub fn check_crate(tcx: &ty::ctxt) 
-check_for_aliasability_violation			        fn check_for_aliasability_violation<'a, 'tcx>(this: &CheckLoanCtxt<'a, 'tcx>,
-check_for_aliasable_mutable_writes			        fn check_for_aliasable_mutable_writes<'a, 'tcx>(this: &CheckLoanCtxt<'a, 'tcx>,
-check_for_assignment_to_borrowed_path			        fn check_for_assignment_to_borrowed_path<'a, 'tcx>(
 check_for_conflicting_loans			    pub fn check_for_conflicting_loans(&self, scope: region::CodeExtent) 
 check_for_copy_of_frozen_path			    fn check_for_copy_of_frozen_path(&self,
 check_for_move_of_borrowed_path			    fn check_for_move_of_borrowed_path(&self,
@@ -108,7 +107,7 @@ check_if_assigned_path_is_moved			    fn check_if_assigned_path_is_moved(&self,
 check_if_path_is_moved			    fn check_if_path_is_moved(&self,
 check_loans			pub fn check_loans<'a, 'b, 'c, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_loans			pub mod check_loans;
-check_mutability			        fn check_mutability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
+check_mutability			fn check_mutability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_scope			    fn check_scope(&self, max_scope: ty::Region) -> R 
 cleaned			    fn cleaned(self) -> InteriorKind 
 clone			    fn clone(&self) -> MovePathIndex 
@@ -161,6 +160,8 @@ fmt::Debug for InteriorKind			impl<'tcx> fmt::Debug for InteriorKind
 fmt::Debug for Loan			impl<'tcx> fmt::Debug for Loan<'tcx> 
 fmt::Debug for LoanPath			impl<'tcx> fmt::Debug for LoanPath<'tcx> 
 fmt::Display for LoanPath			impl<'tcx> fmt::Display for LoanPath<'tcx> 
+foo			fn foo() -> Box<Fn(u32) -> u32> 
+foo			fn foo() 
 fragments			pub mod fragments;
 from_fn_like			    pub fn from_fn_like(f: &'a FnLikeNode,
 gather_assignment			pub fn gather_assignment<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
@@ -177,6 +178,7 @@ get			    fn get(&self) -> usize
 graph_id			    fn graph_id(&'a self) -> dot::Id<'a> { self.inner.graph_id() }
 graphviz			pub mod graphviz;
 group_errors_with_same_origin			fn group_errors_with_same_origin<'tcx>(errors: &Vec<MoveError<'tcx>>)
+guarantee_assignment_valid			    fn guarantee_assignment_valid(&mut self,
 guarantee_lifetime			pub fn guarantee_lifetime<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 guarantee_valid			    fn guarantee_valid(&mut self,
 has_fork			    fn has_fork(&self, other: &LoanPath<'tcx>) -> bool 
@@ -185,7 +187,6 @@ helper			    fn helper<'tcx>(loan_path: &Rc<LoanPath<'tcx>>) -> Option<Rc<LoanPa
 initial_value			    fn initial_value(&self) -> bool 
 initial_value			    fn initial_value(&self) -> bool 
 instrument_move_fragments			pub fn instrument_move_fragments<'tcx>(this: &MoveData<'tcx>,
-is_local_variable_or_arg			    fn is_local_variable_or_arg(&self, cmt: mc::cmt<'tcx>) -> bool 
 is_subregion_of			    pub fn is_subregion_of(&self, r_sub: ty::Region, r_sup: ty::Region)
 is_var_path			    fn is_var_path(&self, index: MovePathIndex) -> bool 
 join			    fn join(&self, succ: usize, pred: usize) -> usize 
@@ -201,9 +202,9 @@ loan_path_to_string			    pub fn loan_path_to_string(&self, loan_path: &LoanPath
 loan_path_user_string			    fn loan_path_user_string(&self, move_data: &MoveData) -> String 
 loans_generated_by			    pub fn loans_generated_by(&self, scope: region::CodeExtent) -> Vec<usize> 
 main			fn main() 
+main			fn main()
 make_stat			    fn make_stat(bccx: &BorrowckCtxt, stat: usize) -> String 
 mark_loan_path_as_mutated			    pub fn mark_loan_path_as_mutated(&self, loan_path: &LoanPath) 
-mark_variable_as_used_mut			        fn mark_variable_as_used_mut<'a, 'tcx>(this: &CheckLoanCtxt<'a, 'tcx>,
 matched_pat			    fn matched_pat(&mut self,
 matched_pat			    fn matched_pat(&mut self,
 move_data			pub mod move_data;
@@ -211,6 +212,7 @@ move_error			mod move_error;
 move_next_move			    fn move_next_move(&self, index: MoveIndex) -> MoveIndex 
 move_path			    pub fn move_path(&self,
 move_suggestion			        fn move_suggestion<'a,'tcx>(param_env: &ty::ParameterEnvironment<'a,'tcx>,
+moved_leaf_paths			    pub fn moved_leaf_paths(&self) -> &[MovePathIndex] 
 mutate			    fn mutate(&mut self,
 mutate			    fn mutate(&mut self,
 new			    pub fn new() -> FragmentSets 
@@ -256,7 +258,6 @@ source			    fn source(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.sourc
 span_bug			    pub fn span_bug(&self, s: Span, m: &str) 
 span_end_note			    pub fn span_end_note(&self, s: Span, m: &str) 
 span_err			    pub fn span_err(&self, s: Span, m: &str) 
-span_help			    pub fn span_help(&self, s: Span, m: &str) 
 span_note			    pub fn span_note(&self, s: Span, m: &str) 
 statement_scope_span			fn statement_scope_span(tcx: &ty::ctxt, region: ty::Region) -> Option<Span> 
 target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.target(edge) }
