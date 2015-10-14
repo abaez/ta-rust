@@ -29,7 +29,7 @@ numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.2.0 (rev: [082e4763](https://github.com/rust-lang/rust/commit/082e4763615bdbe7b4dd3dfd6fc2210b7773edf5))
+*   Rust >= v1.3.0 (rev: [9a92aaf](https://github.com/rust-lang/rust/commit/9a92aaf19a64603b02b4130fe52958cc12488900))
 *   Textadept >= v8.2
 *   (optional) [textadept ctags](http://foicica.com/hg/ctags/)
 *   (optional) [rustfmt](https://github.com/nrc/rustfmt)
