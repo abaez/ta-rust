@@ -18,6 +18,8 @@ Exp			pub struct Exp
 Exp1			pub struct Exp1(pub f64);
 FisherF			impl FisherF 
 FisherF			pub struct FisherF 
+FloatMath			trait FloatMath : Sized 
+FloatMath for f64			impl FloatMath for f64 
 Gamma			impl Gamma 
 Gamma			pub struct Gamma 
 GammaLargeShape			impl GammaLargeShape 
@@ -105,7 +107,7 @@ Sample for Range			impl<Sup: SampleRange> Sample<Sup> for Range<Sup>
 Sample for StudentT			impl Sample<f64> for StudentT 
 Sample for WeightedChoice			impl<'a, T: Clone> Sample<T> for WeightedChoice<'a, T> 
 SampleRange			        impl SampleRange for 
-SampleRange			pub trait SampleRange 
+SampleRange			pub trait SampleRange: Sized 
 SeedableRng			pub trait SeedableRng<Seed>: Rng 
 SeedableRng for ChaChaRng			impl<'a> SeedableRng<&'a [u32]> for ChaChaRng 
 SeedableRng for Counter			    impl SeedableRng<u32> for Counter 
@@ -135,6 +137,8 @@ core			fn core(output: &mut [u32; STATE_WORDS], input: &[u32; STATE_WORDS])
 default			        fn default() -> Counter 
 default			    fn default() -> ReseedWithDefault { ReseedWithDefault }
 distributions			pub mod distributions;
+exp			    fn exp(self) -> Self;
+exp			    fn exp(self) -> f64 
 exponential			pub mod exponential;
 fill_bytes			    fn fill_bytes(&mut self, dest: &mut [u8]) 
 fill_bytes			    fn fill_bytes(&mut self, dest: &mut [u8]) 
@@ -163,6 +167,8 @@ init		l: bool)
 isaac			    fn isaac(&mut self) 
 isaac			pub mod isaac;
 isaac64			    fn isaac64(&mut self) 
+ln			    fn ln(self) -> Self;
+ln			    fn ln(self) -> f64 
 new			    pub fn new(lambda: f64) -> Exp 
 new			    pub fn new(k: f64) -> ChiSquared 
 new			    pub fn new(m: f64, n: f64) -> FisherF 
@@ -199,6 +205,8 @@ next_u64			    fn next_u64(&mut self) -> u64
 normal			pub mod normal;
 pdf			        fn pdf(x: f64) -> f64 
 pdf			        fn pdf(x: f64) -> f64 
+powf			    fn powf(self, n: Self) -> Self;
+powf			    fn powf(self, n: f64) -> f64 
 rand			    fn rand<R: Rng>(other: &mut R) -> ChaChaRng 
 rand			    fn rand<R:Rng>(rng: &mut R) -> Exp1 
 rand			        fn rand<R: Rng>(_: &mut R) -> ConstRand 
@@ -252,6 +260,8 @@ sample_range			            fn sample_range<R: Rng>(r: &Range<
 sample_range			    fn sample_range<R: Rng>(r: &Range<Self>, rng: &mut R) -> Self;
 set_counter			    pub fn set_counter(&mut self, counter_low: u64, counter_high: u64) 
 shuffle			    fn shuffle<T>(&mut self, values: &mut [T]) 
+sqrt			    fn sqrt(self) -> Self;
+sqrt			    fn sqrt(self) -> f64 
 test			mod test 
 tests			mod tests 
 tests			mod tests 

@@ -55,6 +55,7 @@ MovePathIndex			impl MovePathIndex
 MovePathIndex			pub struct MovePathIndex(usize);
 MoveSpanAndPath			pub struct MoveSpanAndPath 
 MovedValueUseKind			pub enum MovedValueUseKind 
+MyStruct			struct MyStruct { s: u32 }
 PartialEq for LoanPath			impl<'tcx> PartialEq for LoanPath<'tcx> 
 RestrictionResult			pub enum RestrictionResult<'tcx> 
 RestrictionsContext			impl<'a, 'tcx> RestrictionsContext<'a, 'tcx> 
@@ -90,7 +91,7 @@ borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 borrowck			mod borrowck;
 borrowck_fn			fn borrowck_fn(this: &mut BorrowckCtxt,
-borrowck_item			fn borrowck_item(this: &mut BorrowckCtxt, item: &ast::Item) 
+borrowck_item			fn borrowck_item(this: &mut BorrowckCtxt, item: &hir::Item) 
 build_borrowck_dataflow_data			fn build_borrowck_dataflow_data<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>,
 build_borrowck_dataflow_data_for_fn			pub fn build_borrowck_dataflow_data_for_fn<'a, 'tcx>(
 build_set			    fn build_set<O:DataFlowOperator, F>(&self,
@@ -100,7 +101,7 @@ check_aliasability			fn check_aliasability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tc
 check_and_get_illegal_move_origin			fn check_and_get_illegal_move_origin<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_assignment			    fn check_assignment(&self,
 check_crate			pub fn check_crate(tcx: &ty::ctxt) 
-check_for_conflicting_loans			    pub fn check_for_conflicting_loans(&self, scope: region::CodeExtent) 
+check_for_conflicting_loans			    pub fn check_for_conflicting_loans(&self, node: ast::NodeId) 
 check_for_copy_of_frozen_path			    fn check_for_copy_of_frozen_path(&self,
 check_for_move_of_borrowed_path			    fn check_for_move_of_borrowed_path(&self,
 check_if_assigned_path_is_moved			    fn check_if_assigned_path_is_moved(&self,
@@ -142,7 +143,7 @@ each_extending_path			    fn each_extending_path<F>(&self, index: MovePathIndex,
 each_extending_path_			    fn each_extending_path_<F>(&self, index: MovePathIndex, f: &mut F) -> bool where
 each_in_scope_loan			    pub fn each_in_scope_loan<F>(&self, scope: region::CodeExtent, mut op: F) -> bool where
 each_in_scope_loan_affecting_path			    fn each_in_scope_loan_affecting_path<F>(&self,
-each_issued_loan			    pub fn each_issued_loan<F>(&self, scope: region::CodeExtent, mut op: F) -> bool where
+each_issued_loan			    pub fn each_issued_loan<F>(&self, node: ast::NodeId, mut op: F) -> bool where
 each_move_of			    pub fn each_move_of<F>(&self,
 edge_label			    fn edge_label(&'a self, e: &Edge<'a>) -> dot::LabelText<'a> { self.inner.edge_label(e) }
 edges			    fn edges(&'a self) -> dot::Edges<'a, Edge<'a>> { self.inner.edges() }
@@ -162,13 +163,15 @@ fmt::Debug for LoanPath			impl<'tcx> fmt::Debug for LoanPath<'tcx>
 fmt::Display for LoanPath			impl<'tcx> fmt::Display for LoanPath<'tcx> 
 foo			fn foo() -> Box<Fn(u32) -> u32> 
 foo			fn foo() 
+foo			fn foo<F: Fn()>(f: F) { }
+foo			fn foo<F: FnMut()>(f: F) { }
 fragments			pub mod fragments;
 from_fn_like			    pub fn from_fn_like(f: &'a FnLikeNode,
 gather_assignment			pub fn gather_assignment<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_decl			pub fn gather_decl<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_loans			pub mod gather_loans;
 gather_loans_in_fn			pub fn gather_loans_in_fn<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
-gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer(bccx: &mut BorrowckCtxt, expr: &ast::Expr) 
+gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer(bccx: &mut BorrowckCtxt, expr: &hir::Expr) 
 gather_match_variant			pub fn gather_match_variant<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			fn gather_move<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move_from_expr			pub fn gather_move_from_expr<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
@@ -200,7 +203,7 @@ loan_path_is_precise			fn loan_path_is_precise(loan_path: &LoanPath) -> bool
 loan_path_repr			    fn loan_path_repr(&self, move_data: &MoveData) -> String 
 loan_path_to_string			    pub fn loan_path_to_string(&self, loan_path: &LoanPath<'tcx>) -> String 
 loan_path_user_string			    fn loan_path_user_string(&self, move_data: &MoveData) -> String 
-loans_generated_by			    pub fn loans_generated_by(&self, scope: region::CodeExtent) -> Vec<usize> 
+loans_generated_by			    pub fn loans_generated_by(&self, node: ast::NodeId) -> Vec<usize> 
 main			fn main() 
 main			fn main()
 make_stat			    fn make_stat(bccx: &BorrowckCtxt, stat: usize) -> String 
@@ -213,6 +216,8 @@ move_next_move			    fn move_next_move(&self, index: MoveIndex) -> MoveIndex
 move_path			    pub fn move_path(&self,
 move_suggestion			        fn move_suggestion<'a,'tcx>(param_env: &ty::ParameterEnvironment<'a,'tcx>,
 moved_leaf_paths			    pub fn moved_leaf_paths(&self) -> &[MovePathIndex] 
+mut_addr			fn mut_addr() 
+mutable			fn mutable() 
 mutate			    fn mutate(&mut self,
 mutate			    fn mutate(&mut self,
 new			    pub fn new() -> FragmentSets 
@@ -266,7 +271,7 @@ tcx			    pub fn tcx(&self) -> &'a ty::ctxt<'tcx> { self.bccx.tcx }
 to_type			    fn to_type(&self) -> ty::Ty<'tcx> { self.ty }
 visit_expr			    fn visit_expr(&mut self, ex: &Expr) 
 visit_fn			    fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
-visit_impl_item			    fn visit_impl_item(&mut self, ii: &ast::ImplItem) 
-visit_item			    fn visit_item(&mut self, item: &ast::Item) 
-visit_trait_item			    fn visit_trait_item(&mut self, ti: &ast::TraitItem) 
+visit_impl_item			    fn visit_impl_item(&mut self, ii: &hir::ImplItem) 
+visit_item			    fn visit_item(&mut self, item: &hir::Item) 
+visit_trait_item			    fn visit_trait_item(&mut self, ti: &hir::TraitItem) 
 with_move_info			    pub fn with_move_info(move_from: mc::cmt<'tcx>,

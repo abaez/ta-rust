@@ -29,6 +29,7 @@ AttrMetaMethods for Attribute			impl AttrMetaMethods for Attribute
 AttrMetaMethods for MetaItem			impl AttrMetaMethods for MetaItem 
 AttrMetaMethods for P			impl AttrMetaMethods for P<MetaItem> 
 AttrStyle			pub enum AttrStyle 
+AttributeGate			pub enum AttributeGate 
 AttributeMethods			pub trait AttributeMethods 
 AttributeMethods for Attribute			impl AttributeMethods for Attribute 
 AttributeType			pub enum AttributeType 
@@ -48,7 +49,7 @@ BreakToken			pub struct BreakToken
 Breaks			pub enum Breaks 
 BytePos			pub struct BytePos(pub u32);
 CaptureClause			pub enum CaptureClause 
-CfgAttrFolder			struct CfgAttrFolder<'a> 
+CfgAttrFolder			struct CfgAttrFolder<'a, 'b> 
 CharPos			pub struct CharPos(pub usize);
 Clone for OwnedSlice			impl<T: Clone> Clone for OwnedSlice<T> 
 Clone for P			impl<T: 'static + Clone> Clone for P<T> 
@@ -57,6 +58,8 @@ CodeMap			pub struct CodeMap
 ColorConfig			pub enum ColorConfig 
 Comment			pub struct Comment 
 CommentStyle			pub enum CommentStyle 
+CompilerExpansionFormat			impl CompilerExpansionFormat 
+CompilerExpansionFormat			pub enum CompilerExpansionFormat 
 Constness			pub enum Constness 
 Context			struct Context<F> where F: FnMut(&[ast::Attribute]) -> bool 
 Context			impl<'a, 'b> Context<'a, 'b> 
@@ -64,6 +67,7 @@ Context			struct Context<'a, 'b:'a>
 Context			impl<'a> Context<'a> 
 Context			struct Context<'a> 
 Crate			pub struct Crate 
+CrateInjector			struct CrateInjector 
 CurrentCommentAndLiteral			pub struct CurrentCommentAndLiteral 
 Debug for P			impl<T: Debug> Debug for P<T> 
 Decl_			pub enum Decl_ 
@@ -74,8 +78,6 @@ Decodable for InternedString			impl Decodable for InternedString
 Decodable for OwnedSlice			impl<T: Decodable> Decodable for OwnedSlice<T> 
 Decodable for P			impl<T: 'static + Decodable> Decodable for P<T> 
 Decodable for Span			impl Decodable for Span 
-DefId			impl DefId 
-DefId			pub struct DefId 
 Default for OwnedSlice			impl<T> Default for OwnedSlice<T> 
 DelimToken			pub enum DelimToken 
 Delimited			impl Delimited 
@@ -102,6 +104,8 @@ Encodable for OwnedSlice			impl<T: Encodable> Encodable for OwnedSlice<T>
 Encodable for P			impl<T: Encodable> Encodable for P<T> 
 Encodable for Span			impl Encodable for Span 
 Entries			              struct Entries;
+EntryPointCleaner			struct EntryPointCleaner 
+EntryPointType			pub enum EntryPointType 
 EnumDef			pub struct EnumDef 
 Eq for P			impl<T: Eq> Eq for P<T> {}
 Eq for RcStr			impl Eq for RcStr {}
@@ -158,6 +162,9 @@ FromIterator for SmallVector			impl<T> FromIterator<T> for SmallVector<T>
 FromStr for Mode			impl FromStr for Mode 
 FunctionRetTy			impl FunctionRetTy 
 FunctionRetTy			pub enum FunctionRetTy 
+GateIssue			pub enum GateIssue 
+GatedCfg			impl GatedCfg 
+GatedCfg			pub struct GatedCfg 
 Generics			impl Generics 
 Generics			pub struct Generics 
 GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: libc::HANDLE,
@@ -168,7 +175,8 @@ HasTestSignature			enum HasTestSignature
 Hash for P			impl<T: Hash> Hash for P<T> 
 IdRange			impl IdRange 
 IdRange			pub struct IdRange 
-IdRangeComputingVisitor			struct IdRangeComputingVisitor 
+IdRangeComputingVisitor			impl IdRangeComputingVisitor 
+IdRangeComputingVisitor			pub struct IdRangeComputingVisitor 
 IdVisitingOperation			pub trait IdVisitingOperation 
 IdVisitingOperation for IdRangeComputingVisitor			impl IdVisitingOperation for IdRangeComputingVisitor 
 IdVisitor			impl<'a, O: IdVisitingOperation> IdVisitor<'a, O> 
@@ -185,7 +193,6 @@ ImplItem_			pub enum ImplItem_
 ImplPolarity			pub enum ImplPolarity 
 InlineAsm			pub struct InlineAsm 
 InlineAttr			pub enum InlineAttr 
-InlinedItem			pub enum InlinedItem 
 IntSign			pub trait IntSign 
 IntTy			impl IntTy 
 IntTy			pub enum IntTy 
@@ -198,10 +205,6 @@ Interner			pub struct Interner<T>
 IntoIter			pub struct IntoIter<T> 
 IntoIterRepr			enum IntoIterRepr<T> 
 Item			pub struct Item 
-ItemDecorator			pub trait ItemDecorator 
-ItemDecorator for F			impl<F> ItemDecorator for F
-ItemModifier			pub trait ItemModifier 
-ItemModifier for F			impl<F> ItemModifier for F
 Item_			impl Item_ 
 Item_			pub enum Item_ 
 Iterator for IntoIter			impl<T> Iterator for IntoIter<T> 
@@ -217,7 +220,6 @@ LifetimeDef			pub struct LifetimeDef
 LineInfo			pub struct LineInfo 
 Lit			impl Lit 
 Lit			pub enum Lit 
-LitIntType			impl LitIntType 
 LitIntType			pub enum LitIntType 
 Lit_			pub enum Lit_ 
 Literal			pub struct Literal 
@@ -268,11 +270,13 @@ MutTy			pub struct MutTy
 Mutability			pub enum Mutability 
 Name			impl Name 
 Name			pub struct Name(pub u32);
+NameAndSpan			impl NameAndSpan 
 NameAndSpan			pub struct NameAndSpan 
 NamedMatch			pub enum NamedMatch 
 NoAnn			pub struct NoAnn;
 Nonterminal			pub enum Nonterminal 
 ObsoleteSyntax			pub enum ObsoleteSyntax 
+Ord for GatedCfg			impl Ord for GatedCfg 
 Ord for RcStr			impl Ord for RcStr 
 OrderingOp			pub enum OrderingOp 
 Os			pub enum Os 
@@ -299,6 +303,7 @@ PartialEq for InternedString			impl<'a> PartialEq<&'a str> for InternedString
 PartialEq for MetaItem_			impl PartialEq for MetaItem_ 
 PartialEq for P			impl<T: PartialEq> PartialEq for P<T> 
 PartialEq for Span			impl PartialEq for Span 
+PartialOrd for GatedCfg			impl PartialOrd for GatedCfg 
 Pat			pub struct Pat 
 PatIdentFinder			struct PatIdentFinder 
 PatIdentRenamer			pub struct PatIdentRenamer<'a> 
@@ -356,6 +361,7 @@ Sink			        struct Sink(Arc<Mutex<Vec<u8>>>);
 SmallVector			impl<T> SmallVector<T> 
 SmallVector			pub struct SmallVector<T> 
 SmallVectorRepr			enum SmallVectorRepr<T> 
+Span			impl Span 
 Span			pub struct Span 
 SpanHandler			impl SpanHandler 
 SpanHandler			pub struct SpanHandler 
@@ -366,7 +372,6 @@ SpecialMacroVar			impl SpecialMacroVar
 SpecialMacroVar			pub enum SpecialMacroVar 
 Stability			pub struct Stability 
 StabilityLevel			pub enum StabilityLevel 
-StandardLibraryInjector			struct StandardLibraryInjector 
 State			enum State 
 State			impl State 
 State			impl<'a> State<'a> 
@@ -536,11 +541,12 @@ base::MacResult for ExpandResult			    impl<'a> base::MacResult for ExpandResult
 bclose			    pub fn bclose(&mut self, span: codemap::Span) -> io::Result<()> 
 bclose_			    pub fn bclose_(&mut self, span: codemap::Span,
 bclose_maybe_open			    pub fn bclose_maybe_open (&mut self, span: codemap::Span,
-binary_lit			pub fn binary_lit(lit: &str) -> Rc<Vec<u8>> 
 bindings			    pub fn bindings(&self) -> Vec<&P<TypeBinding>> 
 binop			    fn binop(&mut self, op: token::BinOpToken) -> token::Token 
 binop_to_string			pub fn binop_to_string(op: BinOp_) -> &'static str 
 binop_to_string			pub fn binop_to_string(op: BinOpToken) -> &'static str 
+bit_width			    pub fn bit_width(&self) -> Option<usize> 
+bit_width			    pub fn bit_width(&self) -> usize 
 block			    fn block(&self, span: Span, stmts: Vec<P<ast::Stmt>>,
 block_all			    fn block_all(&self, span: Span,
 block_all			    fn block_all(&self,
@@ -573,6 +579,7 @@ bump_and_get			    pub fn bump_and_get(&mut self) -> PResult<token::Token>
 bump_err_count			    pub fn bump_err_count(&self) 
 byte_lit			pub fn byte_lit(lit: &str) -> (u8, usize) 
 byte_offset			    fn byte_offset(&self, pos: BytePos) -> BytePos 
+byte_str_lit			pub fn byte_str_lit(lit: &str) -> Rc<Vec<u8>> 
 bytepos_to_file_charpos			    pub fn bytepos_to_file_charpos(&self, bpos: BytePos) -> CharPos 
 call_site			    pub fn call_site(&self) -> Span 
 call_substructure_method			    fn call_substructure_method(&self,
@@ -582,16 +589,18 @@ cbox			pub fn cbox(p: &mut Printer, indent: usize) -> io::Result<()>
 cbox			    pub fn cbox(&mut self, u: usize) -> io::Result<()> 
 cfg			    pub fn cfg(&self) -> ast::CrateConfig { self.cfg.clone() }
 cfg			    pub mod cfg;
-cfg_matches			pub fn cfg_matches(diagnostic: &SpanHandler, cfgs: &[P<MetaItem>], cfg: &ast::MetaItem) -> bool 
+cfg_matches			pub fn cfg_matches(diagnostic: &SpanHandler, cfgs: &[P<MetaItem>], cfg: &ast::MetaItem,
 char_at			pub fn char_at(s: &str, byte: usize) -> char 
 char_lit			pub fn char_lit(lit: &str) -> (char, isize) 
 check			    pub fn check(&mut self, tok: &token::Token) -> bool 
+check_and_emit			    pub fn check_and_emit(&self, diagnostic: &SpanHandler, features: &Features) 
 check_asts_encodable			    fn check_asts_encodable() 
 check_attribute			    fn check_attribute(&self, attr: &ast::Attribute, is_macro: bool) 
 check_crate			pub fn check_crate(cm: &CodeMap, span_handler: &SpanHandler, krate: &ast::Crate,
 check_crate_inner			fn check_crate_inner<F>(cm: &CodeMap, span_handler: &SpanHandler,
 check_crate_macros			pub fn check_crate_macros(cm: &CodeMap, span_handler: &SpanHandler, krate: &ast::Crate)
 check_expected_item			        fn check_expected_item(p: &mut Parser, attrs: &[Attribute]) 
+check_expr_bin_needs_paren			    pub fn check_expr_bin_needs_paren(&mut self, sub_expr: &ast::Expr,
 check_float_base			    fn check_float_base(&mut self, start_bpos: BytePos, last_bpos: BytePos, base: usize) 
 check_for_box_syntax			pub fn check_for_box_syntax(f: Option<&Features>, diag: &SpanHandler, span: Span) 
 check_for_erroneous_unit_struct_expecting			    pub fn check_for_erroneous_unit_struct_expecting(&mut self,
@@ -620,6 +629,7 @@ clone			    fn clone(&self) -> P<T>
 close_token			    pub fn close_token(&self) -> token::Token 
 close_tt			    pub fn close_tt(&self) -> TokenTree 
 closure_arg_hygiene			    fn closure_arg_hygiene()
+cmp			    fn cmp(&self, other: &GatedCfg) -> cmp::Ordering 
 cmp			    fn cmp(&self, other: &RcStr) -> Ordering 
 codemap			    pub fn codemap(&self) -> &'a CodeMap { self.parse_sess.codemap() }
 codemap			pub mod codemap;
@@ -637,8 +647,7 @@ commit_stmt_expecting			    pub fn commit_stmt_expecting(&mut self, edible: toke
 common			pub mod common;
 compile			pub fn compile<'cx>(cx: &'cx mut ExtCtxt,
 complain_if_pub_macro			    fn complain_if_pub_macro(&mut self, visa: Visibility, span: Span) 
-compute_id_range_for_fn_body			pub fn compute_id_range_for_fn_body(fk: visit::FnKind,
-compute_id_range_for_inlined_item			pub fn compute_id_range_for_inlined_item(item: &InlinedItem) -> IdRange 
+compute_id_range_for_fn_body			pub fn compute_id_range_for_fn_body(fk: FnKind,
 concat			    pub mod concat;
 concat_idents			    pub mod concat_idents;
 config			pub mod config;
@@ -690,7 +699,6 @@ decode_static_fields			fn decode_static_fields<F>(cx: &mut ExtCtxt,
 default			pub mod default;
 default			    pub fn default(crate_name: String) -> ExpansionConfig<'static> 
 default			    fn default() -> OwnedSlice<T> 
-default_def_id_debug			fn default_def_id_debug(_: DefId, _: &mut fmt::Formatter) -> fmt::Result { Ok(()) }
 default_span_debug			fn default_span_debug(span: Span, f: &mut fmt::Formatter) -> fmt::Result 
 default_submod_path			    pub fn default_submod_path(id: ast::Ident, dir_path: &Path, codemap: &CodeMap) -> ModulePath
 default_substructure			fn default_substructure(cx: &mut ExtCtxt, trait_span: Span, substr: &Substructure) -> P<Expr> 
@@ -717,7 +725,7 @@ emit			    fn emit(&mut self, cmsp: Option<(&codemap::CodeMap, Span)>,
 emit			    fn emit(&mut self,
 emit			    pub fn emit(&self,
 emit_			    fn emit_(&mut self, cm: &codemap::CodeMap, rsp: RenderSpan,
-emit_feature_err			pub fn emit_feature_err(diag: &SpanHandler, feature: &str, span: Span, explain: &str) 
+emit_feature_err			pub fn emit_feature_err(diag: &SpanHandler, feature: &str, span: Span, issue: GateIssue,
 emit_with_code			    pub fn emit_with_code(&self,
 empty			    pub fn empty(&self) -> bool 
 empty			    pub fn empty() -> LifetimeBounds<'a> 
@@ -743,6 +751,8 @@ end			pub fn end(p: &mut Printer) -> io::Result<()>
 end			    pub fn end(&mut self) -> io::Result<()> 
 end_highlight_lines			    fn end_highlight_lines(&mut self,
 ensure_complete_parse			    fn ensure_complete_parse(&self, allow_semi: bool) 
+entry			pub mod entry;
+entry_point_type			pub fn entry_point_type(item: &Item, depth: usize) -> EntryPointType 
 env			    pub mod env;
 eof			pub fn eof(p: &mut Printer) -> io::Result<()> 
 eq			    fn eq(&self, other: &Ident) -> bool 
@@ -816,7 +826,6 @@ expand_include_bytes			pub fn expand_include_bytes(cx: &mut ExtCtxt, sp: Span, t
 expand_include_str			pub fn expand_include_str(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
 expand_item			pub fn expand_item(it: P<ast::Item>, fld: &mut MacroExpander)
 expand_item_mac			pub fn expand_item_mac(it: P<ast::Item>,
-expand_item_modifiers			fn expand_item_modifiers(mut it: P<ast::Item>,
 expand_item_multi_modifier			fn expand_item_multi_modifier(mut it: Annotatable,
 expand_item_underscore			fn expand_item_underscore(item: ast::Item_, fld: &mut MacroExpander) -> ast::Item_ 
 expand_line			pub fn expand_line(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
@@ -852,6 +861,7 @@ expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &mut ExtCtxt, sp: Span, tt
 expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &'cx mut base::ExtCtxt,
 expand_trace_macros			pub fn expand_trace_macros(cx: &mut ExtCtxt,
 expand_tts			fn expand_tts(cx: &ExtCtxt, sp: Span, tts: &[ast::TokenTree])
+expand_type			pub fn expand_type(t: P<ast::Ty>, fld: &mut MacroExpander) -> P<ast::Ty> 
 expand_wrapper			fn expand_wrapper(cx: &ExtCtxt,
 expander			    pub fn expander<'b>(&'b mut self) -> expand::MacroExpander<'b, 'a> 
 expansion_cause			    pub fn expansion_cause(&self) -> Span 
@@ -966,6 +976,7 @@ extend			    fn extend<I: IntoIterator<Item=T>>(&mut self, iter: I)
 f			            fn f(){(|x : i32| {(inject_x!() + x)})(3);}",
 f			            fn f(){A.thirteen;}".to_string());
 f			            fn f(zz: i32) {foo!(zz);}".to_string()
+f			        fn f(
 fake_print_crate			    fn fake_print_crate(s: &mut pprust::State,
 fatal			    pub fn fatal(&self, msg: &str) -> ! 
 fatal			    fn fatal(&self, &str) -> !;
@@ -997,6 +1008,7 @@ find_description			    pub fn find_description(&self, code: &str) -> Option<&'st
 find_escape_frame			    fn find_escape_frame<'a>(&'a mut self) -> &'a mut MapChainFrame 
 find_export_name_attr			pub fn find_export_name_attr(diag: &SpanHandler, attrs: &[Attribute]) -> Option<InternedString> 
 find_inline_attr			pub fn find_inline_attr(diagnostic: Option<&SpanHandler>, attrs: &[Attribute]) -> InlineAttr 
+find_lang_feature_issue			fn find_lang_feature_issue(feature: &str) -> Option<u32> 
 find_repr_attrs			pub fn find_repr_attrs(diagnostic: &SpanHandler, attr: &Attribute) -> Vec<ReprAttr> 
 find_repr_type_name			fn find_repr_type_name(diagnostic: &SpanHandler,
 find_stability			pub fn find_stability(diagnostic: &SpanHandler, attrs: &[Attribute],
@@ -1018,7 +1030,6 @@ fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Debug for DefId			impl fmt::Debug for DefId 
 fmt::Debug for Expr			impl fmt::Debug for Expr 
 fmt::Debug for FileMap			impl fmt::Debug for FileMap 
 fmt::Debug for FloatTy			impl fmt::Debug for FloatTy 
@@ -1059,10 +1070,11 @@ fn_decl			    fn fn_decl(&self, inputs: Vec<ast::Arg> , output: P<ast::Ty>) -> P
 fn_decl			    fn fn_decl(&self, inputs: Vec<ast::Arg>, output: P<ast::Ty>) -> P<ast::FnDecl> 
 fn_decl_arg_bindings			fn fn_decl_arg_bindings(fn_decl: &ast::FnDecl) -> Vec<ast::Ident> 
 fold			pub mod fold;
-fold::Folder for CfgAttrFolder			impl<'a> fold::Folder for CfgAttrFolder<'a> 
+fold::Folder for CfgAttrFolder			impl<'a,'b> fold::Folder for CfgAttrFolder<'a,'b> 
 fold::Folder for Context			impl<F> fold::Folder for Context<F> where F: FnMut(&[ast::Attribute]) -> bool 
+fold::Folder for CrateInjector			impl fold::Folder for CrateInjector 
+fold::Folder for EntryPointCleaner			impl fold::Folder for EntryPointCleaner 
 fold::Folder for PreludeInjector			impl fold::Folder for PreludeInjector 
-fold::Folder for StandardLibraryInjector			impl fold::Folder for StandardLibraryInjector 
 fold::Folder for TestHarnessGenerator			impl<'a> fold::Folder for TestHarnessGenerator<'a> 
 fold_angle_bracketed_parameter_data			    fn fold_angle_bracketed_parameter_data(&mut self, p: AngleBracketedParameterData)
 fold_arg			    fn fold_arg(&mut self, a: Arg) -> Arg 
@@ -1148,6 +1160,7 @@ fold_trait_item			    fn fold_trait_item(&mut self, i: P<TraitItem>) -> SmallVec
 fold_trait_ref			    fn fold_trait_ref(&mut self, p: TraitRef) -> TraitRef 
 fold_tt			    fn fold_tt(&mut self, tt: &TokenTree) -> TokenTree 
 fold_tts			    fn fold_tts(&mut self, tts: &[TokenTree]) -> Vec<TokenTree> 
+fold_ty			    fn fold_ty(&mut self, ty: P<ast::Ty>) -> P<ast::Ty> 
 fold_ty			    fn fold_ty(&mut self, t: P<Ty>) -> P<Ty> 
 fold_ty_binding			    fn fold_ty_binding(&mut self, t: P<TypeBinding>) -> P<TypeBinding> 
 fold_ty_param			    fn fold_ty_param(&mut self, tp: TyParam) -> TyParam 
@@ -1175,6 +1188,7 @@ from_usize			    fn from_usize(n: usize) -> CharPos { CharPos(n) }
 from_usize			    fn from_usize(n: usize) -> Self;
 from_vec			    pub fn from_vec(v: Vec<T>) -> OwnedSlice<T> 
 fun_to_string			pub fn fun_to_string(decl: &ast::FnDecl,
+gate			    pub fn gate(cfg: &ast::MetaItem) -> Option<GatedCfg> 
 gate_feature			    fn gate_feature(&self, feature: &str, span: Span, explain: &str) 
 gather_comments_and_literals			pub fn gather_comments_and_literals(span_diagnostic: &diagnostic::SpanHandler,
 generate_test_harness			fn generate_test_harness(sess: &ParseSess,
@@ -1240,7 +1254,6 @@ ident			    pub fn ident(&self) -> Ident
 ident			    pub fn ident(&self) -> Option<Ident> 
 ident_continue			fn ident_continue(c: Option<char>) -> bool 
 ident_of			    pub fn ident_of(&self, st: &str) -> ast::Ident 
-ident_of_std			    pub fn ident_of_std(&self, st: &str) -> ast::Ident 
 ident_renamer_test			    fn ident_renamer_test () 
 ident_start			fn ident_start(c: Option<char>) -> bool 
 ident_to_pat			pub fn ident_to_pat(id: NodeId, s: Span, i: Ident) -> P<Pat> 
@@ -1254,7 +1267,7 @@ ignored_span			fn ignored_span(cx: &TestCtxt, sp: Span) -> Span
 impl_item_to_string			pub fn impl_item_to_string(i: &ast::ImplItem) -> String 
 impl_pretty_name			pub fn impl_pretty_name(trait_ref: &Option<TraitRef>, ty: Option<&Ty>) -> Ident 
 in_cbox			    pub fn in_cbox(&self) -> bool 
-in_cfg			fn in_cfg(diagnostic: &SpanHandler, cfg: &[P<ast::MetaItem>], attrs: &[ast::Attribute]) -> bool 
+in_cfg			fn in_cfg(diagnostic: &SpanHandler, cfg: &[P<ast::MetaItem>], attrs: &[ast::Attribute],
 in_range			fn in_range(c: Option<char>, lo: char, hi: char) -> bool 
 indent			    pub fn indent(&mut self, amount: isize) 
 index			    pub fn index(&self) -> usize 
@@ -1265,7 +1278,6 @@ init_code_map			    fn init_code_map() -> CodeMap
 init_code_map_mbc			    fn init_code_map_mbc() -> CodeMap 
 initial_matcher_pos			pub fn initial_matcher_pos(ms: Rc<Vec<TokenTree>>, sep: Option<Token>, lo: BytePos)
 initial_syntax_expander_table			fn initial_syntax_expander_table<'feat>(ecfg: &expand::ExpansionConfig<'feat>)
-inject_crates_ref			fn inject_crates_ref(krate: ast::Crate, alt_std_name: Option<String>) -> ast::Crate 
 insert			    pub fn insert(&mut self, k: Name, v: SyntaxExtension) 
 insert_macro			    pub fn insert_macro(&mut self, def: ast::MacroDef) 
 int_ty_max			pub fn int_ty_max(t: IntTy) -> u64 
@@ -1317,7 +1329,6 @@ is_keyword_allow_following_colon			    pub fn is_keyword_allow_following_colon(&
 is_lifetime			    pub fn is_lifetime(&self) -> bool 
 is_like_gt			    pub fn is_like_gt(&self) -> bool 
 is_lit			    pub fn is_lit(&self) -> bool 
-is_local			pub fn is_local(did: ast::DefId) -> bool { did.krate == LOCAL_CRATE }
 is_lt_parameterized			    pub fn is_lt_parameterized(&self) -> bool 
 is_mutability			    pub fn is_mutability(&self) -> bool 
 is_named_argument			    pub fn is_named_argument(&mut self) -> bool 
@@ -1411,8 +1422,6 @@ lit_from_token			    pub fn lit_from_token(&self, tok: &token::Token) -> PResult
 lit_is_str			pub fn lit_is_str(lit: &Lit) -> bool 
 lit_to_string			pub fn lit_to_string(l: &ast::Lit) -> String 
 load_file			    pub fn load_file(&self, path: &Path) -> io::Result<Rc<FileMap>> 
-local_def			pub fn local_def(id: NodeId) -> DefId 
-local_id			    pub fn local_id(&self) -> NodeId 
 lockstep_iter_size			fn lockstep_iter_size(t: &TokenTree, r: &TtReader) -> LockstepIterSize 
 log_syntax			    pub mod log_syntax;
 look_ahead			    pub fn look_ahead<R, F>(&mut self, distance: usize, f: F) -> R where
@@ -1454,6 +1463,8 @@ make_pat			    fn make_pat(self: Box<ParserAnyMacro<'a>>) -> Option<P<ast::Pat>>
 make_stmts			    fn make_stmts(self: Box<DummyResult>) -> Option<SmallVector<P<ast::Stmt>>> 
 make_stmts			    fn make_stmts(self: Box<Self>) -> Option<SmallVector<P<ast::Stmt>>> 
 make_stmts			    fn make_stmts(self: Box<ParserAnyMacro<'a>>)
+make_ty			    fn make_ty(self: Box<Self>) -> Option<P<ast::Ty>> 
+make_ty			    fn make_ty(self: Box<ParserAnyMacro<'a>>) -> Option<P<ast::Ty>> 
 many			    pub fn many(vs: Vec<T>) -> SmallVector<T> 
 map			    pub fn map<U, F: FnMut(&T) -> U>(&self, f: F) -> OwnedSlice<U> 
 map			    pub fn map<F>(mut self, f: F) -> P<T> where
@@ -1465,6 +1476,7 @@ mark_item			fn mark_item(expr: P<ast::Item>, m: Mrk) -> P<ast::Item>
 mark_pat			fn mark_pat(pat: P<ast::Pat>, m: Mrk) -> P<ast::Pat> 
 mark_stmt			fn mark_stmt(stmt: P<ast::Stmt>, m: Mrk) -> P<ast::Stmt> 
 mark_tts			fn mark_tts(tts: &[TokenTree], m: Mrk) -> Vec<TokenTree> 
+mark_ty			fn mark_ty(ty: P<ast::Ty>, m: Mrk) -> P<ast::Ty> 
 mark_used			pub fn mark_used(attr: &Attribute) 
 marksof			pub fn marksof(ctxt: SyntaxContext, stopname: Name) -> Vec<Mrk> 
 marksof_internal			fn marksof_internal(ctxt: SyntaxContext,
@@ -1556,10 +1568,11 @@ name			    fn name(&self) -> InternedString { (**self).name() }
 name			    fn name(&self) -> InternedString { self.meta().name() }
 name			    fn name(&self) -> InternedString 
 name			    fn name(&self) -> InternedString;
+name			    pub fn name(&self) -> Name 
+name			    pub fn name(self) -> &'static str 
 name_from			    pub fn name_from(&self, start: BytePos) -> ast::Name 
 name_from_to			    pub fn name_from_to(&self, start: BytePos, end: BytePos) -> ast::Name 
 name_of			    pub fn name_of(&self, st: &str) -> ast::Name 
-name_to_dummy_lifetime			pub fn name_to_dummy_lifetime(name: Name) -> Lifetime 
 nameize			pub fn nameize(p_s: &ParseSess, ms: &[TokenTree], res: &[Rc<NamedMatch>])
 nbsp			    pub fn nbsp(&mut self) -> io::Result<()> { word(&mut self.s, " ") }
 ne			    fn ne(&self, other: &Span) -> bool { !(*self).eq(other) }
@@ -1568,6 +1581,7 @@ ne			    fn ne(&self, other: &InternedString) -> bool
 needs_parentheses			fn needs_parentheses(expr: &ast::Expr) -> bool 
 new			    pub fn new(name: Name) -> Ident { Ident {name: name, ctxt: EMPTY_CTXT}}
 new			    pub fn new<T: IntSign>(n: T) -> Sign 
+new			    pub fn new() -> IdRangeComputingVisitor 
 new			    pub fn new() -> CodeMap 
 new			    pub fn new(color_config: ColorConfig,
 new			    pub fn new(dst: Box<Write + Send>,
@@ -1624,7 +1638,9 @@ nextch_is			    pub fn nextch_is(&self, c: char) -> bool
 nextnextch			    pub fn nextnextch(&self) -> Option<char> 
 nextnextch_is			    pub fn nextnextch_is(&self, c: char) -> bool 
 nil_ty			pub fn nil_ty<'r>() -> Ty<'r> 
+no_core			pub fn no_core(krate: &ast::Crate) -> bool 
 no_prelude			fn no_prelude(attrs: &[ast::Attribute]) -> bool 
+no_std			pub fn no_std(krate: &ast::Crate) -> bool 
 none			    pub fn none() -> PathParameters 
 noop_fold_angle_bracketed_parameter_data			pub fn noop_fold_angle_bracketed_parameter_data<T: Folder>(data: AngleBracketedParameterData,
 noop_fold_arg			pub fn noop_fold_arg<T: Folder>(Arg {id, pat, ty}: Arg, fld: &mut T) -> Arg 
@@ -1810,7 +1826,6 @@ parse_opt_lifetime			    pub fn parse_opt_lifetime(&mut self) -> PResult<Option<
 parse_optional_meta			    fn parse_optional_meta(&mut self) -> Vec<P<ast::MetaItem>> 
 parse_optional_meta			    fn parse_optional_meta(&mut self) -> Vec<P<ast::MetaItem>>;
 parse_optional_str			    pub fn parse_optional_str(&mut self)
-parse_or_else			pub fn parse_or_else(sess: &ParseSess,
 parse_outer_attributes			    fn parse_outer_attributes(&mut self) -> Vec<ast::Attribute> 
 parse_outer_attributes			    fn parse_outer_attributes(&mut self) -> Vec<ast::Attribute>;
 parse_pat			    pub fn parse_pat(&mut self) -> P<Pat> 
@@ -1831,6 +1846,7 @@ parse_prefix_expr			    pub fn parse_prefix_expr(&mut self) -> PResult<P<Expr>>
 parse_ptr			    pub fn parse_ptr(&mut self) -> PResult<MutTy> 
 parse_qualified_path			    pub fn parse_qualified_path(&mut self, mode: PathParsingMode)
 parse_record_struct_body			    pub fn parse_record_struct_body(&mut self,
+parse_rename			    fn parse_rename(&mut self) -> PResult<Option<Ident>> 
 parse_ret_ty			    pub fn parse_ret_ty(&mut self) -> PResult<FunctionRetTy> 
 parse_sep_and_kleene_op			    pub fn parse_sep_and_kleene_op(&mut self) -> PResult<(Option<token::Token>, ast::KleeneOp)> 
 parse_seq			    pub fn parse_seq<T, F>(&mut self,
@@ -1876,6 +1892,7 @@ parse_while_let_expr			    pub fn parse_while_let_expr(&mut self, opt_ident: Opt
 parser			pub mod parser;
 parser_done			    fn parser_done(p: Parser)
 parser_testing			    pub mod parser_testing;
+partial_cmp			    fn partial_cmp(&self, other: &GatedCfg) -> Option<cmp::Ordering> 
 partial_eq			pub mod partial_eq;
 partial_ord			pub mod partial_ord;
 pat			    fn pat(&self, span: Span, pat: ast::Pat_) -> P<ast::Pat> 
@@ -2032,12 +2049,12 @@ print_variants			    pub fn print_variants(&mut self,
 print_view_path			    pub fn print_view_path(&mut self, vp: &ast::ViewPath) -> io::Result<()> 
 print_visibility			    pub fn print_visibility(&mut self, vis: ast::Visibility) -> io::Result<()> 
 print_where_clause			    pub fn print_where_clause(&mut self, where_clause: &ast::WhereClause)
-process_cfg_attr			fn process_cfg_attr(diagnostic: &SpanHandler, krate: ast::Crate) -> ast::Crate 
+process_cfg_attr			fn process_cfg_attr(diagnostic: &SpanHandler, krate: ast::Crate,
 ptr			pub mod ptr;
 push			    pub fn push(&mut self, v: T) 
 push_all			    pub fn push_all(&mut self, other: SmallVector<T>) 
 push_blank_line_comment			fn push_blank_line_comment(rdr: &StringReader, comments: &mut Vec<Comment>) 
-push_compiler_expansion			    fn push_compiler_expansion(fld: &mut MacroExpander, span: Span, expansion_desc: &str) 
+push_compiler_expansion			    fn push_compiler_expansion(fld: &mut MacroExpander, span: Span,
 push_frame			    pub fn push_frame(&mut self) 
 push_mod_path			    fn push_mod_path(&mut self, id: Ident, attrs: &[Attribute]) 
 push_unsafe_expr			    fn push_unsafe_expr(cx: &mut ExtCtxt, stmts: Vec<P<ast::Stmt>>,
@@ -2051,6 +2068,7 @@ quote			    pub mod quote;
 raw_expr			    pub fn raw_expr(sp: Span) -> P<ast::Expr> 
 raw_pat			    pub fn raw_pat(sp: Span) -> ast::Pat 
 raw_str_lit			pub fn raw_str_lit(lit: &str) -> String 
+raw_ty			    pub fn raw_ty(sp: Span) -> P<ast::Ty> 
 rbox			pub fn rbox(p: &mut Printer, indent: usize, b: Breaks) -> io::Result<()> 
 rbox			    pub fn rbox(&mut self, u: usize, b: pp::Breaks) -> io::Result<()> 
 read_block_comment			fn read_block_comment(rdr: &mut StringReader,
@@ -2066,6 +2084,7 @@ record_multibyte_char			    pub fn record_multibyte_char(&self, pos: BytePos, by
 refold_test_sc			    fn refold_test_sc(mut sc: SyntaxContext, table : &SCTable) -> Vec<TestSC> 
 register_all			        pub fn register_all(env: &mut SyntaxEnv) 
 registry			    pub mod registry;
+rename			    pub fn rename(&self) -> Option<Ident> 
 repeat			fn repeat(s: &str, n: usize) -> String { iter::repeat(s).take(n).collect() }
 replace_last_token			    pub fn replace_last_token(&mut self, t: Token) 
 replace_token			    pub fn replace_token(&mut self,
@@ -2081,6 +2100,7 @@ resolve_internal			fn resolve_internal(id: Ident,
 resolve_table_hashing_tests			    fn resolve_table_hashing_tests() 
 resolve_tests			    fn resolve_tests () 
 respan			pub fn respan<T>(sp: Span, t: T) -> Spanned<T> 
+result			    pub fn result(&self) -> IdRange 
 retain_stmt			fn retain_stmt<F>(cx: &mut Context<F>, stmt: &ast::Stmt) -> bool where
 rt			pub mod rt 
 rtpath			    fn rtpath(ecx: &ExtCtxt, s: &str) -> Vec<ast::Ident> 
@@ -2178,6 +2198,7 @@ statements_mk_tt			fn statements_mk_tt(cx: &ExtCtxt, tt: &ast::TokenTree, matche
 statements_mk_tts			fn statements_mk_tts(cx: &ExtCtxt, tts: &[ast::TokenTree], matcher: bool) -> Vec<P<ast::Stmt>> 
 static_array			    fn static_array(ecx: &mut ExtCtxt,
 std_inject			pub mod std_inject;
+std_path			    pub fn std_path(&self, components: &[&str]) -> Vec<ast::Ident> 
 stderr			    pub fn stderr(color_config: ColorConfig,
 stderr_isatty			fn stderr_isatty() -> bool 
 stmt_ends_with_semi			pub fn stmt_ends_with_semi(stmt: &ast::Stmt_) -> bool 
@@ -2206,7 +2227,7 @@ string_to_tts_macro			    fn string_to_tts_macro ()
 strip_doc_comment_decoration			pub fn strip_doc_comment_decoration(comment: &str) -> String 
 strip_items			pub fn strip_items<F>(krate: ast::Crate, in_cfg: F) -> ast::Crate where
 strip_test_functions			fn strip_test_functions(krate: ast::Crate) -> ast::Crate 
-strip_unconfigured_items			pub fn strip_unconfigured_items(diagnostic: &SpanHandler, krate: ast::Crate) -> ast::Crate 
+strip_unconfigured_items			pub fn strip_unconfigured_items(diagnostic: &SpanHandler, krate: ast::Crate,
 strs_to_idents			pub fn strs_to_idents(ids: Vec<&str> ) -> Vec<ast::Ident> 
 struct_def_is_tuple_like			pub fn struct_def_is_tuple_like(struct_def: &ast::StructDef) -> bool 
 struct_field_visibility			pub fn struct_field_visibility(field: ast::StructField) -> Visibility 
@@ -2214,7 +2235,7 @@ sub			    fn sub(self, rhs: BytePos) -> BytePos
 sub			    fn sub(self, rhs: CharPos) -> CharPos 
 submod_path			    fn submod_path(&mut self,
 submod_path_from_attr			    pub fn submod_path_from_attr(attrs: &[ast::Attribute], dir_path: &Path) -> Option<PathBuf> 
-suffix_len			    pub fn suffix_len(&self) -> usize 
+substitute_dummy			    pub fn substitute_dummy(self, other: Span) -> Span 
 summarise_struct			    fn summarise_struct(&self,
 syntax			mod syntax 
 syntax			pub mod syntax 
@@ -2322,7 +2343,6 @@ unfold_marks			    fn unfold_marks(mrks: Vec<Mrk> , tail: SyntaxContext, table: 
 unfold_test_sc			    fn unfold_test_sc(tscs : Vec<TestSC> , tail: SyntaxContext, table: &SCTable)
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 
 unop_to_string			pub fn unop_to_string(op: UnOp) -> &'static str 
-use_std			pub fn use_std(krate: &ast::Crate) -> bool 
 usize			    pub fn usize(&self) -> usize 
 util			pub mod util 
 value_str			    fn value_str(&self) -> Option<InternedString> { (**self).value_str() }
@@ -2369,7 +2389,6 @@ visit_id			    fn visit_id(&mut self, id: NodeId)
 visit_id			    fn visit_id(&mut self, node_id: NodeId);
 visit_ident			        fn visit_ident(&mut self, _: codemap::Span, id: ast::Ident)
 visit_ident			    fn visit_ident(&mut self, span: Span, ident: Ident) 
-visit_ids_for_inlined_item			pub fn visit_ids_for_inlined_item<O: IdVisitingOperation>(item: &InlinedItem,
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &ast::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v ast::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v ImplItem) { walk_impl_item(self, ii) }
@@ -2435,7 +2454,6 @@ walk_fn_ret_ty			pub fn walk_fn_ret_ty<'v, V: Visitor<'v>>(visitor: &mut V, ret_
 walk_foreign_item			pub fn walk_foreign_item<'v, V: Visitor<'v>>(visitor: &mut V,
 walk_generics			pub fn walk_generics<'v, V: Visitor<'v>>(visitor: &mut V, generics: &'v Generics) 
 walk_impl_item			pub fn walk_impl_item<'v, V: Visitor<'v>>(visitor: &mut V, impl_item: &'v ImplItem) 
-walk_inlined_item			pub fn walk_inlined_item<'v,V>(visitor: &mut V, item: &'v InlinedItem)
 walk_item			pub fn walk_item<'v, V: Visitor<'v>>(visitor: &mut V, item: &'v Item) 
 walk_lifetime_bound			pub fn walk_lifetime_bound<'v, V: Visitor<'v>>(visitor: &mut V,
 walk_lifetime_decls_helper			pub fn walk_lifetime_decls_helper<'v, V: Visitor<'v>>(visitor: &mut V,
@@ -2444,9 +2462,7 @@ walk_lifetime_ref			pub fn walk_lifetime_ref<'v, V: Visitor<'v>>(visitor: &mut V
 walk_local			pub fn walk_local<'v, V: Visitor<'v>>(visitor: &mut V, local: &'v Local) 
 walk_mac			pub fn walk_mac<'v, V: Visitor<'v>>(_: &mut V, _: &'v Mac) 
 walk_mod			pub fn walk_mod<'v, V: Visitor<'v>>(visitor: &mut V, module: &'v Mod) 
-walk_pat			pub fn walk_pat<F>(pat: &Pat, mut it: F) -> bool where F: FnMut(&Pat) -> bool 
 walk_pat			pub fn walk_pat<'v, V: Visitor<'v>>(visitor: &mut V, pattern: &'v Pat) 
-walk_pat_			    fn walk_pat_<G>(pat: &Pat, it: &mut G) -> bool where G: FnMut(&Pat) -> bool 
 walk_path			pub fn walk_path<'v, V: Visitor<'v>>(visitor: &mut V, path: &'v Path) 
 walk_path_parameters			pub fn walk_path_parameters<'v, V: Visitor<'v>>(visitor: &mut V,
 walk_path_segment			pub fn walk_path_segment<'v, V: Visitor<'v>>(visitor: &mut V,

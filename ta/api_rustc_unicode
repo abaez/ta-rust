@@ -4,16 +4,9 @@ CaseMappingIter			impl CaseMappingIter
 Case_Ignorable			    pub fn Case_Ignorable(c: char) -> bool 
 Cased			    pub fn Cased(c: char) -> bool 
 Cc			    pub fn Cc(c: char) -> bool 
-DoubleEndedIterator for GraphemeIndices			impl<'a> DoubleEndedIterator for GraphemeIndices<'a> 
-DoubleEndedIterator for Graphemes			impl<'a> DoubleEndedIterator for Graphemes<'a> 
+DecodeUtf16			pub struct DecodeUtf16<I> where I: Iterator<Item=u16> 
 DoubleEndedIterator for SplitWhitespace			impl<'a> DoubleEndedIterator for SplitWhitespace<'a> 
-GraphemeCat			    pub enum GraphemeCat 
-GraphemeIndices			pub struct GraphemeIndices<'a> 
-GraphemeState			enum GraphemeState 
-Graphemes			pub struct Graphemes<'a> 
 Iterator for CaseMappingIter			impl Iterator for CaseMappingIter 
-Iterator for GraphemeIndices			impl<'a> Iterator for GraphemeIndices<'a> 
-Iterator for Graphemes			impl<'a> Iterator for Graphemes<'a> 
 Iterator for SplitWhitespace			impl<'a> Iterator for SplitWhitespace<'a> 
 Iterator for ToLowercase			impl Iterator for ToLowercase 
 Iterator for ToUppercase			impl Iterator for ToUppercase 
@@ -37,21 +30,10 @@ XID_Continue			    pub fn XID_Continue(c: char) -> bool
 XID_Start			    pub fn XID_Start(c: char) -> bool 
 bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, [char; 3])]) -> Option<usize> 
 bsearch_range_table			fn bsearch_range_table(c: char, r: &'static [(char,char)]) -> bool 
-bsearch_range_value_table			    fn bsearch_range_value_table(c: char, is_cjk: bool, r: &'static [(char, char, u8, u8)]) -> u8 
-bsearch_range_value_table			    fn bsearch_range_value_table(c: char, r: &'static [(char, char, GraphemeCat)]) -> GraphemeCat 
-bsearch_range_value_table			    fn bsearch_range_value_table(c: char, r: &'static [(char, char, u8)]) -> u8 
-bsearch_table			fn bsearch_table<T>(c: char, r: &'static [(char, &'static [T])]) -> Option<&'static [T]> 
-canonical_combining_class			    pub fn canonical_combining_class(c: char) -> u8 
 char			impl char 
 char			pub mod char;
-charwidth			pub mod charwidth 
-compose			pub fn compose(a: char, b: char) -> Option<char> 
-compose_hangul			fn compose_hangul(a: char, b: char) -> Option<char> 
 conversions			pub mod conversions 
-d			fn d<F>(c: char, i: &mut F, k: bool) where F: FnMut(char) 
-decompose_canonical			pub fn decompose_canonical<F>(c: char, mut i: F) where F: FnMut(char) { d(c, &mut i, false); }
-decompose_compatible			pub fn decompose_compatible<F>(c: char, mut i: F) where F: FnMut(char) { d(c, &mut i, true); }
-decompose_hangul			fn decompose_hangul<F>(s: char, f: &mut F) where F: FnMut(char) 
+decode_utf16			pub fn decode_utf16<I: IntoIterator<Item=u16>>(iterable: I) -> DecodeUtf16<I::IntoIter> 
 derived_property			pub mod derived_property 
 derived_property			pub mod derived_property 
 encode_utf16			    pub fn encode_utf16(self, dst: &mut [u16]) -> Option<usize> 
@@ -59,12 +41,6 @@ encode_utf8			    pub fn encode_utf8(self, dst: &mut [u8]) -> Option<usize>
 escape_default			    pub fn escape_default(self) -> EscapeDefault { C::escape_default(self) }
 escape_unicode			    pub fn escape_unicode(self) -> EscapeUnicode { C::escape_unicode(self) }
 general_category			pub mod general_category 
-grapheme			pub mod grapheme 
-grapheme_category			    pub fn grapheme_category(c: char) -> GraphemeCat 
-grapheme_indices			    fn grapheme_indices(&self, is_extended: bool) -> GraphemeIndices 
-grapheme_indices			    fn grapheme_indices<'a>(&'a self, is_extended: bool) -> GraphemeIndices<'a>;
-graphemes			    fn graphemes(&self, is_extended: bool) -> Graphemes 
-graphemes			    fn graphemes<'a>(&'a self, is_extended: bool) -> Graphemes<'a>;
 is_alphabetic			    pub fn is_alphabetic(self) -> bool 
 is_alphanumeric			    pub fn is_alphanumeric(self) -> bool 
 is_alphanumeric			    fn is_alphanumeric(&self) -> bool { self.chars().all(|c| c.is_alphanumeric()) }
@@ -86,19 +62,15 @@ len_utf16			    pub fn len_utf16(self) -> usize { C::len_utf16(self) }
 len_utf8			    pub fn len_utf8(self) -> usize { C::len_utf8(self) }
 new			    fn new(chars: [char; 3]) -> CaseMappingIter 
 new			    pub fn new(chars: I) -> Utf16Encoder<I> where I: Iterator<Item=char> 
+next			    fn next(&mut self) -> Option<Result<char, u16>> 
 next			    fn next(&mut self) -> Option<char> { self.0.next() }
 next			    fn next(&mut self) -> Option<char> 
 next			    fn next(&mut self) -> Option<&'a str> { self.inner.next() }
-next			    fn next(&mut self) -> Option<&'a str> 
-next			    fn next(&mut self) -> Option<(usize, &'a str)> 
 next			    fn next(&mut self) -> Option<Utf16Item> 
 next			    fn next(&mut self) -> Option<u16> 
 next_back			    fn next_back(&mut self) -> Option<&'a str> { self.inner.next_back() }
-next_back			    fn next_back(&mut self) -> Option<&'a str> 
-next_back			    fn next_back(&mut self) -> Option<(usize, &'a str)> 
-normalization			pub mod normalization 
-normalize			mod normalize;
 property			pub mod property 
+size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 split_whitespace			    fn split_whitespace(&self) -> SplitWhitespace 
 split_whitespace			    fn split_whitespace<'a>(&'a self) -> SplitWhitespace<'a>;
@@ -119,9 +91,3 @@ trim_right			    fn trim_right<'a>(&'a self) -> &'a str;
 u_str			mod u_str;
 utf16_items			pub fn utf16_items<'a>(v: &'a [u16]) -> Utf16Items<'a> 
 utf8_char_width			pub fn utf8_char_width(b: u8) -> usize 
-width			    pub fn width(self, is_cjk: bool) -> Option<usize> 
-width			    pub fn width(c: char, is_cjk: bool) -> Option<usize> 
-width			    fn width(&self, is_cjk: bool) -> usize 
-width			    fn width(&self, is_cjk: bool) -> usize;
-words			    fn words(&self) -> Words 
-words			    fn words<'a>(&'a self) -> Words<'a>;

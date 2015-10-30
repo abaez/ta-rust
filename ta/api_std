@@ -1,3 +1,5 @@
+::marker::Sync for Key			    unsafe impl<T> ::marker::Sync for Key<T> { }
+::marker::Sync for KeyInner			    unsafe impl<T> ::marker::Sync for KeyInner<T> { }
 A			    struct A;
 ADDRESS64			struct ADDRESS64 
 ADDRESS_MODE			enum ADDRESS_MODE 
@@ -5,7 +7,7 @@ AcquireSRWLockExclusive			    pub fn AcquireSRWLockExclusive(SRWLock: PSRWLOCK) 
 AcquireSRWLockShared			    pub fn AcquireSRWLockShared(SRWLock: PSRWLOCK) -> () 
 Adaptor			        struct Adaptor<'a, T: ?Sized + 'a> 
 Add for Duration			impl Add for Duration 
-AddVectoredExceptionHandler			    fn AddVectoredExceptionHandler(FirstHandler: ULONG,
+AddVectoredExceptionHandler			    pub fn AddVectoredExceptionHandler(FirstHandler: ULONG,
 AddrParseError			pub struct AddrParseError(());
 AdjustTokenPrivileges			    pub fn AdjustTokenPrivileges(TokenHandle: libc::HANDLE,
 AnonPipe			impl AnonPipe 
@@ -113,7 +115,6 @@ BufRead			impl<'a> BufRead for &'a [u8]
 BufRead			pub trait BufRead: Read 
 BufRead for Box			impl<B: BufRead + ?Sized> BufRead for Box<B> 
 BufRead for BufReader			impl<R: Read> BufRead for BufReader<R> 
-BufRead for BufStream			impl<S: Read + Write> BufRead for BufStream<S> 
 BufRead for Cursor			impl<'a> BufRead for Cursor<&'a [u8]> { buffer!(); }
 BufRead for Cursor			impl<'a> BufRead for Cursor<&'a mut [u8]> { buffer!(); }
 BufRead for Cursor			impl<'a> BufRead for Cursor<Vec<u8>> { buffer!(); }
@@ -122,8 +123,6 @@ BufRead for StdinLock			impl<'a> BufRead for StdinLock<'a>
 BufRead for Take			impl<T: BufRead> BufRead for Take<T> 
 BufReader			impl<R: Read> BufReader<R> 
 BufReader			pub struct BufReader<R> 
-BufStream			impl<S: Read + Write> BufStream<S> 
-BufStream			pub struct BufStream<S: Write> 
 BufWriter			impl<W: Write> BufWriter<W> 
 BufWriter			pub struct BufWriter<W: Write> 
 Buffer			impl<T> Buffer<T> 
@@ -134,6 +133,7 @@ Bytes			pub struct Bytes<R>
 CONDITION_VARIABLE			pub struct CONDITION_VARIABLE { pub ptr: LPVOID }
 CONSOLE_SCREEN_BUFFER_INFO			pub struct CONSOLE_SCREEN_BUFFER_INFO 
 CONTEXT			enum CONTEXT {}
+CONTEXT			pub enum CONTEXT {}
 CONTEXT			    pub struct CONTEXT 
 COORD			pub struct COORD 
 CRITICAL_SECTION			pub struct CRITICAL_SECTION 
@@ -280,8 +280,6 @@ Drop for Guard			        impl<'a> Drop for Guard<'a>
 Drop for Handle			impl<'rx, T: Send> Drop for Handle<'rx, T> 
 Drop for Handle			impl Drop for Handle 
 Drop for Handler			impl Drop for Handler 
-Drop for Handler			impl Drop for Handler 
-Drop for JoinGuard			impl<'a, T: Send + 'a> Drop for JoinGuard<'a, T> 
 Drop for Key			impl Drop for Key 
 Drop for LookupHost			impl Drop for LookupHost 
 Drop for Mutex			impl<T: ?Sized> Drop for Mutex<T> 
@@ -340,6 +338,7 @@ Entry			pub enum Entry<'a, K: 'a, V: 'a>
 Env			pub struct Env 
 Env			pub struct Env 
 Eq for CStr			impl Eq for CStr {}
+Eq for Foo			        impl Eq for Foo {}
 Eq for HashMap			impl<K, V, S> Eq for HashMap<K, V, S>
 Eq for HashSet			impl<T, S> Eq for HashSet<T, S>
 Eq for Ipv4Addr			impl Eq for Ipv4Addr {}
@@ -359,6 +358,7 @@ Error			pub trait Error: Debug + Display + Reflect
 Error			impl Error 
 Error			pub struct Error 
 Error for A			    impl Error for A 
+Error for AddrParseError			impl Error for AddrParseError 
 Error for B			    impl Error for B 
 Error for JoinPathsError			impl Error for JoinPathsError 
 Error for NulError			impl Error for NulError 
@@ -403,7 +403,9 @@ ExitStatus			impl ExitStatus
 ExitStatus			pub struct ExitStatus(i32);
 ExitStatusExt			pub trait ExitStatusExt 
 ExitStatusExt for process			impl ExitStatusExt for process::ExitStatus 
+Extend for HashMap			impl<'a, K, V, S> Extend<(&'a K, &'a V)> for HashMap<K, V, S>
 Extend for HashMap			impl<K, V, S> Extend<(K, V)> for HashMap<K, V, S>
+Extend for HashSet			impl<'a, T, S> Extend<&'a T> for HashSet<T, S>
 Extend for HashSet			impl<T, S> Extend<T> for HashSet<T, S>
 Extend for Wtf8Buf			impl Extend<CodePoint> for Wtf8Buf 
 FILE_END_OF_FILE_INFO			pub struct FILE_END_OF_FILE_INFO 
@@ -442,6 +444,7 @@ FindNextFileHandle			struct FindNextFileHandle(libc::HANDLE);
 Flag			impl Flag 
 Flag			pub struct Flag { failed: Cell<bool> }
 Flavor			enum Flavor<T> 
+Foo			        struct Foo(&'static str, i32);
 Foo			        struct Foo;
 Foo			    struct Foo(Sender<()>);
 FormatMessageW			        fn FormatMessageW(flags: DWORD,
@@ -500,11 +503,6 @@ FromStr for Ipv6Addr			impl FromStr for Ipv6Addr
 FromStr for SocketAddr			impl FromStr for SocketAddr 
 FullBucket			impl<K, V, M> FullBucket<K, V, M> 
 FullBucket			pub struct FullBucket<K, V, M> 
-Future			impl<A:Clone> Future<A> 
-Future			impl<A:Send+'static> Future<A> 
-Future			impl<A> Future<A> 
-Future			pub struct Future<A> 
-FutureState			enum FutureState<A> 
 GET_FILEEX_INFO_LEVELS			pub enum GET_FILEEX_INFO_LEVELS 
 GapThenFull			struct GapThenFull<K, V, M> 
 GetCommandLineW			    pub fn GetCommandLineW() -> *mut libc::LPCWSTR;
@@ -535,7 +533,7 @@ Handle			pub struct Handle(RawHandle);
 Handler			impl Handler 
 Handler			pub struct Handler 
 Handler			impl Handler 
-Handler			pub struct Handler 
+Handler			pub struct Handler;
 Hash for CodePoint			impl Hash for CodePoint 
 Hash for OsStr			impl Hash for OsStr 
 Hash for OsString			impl Hash for OsString 
@@ -550,6 +548,7 @@ HashSet			pub struct HashSet<T, S = RandomState>
 HashState			pub trait HashState 
 HashState for DefaultState			impl<H: Default + hash::Hasher> HashState for DefaultState<H> 
 HashState for RandomState			impl HashState for RandomState 
+IMAGEHLP_LINE64			struct IMAGEHLP_LINE64 
 Incoming			pub struct Incoming<'a> { listener: &'a TcpListener }
 Index for HashMap			impl<'a, K, Q: ?Sized, V, S> Index<&'a Q> for HashMap<K, V, S>
 InitializeCriticalSection			    pub fn InitializeCriticalSection(CriticalSection: *mut CRITICAL_SECTION);
@@ -668,8 +667,6 @@ Iterator for Vars			impl Iterator for Vars
 Iterator for VarsOs			impl Iterator for VarsOs 
 Iterator for WalkDir			impl Iterator for WalkDir 
 Iterator for Wtf8CodePoints			impl<'a> Iterator for Wtf8CodePoints<'a> 
-JoinGuard			impl<'a, T: Send + 'a> JoinGuard<'a, T> 
-JoinGuard			pub struct JoinGuard<'a, T: Send + 'a> 
 JoinHandle			impl<T> JoinHandle<T> 
 JoinHandle			pub struct JoinHandle<T>(JoinInner<T>);
 JoinInner			impl<T> JoinInner<T> 
@@ -700,7 +697,7 @@ Lines			pub struct Lines<B>
 LoadLibraryW			        fn LoadLibraryW(name: *const libc::c_void) -> *mut libc::c_void;
 LocalFree			    pub fn LocalFree(ptr: *mut libc::c_void);
 LocalKey			impl<T: 'static> LocalKey<T> 
-LocalKey			pub struct LocalKey<T> 
+LocalKey			pub struct LocalKey<T:'static> 
 LocalKeyState			pub enum LocalKeyState 
 LookupHost			pub struct LookupHost(net_imp::LookupHost);
 LookupHost			pub struct LookupHost 
@@ -779,9 +776,6 @@ OsStringExt for OsString			impl OsStringExt for OsString
 Output			pub struct Output 
 Output			impl Output 
 Output			pub enum Output 
-OwnedAsciiExt			pub trait OwnedAsciiExt 
-OwnedAsciiExt for String			impl OwnedAsciiExt for String 
-OwnedAsciiExt for Vec			impl OwnedAsciiExt for Vec<u8> 
 Packet			impl<T> Packet<T> 
 Packet			pub struct Packet<T> 
 Packet			pub trait Packet 
@@ -791,13 +785,14 @@ Packet			impl<T> Packet<T>
 Packet			pub struct Packet<T> 
 Packet			impl<T> Packet<T> 
 Packet			pub struct Packet<T> 
-Packet			    struct Packet<T: Send>(Arc<(Mutex<T>, Condvar)>);
+Packet			    struct Packet<T>(Arc<(Mutex<T>, Condvar)>);
 Packet			struct Packet<T>(Arc<UnsafeCell<Option<Result<T>>>>);
 Packets			struct Packets { cur: *mut Handle<'static, ()> }
 PanicData			struct PanicData 
 Parser			impl<'a> Parser<'a> 
 Parser			struct Parser<'a> 
 PartialEq for CStr			impl PartialEq for CStr 
+PartialEq for Foo			        impl PartialEq for Foo 
 PartialEq for HashMap			impl<K, V, S> PartialEq for HashMap<K, V, S>
 PartialEq for HashSet			impl<T, S> PartialEq for HashSet<T, S>
 PartialEq for Ipv4Addr			impl PartialEq for Ipv4Addr 
@@ -875,7 +870,6 @@ Read			pub trait Read
 Read			impl<'a> Read for &'a TcpStream 
 Read for Box			impl<R: Read + ?Sized> Read for Box<R> 
 Read for BufReader			impl<R: Read> Read for BufReader<R> 
-Read for BufStream			impl<S: Read + Write> Read for BufStream<S> 
 Read for Chain			impl<T: Read, U: Read> Read for Chain<T, U> 
 Read for ChildStderr			impl Read for ChildStderr 
 Read for ChildStdout			impl Read for ChildStdout 
@@ -889,7 +883,6 @@ Read for InternalBufWriter			impl<W: Read + Write> Read for InternalBufWriter<W>
 Read for PositionReader			        impl Read for PositionReader 
 Read for R			        impl Read for R 
 Read for Repeat			impl Read for Repeat 
-Read for S			        impl Read for S 
 Read for ShortReader			    impl Read for ShortReader 
 Read for Stdin			impl Read for Stdin 
 Read for StdinLock			impl<'a> Read for StdinLock<'a> 
@@ -905,6 +898,7 @@ ReaderRng			impl<R: Read> ReaderRng<R>
 ReaderRng			pub struct ReaderRng<R> 
 Receiver			impl<T> Receiver<T> 
 Receiver			pub struct Receiver<T> 
+Recover			trait Recover<Q: ?Sized> 
 RecvError			pub struct RecvError;
 ReentrantMutex			impl<T> ReentrantMutex<T> 
 ReentrantMutex			pub struct ReentrantMutex<T> 
@@ -934,7 +928,6 @@ RwLockReadGuard			impl<'rwlock, T: ?Sized> RwLockReadGuard<'rwlock, T>
 RwLockReadGuard			pub struct RwLockReadGuard<'a, T: ?Sized + 'a> 
 RwLockWriteGuard			impl<'rwlock, T: ?Sized> RwLockWriteGuard<'rwlock, T> 
 RwLockWriteGuard			pub struct RwLockWriteGuard<'a, T: ?Sized + 'a> 
-S			        struct S;
 S1			        struct S1(Sender<()>);
 S1			        struct S1;
 S2			        struct S2;
@@ -946,9 +939,10 @@ SYMBOL_INFO			struct SYMBOL_INFO
 SafeHash			impl SafeHash 
 SafeHash			pub struct SafeHash 
 ScopedKey			impl<T> ScopedKey<T> 
-ScopedKey			pub struct ScopedKey<T> { inner: fn() -> &'static imp::KeyInner<T> }
+ScopedKey			pub struct ScopedKey<T:'static> { inner: fn() -> &'static imp::KeyInner<T> }
 SearchResult			enum SearchResult<K, V, M> 
 SearchResult			impl<K, V, M> SearchResult<K, V, M> 
+SecRandom			    enum SecRandom {}
 SecRandomCopyBytes			        fn SecRandomCopyBytes(rnd: *const SecRandom,
 SeedableRng for StdRng			impl<'a> SeedableRng<&'a [usize]> for StdRng 
 Seek			impl<'a> Seek for &'a File 
@@ -968,6 +962,39 @@ SelectionResult			pub enum SelectionResult<T>
 Semaphore			impl Semaphore 
 Semaphore			pub struct Semaphore 
 SemaphoreGuard			pub struct SemaphoreGuard<'a> 
+Send for Condvar			unsafe impl Send for Condvar {}
+Send for Condvar			unsafe impl Send for Condvar {}
+Send for Dir			unsafe impl Send for Dir {}
+Send for Drain			unsafe impl<'a, K: Send, V: Send> Send for Drain<'a, K, V> {}
+Send for FindNextFileHandle			unsafe impl Send for FindNextFileHandle {}
+Send for Flag			unsafe impl Send for Flag {}
+Send for Inner			unsafe impl Send for Inner {}
+Send for IntoIter			unsafe impl<K: Send, V: Send> Send for IntoIter<K, V> {}
+Send for Iter			unsafe impl<'a, K: Sync, V: Sync> Send for Iter<'a, K, V> {}
+Send for IterMut			unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
+Send for LookupHost			unsafe impl Send for LookupHost {}
+Send for Mutex			unsafe impl<T: ?Sized + Send> Send for Mutex<T> { }
+Send for Mutex			unsafe impl Send for Mutex {}
+Send for Mutex			unsafe impl Send for Mutex {}
+Send for Node			unsafe impl Send for Node {}
+Send for Packet			unsafe impl<T: Send> Send for Packet<T> { }
+Send for Packet			    unsafe impl<T: Send> Send for Packet<T> {}
+Send for Packet			unsafe impl<T: Send> Send for Packet<T> {}
+Send for Queue			unsafe impl<T: Send> Send for Queue<T> { }
+Send for Queue			unsafe impl<T: Send> Send for Queue<T> { }
+Send for RWLock			unsafe impl Send for RWLock {}
+Send for RWLock			unsafe impl Send for RWLock {}
+Send for RawHandle			unsafe impl Send for RawHandle {}
+Send for RawTable			unsafe impl<K: Send, V: Send> Send for RawTable<K, V> {}
+Send for Receiver			unsafe impl<T: Send> Send for Receiver<T> { }
+Send for ReentrantMutex			unsafe impl<T: Send> Send for ReentrantMutex<T> {}
+Send for ReentrantMutex			unsafe impl Send for ReentrantMutex {}
+Send for ReentrantMutex			unsafe impl Send for ReentrantMutex {}
+Send for RwLock			unsafe impl<T: ?Sized + Send + Sync> Send for RwLock<T> {}
+Send for Sender			unsafe impl<T: Send> Send for Sender<T> { }
+Send for State			unsafe impl<T: Send> Send for State<T> {}
+Send for SyncSender			unsafe impl<T: Send> Send for SyncSender<T> {}
+Send for Thread			unsafe impl Send for Thread {}
 SendError			pub struct SendError<T>(#[stable(feature = "rust1", since = "1.0.0")] pub T);
 Sender			impl<T> Sender<T> 
 Sender			pub struct Sender<T> 
@@ -1063,6 +1090,38 @@ Sub			impl<'a> Sub for &'a SteadyTime
 Sub for Duration			impl Sub for Duration 
 SwitchToThread			    pub fn SwitchToThread() -> libc::BOOL;
 SymmetricDifference			pub struct SymmetricDifference<'a, T: 'a, S: 'a> 
+Sync for Condvar			unsafe impl Sync for Condvar {}
+Sync for Condvar			unsafe impl Sync for Condvar {}
+Sync for Dir			unsafe impl Sync for Dir {}
+Sync for Drain			unsafe impl<'a, K: Sync, V: Sync> Sync for Drain<'a, K, V> {}
+Sync for Dummy			unsafe impl Sync for Dummy {}
+Sync for Dummy			unsafe impl Sync for Dummy {}
+Sync for FindNextFileHandle			unsafe impl Sync for FindNextFileHandle {}
+Sync for Flag			unsafe impl Sync for Flag {}
+Sync for Inner			unsafe impl Sync for Inner {}
+Sync for IntoIter			unsafe impl<K: Sync, V: Sync> Sync for IntoIter<K, V> {}
+Sync for Iter			unsafe impl<'a, K: Sync, V: Sync> Sync for Iter<'a, K, V> {}
+Sync for IterMut			unsafe impl<'a, K: Sync, V: Sync> Sync for IterMut<'a, K, V> {}
+Sync for Lazy			unsafe impl<T> Sync for Lazy<T> {}
+Sync for LookupHost			unsafe impl Sync for LookupHost {}
+Sync for Mutex			unsafe impl<T: ?Sized + Send> Sync for Mutex<T> { }
+Sync for Mutex			unsafe impl Sync for Mutex {}
+Sync for Mutex			unsafe impl Sync for Mutex {}
+Sync for Mutex			unsafe impl Sync for Mutex {}
+Sync for Packet			unsafe impl<T: Send> Sync for Packet<T> { }
+Sync for Packet			    unsafe impl<T> Sync for Packet<T> {}
+Sync for Packet			unsafe impl<T: Sync> Sync for Packet<T> {}
+Sync for Queue			unsafe impl<T: Send> Sync for Queue<T> { }
+Sync for Queue			unsafe impl<T: Send> Sync for Queue<T> { }
+Sync for RWLock			unsafe impl Sync for RWLock {}
+Sync for RWLock			unsafe impl Sync for RWLock {}
+Sync for RawHandle			unsafe impl Sync for RawHandle {}
+Sync for RawTable			unsafe impl<K: Sync, V: Sync> Sync for RawTable<K, V> {}
+Sync for ReentrantMutex			unsafe impl<T: Send> Sync for ReentrantMutex<T> {}
+Sync for ReentrantMutex			unsafe impl Sync for ReentrantMutex {}
+Sync for ReentrantMutex			unsafe impl Sync for ReentrantMutex {}
+Sync for RwLock			unsafe impl<T: ?Sized + Send + Sync> Sync for RwLock<T> {}
+Sync for Thread			unsafe impl Sync for Thread {}
 SyncSender			impl<T> SyncSender<T> 
 SyncSender			pub struct SyncSender<T> 
 TOKEN_PRIVILEGES			pub struct TOKEN_PRIVILEGES 
@@ -1113,6 +1172,7 @@ TryEnterCriticalSection			    pub fn TryEnterCriticalSection(CriticalSection: *m
 TryLockError			pub enum TryLockError<T> 
 TryRecvError			pub enum TryRecvError 
 TrySendError			pub enum TrySendError<T> 
+UNWIND_HISTORY_TABLE			pub enum UNWIND_HISTORY_TABLE {}
 UdpSocket			impl UdpSocket 
 UdpSocket			pub struct UdpSocket(net_imp::UdpSocket);
 UdpSocket			impl UdpSocket 
@@ -1157,6 +1217,8 @@ WTERMSIG			        pub fn WTERMSIG(status: i32) -> i32 { status & 0o177 }
 WTERMSIG			        pub fn WTERMSIG(status: i32) -> i32 { status & 0x7f }
 WaitForMultipleObjects			    pub fn WaitForMultipleObjects(nCount: libc::DWORD,
 WaitForSingleObject			    pub fn WaitForSingleObject(hHandle: libc::HANDLE,
+WaitTimeoutResult			impl WaitTimeoutResult 
+WaitTimeoutResult			pub struct WaitTimeoutResult(bool);
 WaitToken			impl WaitToken 
 WaitToken			pub struct WaitToken 
 WakeAllConditionVariable			    pub fn WakeAllConditionVariable(ConditionVariable: PCONDITION_VARIABLE)
@@ -1169,7 +1231,6 @@ Write			pub trait Write
 Write			impl<'a> Write for &'a TcpStream 
 Write for Box			impl<W: Write + ?Sized> Write for Box<W> 
 Write for Broadcast			impl<T: Write, U: Write> Write for Broadcast<T, U> 
-Write for BufStream			impl<S: Read + Write> Write for BufStream<S> 
 Write for BufWriter			impl<W: Write> Write for BufWriter<W> 
 Write for ChildStdin			impl Write for ChildStdin 
 Write for Cursor			impl Write for Cursor<Vec<u8>> 
@@ -1177,7 +1238,6 @@ Write for Cursor			impl<'a> Write for Cursor<&'a mut [u8]>
 Write for FailFlushWriter			        impl Write for FailFlushWriter 
 Write for File			impl Write for File 
 Write for LineWriter			impl<W: Write> Write for LineWriter<W> 
-Write for S			        impl Write for S 
 Write for Sink			impl Write for Sink 
 Write for Stderr			impl Write for Stderr 
 Write for StderrLock			impl<'a> Write for StderrLock<'a> 
@@ -1223,14 +1283,34 @@ __gcc_personality_v0			        fn __gcc_personality_v0(version: c_int,
 __getit			        fn __getit() -> &'static 
 __init			        fn __init() -> 
 __rand			pub mod __rand 
-__rust_try_filter			pub extern fn __rust_try_filter(eh_ptrs: *mut EXCEPTION_POINTERS,
+__rust_try_filter			extern fn __rust_try_filter(eh_ptrs: *mut EXCEPTION_POINTERS,
 _assert_both			    fn _assert_both<T: Send + Sync>() {}
 _assert_error_is_sync_send			fn _assert_error_is_sync_send() 
 _assert_sync_and_send			fn _assert_sync_and_send() 
+_create			    fn _create(&self, path: &Path) -> io::Result<()> 
+_ends_with			    fn _ends_with(&self, child: &Path) -> bool 
+_from_bytes			    fn _from_bytes(vec: Vec<u8>) -> Option<OsString> 
 _getit			        fn _getit() -> &'static 
 _is_sync_send			    fn _is_sync_send<T: Sync+Send>() {}
+_join			    fn _join(&self, path: &Path) -> PathBuf 
+_new			    fn _new(bytes: Vec<u8>) -> Result<CString, NulError> 
+_new			    fn _new(kind: ErrorKind, error: Box<error::Error+Send+Sync>) -> Error 
+_open			    fn _open(&self, path: &Path) -> io::Result<File> 
 _print			pub fn _print(args: fmt::Arguments) 
+_push			    fn _push(&mut self, path: &Path) 
+_relative_from			    fn _relative_from<'a>(&'a self, base: &'a Path) -> Option<&'a Path> 
+_remove_dir_all			fn _remove_dir_all(path: &Path) -> io::Result<()> 
+_remove_var			fn _remove_var(k: &OsStr) 
+_set_extension			    fn _set_extension(&mut self, extension: &OsStr) -> bool 
+_set_file_name			    fn _set_file_name(&mut self, file_name: &OsStr) 
+_set_var			fn _set_var(k: &OsStr, v: &OsStr) 
+_starts_with			    fn _starts_with(&self, base: &Path) -> bool 
 _tlv_atexit			            fn _tlv_atexit(dtor: unsafe extern fn(*mut u8),
+_var			fn _var(key: &OsStr) -> Result<String, VarError> 
+_var_os			fn _var_os(key: &OsStr) -> Option<OsString> 
+_walk_dir			fn _walk_dir(path: &Path) -> io::Result<WalkDir> 
+_with_extension			    fn _with_extension(&self, extension: &OsStr) -> PathBuf 
+_with_file_name			    fn _with_file_name(&self, file_name: &OsStr) -> PathBuf 
 abort			pub fn abort(args: fmt::Arguments) -> ! 
 abort_selection			    fn abort_selection(&self) -> bool 
 abort_selection			    pub fn abort_selection(&mut self) -> Result<bool, Receiver<T>> 
@@ -1359,7 +1439,7 @@ assert_all_eq			    fn assert_all_eq(buf: &[u8], value: u8)
 assert_send			    fn assert_send<T: Send>() {}
 assert_sync			    fn assert_sync<T: Sync>() {}
 at_exit			pub fn at_exit<F: FnOnce() + Send + 'static>(f: F) -> Result<(), ()> 
-at_exit_imp			mod at_exit_imp;
+at_exit_imp			pub mod at_exit_imp;
 at_index			    pub fn at_index(table: M, ib_index: usize) -> Bucket<K, V, M> 
 atan			    pub fn atan(self) -> f32 
 atan			        pub fn atan(n: c_double) -> c_double;
@@ -1378,8 +1458,7 @@ atime			    fn atime(&self) -> raw::time_t;
 atime_nsec			    fn atime_nsec(&self) -> c_long { self.as_raw_stat().st_atime_nsec as c_long }
 atime_nsec			    fn atime_nsec(&self) -> c_long;
 attrs			    pub fn attrs(&self) -> u32 { self.data.dwFileAttributes as u32 }
-avoid_copying_the_body			    fn avoid_copying_the_body<F>(spawnfn: F) where F: FnOnce(Thunk<'static>) 
-backtrace			pub mod backtrace;
+avoid_copying_the_body			    fn avoid_copying_the_body<F>(spawnfn: F) where F: FnOnce(Box<Fn() + Send>) 
 backtrace			pub mod backtrace;
 backtrace			        fn backtrace(buf: *mut *mut libc::c_void,
 backtrace			pub mod backtrace;
@@ -1396,7 +1475,6 @@ begin_unwind_inner			fn begin_unwind_inner(msg: Box<Any + Send>,
 bench			mod bench;
 bench			mod bench 
 bench_buffered_reader			    fn bench_buffered_reader(b: &mut test::Bencher) 
-bench_buffered_stream			    fn bench_buffered_stream(b: &mut test::Bencher) 
 bench_buffered_writer			    fn bench_buffered_writer(b: &mut test::Bencher) 
 bench_pow_function			    fn bench_pow_function(b: &mut Bencher) 
 bench_read_slice			    fn bench_read_slice(b: &mut test::Bencher) 
@@ -1457,7 +1535,7 @@ can_recv			    fn can_recv(&self) -> bool;
 can_recv			    pub fn can_recv(&mut self) -> bool 
 can_recv			    pub fn can_recv(&mut self) -> Result<bool, Receiver<T>> 
 can_recv			    pub fn can_recv(&self) -> bool 
-cannot			                         enum cannot be exhaustively matched against")]
+cannot			                         enum cannot be exhaustively matched against",
 canonicalize			    fn canonicalize(&self) -> io::Result<PathBuf> { canonicalize(self) }
 canonicalize			    fn canonicalize(&self) -> io::Result<PathBuf>;
 canonicalize			pub fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> 
@@ -1480,8 +1558,10 @@ cbrt			    pub fn cbrt(self) -> f32
 cbrt			        pub fn cbrt(n: c_double) -> c_double;
 cbrt			    pub fn cbrt(self) -> f64 
 cbrtf			        pub fn cbrtf(n: c_float) -> c_float;
-ceil			    pub fn ceil(self) -> f32 { num::Float::ceil(self) }
-ceil			    pub fn ceil(self) -> f64 { num::Float::ceil(self) }
+ceil			    pub fn ceil(self) -> f32 
+ceil			    pub fn ceil(self) -> f64 
+ceilf			        fn ceilf(f: f32) -> f32 { (f as f64).ceil() as f32 }
+ceilf			        fn ceilf(f: f32) -> f32 { unsafe { intrinsics::ceilf32(f) } }
 cell_allowed			    fn cell_allowed() 
 chain			    fn chain<R: Read>(self, next: R) -> Chain<Self, R> where Self: Sized 
 chan_gone_concurrent			    fn chan_gone_concurrent() 
@@ -1490,13 +1570,12 @@ chars			    fn chars(self) -> Chars<Self> where Self: Sized
 chdir			pub fn chdir(p: &path::Path) -> io::Result<()> 
 chdir			pub fn chdir(p: &path::Path) -> io::Result<()> 
 check			        fn check(m: &HashMap<isize, ()>) 
-check			        fn check(metadata: &fs::Metadata) 
 check			        fn check(octets: &[u8; 4], unspec: bool, loopback: bool,
 check			        fn check(str_addr: &str, unspec: bool, loopback: bool,
 check_for_errors_in			    pub fn check_for_errors_in<T, F>(f: F) -> Result<T, String> where
 check_parse			        fn check_parse(unparsed: &str, parsed: &[&str]) -> bool 
 child_after_fork			    unsafe fn child_after_fork(cfg: &Command,
-child_no			        fn child_no(x: u32) -> Thunk<'static> 
+child_no			        fn child_no(x: u32) -> Box<Fn() + Send> 
 chmod_works			    fn chmod_works() 
 circular			    fn circular() 
 classify			    pub fn classify(self) -> FpCategory { num::Float::classify(self) }
@@ -1505,12 +1584,12 @@ cleanup			    pub fn cleanup()
 cleanup			    pub unsafe fn cleanup() 
 cleanup			pub unsafe fn cleanup() { imp::cleanup() }
 cleanup			pub fn cleanup() 
-cleanup			pub unsafe fn cleanup() 
+cleanup			pub fn cleanup() 
 cleanup			pub unsafe fn cleanup(ptr: *mut u8) -> Box<Any + Send + 'static> 
 cleanup			pub unsafe fn cleanup(ptr: *mut u8) -> Box<Any + Send + 'static> 
 cleanup			pub unsafe fn cleanup(ptr: *mut u8) -> Box<Any + Send + 'static> 
 cleanup			    pub unsafe fn cleanup() 
-cleanup			pub unsafe fn cleanup() 
+cleanup			pub unsafe fn cleanup() {}
 clear			    pub fn clear(&mut self) 
 clear			    pub fn clear(&mut self) { self.map.clear() }
 clock_gettime			        fn clock_gettime(clk_id: libc::c_int, tp: *mut libc::timespec) -> libc::c_int;
@@ -1533,10 +1612,10 @@ clone			    fn clone(&self) -> SocketAddrV4 { *self }
 clone			    fn clone(&self) -> SocketAddrV6 { *self }
 clone			    fn clone(&self) -> Ipv4Addr { *self }
 clone			    fn clone(&self) -> Ipv6Addr { *self }
-clone			    pub fn clone() -> Option<Vec<Vec<u8>>> 
-clone			pub fn clone() -> Option<Vec<Vec<u8>>> { imp::clone() }
 clone			    fn clone(&self) -> Sender<T> 
 clone			    fn clone(&self) -> SyncSender<T> 
+clone			    pub fn clone() -> Option<Vec<Vec<u8>>> 
+clone			pub fn clone() -> Option<Vec<Vec<u8>>> { imp::clone() }
 clone_accept_concurrent			    fn clone_accept_concurrent() 
 clone_accept_smoke			    fn clone_accept_smoke() 
 clone_chan			    pub fn clone_chan(&mut self) 
@@ -1600,7 +1679,6 @@ connect_error			    fn connect_error()
 connect_ip4_loopback			    fn connect_ip4_loopback() 
 connect_ip6_loopback			    fn connect_ip6_loopback() 
 consts			pub mod consts 
-consume			    fn consume(&mut self, amt: usize) { self.inner.consume(amt) }
 consume			    fn consume(&mut self, amt: usize) 
 consume			        fn consume(&mut self, amt: usize) { self.pos += amt as u64; }
 consume			    fn consume(&mut self, amt: usize) { (**self).consume(amt) }
@@ -1612,9 +1690,10 @@ consume			    fn consume(&mut self, _n: usize) {}
 contains			    pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
 contains_key			    pub fn contains_key<Q: ?Sized>(&self, k: &Q) -> bool
 copy			pub fn copy<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<u64> 
-copy			pub fn copy<R: Read, W: Write>(reader: &mut R, writer: &mut W) -> io::Result<u64> 
+copy			pub fn copy<R: ?Sized, W: ?Sized>(reader: &mut R, writer: &mut W) -> io::Result<u64>
 copy			pub fn copy(from: &Path, to: &Path) -> io::Result<u64> 
 copy			pub fn copy(from: &Path, to: &Path) -> io::Result<u64> 
+copy_copies			    fn copy_copies() 
 copy_file_does_not_exist			    fn copy_file_does_not_exist() 
 copy_file_dst_dir			    fn copy_file_dst_dir() 
 copy_file_dst_exists			    fn copy_file_dst_exists() 
@@ -1702,12 +1781,12 @@ dequeue			    fn dequeue(&mut self) -> T
 deref			    fn deref(&self) -> &CStr 
 deref			    fn deref(&self) -> &OsStr 
 deref			    fn deref(&self) -> &Path 
-deref			    fn deref<'a>(&'a self) -> &'a T 
+deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &T { unsafe { &*self.__data.get() } }
-deref			    fn deref<'a>(&'a self) -> &'a T 
+deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &Wtf8 
 deref			    fn deref(&self) -> &RawHandle { &self.0 }
-deref_mut			    fn deref_mut<'a>(&'a mut self) -> &'a mut T 
+deref_mut			    fn deref_mut(&mut self) -> &mut T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T 
 description			    fn description(&self) -> &str { self.inner.description() }
 description			    fn description(&self) -> &str 
@@ -1719,6 +1798,7 @@ description			    fn description(&self) -> &str;
 description			    fn description(&self) -> &str { "nul byte found in data" }
 description			    fn description(&self) -> &str 
 description			            fn description(&self) -> &str 
+description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
@@ -1806,11 +1886,9 @@ drop			    fn drop(&mut self)
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
-drop			    fn drop(&mut self) {}
 drop			    fn drop(&mut self) 
 drop			            fn drop(&mut self) 
 drop			        fn drop(&mut self) 
-drop			    fn drop(&mut self) 
 drop			            fn drop(&mut self) 
 drop_chan			    pub fn drop_chan(&mut self) 
 drop_chan			    pub fn drop_chan(&mut self) 
@@ -1835,7 +1913,7 @@ duplicate			    pub fn duplicate(&self, access: libc::DWORD, inherit: bool,
 duplicate			    pub fn duplicate(&self) -> io::Result<Socket> 
 dur2timeout			fn dur2timeout(dur: Duration) -> libc::DWORD 
 duration			mod duration;
-dwarf			mod dwarf;
+dwarf			pub mod dwarf;
 dwarf_reader			fn dwarf_reader() 
 dynamic_lib			pub mod dynamic_lib;
 dynamic_tests			mod dynamic_tests 
@@ -1870,6 +1948,7 @@ env_remove			    pub fn env_remove(&mut self, key: &OsStr)
 environ			pub unsafe fn environ() -> *mut *const *const c_char 
 envvar			    pub fn envvar() -> &'static str 
 eq			    fn eq(&self, other: &HashMap<K, V, S>) -> bool 
+eq			            fn eq(&self, other: &Self) -> bool 
 eq			    fn eq(&self, other: &HashSet<T, S>) -> bool 
 eq			    fn eq(a: Option<OsString>, b: Option<&str>) 
 eq			    fn eq(&self, other: &CStr) -> bool 
@@ -1921,24 +2000,26 @@ exit			pub fn exit(code: i32) -> !
 exit			pub fn exit(code: i32) -> ! 
 exit			pub fn exit(code: i32) -> ! 
 exit_reported_right			    fn exit_reported_right() 
-exit_status			        fn exit_status() -> isize { env::get_exit_status() as isize }
-exp			    pub fn exp(self) -> f32 { num::Float::exp(self) }
-exp			    pub fn exp(self) -> f64 { num::Float::exp(self) }
-exp2			    pub fn exp2(self) -> f32 { num::Float::exp2(self) }
-exp2			    pub fn exp2(self) -> f64 { num::Float::exp2(self) }
+exp			    pub fn exp(self) -> f32 
+exp			    pub fn exp(self) -> f64 
+exp2			    pub fn exp2(self) -> f32 
+exp2			    pub fn exp2(self) -> f64 
 exp_m1			    pub fn exp_m1(self) -> f32 
 exp_m1			    pub fn exp_m1(self) -> f64 
 expect_full			    pub fn expect_full(self) -> FullBucket<K, V, M> 
+expf			        fn expf(f: f32) -> f32 { (f as f64).exp() as f32 }
+expf			        fn expf(f: f32) -> f32 { unsafe { intrinsics::expf32(f) } }
 expm1			        pub fn expm1(n: c_double) -> c_double;
 expm1f			        pub fn expm1f(n: c_float) -> c_float;
 ext			pub mod ext;
 ext			pub mod ext;
+extend			    fn extend<T: IntoIterator<Item=(&'a K, &'a V)>>(&mut self, iter: T) 
 extend			    fn extend<T: IntoIterator<Item=(K, V)>>(&mut self, iter: T) 
+extend			    fn extend<I: IntoIterator<Item=&'a T>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item=T>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item = P>>(&mut self, iter: I) 
 extend			    fn extend<T: IntoIterator<Item=CodePoint>>(&mut self, iterable: T) 
 extension			    pub fn extension(&self) -> Option<&OsStr> 
-extra_nanos			    pub fn extra_nanos(&self) -> u32 { self.subsec_nanos() }
 f			        fn f(values: &[u32]) -> Wtf8Buf 
 f			        fn f(i: i32, tx: Sender<()>) 
 f32			impl f32 
@@ -1987,7 +2068,6 @@ file_type			    pub fn file_type(&self) -> FileType
 file_type			    pub fn file_type(&self) -> io::Result<FileType> 
 file_type			    pub fn file_type(&self) -> FileType 
 file_type			    pub fn file_type(&self) -> io::Result<FileType> 
-fill_buf			    fn fill_buf(&mut self) -> io::Result<&[u8]> { self.inner.fill_buf() }
 fill_buf			    fn fill_buf(&mut self) -> io::Result<&[u8]> 
 fill_buf			        fn fill_buf(&mut self) -> io::Result<&[u8]> 
 fill_buf			    fn fill_buf(&mut self) -> io::Result<&[u8]> { (**self).fill_buf() }
@@ -2016,12 +2096,12 @@ flag_locked			    unsafe fn flag_locked(&self) -> bool
 flags_and_attributes			    fn flags_and_attributes(&mut self, access: u32) -> &mut OpenOptions 
 flags_and_attributes			    fn flags_and_attributes(&mut self, val: u32) -> &mut Self;
 flags_and_attributes			    pub fn flags_and_attributes(&mut self, val: u32) 
-float_macros			mod float_macros;
-floor			    pub fn floor(self) -> f32 { num::Float::floor(self) }
-floor			    pub fn floor(self) -> f64 { num::Float::floor(self) }
+floor			    pub fn floor(self) -> f32 
+floor			    pub fn floor(self) -> f64 
+floorf			        fn floorf(f: f32) -> f32 { (f as f64).floor() as f32 }
+floorf			        fn floorf(f: f32) -> f32 { unsafe { intrinsics::floorf32(f) } }
 flowinfo			    pub fn flowinfo(&self) -> u32 { ntoh(self.inner.sin6_flowinfo) }
 flush			    fn flush(&mut self) -> io::Result<()> { self.inner.flush() }
-flush			            fn flush(&mut self) -> io::Result<()> { Ok(()) }
 flush			            fn flush(&mut self) -> io::Result<()> 
 flush			    fn flush(&mut self) -> io::Result<()> { self.inner.flush() }
 flush			    fn flush(&mut self) -> io::Result<()> 
@@ -2062,6 +2142,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -2085,7 +2166,6 @@ fmt			    fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for BufReader			impl<R> fmt::Debug for BufReader<R> where R: fmt::Debug 
-fmt::Debug for BufStream			impl<S: Write> fmt::Debug for BufStream<S> where S: fmt::Debug 
 fmt::Debug for BufWriter			impl<W: Write> fmt::Debug for BufWriter<W> where W: fmt::Debug 
 fmt::Debug for CStr			impl fmt::Debug for CStr 
 fmt::Debug for CString			impl fmt::Debug for CString 
@@ -2121,6 +2201,7 @@ fmt::Debug for UdpSocket			impl fmt::Debug for UdpSocket
 fmt::Debug for Wtf8			impl fmt::Debug for Wtf8 
 fmt::Debug for Wtf8Buf			impl fmt::Debug for Wtf8Buf 
 fmt::Display for A			    impl fmt::Display for A 
+fmt::Display for AddrParseError			impl fmt::Display for AddrParseError 
 fmt::Display for B			    impl fmt::Display for B 
 fmt::Display for CharsError			impl fmt::Display for CharsError 
 fmt::Display for Display			impl<'a> fmt::Display for Display<'a> 
@@ -2151,8 +2232,8 @@ fmt::Write for Adaptor			        impl<'a, T: Write + ?Sized> fmt::Write for Adap
 fmt_subslice			                    fn fmt_subslice(segments: &[u16]) -> String 
 foo			        fn foo() -> Foo 
 formatted			    fn formatted() 
-fract			    pub fn fract(self) -> f32 { num::Float::fract(self) }
-fract			    pub fn fract(self) -> f64 { num::Float::fract(self) }
+fract			    pub fn fract(self) -> f32 { self - self.trunc() }
+fract			    pub fn fract(self) -> f64 { self - self.trunc() }
 freeaddrinfo			    fn freeaddrinfo(res: *mut libc::addrinfo);
 frequency			fn frequency() -> libc::LARGE_INTEGER 
 frexp			    pub fn frexp(self) -> (f32, isize) 
@@ -2180,12 +2261,11 @@ from_be			    fn from_be(i: Self) -> Self;
 from_bytes			    pub fn from_bytes<B>(bytes: B) -> Option<OsString> where B: Into<Vec<u8>> 
 from_bytes			    fn from_bytes(slice: &[u8]) -> &OsStr 
 from_bytes			    fn from_bytes(slice: &[u8]) -> &Self;
-from_bytes_inner			        fn from_bytes_inner(vec: Vec<u8>) -> Option<OsString> 
 from_bytes_unchecked			    unsafe fn from_bytes_unchecked(value: &[u8]) -> &Wtf8 
 from_char			    pub fn from_char(value: char) -> CodePoint 
 from_fd			    pub fn from_fd(fd: libc::c_int) -> AnonPipe 
-from_fn			    pub fn from_fn<F>(f: F) -> Future<A>
 from_inner			    fn from_inner(buf: Buf) -> OsString 
+from_inner			    fn from_inner(inner: &Slice) -> &OsStr 
 from_inner			    fn from_inner(f: fs_imp::File) -> File 
 from_inner			    fn from_inner(f: fs_imp::FilePermissions) -> Permissions 
 from_inner			    fn from_inner(addr: libc::sockaddr_in) -> SocketAddrV4 
@@ -2214,6 +2294,7 @@ from_mode			    fn from_mode(mode: raw::mode_t) -> Permissions
 from_mode			    fn from_mode(mode: raw::mode_t) -> Self;
 from_ptr			    pub unsafe fn from_ptr(ptr: *const libc::c_char) -> CString 
 from_ptr			    pub unsafe fn from_ptr<'a>(ptr: *const libc::c_char) -> &'a CStr 
+from_raw			    pub unsafe fn from_raw(ptr: *mut libc::c_char) -> CString 
 from_raw_fd			    unsafe fn from_raw_fd(fd: RawFd) -> Self;
 from_raw_fd			    unsafe fn from_raw_fd(fd: RawFd) -> fs::File 
 from_raw_fd			    unsafe fn from_raw_fd(fd: RawFd) -> net::TcpListener 
@@ -2228,14 +2309,12 @@ from_raw_socket			    unsafe fn from_raw_socket(sock: RawSocket) -> Self;
 from_raw_socket			    unsafe fn from_raw_socket(sock: RawSocket) -> net::TcpListener 
 from_raw_socket			    unsafe fn from_raw_socket(sock: RawSocket) -> net::TcpStream 
 from_raw_socket			    unsafe fn from_raw_socket(sock: RawSocket) -> net::UdpSocket 
-from_receiver			    pub fn from_receiver(rx: Receiver<A>) -> Future<A> 
 from_secs			    pub fn from_secs(secs: u64) -> Duration 
 from_seed			    fn from_seed(seed: &'a [usize]) -> StdRng 
 from_str			    fn from_str(s: &str) -> Result<IpAddr, AddrParseError> 
 from_str			    fn from_str(s: &str) -> Result<Ipv4Addr, AddrParseError> 
 from_str			    fn from_str(s: &str) -> Result<Ipv6Addr, AddrParseError> 
 from_str			    fn from_str(s: &str) -> Result<SocketAddr, AddrParseError> 
-from_str			    fn from_str<T: ::str::FromStr>(t: &str) -> Option<T> 
 from_str			    fn from_str<T: ::str::FromStr>(t: &str) -> Option<T> 
 from_str			    pub fn from_str(str: &str) -> Wtf8Buf 
 from_str			    pub fn from_str(value: &str) -> &Wtf8 
@@ -2250,7 +2329,6 @@ from_u32			    pub fn from_u32(value: u32) -> Option<CodePoint>
 from_u32_unchecked			    pub unsafe fn from_u32_unchecked(value: u32) -> CodePoint 
 from_u8_slice			    unsafe fn from_u8_slice(s: &[u8]) -> &Path 
 from_u8_slice			    fn from_u8_slice(s: &[u8]) -> &Slice 
-from_value			    pub fn from_value(val: A) -> Future<A> 
 from_vec			    fn from_vec(vec: Vec<u8>) -> OsString 
 from_vec			    fn from_vec(vec: Vec<u8>) -> Self;
 from_vec_unchecked			    pub unsafe fn from_vec_unchecked(mut v: Vec<u8>) -> CString 
@@ -2275,17 +2353,17 @@ fs			pub mod fs;
 fsync			    pub fn fsync(&self) -> io::Result<()> 
 fsync			    pub fn fsync(&self) -> io::Result<()> 
 full			    pub fn full(&self) -> &FullBucket<K, V, M> 
-future			mod future;
 gai_strerror			    pub fn gai_strerror(errcode: libc::c_int) -> *const libc::c_char;
 gap_peek			    pub fn gap_peek(self) -> Option<GapThenFull<K, V, M>> 
 ge			    fn ge(&self, other: &OsStr) -> bool { self.bytes().ge(other.bytes()) }
 ge			    fn ge(&self, other: &OsString) -> bool { &**self >= &**other }
 ge			    fn ge(&self, other: &Wtf8) -> bool { self.bytes.ge(&other.bytes) }
+get			    fn get(&self, key: &Q) -> Option<&K> 
 get			    pub fn get(&self) -> &V 
-get			    pub fn get(self) -> Result<&'a mut V, VacantEntry<'a, K, V>> 
 get			    pub fn get<Q: ?Sized>(&self, k: &Q) -> Option<&V>
+get			    fn get(&self, key: &Q) -> Option<&Self::Key>;
+get			    pub fn get<Q: ?Sized>(&self, value: &Q) -> Option<&T>
 get			    pub fn get(&'static self) -> Option<Arc<T>> 
-get			    pub fn get(&mut self) -> A 
 get			    pub fn get(&self) -> bool 
 get			    pub fn get(&self) -> *mut u8 
 get			    pub unsafe fn get(&self) -> *mut u8 { imp::get(self.key()) }
@@ -2298,7 +2376,6 @@ get			        pub unsafe fn get(&self) -> *mut T { self.inner.get() as *mut _ }
 get			        pub unsafe fn get(&self) -> *mut T { self.inner.get() }
 get_creation_disposition			    fn get_creation_disposition(&self) -> libc::DWORD 
 get_desired_access			    fn get_desired_access(&self) -> libc::DWORD 
-get_exit_status			pub fn get_exit_status() -> i32 
 get_flags_and_attributes			    fn get_flags_and_attributes(&self) -> libc::DWORD 
 get_global_ptr			    fn get_global_ptr() -> *mut Option<Box<Vec<Vec<u8>>>> 
 get_mode			        fn get_mode(_fd: c_int) -> Option<(bool, bool)> 
@@ -2307,7 +2384,6 @@ get_mut			    pub fn get_mut(&mut self) -> &mut V
 get_mut			    pub fn get_mut<Q: ?Sized>(&mut self, k: &Q) -> Option<&mut V>
 get_mut			    fn get_mut(&mut self) -> &mut BufWriter<W> 
 get_mut			    pub fn get_mut(&mut self) -> &mut R { &mut self.inner }
-get_mut			    pub fn get_mut(&mut self) -> &mut S 
 get_mut			    pub fn get_mut(&mut self) -> &mut W { self.inner.as_mut().unwrap() }
 get_mut			    pub fn get_mut(&mut self) -> &mut W { self.inner.get_mut() }
 get_mut			    pub fn get_mut(&mut self) -> &mut T { &mut self.inner }
@@ -2317,17 +2393,13 @@ get_path			        fn get_path(_fd: c_int) -> Option<PathBuf>
 get_path			        fn get_path(fd: c_int) -> Option<PathBuf> 
 get_path			fn get_path(f: &File) -> io::Result<PathBuf> 
 get_ref			    pub fn get_ref(&self) -> &R { &self.inner }
-get_ref			    pub fn get_ref(&self) -> &S 
 get_ref			    pub fn get_ref(&self) -> &W { self.inner.as_ref().unwrap() }
 get_ref			    pub fn get_ref(&self) -> &W { self.inner.get_ref() }
 get_ref			    pub fn get_ref(&self) -> &T { &self.inner }
 get_ref			    pub fn get_ref(&self) -> Option<&(error::Error+Send+Sync+'static)> 
-get_ref			    pub fn get_ref<'a>(&'a mut self) -> &'a A 
 get_ref			    pub fn get_ref(&self) -> &T { &self.guard }
 get_remove_insert			fn get_remove_insert(b: &mut Bencher) 
 get_share_mode			    fn get_share_mode(&self) -> libc::DWORD 
-get_sp_limit			            fn get_sp_limit() -> *const c_void;
-get_sp_limit			pub unsafe fn get_sp_limit() -> usize 
 get_stack_start			    unsafe fn get_stack_start() -> Option<*mut libc::c_void> 
 getaddrinfo			    fn getaddrinfo(node: *const c_char, service: *const c_char,
 getcwd			pub fn getcwd() -> io::Result<PathBuf> 
@@ -2349,6 +2421,7 @@ gid			    fn gid(&self) -> raw::gid_t { self.as_raw_stat().st_gid as raw::gid_t 
 gid			    fn gid(&self) -> raw::gid_t;
 gid			    fn gid(&mut self, id: gid_t) -> &mut process::Command 
 gid			    fn gid(&mut self, id: gid_t) -> &mut process::Command;
+gnu			pub mod gnu;
 grow_by_insertion			fn grow_by_insertion(b: &mut Bencher) 
 gt			    fn gt(&self, other: &OsStr) -> bool { self.bytes().gt(other.bytes()) }
 gt			    fn gt(&self, other: &OsString) -> bool { &**self > &**other }
@@ -2369,12 +2442,14 @@ has_implicit_root			    fn has_implicit_root(&self) -> bool
 has_physical_root			fn has_physical_root(s: &[u8], prefix: Option<Prefix>) -> bool 
 has_root			    fn has_root(&self) -> bool 
 has_root			    pub fn has_root(&self) -> bool 
+hash			            fn hash<H: hash::Hasher>(&self, h: &mut H) 
 hash			    pub fn hash(&self) -> SafeHash 
 hash			mod hash;
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 hash			    fn hash<H: hash::Hasher>(&self, s: &mut H) 
 hash			    fn hash<H: hash::Hasher>(&self, s: &mut H) 
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
+hash::Hash for Foo			        impl hash::Hash for Foo 
 hash::Hash for Ipv4Addr			impl hash::Hash for Ipv4Addr 
 hash::Hash for Ipv6Addr			impl hash::Hash for Ipv6Addr 
 hash::Hash for SocketAddrV4			impl hash::Hash for SocketAddrV4 
@@ -2405,6 +2480,8 @@ ilogbf			        pub fn ilogbf(n: c_float) -> c_int;
 imp			mod imp 
 imp			mod imp 
 imp			pub mod imp;
+imp			mod imp;
+imp			mod imp;
 imp			    mod imp 
 imp			mod imp 
 imp			mod imp 
@@ -2428,11 +2505,13 @@ init			    pub unsafe fn init(_argc: isize, _argv: *const *const u8)
 init			    pub unsafe fn init(argc: isize, argv: *const *const u8) 
 init			pub unsafe fn init(argc: isize, argv: *const *const u8) { imp::init(argc, argv) }
 init			unsafe fn init() -> bool 
+init			pub fn init() 
 init			    pub unsafe fn init(&mut self) 
 init			pub fn init() {}
 init			    pub unsafe fn init() 
 init			    pub unsafe fn init() -> Option<usize> { None }
 init			    pub unsafe fn init() -> Option<usize> 
+init			pub fn init() {}
 init			    pub unsafe fn init(&mut self) 
 init			pub fn init() 
 init			pub unsafe fn init() 
@@ -2449,8 +2528,8 @@ inner			    unsafe fn inner<'a>(&'a self) -> &'a Flavor<T>
 inner			mod inner 
 inner_mut			    unsafe fn inner_mut<'a>(&'a self) -> &'a mut Flavor<T> 
 inner_try			    unsafe fn inner_try(f: fn(*mut u8), data: *mut u8)
-inner_unsafe			    fn inner_unsafe<'a>(&'a self) -> &'a UnsafeCell<Flavor<T>> 
-inner_unsafe			    fn inner_unsafe<'a>(&'a self) -> &'a UnsafeCell<Flavor<T>>;
+inner_unsafe			    fn inner_unsafe(&self) -> &UnsafeCell<Flavor<T>> 
+inner_unsafe			    fn inner_unsafe(&self) -> &UnsafeCell<Flavor<T>>;
 ino			    fn ino(&self) -> raw::ino_t { self.as_inner().ino() }
 ino			    fn ino(&self) -> raw::ino_t { self.as_raw_stat().st_ino as raw::ino_t }
 ino			    fn ino(&self) -> raw::ino_t;
@@ -2463,17 +2542,10 @@ insert_hashed_nocheck			    fn insert_hashed_nocheck(&mut self, hash: SafeHash, 
 insert_hashed_ordered			    fn insert_hashed_ordered(&mut self, hash: SafeHash, k: K, v: V) 
 insert_or_replace_with			    fn insert_or_replace_with<'a, F>(&'a mut self,
 inspect			    pub fn inspect(&self) -> u64 { self.hash }
-int_macros			mod int_macros;
 integer_decode			    pub fn integer_decode(self) -> (u64, i16, i8) 
 integer_decode			    pub fn integer_decode(self) -> (u64, i16, i8) { num::Float::integer_decode(self) }
 intersection			    pub fn intersection<'a>(&'a self, other: &'a HashSet<T, S>) -> Intersection<'a, T, S> 
 into			    fn into(self) -> OsString 
-into_ascii_lowercase			    fn into_ascii_lowercase(mut self) -> Vec<u8> 
-into_ascii_lowercase			    fn into_ascii_lowercase(self) -> Self;
-into_ascii_lowercase			    fn into_ascii_lowercase(self) -> String 
-into_ascii_uppercase			    fn into_ascii_uppercase(mut self) -> Vec<u8> 
-into_ascii_uppercase			    fn into_ascii_uppercase(self) -> Self;
-into_ascii_uppercase			    fn into_ascii_uppercase(self) -> String 
 into_bucket			    pub fn into_bucket(self) -> Bucket<K, V, M> 
 into_cow			    fn into_cow() 
 into_cow			    fn into_cow(self) -> Cow<'a, Path> 
@@ -2487,7 +2559,6 @@ into_inner			    fn into_inner(self) -> Buf
 into_inner			    fn into_inner(self) -> fs_imp::File 
 into_inner			    pub fn into_inner(mut self) -> Result<W, IntoInnerError<BufWriter<W>>> 
 into_inner			    pub fn into_inner(self) -> R { self.inner }
-into_inner			    pub fn into_inner(self) -> Result<S, IntoInnerError<BufStream<S>>> 
 into_inner			    pub fn into_inner(self) -> Result<W, IntoInnerError<LineWriter<W>>> 
 into_inner			    pub fn into_inner(self) -> W { self.0 }
 into_inner			    pub fn into_inner(self) -> T { self.inner }
@@ -2498,7 +2569,6 @@ into_inner			    fn into_inner(self) -> net_imp::TcpStream { self.0 }
 into_inner			    fn into_inner(self) -> net_imp::UdpSocket { self.0 }
 into_inner			    fn into_inner(self) -> AnonPipe { self.inner }
 into_inner			    fn into_inner(self) -> imp::Process { self.handle }
-into_inner			    pub fn into_inner(mut self) -> A 
 into_inner			    fn into_inner(self) -> Inner;
 into_inner			    pub fn into_inner(self) -> T { self.guard }
 into_inner			    fn into_inner(self) -> c_int { self.0.into_raw() }
@@ -2516,6 +2586,7 @@ into_mut_refs			    pub fn into_mut_refs(self) -> (&'t mut K, &'t mut V)
 into_option			    fn into_option(self) -> Option<FullBucket<K, V, M>> 
 into_os_string			    pub fn into_os_string(self) -> OsString 
 into_ptr			    pub fn into_ptr(self) -> *const libc::c_char 
+into_raw			    pub fn into_raw(self) -> *mut libc::c_char 
 into_raw			    pub fn into_raw(self) -> c_int 
 into_raw			    pub fn into_raw(self) -> HANDLE 
 into_raw_fd			    fn into_raw_fd(self) -> RawFd 
@@ -2660,9 +2731,6 @@ join			    pub fn join(self)
 join			    pub fn join(self) 
 join			    fn join(&mut self) -> Result<T> 
 join			    pub fn join(mut self) -> Result<T> 
-join			    pub fn join(mut self) -> T 
-join_multicast			    pub fn join_multicast(&self, multi: &IpAddr) -> io::Result<()> 
-join_multicast			    pub fn join_multicast(&self, multi: &IpAddr) -> io::Result<()> 
 join_paths			pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
 join_paths			pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
 join_paths			pub fn join_paths<I, T>(paths: I) -> Result<OsString, JoinPathsError>
@@ -2694,8 +2762,6 @@ ldexpf			        pub unsafe fn ldexpf(x: c_float, n: c_int) -> c_float
 le			    fn le(&self, other: &OsStr) -> bool { self.bytes().le(other.bytes()) }
 le			    fn le(&self, other: &OsString) -> bool { &**self <= &**other }
 le			    fn le(&self, other: &Wtf8) -> bool { self.bytes.le(&other.bytes) }
-leave_multicast			    pub fn leave_multicast(&self, multi: &IpAddr) -> io::Result<()> 
-leave_multicast			    pub fn leave_multicast(&self, multi: &IpAddr) -> io::Result<()> 
 len			    pub fn len(&self) -> usize { self.table.size() }
 len			    fn len(&self) -> usize { self.iter.len() }
 len			    pub fn len(&self) -> usize { self.map.len() }
@@ -2710,7 +2776,8 @@ len			    fn len(&self) -> usize { self.range.len() }
 len_before_body			    fn len_before_body(&self) -> usize 
 lgamma_r			        pub fn lgamma_r(n: c_double, sign: &mut c_int) -> c_double;
 lgammaf_r			        pub fn lgammaf_r(n: c_float, sign: &mut c_int) -> c_float;
-libunwind			mod libunwind;
+libbacktrace			pub mod libbacktrace;
+libunwind			pub mod libunwind;
 limit			    pub fn limit(&self) -> u64 { self.limit }
 lines			    fn lines() 
 lines			    fn lines(self) -> Lines<Self> where Self: Sized 
@@ -2718,12 +2785,11 @@ link			pub fn link(src: &Path, dst: &Path) -> io::Result<()>
 link			pub fn link(src: &Path, dst: &Path) -> io::Result<()> 
 links_work			    fn links_work() 
 listen_localhost			    fn listen_localhost() 
-ln			    pub fn ln(self) -> f32 { num::Float::ln(self) }
-ln			    pub fn ln(self) -> f64 { num::Float::ln(self) }
+ln			    pub fn ln(self) -> f32 
+ln			    pub fn ln(self) -> f64 
 ln_1p			    pub fn ln_1p(self) -> f32 
 ln_1p			    pub fn ln_1p(self) -> f64 
 load			            fn load() -> usize 
-load_argc_and_argv			    unsafe fn load_argc_and_argv(argc: isize,
 local_addr			    pub fn local_addr(&self) -> io::Result<SocketAddr> 
 local_addr			    pub fn local_addr(&self) -> io::Result<SocketAddr> 
 lock			    pub fn lock(&self) -> StderrLock 
@@ -2735,17 +2801,21 @@ lock			    pub unsafe fn lock(&self) { self.0.lock() }
 lock			    pub fn lock(&self) -> LockResult<ReentrantMutexGuard<T>> 
 lock			    pub unsafe fn lock(&self) 
 lock			    pub unsafe fn lock(&self) 
-log			    pub fn log(self, base: f32) -> f32 { num::Float::log(self, base) }
-log			    pub fn log(self, base: f64) -> f64 { num::Float::log(self, base) }
-log10			    pub fn log10(self) -> f32 { num::Float::log10(self) }
-log10			    pub fn log10(self) -> f64 { num::Float::log10(self) }
+log			    pub fn log(self, base: f32) -> f32 { self.ln() \/ base.ln() }
+log			    pub fn log(self, base: f64) -> f64 { self.ln() \/ base.ln() }
+log10			    pub fn log10(self) -> f32 
+log10			    pub fn log10(self) -> f64 
+log10f			        fn log10f(f: f32) -> f32 { (f as f64).log10() as f32 }
+log10f			        fn log10f(f: f32) -> f32 { unsafe { intrinsics::log10f32(f) } }
 log1p			        pub fn log1p(n: c_double) -> c_double;
 log1pf			        pub fn log1pf(n: c_float) -> c_float;
-log2			    pub fn log2(self) -> f32 { num::Float::log2(self) }
-log2			    pub fn log2(self) -> f64 { num::Float::log2(self) }
+log2			    pub fn log2(self) -> f32 
+log2			    pub fn log2(self) -> f64 
 log_enabled			pub fn log_enabled() -> bool 
 logb			        pub fn logb(n: c_double) -> c_double;
 logbf			        pub fn logbf(n: c_float) -> c_float;
+logf			        fn logf(f: f32) -> f32 { (f as f64).ln() as f32 }
+logf			        fn logf(f: f32) -> f32 { unsafe { intrinsics::logf32(f) } }
 lookup			pub fn lookup(module: &str, symbol: &str) -> Option<usize> 
 lookup_addr			pub fn lookup_addr(addr: &IpAddr) -> io::Result<String> 
 lookup_addr			pub fn lookup_addr(addr: &IpAddr) -> io::Result<String> 
@@ -2759,7 +2829,6 @@ lt			    fn lt(&self, other: &OsString) -> bool { &**self < &**other }
 lt			    fn lt(&self, other: &Wtf8) -> bool { self.bytes.lt(&other.bytes) }
 mach_absolute_time			        pub fn mach_absolute_time() -> u64;
 mach_timebase_info			        pub fn mach_timebase_info(info: *mut libc::mach_timebase_info) -> libc::c_int;
-macros			mod macros;
 macros			mod macros;
 make_argv			fn make_argv(prog: &CString, args: &[CString])
 make_ascii_lowercase			    fn make_ascii_lowercase(&mut self) { *self = self.to_ascii_lowercase(); }
@@ -2776,13 +2845,13 @@ make_envp			fn make_envp(env: Option<&HashMap<OsString, OsString>>)
 make_envp			fn make_envp(env: Option<&collections::HashMap<OsString, OsString>>)
 make_handler			    pub unsafe fn make_handler() -> Handler 
 make_handler			    pub unsafe fn make_handler() -> super::Handler 
-make_handler			pub unsafe fn make_handler() -> Handler 
 make_hash			    fn make_hash<X: ?Sized>(&self, x: &X) -> SafeHash where X: Hash 
 make_hash			pub fn make_hash<T: ?Sized, S>(hash_state: &S, t: &T) -> SafeHash
 make_rand_name			    fn make_rand_name() -> OsString 
 map			pub mod map;
 map			        fn map() -> RefCell<HashMap<i32, i32>> 
 map_result			pub fn map_result<T, U, F>(result: LockResult<T>, f: F)
+marker::Sync for KeyInner			    unsafe impl<T> marker::Sync for KeyInner<T> { }
 max			    pub fn max(self, other: f32) -> f32 
 max			    pub fn max(self, other: f64) -> f64 
 metadata			    fn metadata(&self) -> io::Result<Metadata> { metadata(self) }
@@ -2815,19 +2884,16 @@ modff			        pub fn modff(n: c_float, iptr: &mut c_float) -> c_float;
 modified			    pub fn modified(&self) -> u64 { self.to_u64(&self.data.ftLastWriteTime) }
 mpsc			pub mod mpsc;
 mpsc_queue			mod mpsc_queue;
-ms_to_filetime			fn ms_to_filetime(ms: u64) -> libc::FILETIME 
-ms_to_timeval			pub fn ms_to_timeval(ms: u64) -> libc::timeval 
 mtime			    fn mtime(&self) -> raw::time_t { self.as_raw_stat().st_mtime }
 mtime			    fn mtime(&self) -> raw::time_t;
 mtime_nsec			    fn mtime_nsec(&self) -> c_long { self.as_raw_stat().st_mtime_nsec as c_long }
 mtime_nsec			    fn mtime_nsec(&self) -> c_long;
 mul			    fn mul() 
 mul			    fn mul(self, rhs: u32) -> Duration 
-mul_add			    pub fn mul_add(self, a: f32, b: f32) -> f32 { num::Float::mul_add(self, a, b) }
-mul_add			    pub fn mul_add(self, a: f64, b: f64) -> f64 { num::Float::mul_add(self, a, b) }
+mul_add			    pub fn mul_add(self, a: f32, b: f32) -> f32 
+mul_add			    pub fn mul_add(self, a: f64, b: f64) -> f64 
 mul_div_u64			fn mul_div_u64(value: u64, numer: u64, denom: u64) -> u64 
 multicast_scope			    pub fn multicast_scope(&self) -> Option<Ipv6MulticastScope> 
-multicast_time_to_live			    pub fn multicast_time_to_live(&self, ttl: i32) -> io::Result<()> 
 multiple_connect_interleaved_greedy_schedule			    fn multiple_connect_interleaved_greedy_schedule() 
 multiple_connect_interleaved_lazy_schedule_ip4			    fn multiple_connect_interleaved_lazy_schedule_ip4() 
 multiple_connect_serial_ip4			    fn multiple_connect_serial_ip4() 
@@ -2857,7 +2923,6 @@ new			    pub fn new<S: AsRef<OsStr> + ?Sized>(s: &S) -> &OsStr
 new			    pub fn new() -> DirBuilder 
 new			    pub fn new() -> OpenOptions 
 new			    pub fn new(inner: R) -> BufReader<R> 
-new			    pub fn new(inner: S) -> BufStream<S> 
 new			    pub fn new(inner: W) -> BufWriter<W> 
 new			    pub fn new(inner: W) -> LineWriter<W> 
 new			    pub fn new(inner: T) -> Cursor<T> 
@@ -2874,7 +2939,6 @@ new			    pub fn new<S: AsRef<OsStr>>(program: S) -> Command
 new			    pub fn new() -> io::Result<StdRng> 
 new			        pub fn new() -> io::Result<OsRng> 
 new			    pub fn new(r: R) -> ReaderRng<R> 
-new			    pub fn new(ptr : *const u8) -> DwarfReader 
 new			    pub fn new(n: usize) -> Barrier 
 new			    pub fn new() -> Condvar 
 new			    fn new(inner: Arc<UnsafeCell<sync::Packet<T>>>) -> SyncSender<T> 
@@ -2894,6 +2958,7 @@ new			    pub fn new(t: T) -> Mutex<T>
 new			    fn new(lock: &'rwlock StaticRwLock, data: &'rwlock UnsafeCell<T>)
 new			    pub fn new(t: T) -> RwLock<T> 
 new			    pub fn new(count: isize) -> Semaphore 
+new			    pub fn new(ptr : *const u8) -> DwarfReader 
 new			    pub fn new(guard: T) -> PoisonError<T> 
 new			    fn new(lock: &'mutex ReentrantMutex<T>)
 new			    pub fn new(t: T) -> ReentrantMutex<T> 
@@ -3072,10 +3137,8 @@ os_str			pub mod os_str;
 os_str_as_u8_slice			fn os_str_as_u8_slice(s: &OsStr) -> &[u8] 
 os_str_len			        fn os_str_len(s: &OsStr) -> usize 
 output			    pub fn output(&mut self) -> io::Result<Output> 
-output			fn output(w: &mut Write, idx: isize, addr: *mut libc::c_void,
-output_fileline			fn output_fileline(w: &mut Write, file: &[u8], line: libc::c_int,
-page_size			pub fn page_size() -> usize 
-page_size			pub fn page_size() -> usize 
+output			pub fn output(w: &mut Write, idx: isize, addr: *mut libc::c_void,
+output_fileline			pub fn output_fileline(w: &mut Write, file: &[u8], line: libc::c_int,
 page_size			pub fn page_size() -> usize 
 panic			pub unsafe fn panic(data: Box<Any + Send + 'static>) -> ! 
 panic			pub unsafe fn panic(data: Box<Any + Send + 'static>) -> ! 
@@ -3119,7 +3182,7 @@ pcinfo_cb			    extern fn pcinfo_cb(data: *mut libc::c_void,
 peek			    pub fn peek(self) -> BucketState<K, V, M> 
 peek			    pub fn peek(&self) -> Option<Component<'a>> 
 peek			    fn peek() 
-peek			    pub fn peek<'a>(&'a self) -> Option<&'a mut T> 
+peek			    pub fn peek(&self) -> Option<&mut T> 
 peer_addr			    pub fn peer_addr(&self) -> io::Result<SocketAddr> 
 peer_addr			    pub fn peer_addr(&self) -> io::Result<SocketAddr> 
 perm			    pub fn perm(&self) -> FilePermissions 
@@ -3142,8 +3205,10 @@ port_gone_concurrent			    fn port_gone_concurrent()
 port_gone_concurrent_shared			    fn port_gone_concurrent_shared() 
 position			    pub fn position(&self) -> u64 { self.pos }
 postinit_lock			    pub fn postinit_lock(&self) -> MutexGuard<()> 
-powf			    pub fn powf(self, n: f32) -> f32 { num::Float::powf(self, n) }
-powf			    pub fn powf(self, n: f64) -> f64 { num::Float::powf(self, n) }
+powf			        fn powf(f: f32, n: f32) -> f32 { (f as f64).powf(n as f64) as f32 }
+powf			        fn powf(f: f32, n: f32) -> f32 { unsafe { intrinsics::powf32(f, n) } }
+powf			    pub fn powf(self, n: f32) -> f32 
+powf			    pub fn powf(self, n: f64) -> f64 
 powi			    pub fn powi(self, n: i32) -> f32 { num::Float::powi(self, n) }
 powi			    pub fn powi(self, n: i32) -> f64 { num::Float::powi(self, n) }
 prctl			            fn prctl(option: libc::c_int, arg2: libc::c_ulong,
@@ -3185,7 +3250,12 @@ prim_u64			mod prim_u64 { }
 prim_u8			mod prim_u8 { }
 prim_unit			mod prim_unit { }
 prim_usize			mod prim_usize { }
-print			fn print(w: &mut Write, idx: isize, addr: *mut libc::c_void,
+print			pub fn print(w: &mut Write, idx: isize, addr: *mut libc::c_void,
+print			pub fn print(w: &mut Write, idx: isize, addr: *mut libc::c_void,
+print			pub fn print(w: &mut Write, i: isize, addr: u64, _: &DynamicLibrary, _: libc::HANDLE)
+print			pub fn print(w: &mut Write, i: isize, addr: u64, dbghelp: &DynamicLibrary, process: libc::HANDLE)
+printing			mod printing;
+printing			mod printing;
 process			pub mod process;
 process			pub mod process;
 process			pub mod process;
@@ -3240,9 +3310,9 @@ pthread_sigmask			    pub fn pthread_sigmask(how: libc::c_int, set: *const sigse
 pthread_stackseg_np			            fn pthread_stackseg_np(thread: pthread_t,
 push			    pub fn push<T: AsRef<OsStr>>(&mut self, s: T) 
 push			    pub fn push<P: AsRef<Path>>(&mut self, path: P) 
+push			    pub fn push(&self, t: T) 
+push			    pub fn push(&self, t: T) 
 push			pub fn push(f: Box<FnBox()>) -> bool 
-push			    pub fn push(&self, t: T) 
-push			    pub fn push(&self, t: T) 
 push			    pub fn push(&mut self, code_point: CodePoint) 
 push_char			    pub fn push_char(&mut self, c: char) 
 push_code_point_unchecked			    fn push_code_point_unchecked(&mut self, code_point: CodePoint) 
@@ -3251,9 +3321,6 @@ push_slice			    pub fn push_slice(&mut self, s: &Slice)
 push_str			    pub fn push_str(&mut self, other: &str) 
 push_wtf8			    pub fn push_wtf8(&mut self, other: &Wtf8) 
 put			    pub fn put(mut self, hash: SafeHash, key: K, value: V)
-put			    pub fn put(_args: Vec<Vec<u8>>) 
-put			    pub fn put(args: Vec<Vec<u8>>) 
-put			pub fn put(args: Vec<Vec<u8>>) { imp::put(args) }
 raise			    pub fn raise(signum: libc::c_int) -> libc::c_int;
 rand			mod rand;
 raw			pub mod raw;
@@ -3283,7 +3350,6 @@ rdev			    fn rdev(&self) -> raw::dev_t;
 read			    pub fn read(&self) -> (&K, &V) 
 read			    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> 
 read			    pub fn read(&mut self, read: bool) -> &mut OpenOptions 
-read			            fn read(&mut self, _: &mut [u8]) -> io::Result<usize> { Ok(0) }
 read			            fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> 
 read			        fn read(&mut self, _: &mut [u8]) -> io::Result<usize> 
 read			    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> 
@@ -3299,9 +3365,9 @@ read			    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize>
 read			    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> { self.0.read(buf) }
 read			        fn read<T: Read + Send + 'static>(stream: Option<T>) -> Receiver<io::Result<Vec<u8>>> 
 read			    fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> 
-read			    pub unsafe fn read<T:Copy>(&mut self) -> T 
 read			    pub fn read(&'static self) -> LockResult<RwLockReadGuard<'static, ()>> 
 read			    pub fn read(&self) -> LockResult<RwLockReadGuard<T>> 
+read			    pub unsafe fn read<T:Copy>(&mut self) -> T 
 read			        fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> 
 read			    pub fn read(&self, buf: &mut [u8]) -> io::Result<usize> 
 read			    pub unsafe fn read(&self) { self.0.read() }
@@ -3328,6 +3394,11 @@ read_dir			    fn read_dir(&self) -> io::Result<ReadDir>;
 read_dir			pub fn read_dir<P: AsRef<Path>>(path: P) -> io::Result<ReadDir> 
 read_encoded_pointer			unsafe fn read_encoded_pointer(reader: &mut DwarfReader,
 read_eof_ip4			    fn read_eof_ip4() 
+read_exact			    fn read_exact(&mut self, buf: &mut [u8]) -> io::Result<()> 
+read_exact			    fn read_exact(&mut self, mut buf: &mut [u8]) -> Result<()> 
+read_exact			    fn read_exact() 
+read_exact			    fn read_exact(&mut self, buf: &mut [u8]) -> io::Result<()> 
+read_exact_slice			    fn read_exact_slice() 
 read_given_char			    fn read_given_char(&mut self, c: char) -> Option<char> 
 read_groups			        fn read_groups(p: &mut Parser, groups: &mut [u16; 8], limit: usize)
 read_ip_addr			    fn read_ip_addr(&mut self) -> Option<IpAddr> 
@@ -3392,9 +3463,6 @@ realpath_works			    fn realpath_works()
 realpath_works_tricky			    fn realpath_works_tricky() 
 recip			    pub fn recip(self) -> f32 { num::Float::recip(self) }
 recip			    pub fn recip(self) -> f64 { num::Float::recip(self) }
-record_os_managed_stack_bounds			pub unsafe fn record_os_managed_stack_bounds(stack_lo: usize, _stack_hi: usize) 
-record_sp_limit			            fn record_sp_limit(limit: *const c_void);
-record_sp_limit			pub unsafe fn record_sp_limit(limit: usize) 
 recursive			    pub fn recursive(&mut self, recursive: bool) -> &mut Self 
 recursive_mkdir			    fn recursive_mkdir() 
 recursive_mkdir_failure			    fn recursive_mkdir_failure() 
@@ -3412,6 +3480,8 @@ recv_from			    pub fn recv_from(&self, buf: &mut [u8]) -> io::Result<(usize, So
 recv_from			    pub fn recv_from(&self, buf: &mut [u8]) -> io::Result<(usize, SocketAddr)> 
 recv_from_outside_runtime			    fn recv_from_outside_runtime() 
 refcell_vec			    fn refcell_vec() 
+reference_tls_used			    unsafe fn reference_tls_used() 
+reference_tls_used			    unsafe fn reference_tls_used() {}
 register			pub unsafe fn register(f: Callback) -> bool 
 register_dtor			unsafe fn register_dtor(key: Key, dtor: Dtor) 
 register_dtor			        unsafe fn register_dtor(&self) 
@@ -3434,6 +3504,9 @@ rename			pub fn rename(old: &Path, new: &Path) -> io::Result<()>
 reparse_point			    fn reparse_point<'a>(&self,
 repeat			pub fn repeat(byte: u8) -> Repeat { Repeat { byte: byte } }
 repeat_repeats			    fn repeat_repeats() 
+replace			    fn replace(&mut self, key: K) -> Option<K> 
+replace			    fn replace(&mut self, key: Self::Key) -> Option<Self::Key>;
+replace			    pub fn replace(&mut self, value: T) -> Option<T> 
 replace			    pub fn replace(&mut self, h: SafeHash, k: K, v: V) -> (SafeHash, K, V) 
 report_overflow			pub unsafe fn report_overflow() 
 repro			        fn repro() 
@@ -3449,8 +3522,8 @@ rev_move_buckets			    unsafe fn rev_move_buckets(&mut self) -> RevMoveBuckets<K
 rmdir			pub fn rmdir(p: &Path) -> io::Result<()> 
 rmdir			pub fn rmdir(p: &Path) -> io::Result<()> 
 robin_hood			fn robin_hood<'a, K: 'a, V: 'a>(mut bucket: FullBucketMut<'a, K, V>,
-round			    pub fn round(self) -> f32 { num::Float::round(self) }
-round			    pub fn round(self) -> f64 { num::Float::round(self) }
+round			    pub fn round(self) -> f32 
+round			    pub fn round(self) -> f64 
 round_up			fn round_up(unrounded: usize, align: usize) -> usize 
 round_up_to_next			fn round_up_to_next(unrounded: usize, target_alignment: usize) -> usize 
 rt			pub mod rt;
@@ -3480,8 +3553,6 @@ same			    fn same()
 sched_yield			    fn sched_yield() -> libc::c_int;
 scope_id			    pub fn scope_id(&self) -> u32 { ntoh(self.inner.sin6_scope_id) }
 scope_item_allowed			    fn scope_item_allowed() 
-scoped			    pub fn scoped<'a, T, F>(self, f: F) -> io::Result<JoinGuard<'a, T>> where
-scoped			pub fn scoped<'a, T, F>(f: F) -> JoinGuard<'a, T> where
 search			    fn search<'a, Q: ?Sized>(&'a self, q: &Q) -> Option<FullBucketImm<'a, K, V>>
 search_entry_hashed			fn search_entry_hashed<'a, K: Eq, V>(table: &'a mut RawTable<K,V>, hash: SafeHash, k: K)
 search_hashed			fn search_hashed<K, V, M, F>(table: M,
@@ -3489,7 +3560,6 @@ search_mut			    fn search_mut<'a, Q: ?Sized>(&'a mut self, q: &Q) -> Option<Ful
 search_path			    pub fn search_path() -> Vec<PathBuf> 
 second			        fn second<A, B>((_, b): (A, B)) -> B { b }
 secs			    fn secs() 
-secs			    pub fn secs(&self) -> u64 { self.as_secs() }
 security_attributes			    pub fn security_attributes(&mut self, attrs: libc::LPSECURITY_ATTRIBUTES) 
 seek			    fn seek(&mut self, pos: SeekFrom) -> io::Result<u64> 
 seek			            fn seek(&mut self, pos: SeekFrom) -> io::Result<u64> 
@@ -3524,6 +3594,8 @@ send_to			    pub fn send_to<A: ToSocketAddrs>(&self, buf: &[u8], addr: A)
 send_to			    pub fn send_to(&self, buf: &[u8], dst: &SocketAddr) -> io::Result<usize> 
 sent			    pub fn sent(&self) -> bool 
 separator			    fn separator() -> &'static str 
+session_leader			    fn session_leader(&mut self, on: bool) -> &mut process::Command 
+session_leader			    fn session_leader(&mut self, on: bool) -> &mut process::Command;
 set			pub mod set;
 set			pub fn set(stack_guard: Option<usize>, thread: Thread) 
 set			    pub fn set(&self, val: *mut u8) 
@@ -3533,30 +3605,18 @@ set			pub unsafe fn set(key: Key, value: *mut u8)
 set			        pub unsafe fn set(&self, ptr: *mut T) { self.inner.set(ptr as *mut _) }
 set			        pub unsafe fn set(&self, ptr: *mut T) { self.inner.set(ptr); }
 set			    pub fn set<R, F>(&'static self, t: &T, cb: F) -> R where
-set_broadcast			    pub fn set_broadcast(&self, on: bool) -> io::Result<()> 
-set_broadcast			    pub fn set_broadcast(&self, on: bool) -> io::Result<()> 
 set_cloexec			    pub fn set_cloexec(&self) 
 set_current_dir			pub fn set_current_dir<P: AsRef<Path>>(p: P) -> io::Result<()> 
 set_current_dir_works			    fn set_current_dir_works() 
-set_exit_status			pub fn set_exit_status(code: i32) 
 set_extension			    pub fn set_extension<S: AsRef<OsStr>>(&mut self, extension: S) -> bool 
 set_file_name			    pub fn set_file_name<S: AsRef<OsStr>>(&mut self, file_name: S) 
-set_file_times			pub fn set_file_times<P: AsRef<Path>>(path: P, accessed: u64,
-set_keepalive			    pub fn set_keepalive(&self, seconds: Option<u32>) -> io::Result<()> 
-set_keepalive			    pub fn set_keepalive(&self, seconds: Option<u32>) -> io::Result<()> 
 set_len			    pub fn set_len(&self, size: u64) -> io::Result<()> 
-set_membership			    fn set_membership(&self, addr: &IpAddr, opt: c_int) -> io::Result<()> 
 set_mode			    fn set_mode(&mut self, mode: raw::mode_t) 
 set_mode			    fn set_mode(&mut self, mode: raw::mode_t);
 set_mode			    pub fn set_mode(&mut self, mode: mode_t) 
-set_multicast_loop			    pub fn set_multicast_loop(&self, on: bool) -> io::Result<()> 
-set_multicast_loop			    pub fn set_multicast_loop(&self, on: bool) -> io::Result<()> 
-set_multicast_time_to_live			    pub fn set_multicast_time_to_live(&self, ttl: i32) -> io::Result<()> 
 set_name			    pub fn set_name(name: &str) 
 set_name			    pub fn set_name(_name: &str) 
 set_no_inherit			    fn set_no_inherit(&self) -> io::Result<()> 
-set_nodelay			    pub fn set_nodelay(&self, nodelay: bool) -> io::Result<()> 
-set_nodelay			    pub fn set_nodelay(&self, nodelay: bool) -> io::Result<()> 
 set_panic			pub fn set_panic(sink: Box<Write + Send>) -> Option<Box<Write + Send>> 
 set_perm			pub fn set_perm(p: &Path, perm: FilePermissions) -> io::Result<()> 
 set_perm			pub fn set_perm(p: &Path, perm: FilePermissions) -> io::Result<()> 
@@ -3569,9 +3629,6 @@ set_read_timeout			    pub fn set_read_timeout(&self, dur: Option<Duration>) -> 
 set_readonly			    pub fn set_readonly(&mut self, readonly: bool) 
 set_readonly			    pub fn set_readonly(&mut self, readonly: bool) 
 set_readonly			    pub fn set_readonly(&mut self, readonly: bool) 
-set_tcp_keepalive			    fn set_tcp_keepalive(&self, _seconds: u32) -> io::Result<()> 
-set_tcp_keepalive			    fn set_tcp_keepalive(&self, seconds: u32) -> io::Result<()> 
-set_time_to_live			    pub fn set_time_to_live(&self, ttl: i32) -> io::Result<()> 
 set_timeout			    pub fn set_timeout(&self, dur: Option<Duration>, kind: libc::c_int) -> io::Result<()> 
 set_timeout			    pub fn set_timeout(&self, dur: Option<Duration>, kind: libc::c_int) -> io::Result<()> 
 set_var			pub fn set_var<K: AsRef<OsStr>, V: AsRef<OsStr>>(k: K, v: V) 
@@ -3674,7 +3731,6 @@ smoke_shared			    fn smoke_shared()
 smoke_shared_port_gone			    fn smoke_shared_port_gone() 
 smoke_shared_port_gone2			    fn smoke_shared_port_gone2() 
 smoke_static			    fn smoke_static() 
-smoke_test			        fn smoke_test() 
 smoke_test_ip6			    fn smoke_test_ip6() 
 smoke_threads			    fn smoke_threads() 
 sockaddr_to_addr			fn sockaddr_to_addr(storage: &libc::sockaddr_storage,
@@ -3687,7 +3743,6 @@ sockname			fn sockname<F>(f: F) -> io::Result<SocketAddr>
 soft_link			pub fn soft_link<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q) -> io::Result<()> 
 span			    pub fn span<F>(f: F) -> Duration where F: FnOnce() 
 spawn			    pub fn spawn(&mut self) -> io::Result<Child> 
-spawn			    pub fn spawn<F>(blk: F) -> Future<A>
 spawn			    pub fn spawn(cfg: &Command,
 spawn			    pub fn spawn(cfg: &Command,
 spawn			    pub fn spawn<F, T>(self, f: F) -> io::Result<JoinHandle<T>> where
@@ -3698,16 +3753,14 @@ split			    fn split()
 split			    fn split(self, byte: u8) -> Split<Self> where Self: Sized 
 split_file_at_dot			fn split_file_at_dot(file: &OsStr) -> (Option<&OsStr>, Option<&OsStr>) 
 split_paths			pub fn split_paths<T: AsRef<OsStr> + ?Sized>(unparsed: &T) -> SplitPaths 
-split_paths			pub fn split_paths<'a>(unparsed: &'a OsStr) -> SplitPaths<'a> 
+split_paths			pub fn split_paths(unparsed: &OsStr) -> SplitPaths 
 split_paths			pub fn split_paths(unparsed: &OsStr) -> SplitPaths 
 split_paths_unix			    fn split_paths_unix() 
 split_paths_windows			    fn split_paths_windows() 
 spsc_queue			mod spsc_queue;
-sqrt			    pub fn sqrt(self) -> f32 { num::Float::sqrt(self) }
-sqrt			    pub fn sqrt(self) -> f64 { num::Float::sqrt(self) }
+sqrt			    pub fn sqrt(self) -> f32 
+sqrt			    pub fn sqrt(self) -> f64 
 square			        fn square(i: i32) -> i32 { i * i }
-stack			pub mod stack;
-stack_exhausted			extern fn stack_exhausted() 
 stack_guard			pub fn stack_guard() -> Option<usize> 
 stack_overflow			pub mod stack_overflow;
 stack_overflow			pub mod stack_overflow;
@@ -3741,7 +3794,6 @@ static_smoke			    fn static_smoke()
 static_smoke			    fn static_smoke() 
 statik			    fn statik() 
 status			    pub fn status(&mut self) -> io::Result<ExitStatus> 
-std			mod std 
 std_error::Error for CharsError			impl std_error::Error for CharsError 
 stderr			pub fn stderr() -> Stderr 
 stderr			    pub fn stderr(&mut self, cfg: Stdio) -> &mut Command 
@@ -3782,6 +3834,7 @@ subsec_nanos			    pub fn subsec_nanos(&self) -> u32 { self.nanos }
 success			    pub fn success(&self) -> bool 
 success			    pub fn success(&self) -> bool 
 success			    pub fn success(&self) -> bool 
+super::Recover for HashMap			impl<K, S, Q: ?Sized> super::Recover<Q> for HashMap<K, (), S>
 symbol			    pub unsafe fn symbol(handle: *mut u8, symbol: *const libc::c_char) -> *mut u8 
 symbol			    pub unsafe fn symbol(handle: *mut u8,
 symbol			    pub unsafe fn symbol<T>(&self, symbol: &str) -> Result<*mut T, String> 
@@ -3812,10 +3865,11 @@ sync_tests			mod sync_tests
 syscall			            fn syscall(number: libc::c_long, ...) -> libc::c_long;
 table			mod table;
 table			    pub fn table(&self) -> &M 
+take			    fn take(&mut self, key: &Q) -> Option<K> 
+take			    fn take(&mut self, key: &Q) -> Option<Self::Key>;
+take			    pub fn take<Q: ?Sized>(&mut self, value: &Q) -> Option<T>
 take			    pub fn take(mut self) -> (EmptyBucket<K, V, M>, K, V) 
 take			    fn take(self, limit: u64) -> Take<Self> where Self: Sized 
-take			    pub fn take() -> Option<Vec<Vec<u8>>> 
-take			pub fn take() -> Option<Vec<Vec<u8>>> { imp::take() }
 take_eof			    fn take_eof() 
 take_some_bytes			    fn take_some_bytes() 
 take_to_wake			    fn take_to_wake(&mut self) -> SignalToken 
@@ -3830,9 +3884,6 @@ tanh			        pub fn tanh(n: c_double) -> c_double;
 tanh			    pub fn tanh(self) -> f64 
 tanhf			        pub fn tanhf(n: c_float) -> c_float;
 tanhf			        pub unsafe fn tanhf(n: c_float) -> c_float 
-target_get_sp_limit			    unsafe fn target_get_sp_limit() -> usize 
-target_record_sp_limit			    unsafe fn target_record_sp_limit(_: usize) 
-target_record_sp_limit			    unsafe fn target_record_sp_limit(limit: usize) 
 tcp			mod tcp;
 tcp_clone_smoke			    fn tcp_clone_smoke() 
 tcp_clone_two_read			    fn tcp_clone_two_read() 
@@ -3842,7 +3893,6 @@ tee			    fn tee()
 temp_dir			pub fn temp_dir() -> PathBuf 
 temp_dir			pub fn temp_dir() -> PathBuf 
 temp_dir			pub fn temp_dir() -> PathBuf 
-term			        unsafe fn term(signum: libc::c_int) -> ! 
 test			    fn test() 
 test			mod test 
 test			    fn test() 
@@ -3869,9 +3919,6 @@ tests			mod tests
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
-tests			mod tests 
-tests			mod tests 
-tests			    mod tests 
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
@@ -3909,11 +3956,10 @@ thread_local			pub mod thread_local;
 thread_rng			pub fn thread_rng() -> ThreadRng 
 thread_start			        extern fn thread_start(main: *mut libc::c_void) -> *mut libc::c_void 
 thread_start			        extern "system" fn thread_start(main: *mut libc::c_void) -> DWORD 
-thunk			pub mod thunk;
 time			pub mod time;
 time			pub mod time;
 time			pub mod time;
-time_to_live			    pub fn time_to_live(&self, ttl: i32) -> io::Result<()> 
+timed_out			    pub fn timed_out(&self) -> bool 
 timeout			    pub fn timeout(&self, kind: libc::c_int) -> io::Result<Option<Duration>> 
 timeout			    pub fn timeout(&self, kind: libc::c_int) -> io::Result<Option<Duration>> 
 timeouts			    fn timeouts() 
@@ -3982,11 +4028,12 @@ to_utf16			pub fn to_utf16(s: &Path) -> Vec<u16>
 to_utf16_os			fn to_utf16_os(s: &OsStr) -> Vec<u16> 
 tokens			pub fn tokens() -> (WaitToken, SignalToken) 
 trace_fn			    extern fn trace_fn(ctx: *mut uw::_Unwind_Context,
+tracing			mod tracing;
 translate_status			fn translate_status(status: c_int) -> ExitStatus 
 trim_left			    fn trim_left(&mut self) 
 trim_right			    fn trim_right(&mut self) 
-trunc			    pub fn trunc(self) -> f32 { num::Float::trunc(self) }
-trunc			    pub fn trunc(self) -> f64 { num::Float::trunc(self) }
+trunc			    pub fn trunc(self) -> f32 
+trunc			    pub fn trunc(self) -> f64 
 truncate			    pub fn truncate(&mut self, truncate: bool) -> &mut OpenOptions 
 truncate			    pub fn truncate(&mut self, new_len: usize) 
 truncate			    pub fn truncate(&mut self, truncate: bool) 
@@ -4044,7 +4091,6 @@ uid			    fn uid(&mut self, id: uid_t) -> &mut process::Command
 uid			    fn uid(&mut self, id: uid_t) -> &mut process::Command;
 uid_to_root_fails			    fn uid_to_root_fails() 
 uid_works			    fn uid_works() 
-uint_macros			mod uint_macros;
 unblocks			    fn unblocks() 
 unicode_path_exists			    fn unicode_path_exists() 
 unicode_path_is_dir			    fn unicode_path_is_dir() 
@@ -4068,11 +4114,7 @@ upgrade			    pub fn upgrade(&mut self, up: Receiver<T>) -> UpgradeResult
 usable_capacity			    fn usable_capacity(&self, cap: usize) -> usize 
 util			mod util;
 util			pub mod util;
-utime			    fn utime() 
-utime_noexist			    fn utime_noexist() 
 utimes			    pub fn utimes(filename: *const libc::c_char,
-utimes			pub fn utimes(p: &Path, atime: u64, mtime: u64) -> io::Result<()> 
-utimes			pub fn utimes(p: &Path, atime: u64, mtime: u64) -> io::Result<()> 
 uw			mod uw 
 v1			pub mod v1;
 validate			    fn validate(buf: &Vec<u8>, good_read_len: usize) 
@@ -4083,7 +4125,7 @@ vars			pub fn vars() -> Vars
 vars_os			pub fn vars_os() -> VarsOs 
 vec_seek_before_0			    fn vec_seek_before_0() 
 vec_seek_past_end			    fn vec_seek_past_end() 
-vectored_handler			extern "system" fn vectored_handler(ExceptionInfo: *mut EXCEPTION_POINTERS) -> LONG 
+vectored_handler			extern "system" fn vectored_handler(ExceptionInfo: *mut c::EXCEPTION_POINTERS)
 verify			    fn verify(&self, mutex: &sys_mutex::Mutex) 
 w			        fn w(v: &[u8]) -> &Wtf8 { unsafe { Wtf8::from_bytes_unchecked(v) } }
 wait			    pub fn wait(&mut self) -> io::Result<ExitStatus> 
@@ -4119,7 +4161,6 @@ windows			    fn windows()
 with			    fn with<R, F>(f: F) -> Option<R> where F: FnOnce(&mut ThreadInfo) -> R 
 with			    pub fn with<F, R>(&'static self, f: F) -> R
 with			    pub fn with<R, F>(&'static self, cb: F) -> R where
-with_capacities			    pub fn with_capacities(reader_cap: usize, writer_cap: usize, inner: S)
 with_capacity			    pub fn with_capacity(capacity: usize) -> HashMap<K, V, RandomState> 
 with_capacity			    pub fn with_capacity(capacity: usize) -> HashSet<T, RandomState> 
 with_capacity			    pub fn with_capacity(cap: usize, inner: R) -> BufReader<R> 
@@ -4134,7 +4175,6 @@ with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashMap<K, V, S>
 with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashSet<T, S> 
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 write			    pub fn write(&mut self, write: bool) -> &mut OpenOptions 
-write			            fn write(&mut self, b: &[u8]) -> io::Result<usize> { Ok(b.len()) }
 write			            fn write(&mut self, buf: &[u8]) -> io::Result<usize> { Ok(buf.len()) }
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
@@ -4153,6 +4193,7 @@ write			    pub fn write(&'static self) -> LockResult<RwLockWriteGuard<'static, 
 write			    pub fn write(&self) -> LockResult<RwLockWriteGuard<T>> 
 write			    pub fn write(&self, buf: &[u8]) -> io::Result<usize> 
 write			    pub unsafe fn write(&self) { self.0.write() }
+write			pub fn write(w: &mut Write) -> io::Result<()> 
 write			pub fn write(w: &mut Write) -> io::Result<()> 
 write			    pub fn write(&self, buf: &[u8]) -> io::Result<usize> 
 write			    pub fn write(&mut self, write: bool) 

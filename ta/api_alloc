@@ -21,7 +21,6 @@ Clone for Box			impl<T: Clone> Clone for Box<[T]>
 Clone for Rc			impl<T: ?Sized> Clone for Rc<T> 
 Clone for Weak			impl<T: ?Sized> Clone for Weak<T> 
 Clone for Weak			impl<T: ?Sized> Clone for Weak<T> 
-Console			        struct Console(HANDLE);
 Cycle			        struct Cycle 
 Cycle			        struct Cycle 
 Default for Arc			impl<T: Default> Default for Arc<T> 
@@ -53,17 +52,9 @@ FnOnce for Box			impl<'a,A,R> FnOnce<A> for Box<FnBox<A,Output=R>+Send+'a>
 Foo			    struct Foo { inner: Arc<i32> }
 Foo			    trait Foo 
 Foo for Bar			    impl Foo for Bar 
-GetProcessHeap			        fn GetProcessHeap() -> HANDLE;
-GetStdHandle			        fn GetStdHandle(nStdHandle: DWORD) -> HANDLE;
-HEAP_SUMMARY			    struct HEAP_SUMMARY 
 Hash for Arc			impl<T: ?Sized + Hash> Hash for Arc<T> 
 Hash for Box			impl<T: ?Sized + Hash> Hash for Box<T> 
 Hash for Rc			impl<T: ?Sized+Hash> Hash for Rc<T> 
-Header			    struct Header(*mut u8);
-HeapAlloc			        fn HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: SIZE_T) -> LPVOID;
-HeapFree			        fn HeapFree(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID) -> BOOL;
-HeapReAlloc			        fn HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID, dwBytes: SIZE_T) -> LPVOID;
-HeapSummary			        fn HeapSummary(hHeap: HANDLE, dwFlags: DWORD, lpSummary: LPHEAP_SUMMARY) -> BOOL;
 InPlace for IntermediateBox			impl<T> InPlace<T> for IntermediateBox<T> 
 IntermediateBox			pub struct IntermediateBox<T: ?Sized>
 Iterator for Box			impl<I: Iterator + ?Sized> Iterator for Box<I> 
@@ -88,23 +79,36 @@ RcBox			struct RcBox<T: ?Sized>
 RcBoxPtr			trait RcBoxPtr<T: ?Sized> 
 RcBoxPtr for Rc			impl<T: ?Sized> RcBoxPtr<T> for Rc<T> 
 RcBoxPtr for Weak			impl<T: ?Sized> RcBoxPtr<T> for Weak<T> 
+Send for Arc			unsafe impl<T: ?Sized + Sync + Send> Send for Arc<T> { }
+Send for ArcInner			unsafe impl<T: ?Sized + Sync + Send> Send for ArcInner<T> {}
+Send for Weak			unsafe impl<T: ?Sized + Sync + Send> Send for Weak<T> { }
+Sync for Arc			unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> { }
+Sync for ArcInner			unsafe impl<T: ?Sized + Sync + Send> Sync for ArcInner<T> {}
+Sync for Weak			unsafe impl<T: ?Sized + Sync + Send> Sync for Weak<T> { }
 Test			struct Test;
 Weak			impl<T: ?Sized> Weak<T> 
 Weak			pub struct Weak<T: ?Sized> 
 Weak			impl<T: ?Sized> Weak<T> 
 Weak			pub struct Weak<T: ?Sized> 
-Write for Console			        impl Write for Console 
-align_ptr			    unsafe fn align_ptr(ptr: *mut u8, align: usize) -> *mut u8 
-align_to_flags			    fn align_to_flags(align: usize) -> c_int 
-alignment_header_size			    fn alignment_header_size() 
-alloc_guard			fn alloc_guard(_alloc_size: usize) { }
+__rust_allocate			    fn __rust_allocate(size: usize, align: usize) -> *mut u8;
+__rust_deallocate			    fn __rust_deallocate(ptr: *mut u8, old_size: usize, align: usize);
+__rust_reallocate			    fn __rust_reallocate(ptr: *mut u8, old_size: usize, size: usize,
+__rust_reallocate_inplace			    fn __rust_reallocate_inplace(ptr: *mut u8, old_size: usize, size: usize,
+__rust_usable_size			    fn __rust_usable_size(size: usize, align: usize) -> usize;
 alloc_guard			fn alloc_guard(alloc_size: usize) 
 alloc_owned_small			    fn alloc_owned_small(b: &mut Bencher) 
-allocate			    pub unsafe fn allocate(size: usize, align: usize) -> *mut u8 
 allocate			pub unsafe fn allocate(size: usize, align: usize) -> *mut u8 
 any_move			fn any_move() 
 arc			pub mod arc;
 basic_reallocate_inplace_noop			    fn basic_reallocate_inplace_noop() 
+borrow			    fn borrow(&self) -> &T { &**self }
+borrow			    fn borrow(&self) -> &T { &**self }
+borrow			    fn borrow(&self) -> &T { &**self }
+borrow::Borrow for Arc			impl<T: ?Sized> borrow::Borrow<T> for Arc<T> 
+borrow::Borrow for Box			impl<T: ?Sized> borrow::Borrow<T> for Box<T> 
+borrow::Borrow for Rc			impl<T: ?Sized> borrow::Borrow<T> for Rc<T> 
+borrow::BorrowMut for Box			impl<T: ?Sized> borrow::BorrowMut<T> for Box<T> 
+borrow_mut			    fn borrow_mut(&mut self) -> &mut T { &mut **self }
 boxed			mod boxed { pub use std::boxed::{Box, HEAP}; }
 boxed			pub mod boxed;
 boxed_test			mod boxed_test;
@@ -123,9 +127,6 @@ clone_from			    fn clone_from(&mut self, source: &Box<T>)
 cmp			    fn cmp(&self, other: &Arc<T>) -> Ordering { (**self).cmp(&**other) }
 cmp			    fn cmp(&self, other: &Box<T>) -> Ordering 
 cmp			    fn cmp(&self, other: &Rc<T>) -> Ordering { (**self).cmp(&**other) }
-deallocate			    pub unsafe fn deallocate(ptr: *mut u8, _old_size: usize, _align: usize) 
-deallocate			    pub unsafe fn deallocate(ptr: *mut u8, _old_size: usize, align: usize) 
-deallocate			    pub unsafe fn deallocate(ptr: *mut u8, old_size: usize, align: usize) 
 deallocate			pub unsafe fn deallocate(ptr: *mut u8, old_size: usize, align: usize) 
 dec_strong			    fn dec_strong(&self) { self.inner().strong.set(self.strong() - 1); }
 dec_weak			    fn dec_weak(&self) { self.inner().weak.set(self.weak() - 1); }
@@ -141,8 +142,8 @@ deref_mut			    fn deref_mut(&mut self) -> &mut T { &mut **self }
 double			    pub fn double(&mut self) 
 downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any + Send>> 
 downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any>> 
-downgrade			    pub fn downgrade(&self) -> Weak<T> 
-downgrade			    pub fn downgrade(&self) -> Weak<T> 
+downgrade			    pub fn downgrade(this: &Self) -> Weak<T> 
+downgrade			    pub fn downgrade(this: &Self) -> Weak<T> 
 drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			            fn drop(&mut self) 
@@ -182,12 +183,9 @@ ge			    fn ge(&self, other: &Box<T>) -> bool { PartialOrd::ge(&**self, &**other
 ge			    fn ge(&self, other: &Rc<T>) -> bool { **self >= **other }
 get			        fn get(&self) -> u32 
 get			        fn get(&self) -> u32;
-get_header			    unsafe fn get_header<'a>(ptr: *mut u8) -> &'a mut Header 
-get_mut			    pub fn get_mut(this: &mut Arc<T>) -> Option<&mut T> 
-get_mut			pub fn get_mut<T: ?Sized>(this: &mut Arc<T>) -> Option<&mut T> 
+get_mut			    pub fn get_mut(this: &mut Self) -> Option<&mut T> 
 get_mut			    fn get_mut() 
-get_mut			    pub fn get_mut(rc: &mut Rc<T>) -> Option<&mut T> 
-get_mut			pub fn get_mut<T>(rc: &mut Rc<T>) -> Option<&mut T> { Rc::get_mut(rc) }
+get_mut			    pub fn get_mut(this: &mut Self) -> Option<&mut T> 
 gt			    fn gt(&self, other: &Arc<T>) -> bool { *(*self) > *(*other) }
 gt			    fn gt(&self, other: &Box<T>) -> bool { PartialOrd::gt(&**self, &**other) }
 gt			    fn gt(&self, other: &Rc<T>) -> bool { **self > **other }
@@ -196,7 +194,6 @@ hash			    fn hash<H: hash::Hasher>(&self, state: &mut H)
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 heap			pub mod heap;
 homura			    fn homura<T: Deref<Target=i32>>(_: T) { }
-imp			mod imp 
 inc_strong			    fn inc_strong(&self) 
 inc_weak			    fn inc_weak(&self) 
 inner			    fn inner(&self) -> &ArcInner<T> 
@@ -205,29 +202,22 @@ inner			    fn inner(&self) -> &RcBox<T>;
 into_box			            unsafe fn into_box(self) -> Box<[T]> 
 into_box			    pub unsafe fn into_box(self) -> Box<[T]> 
 into_raw			    pub fn into_raw(b: Box<T>) -> *mut T 
-into_raw			pub fn into_raw<T : ?Sized>(b: Box<T>) -> *mut T 
 is_unique			    fn is_unique(&mut self) -> bool 
 is_unique			    fn is_unique() 
-is_unique			    pub fn is_unique(rc: &Rc<T>) -> bool 
-is_unique			pub fn is_unique<T>(rc: &Rc<T>) -> bool { Rc::is_unique(rc) }
-je_malloc_stats_print			        fn je_malloc_stats_print(write_cb: Option<extern "C" fn(cbopaque: *mut c_void,
-je_mallocx			        fn je_mallocx(size: size_t, flags: c_int) -> *mut c_void;
-je_nallocx			        fn je_nallocx(size: size_t, flags: c_int) -> size_t;
-je_rallocx			        fn je_rallocx(ptr: *mut c_void, size: size_t, flags: c_int) -> *mut c_void;
-je_sdallocx			        fn je_sdallocx(ptr: *mut c_void, size: size_t, flags: c_int);
-je_xallocx			        fn je_xallocx(ptr: *mut c_void, size: size_t, extra: size_t, flags: c_int) -> size_t;
+is_unique			    pub fn is_unique(this: &Self) -> bool 
 le			    fn le(&self, other: &Arc<T>) -> bool { *(*self) <= *(*other) }
 le			    fn le(&self, other: &Box<T>) -> bool { PartialOrd::le(&**self, &**other) }
 le			    fn le(&self, other: &Rc<T>) -> bool { **self <= **other }
 lt			    fn lt(&self, other: &Arc<T>) -> bool { *(*self) < *(*other) }
 lt			    fn lt(&self, other: &Box<T>) -> bool { PartialOrd::lt(&**self, &**other) }
 lt			    fn lt(&self, other: &Rc<T>) -> bool { **self < **other }
+make_mut			    pub fn make_mut(this: &mut Self) -> &mut T 
+make_mut			    pub fn make_mut(this: &mut Self) -> &mut T 
 make_place			    fn make_place() -> IntermediateBox<T> { make_place() }
 make_place			    fn make_place(self) -> IntermediateBox<T> 
 make_place			fn make_place<T>() -> IntermediateBox<T> 
-make_unique			    pub fn make_unique(this: &mut Arc<T>) -> &mut T 
+make_unique			    pub fn make_unique(this: &mut Self) -> &mut T 
 make_unique			    pub fn make_unique(&mut self) -> &mut T 
-mallocx_align			    fn mallocx_align(a: usize) -> c_int { a.trailing_zeros() as c_int }
 manually_share_arc			    fn manually_share_arc() 
 ne			    fn ne(&self, other: &Arc<T>) -> bool { *(*self) != *(*other) }
 ne			    fn ne(&self, other: &Box<T>) -> bool { PartialEq::ne(&**self, &**other) }
@@ -243,58 +233,38 @@ partial_cmp			    fn partial_cmp(&self, other: &Arc<T>) -> Option<Ordering>
 partial_cmp			    fn partial_cmp(&self, other: &Box<T>) -> Option<Ordering> 
 partial_cmp			    fn partial_cmp(&self, other: &Rc<T>) -> Option<Ordering> 
 pointer			    fn pointer(&mut self) -> *mut T 
-posix_memalign			        fn posix_memalign(memptr: *mut *mut libc::c_void,
 ptr			    pub fn ptr(&self) -> *mut T 
 raw_sized			fn raw_sized() 
 raw_trait			fn raw_trait() 
 raw_vec			pub mod raw_vec;
 rc			pub mod rc;
-reallocate			    pub unsafe fn reallocate(ptr: *mut u8, _old_size: usize, size: usize, align: usize) -> *mut u8 
-reallocate			    pub unsafe fn reallocate(ptr: *mut u8, old_size: usize, size: usize, align: usize) -> *mut u8 
 reallocate			pub unsafe fn reallocate(ptr: *mut u8, old_size: usize, size: usize, align: usize) -> *mut u8 
-reallocate_inplace			    pub unsafe fn reallocate_inplace(_ptr: *mut u8, old_size: usize, _size: usize,
-reallocate_inplace			    pub unsafe fn reallocate_inplace(ptr: *mut u8, _old_size: usize, size: usize,
-reallocate_inplace			    pub unsafe fn reallocate_inplace(ptr: *mut u8, old_size: usize, size: usize,
 reallocate_inplace			pub unsafe fn reallocate_inplace(ptr: *mut u8, old_size: usize, size: usize,
 reserve			    pub fn reserve(&mut self, used_cap: usize, needed_extra_cap: usize) 
 reserve_exact			    pub fn reserve_exact(&mut self, used_cap: usize, needed_extra_cap: usize) 
-rust_allocate			        fn rust_allocate(size: usize, align: usize) -> *mut u8;
-rust_deallocate			        fn rust_deallocate(ptr: *mut u8, old_size: usize, align: usize);
-rust_reallocate			        fn rust_reallocate(ptr: *mut u8, old_size: usize, size: usize, align: usize) -> *mut u8;
-rust_reallocate_inplace			        fn rust_reallocate_inplace(ptr: *mut u8, old_size: usize, size: usize,
-rust_stats_print			        fn rust_stats_print();
-rust_usable_size			        fn rust_usable_size(size: usize, align: usize) -> usize;
 set			        fn set(&mut self, value: u32) 
 set			        fn set(&mut self, value: u32);
 show_arc			    fn show_arc() 
 shrink_to_fit			    pub fn shrink_to_fit(&mut self, amount: usize) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) { (**self).size_hint() }
-stats_print			    pub fn stats_print() 
-stats_print			    pub fn stats_print() {}
-stats_print			pub fn stats_print() 
 strong			    fn strong(&self) -> usize { self.inner().strong.get() }
-strong_count			    pub fn strong_count(this: &Arc<T>) -> usize 
-strong_count			pub fn strong_count<T: ?Sized>(this: &Arc<T>) -> usize { Arc::strong_count(this) }
-strong_count			    pub fn strong_count(this: &Rc<T>) -> usize { this.strong() }
-strong_count			pub fn strong_count<T: ?Sized>(this: &Rc<T>) -> usize { Rc::strong_count(this) }
+strong_count			    pub fn strong_count(this: &Self) -> usize 
+strong_count			    pub fn strong_count(this: &Self) -> usize { this.strong() }
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
 try_unwrap			    fn try_unwrap() 
-try_unwrap			    pub fn try_unwrap(rc: Rc<T>) -> Result<T, Rc<T>> 
-try_unwrap			pub fn try_unwrap<T>(rc: Rc<T>) -> Result<T, Rc<T>> { Rc::try_unwrap(rc) }
+try_unwrap			    pub fn try_unwrap(this: Self) -> Result<T, Self> 
+try_unwrap			    fn try_unwrap() 
+try_unwrap			    pub fn try_unwrap(this: Self) -> Result<T, Self> 
 unsafe_no_drop_flag_needs_drop			    pub fn unsafe_no_drop_flag_needs_drop(&self) -> bool 
 upgrade			    pub fn upgrade(&self) -> Option<Arc<T>> 
 upgrade			    pub fn upgrade(&self) -> Option<Rc<T>> 
-usable_size			    pub fn usable_size(size: usize, _align: usize) -> usize 
-usable_size			    pub fn usable_size(size: usize, align: usize) -> usize 
 usable_size			pub fn usable_size(size: usize, align: usize) -> usize 
 weak			    fn weak(&self) -> usize { self.inner().weak.get() }
-weak_count			    pub fn weak_count(this: &Arc<T>) -> usize 
-weak_count			pub fn weak_count<T: ?Sized>(this: &Arc<T>) -> usize { Arc::weak_count(this) }
-weak_count			    pub fn weak_count(this: &Rc<T>) -> usize { this.weak() - 1 }
-weak_count			pub fn weak_count<T: ?Sized>(this: &Rc<T>) -> usize { Rc::weak_count(this) }
+weak_count			    pub fn weak_count(this: &Self) -> usize 
+weak_count			    pub fn weak_count(this: &Self) -> usize { this.weak() - 1 }
 weak_self_cyclic			    fn weak_self_cyclic() 
 weak_self_cyclic			    fn weak_self_cyclic() 
 with_capacity			    pub fn with_capacity(cap: usize) -> Self 
-write_str			            fn write_str(&mut self, s: &str) -> Result 
+would_unwrap			    pub fn would_unwrap(this: &Self) -> bool 

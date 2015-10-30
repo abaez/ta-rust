@@ -9,7 +9,7 @@ AsPrettyJson			pub struct AsPrettyJson<'a, T: 'a> { inner: &'a T, indent: Option
 Builder			pub struct Builder<T> 
 Decodable			        impl<
 Decodable			impl Decodable for () 
-Decodable			pub trait Decodable 
+Decodable			pub trait Decodable: Sized 
 Decodable for Arc			impl<T:Decodable+Send+Sync> Decodable for Arc<T> 
 Decodable for Box			impl< T: Decodable> Decodable for Box<T> 
 Decodable for Box			impl< T: Decodable> Decodable for Box<[T]> 
@@ -23,7 +23,6 @@ Decodable for RefCell			impl<T: Decodable> Decodable for RefCell<T>
 Decodable for String			impl Decodable for String 
 Decodable for Vec			impl<T:Decodable> Decodable for Vec<T> 
 Decodable for VecDeque			impl<T:Decodable> Decodable for VecDeque<T> 
-Decodable for VecMap			impl<V: Decodable> Decodable for VecMap<V> 
 Decodable for bool			impl Decodable for bool 
 Decodable for char			impl Decodable for char 
 Decodable for f32			impl Decodable for f32 
@@ -64,7 +63,6 @@ Encodable for RefCell			impl<T: Encodable> Encodable for RefCell<T>
 Encodable for String			impl Encodable for String 
 Encodable for Vec			impl<T:Encodable> Encodable for Vec<T> 
 Encodable for VecDeque			impl<T: Encodable> Encodable for VecDeque<T> 
-Encodable for VecMap			impl<V: Encodable> Encodable for VecMap<V> 
 Encodable for bool			impl Encodable for bool 
 Encodable for char			impl Encodable for char 
 Encodable for f32			impl Encodable for f32 
@@ -129,15 +127,15 @@ ToJson for f32			impl ToJson for f32
 ToJson for f64			impl ToJson for f64 
 ToJson for str			impl ToJson for str 
 ToJson for string			impl ToJson for string::String 
-as_array			    pub fn as_array<'a>(&'a self) -> Option<&'a Array> 
+as_array			    pub fn as_array(&self) -> Option<&Array> 
 as_boolean			    pub fn as_boolean(&self) -> Option<bool> 
 as_f64			    pub fn as_f64(&self) -> Option<f64> 
 as_i64			    pub fn as_i64(&self) -> Option<i64> 
 as_json			pub fn as_json<T>(t: &T) -> AsJson<T> 
 as_null			    pub fn as_null(&self) -> Option<()> 
-as_object			    pub fn as_object<'a>(&'a self) -> Option<&'a Object> 
+as_object			    pub fn as_object(&self) -> Option<&Object> 
 as_pretty_json			pub fn as_pretty_json<T>(t: &T) -> AsPrettyJson<T> 
-as_string			    pub fn as_string<'a>(&'a self) -> Option<&'a str> 
+as_string			    pub fn as_string(&self) -> Option<&str> 
 as_u64			    pub fn as_u64(&self) -> Option<u64> 
 assert_stream_equal			    fn assert_stream_equal(src: &str,
 bench_from_hex			    pub fn bench_from_hex(b: &mut Bencher) 
@@ -164,7 +162,6 @@ decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashMap<K, V, S>, D::Err
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashSet<T, S>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<LinkedList<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<VecDeque<T>, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<VecMap<V>, D::Error> 
 decode			pub fn decode<T: ::Decodable>(s: &str) -> DecodeResult<T> 
 decode			            fn decode<D: Decoder>(d: &mut D) -> Result<(
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<(), D::Error> 
@@ -321,7 +318,7 @@ indents			        fn indents(source: &str) -> usize
 index			    fn index(&self, idx: &'a str) -> &Json 
 index			    fn index<'a>(&'a self, idx: usize) -> &'a Json 
 io_error_to_error			fn io_error_to_error(io: io::Error) -> ParserError 
-is_array			    pub fn is_array<'a>(&'a self) -> bool 
+is_array			    pub fn is_array(&self) -> bool 
 is_boolean			    pub fn is_boolean(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool { self.stack.is_empty() }
 is_equal_to			    pub fn is_equal_to(&self, rhs: &[StackElement]) -> bool 
@@ -329,8 +326,8 @@ is_f64			    pub fn is_f64(&self) -> bool
 is_i64			    pub fn is_i64(&self) -> bool 
 is_null			    pub fn is_null(&self) -> bool 
 is_number			    pub fn is_number(&self) -> bool 
-is_object			    pub fn is_object<'a>(&'a self) -> bool 
-is_string			    pub fn is_string<'a>(&'a self) -> bool 
+is_object			    pub fn is_object(&self) -> bool 
+is_string			    pub fn is_string(&self) -> bool 
 is_u64			    pub fn is_u64(&self) -> bool 
 json			pub mod json;
 last_event			    fn last_event(src: &str) -> JsonEvent 
