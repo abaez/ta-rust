@@ -47,7 +47,8 @@ events.connect(events.LEXER_LOADED, function (lang)
 
   buffer.tab_width = 4
   buffer.use_tabs = false
---  buffer.edge_column = 99
+  buffer.edge_column = 99
+  textadept.editing.STRIP_TRAILING_SPACES = true
 end)
 
 local function fmt()
@@ -62,7 +63,7 @@ end
 -- Rust files are run through `rustfmt` after saving and the text is formatted
 -- accordingly. If a syntax error is found it is displayed as an annotation.
 events.connect(events.FILE_AFTER_SAVE, function()
-  -- enable [rustfmt](https://github.com/nrc/rustfmt)
+  -- enable [rustfmt](https://github.com/rust-lang-nursery/rustfmt)
   if buffer:get_lexer() ~= 'rust' and not _RUSTFMT then return end
   fmt()
 end)
