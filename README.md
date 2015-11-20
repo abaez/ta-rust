@@ -1,17 +1,17 @@
 # ta-rust
-## A [Rust](http://www.rust-lang.org) module and lexer for [Textadept](http://foicica.com/textadept/).
+## A [Rust][4] module and lexer for [Textadept][5].
 
 ### DESCRIPTION
 A module/lexer for Rust.
 
 Currently, this module holds all keywords, types, and any other standard lexer
-definition described by the [Rust reference](http://doc.rust-lang.org/reference.html)
+definition described by the [Rust reference][1]
 manual. It also encompasses the vast list of snippets I use when coding,
 ctags for semi auto-complete, api references, and lint support with
-[rustfmt](https://github.com/nrc/rustfmt).
+[rustfmt][2].
 
 Now that Rust is finally stable, I'll be taking some time to put some real nice
-autocomplete using [Racer](https://github.com/phildawes/racer) and any other
+autocomplete using [Racer][3] and any other
 support later on.
 
 #### Completed:
@@ -23,16 +23,16 @@ numbers lexer definitions.
 *   autocomplete: An autocomplete working!
 
 #### To Do:
-*   autocomplete: level up the autocomplete to use [Racer](https://github.com/phildawes/racer).
+*   autocomplete: level up the autocomplete to use [Racer][3].
 *   unit test: somehow get unit test integrated better.
 *   rustdoc: Make some rustdoc integration as well, while we at it.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.4.0 (rev: [8ab8581](https://github.com/rust-lang/rust/commit/8ab8581f6921bc7a8e3fa4defffd2814372dcb15))
+*   Rust >= v1.4.0 (rev: [8ab8581][8ab8581])
 *   Textadept >= v8.2
-*   (optional) [textadept ctags](http://foicica.com/hg/ctags/)
-*   (optional) [rustfmt](https://github.com/nrc/rustfmt)
+*   (optional) [textadept ctags][6]
+*   (optional) [rustfmt][2]
 
 ### INSTALL
 Clone the repository to your `~/.textadept/modules` directory:
@@ -64,14 +64,14 @@ A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
 references. These api/tags will also be read whenever you open a rust file in
 a project containing the generated files.
 
-If you have the [ctags](http://foicica.com/hg/ctags/) you will be also to
+If you have the [ctags][6] you will be also to
 navigate directly to the source of the api reference.
 
 The generated tag/api files are updated each time you run `cargo build`
 from the `cB` command on textadept. This allows you to have one heck of an easy
 way to deal with api lookups on a project directly from textadept!
 
-If you have [rustfmt](https://github.com/nrc/rustfmt) installed or in your
+If you have [rustfmt][2] installed or in your
 path, then you can enable the init setting `_RUSTFMT` to true for your
 `_USERHOME/init.lua`, to have autocorrect for formatting of your rust code:
 
@@ -91,5 +91,10 @@ If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
     s\n         adds `;` to the end of the current line and inserts newline
     a\n         appends `///` to the next line. (good for documentation)
 
-
-
+[1]: http://doc.rust-lang.org/reference.html
+[2]: https://github.com/nrc/rustfmt
+[3]: https://github.com/phildawes/racer
+[4]: http://www.rust-lang.org
+[5]: http://foicica.com/textadept
+[6]: http://foicica.com/hg/ctags/
+[8ab8581]: https://github.com/rust-lang/rust/commit/8ab8581f6921bc7a8e3fa4defffd2814372dcb15
