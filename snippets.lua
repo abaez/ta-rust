@@ -14,7 +14,7 @@ return {
   divfn = "fn %1(name)(%2(param)) ! {\n\t%0\n}",
 
   -- closures
-  ["|"]   = "|%1(:)| %0",
+  ["|"]   = "|%1(|)",
   move    = "move |%1(:)| {\n\t%0\n})",
   -- :&
   fns     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
