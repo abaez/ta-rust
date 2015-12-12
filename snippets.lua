@@ -55,15 +55,14 @@ return {
 
   -- comments
   ["/*"]    = "/*\n\t%0\n*/",
-  ["/"]     = "/// %0",
-  ["!"]     = "//! %0",
+  ["/"]     = "//%1(/)",
 
   -- tests
   modt      = "#[cfg(test)]\nmod tests {\n\tuse super::%1(*);\n\t%0\n};",
   test      = "#[test]%0",
-  t         = "#[test]\n%1(fn)",
+  ["#t"]    = "#[test]\n%1(fn)",
   sp        = "#[should_panic]%0",
-  a         = "assert!(%1(boolean));%0",
+  ["a!"]    = "assert!(%1(boolean));%0",
   aq        = "assert_eq!(%1(result), %2(check));%0",
   panic     = "panic!(%1(error_message));%0",
   try       = "try!(%1(testing));%0",
