@@ -71,8 +71,10 @@ return {
   ["#"]     = "#%1(!)[%2(attribute)]%0",
   crate     = "extern crate %1(name);%0",
   static    = "static %1(name): %2(type) = %0;",
-  ["type"]     = "type %1(alias) = %2(type);%0",
+  const     = "const %1(name): %2(type) = %0;",
+  ["type"]  = "type %1(alias) = %2(type);%0",
   ["print"] = 'println!("{%1}\\n", %2);%0',
+  ["!!"]    = "%1(macro)!(%2(param))%0",
 
   -- tasks and communication
   ["spawn"]   = "spawn(move || {\n\t%0\n});",
