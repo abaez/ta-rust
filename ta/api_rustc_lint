@@ -1,11 +1,39 @@
 BoxPointers			impl BoxPointers 
 BoxPointers			pub struct BoxPointers;
 DropWithReprExtern			pub struct DropWithReprExtern;
+EarlyLintPass for UnusedParens			impl EarlyLintPass for UnusedParens 
 FfiResult			enum FfiResult 
 ImproperCTypes			pub struct ImproperCTypes;
 ImproperCTypesVisitor			impl<'a, 'tcx> ImproperCTypesVisitor<'a, 'tcx> 
 ImproperCTypesVisitor			struct ImproperCTypesVisitor<'a, 'tcx: 'a> 
 InvalidNoMangleItems			pub struct InvalidNoMangleItems;
+LateLintPass for BoxPointers			impl LateLintPass for BoxPointers 
+LateLintPass for DropWithReprExtern			impl LateLintPass for DropWithReprExtern 
+LateLintPass for ImproperCTypes			impl LateLintPass for ImproperCTypes 
+LateLintPass for InvalidNoMangleItems			impl LateLintPass for InvalidNoMangleItems 
+LateLintPass for MissingCopyImplementations			impl LateLintPass for MissingCopyImplementations 
+LateLintPass for MissingDebugImplementations			impl LateLintPass for MissingDebugImplementations 
+LateLintPass for MissingDoc			impl LateLintPass for MissingDoc 
+LateLintPass for MutableTransmutes			impl LateLintPass for MutableTransmutes 
+LateLintPass for NonCamelCaseTypes			impl LateLintPass for NonCamelCaseTypes 
+LateLintPass for NonShorthandFieldPatterns			impl LateLintPass for NonShorthandFieldPatterns 
+LateLintPass for NonSnakeCase			impl LateLintPass for NonSnakeCase 
+LateLintPass for NonUpperCaseGlobals			impl LateLintPass for NonUpperCaseGlobals 
+LateLintPass for PathStatements			impl LateLintPass for PathStatements 
+LateLintPass for PluginAsLibrary			impl LateLintPass for PluginAsLibrary 
+LateLintPass for RawPointerDerive			impl LateLintPass for RawPointerDerive 
+LateLintPass for Stability			impl LateLintPass for Stability 
+LateLintPass for TypeLimits			impl LateLintPass for TypeLimits 
+LateLintPass for UnconditionalRecursion			impl LateLintPass for UnconditionalRecursion 
+LateLintPass for UnsafeCode			impl LateLintPass for UnsafeCode 
+LateLintPass for UnstableFeatures			impl LateLintPass for UnstableFeatures 
+LateLintPass for UnusedAllocation			impl LateLintPass for UnusedAllocation 
+LateLintPass for UnusedAttributes			impl LateLintPass for UnusedAttributes 
+LateLintPass for UnusedImportBraces			impl LateLintPass for UnusedImportBraces 
+LateLintPass for UnusedMut			impl LateLintPass for UnusedMut 
+LateLintPass for UnusedResults			impl LateLintPass for UnusedResults 
+LateLintPass for UnusedUnsafe			impl LateLintPass for UnusedUnsafe 
+LateLintPass for WhileTrue			impl LateLintPass for WhileTrue 
 LintPass for BoxPointers			impl LintPass for BoxPointers 
 LintPass for DropWithReprExtern			impl LintPass for DropWithReprExtern 
 LintPass for ImproperCTypes			impl LintPass for ImproperCTypes 
@@ -34,7 +62,7 @@ LintPass for UnusedParens			impl LintPass for UnusedParens
 LintPass for UnusedResults			impl LintPass for UnusedResults 
 LintPass for UnusedUnsafe			impl LintPass for UnusedUnsafe 
 LintPass for WhileTrue			impl LintPass for WhileTrue 
-MethodContext			enum MethodContext 
+MethodLateContext			pub enum MethodLateContext 
 MissingCopyImplementations			pub struct MissingCopyImplementations;
 MissingDebugImplementations			impl MissingDebugImplementations 
 MissingDebugImplementations			pub struct MissingDebugImplementations 
@@ -73,82 +101,98 @@ Visitor for ImproperCTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ImproperC
 Visitor for RawPtrDeriveVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for RawPtrDeriveVisitor<'a, 'tcx> 
 WhileTrue			pub struct WhileTrue;
 ast_ty_to_normalized			fn ast_ty_to_normalized<'tcx>(tcx: &ty::ctxt<'tcx>,
+bad_style			mod bad_style;
 builtin			mod builtin;
-check_attribute			    fn check_attribute(&mut self, ctx: &Context, attr: &hir::Attribute) 
-check_attribute			    fn check_attribute(&mut self, cx: &Context, attr: &hir::Attribute) 
-check_case			    fn check_case(&self, cx: &Context, sort: &str, ident: ast::Ident, span: Span) 
-check_crate			    fn check_crate(&mut self, ctx: &Context, _: &hir::Crate) 
-check_crate			    fn check_crate(&mut self, cx: &Context, cr: &hir::Crate) 
-check_crate			    fn check_crate(&mut self, cx: &Context, krate: &hir::Crate) 
+check_attribute			    fn check_attribute(&mut self, ctx: &LateContext, attr: &ast::Attribute) 
+check_attribute			    fn check_attribute(&mut self, cx: &LateContext, attr: &ast::Attribute) 
+check_case			    fn check_case(&self, cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
+check_crate			    fn check_crate(&mut self, cx: &LateContext, cr: &hir::Crate) 
+check_crate			    fn check_crate(&mut self, ctx: &LateContext, _: &hir::Crate) 
+check_crate			    fn check_crate(&mut self, cx: &LateContext, krate: &hir::Crate) 
 check_def			    fn check_def(&mut self, sp: Span, id: ast::NodeId) 
-check_expr			    fn check_expr(&mut self, cx: &Context, e: &hir::Expr) 
-check_expr			    fn check_expr(&mut self, cx: &Context, expr: &hir::Expr) 
-check_fn			    fn check_fn(&mut self, cx: &Context, fk: FnKind, _: &hir::FnDecl,
-check_fn			    fn check_fn(&mut self, cx: &Context, fn_kind: FnKind, _: &hir::FnDecl,
-check_fn			    fn check_fn(&mut self, cx: &Context,
-check_foreign_fn			        fn check_foreign_fn(cx: &Context, decl: &hir::FnDecl) 
-check_generics			    fn check_generics(&mut self, cx: &Context, it: &hir::Generics) 
-check_heap_type			    fn check_heap_type<'a, 'tcx>(&self, cx: &Context<'a, 'tcx>,
-check_impl_item			    fn check_impl_item(&mut self, cx: &Context, ii: &hir::ImplItem) 
-check_impl_item			    fn check_impl_item(&mut self, cx: &Context, impl_item: &hir::ImplItem) 
-check_item			    fn check_item(&mut self, cx: &Context, it: &hir::Item) 
-check_item			    fn check_item(&mut self, cx: &Context, item: &hir::Item) 
-check_lifetime_def			    fn check_lifetime_def(&mut self, cx: &Context, t: &hir::LifetimeDef) 
+check_expr			    fn check_expr(&mut self, cx: &LateContext, e: &hir::Expr) 
+check_expr			    fn check_expr(&mut self, cx: &LateContext, expr: &hir::Expr) 
+check_expr			    fn check_expr(&mut self, cx: &LateContext, e: &hir::Expr) 
+check_expr			    fn check_expr(&mut self, cx: &EarlyContext, e: &ast::Expr) 
+check_expr			    fn check_expr(&mut self, cx: &LateContext, e: &hir::Expr) 
+check_fn			    fn check_fn(&mut self, cx: &LateContext,
+check_fn			    fn check_fn(&mut self, cx: &LateContext, fk: FnKind, _: &hir::FnDecl,
+check_fn			    fn check_fn(&mut self, cx: &LateContext, fn_kind: FnKind, _: &hir::FnDecl,
+check_fn			    fn check_fn(&mut self, cx: &LateContext,
+check_foreign_fn			        fn check_foreign_fn(cx: &LateContext, decl: &hir::FnDecl) 
+check_generics			    fn check_generics(&mut self, cx: &LateContext, it: &hir::Generics) 
+check_heap_type			    fn check_heap_type<'a, 'tcx>(&self, cx: &LateContext<'a, 'tcx>,
+check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, ii: &hir::ImplItem) 
+check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, impl_item: &hir::ImplItem) 
+check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
+check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
+check_item			    fn check_item(&mut self, cx: &LateContext, item: &hir::Item) 
+check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
+check_item			    fn check_item(&mut self, cx: &LateContext, item: &hir::Item) 
+check_lifetime_def			    fn check_lifetime_def(&mut self, cx: &LateContext, t: &hir::LifetimeDef) 
 check_limits			        fn check_limits(tcx: &ty::ctxt, binop: hir::BinOp,
 check_missing_docs_attrs			    fn check_missing_docs_attrs(&self,
-check_must_use			        fn check_must_use(cx: &Context, attrs: &[hir::Attribute], sp: Span) -> bool 
-check_pat			    fn check_pat(&mut self, cx: &Context, p: &hir::Pat) 
-check_pat			    fn check_pat(&mut self, cx: &Context, pat: &hir::Pat) 
-check_path			    fn check_path(&mut self, cx: &Context, path: &hir::Path, id: ast::NodeId) 
-check_snake_case			    fn check_snake_case(&self, cx: &Context, sort: &str, name: &str, span: Option<Span>) 
-check_stmt			    fn check_stmt(&mut self, cx: &Context, s: &hir::Stmt) 
-check_struct_def			    fn check_struct_def(&mut self, _: &Context, _: &hir::StructDef,
-check_struct_def			    fn check_struct_def(&mut self, cx: &Context, s: &hir::StructDef,
-check_struct_def_post			    fn check_struct_def_post(&mut self, _: &Context, _: &hir::StructDef,
-check_struct_field			    fn check_struct_field(&mut self, cx: &Context, sf: &hir::StructField) 
-check_trait_item			    fn check_trait_item(&mut self, cx: &Context, ti: &hir::TraitItem) 
-check_trait_item			    fn check_trait_item(&mut self, cx: &Context, trait_item: &hir::TraitItem) 
-check_ty			        fn check_ty(cx: &Context, ty: &hir::Ty) 
+check_must_use			        fn check_must_use(cx: &LateContext, attrs: &[ast::Attribute], sp: Span) -> bool 
+check_pat			    fn check_pat(&mut self, cx: &LateContext, p: &hir::Pat) 
+check_pat			    fn check_pat(&mut self, cx: &LateContext, pat: &hir::Pat) 
+check_path			    fn check_path(&mut self, cx: &LateContext, path: &hir::Path, id: ast::NodeId) 
+check_path_list_item			    fn check_path_list_item(&mut self, cx: &LateContext, item: &hir::PathListItem) 
+check_snake_case			    fn check_snake_case(&self, cx: &LateContext, sort: &str, name: &str, span: Option<Span>) 
+check_stmt			    fn check_stmt(&mut self, cx: &EarlyContext, s: &ast::Stmt) 
+check_stmt			    fn check_stmt(&mut self, cx: &LateContext, s: &hir::Stmt) 
+check_struct_def			    fn check_struct_def(&mut self, cx: &LateContext, s: &hir::VariantData,
+check_struct_def			    fn check_struct_def(&mut self, _: &LateContext, _: &hir::VariantData,
+check_struct_def_post			    fn check_struct_def_post(&mut self, _: &LateContext, _: &hir::VariantData,
+check_struct_field			    fn check_struct_field(&mut self, cx: &LateContext, sf: &hir::StructField) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, ti: &hir::TraitItem) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
+check_ty			        fn check_ty(cx: &LateContext, ty: &hir::Ty) 
 check_type_for_ffi			    fn check_type_for_ffi(&self,
-check_unsigned_negation_feature			        fn check_unsigned_negation_feature(cx: &Context, span: Span) 
-check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &Context, pats: &[P<hir::Pat>]) 
-check_unused_parens_core			    fn check_unused_parens_core(&self, cx: &Context, value: &hir::Expr, msg: &str,
-check_upper_case			    fn check_upper_case(cx: &Context, sort: &str, ident: ast::Ident, span: Span) 
-check_variant			    fn check_variant(&mut self, cx: &Context, v: &hir::Variant, _: &hir::Generics) 
-check_variant_post			    fn check_variant_post(&mut self, _: &Context, _: &hir::Variant, _: &hir::Generics) 
-contains_exterior_struct_lit			        fn contains_exterior_struct_lit(value: &hir::Expr) -> bool 
-def_id_is_transmute			        fn def_id_is_transmute(cx: &Context, def_id: DefId) -> bool 
+check_unsigned_negation_feature			        fn check_unsigned_negation_feature(cx: &LateContext, span: Span) 
+check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &LateContext, pats: &[P<hir::Pat>]) 
+check_unused_parens_core			    fn check_unused_parens_core(&self, cx: &EarlyContext, value: &ast::Expr, msg: &str,
+check_upper_case			    fn check_upper_case(cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
+check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
+check_variant_post			    fn check_variant_post(&mut self, _: &LateContext, _: &hir::Variant, _: &hir::Generics) 
+contains_exterior_struct_lit			        fn contains_exterior_struct_lit(value: &ast::Expr) -> bool 
+def_id_is_transmute			        fn def_id_is_transmute(cx: &LateContext, def_id: DefId) -> bool 
 doc_hidden			    fn doc_hidden(&self) -> bool 
-enter_lint_attrs			    fn enter_lint_attrs(&mut self, _: &Context, attrs: &[hir::Attribute]) 
-exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &Context, _: &[hir::Attribute]) 
+enter_lint_attrs			    fn enter_lint_attrs(&mut self, _: &LateContext, attrs: &[ast::Attribute]) 
+exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &LateContext, _: &[ast::Attribute]) 
 expr_refers_to_this_fn			        fn expr_refers_to_this_fn(tcx: &ty::ctxt,
 expr_refers_to_this_method			        fn expr_refers_to_this_method(tcx: &ty::ctxt,
-float_ty_range			        fn float_ty_range(float_ty: hir::FloatTy) -> (f64, f64) 
+float_ty_range			        fn float_ty_range(float_ty: ast::FloatTy) -> (f64, f64) 
 get_lints			    fn get_lints(&self) -> LintArray 
-get_transmute_from_to			        fn get_transmute_from_to<'a, 'tcx>(cx: &Context<'a, 'tcx>, expr: &hir::Expr)
-hir_to_ast_stability			fn hir_to_ast_stability(stab: &attr::Stability) -> attr::Stability 
-int_ty_bits			        fn int_ty_bits(int_ty: hir::IntTy, target_int_ty: hir::IntTy) -> u64 
-int_ty_range			        fn int_ty_range(int_ty: hir::IntTy) -> (i64, i64) 
-is_camel_case			        fn is_camel_case(ident: ast::Ident) -> bool 
+get_lints			    fn get_lints(&self) -> LintArray 
+get_lints			    fn get_lints(&self) -> LintArray 
+get_lints			    fn get_lints(&self) -> LintArray 
+get_transmute_from_to			        fn get_transmute_from_to<'a, 'tcx>(cx: &LateContext<'a, 'tcx>, expr: &hir::Expr)
+int_ty_bits			        fn int_ty_bits(int_ty: ast::IntTy, target_int_ty: ast::IntTy) -> u64 
+int_ty_range			        fn int_ty_range(int_ty: ast::IntTy) -> (i64, i64) 
+is_camel_case			        fn is_camel_case(name: ast::Name) -> bool 
 is_comparison			        fn is_comparison(binop: hir::BinOp) -> bool 
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'tcx>(tcx: &ty::ctxt<'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
 is_valid			        fn is_valid<T:cmp::PartialOrd>(binop: hir::BinOp, v: T,
-lint			    fn lint(&self, cx: &Context, _id: DefId,
+lint			    fn lint(&self, cx: &LateContext, _id: DefId,
 marked			                              struct marked #[repr(C)]: {}", s));
 method_call_refers_to_method			        fn method_call_refers_to_method<'tcx>(tcx: &ty::ctxt<'tcx>,
-method_context			fn method_context(cx: &Context, id: ast::NodeId, span: Span) -> MethodContext 
+method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId, span: Span) -> MethodLateContext 
 new			    pub fn new() -> MissingDebugImplementations 
 new			    pub fn new() -> MissingDoc 
 new			    pub fn new() -> RawPointerDerive 
 new			    pub fn new() -> TypeLimits 
-output			        fn output(cx: &Context, span: Span, stability: &Option<&attr::Stability>,
+output			        fn output(cx: &LateContext, span: Span, stability: &Option<&attr::Stability>,
 register_builtins			pub fn register_builtins(store: &mut lint::LintStore, sess: Option<&Session>) 
 rev_binop			        fn rev_binop(binop: hir::BinOp) -> hir::BinOp 
 to_camel_case			        fn to_camel_case(s: &str) -> String 
 to_snake_case			    fn to_snake_case(mut str: &str) -> String 
-uint_ty_bits			        fn uint_ty_bits(uint_ty: hir::UintTy, target_uint_ty: hir::UintTy) -> u64 
-uint_ty_range			        fn uint_ty_range(uint_ty: hir::UintTy) -> (u64, u64) 
+types			mod types;
+uint_ty_bits			        fn uint_ty_bits(uint_ty: ast::UintTy, target_uint_ty: ast::UintTy) -> u64 
+uint_ty_range			        fn uint_ty_range(uint_ty: ast::UintTy) -> (u64, u64) 
+unused			mod unused;
 visit_block			    fn visit_block(&mut self, _: &hir::Block) {}
 visit_expr			    fn visit_expr(&mut self, _: &hir::Expr) {}
+visit_ty			    fn visit_ty(&mut self, ty: &hir::Ty) 
 visit_ty			    fn visit_ty(&mut self, ty: &hir::Ty) 

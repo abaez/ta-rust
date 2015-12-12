@@ -146,7 +146,7 @@ parse_pretty			    fn parse_pretty(&mut self,
 parse_pretty			pub fn parse_pretty(sess: &Session,
 phase_1_parse_input			pub fn phase_1_parse_input(sess: &Session, cfg: ast::CrateConfig, input: &Input)
 phase_2_configure_and_expand			pub fn phase_2_configure_and_expand(sess: &Session,
-phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: Session,
+phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: &'tcx Session,
 phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm(tcx: &ty::ctxt, analysis: ty::CrateAnalysis)
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
 phase_6_link_output			pub fn phase_6_link_output(sess: &Session,
@@ -176,8 +176,8 @@ run			pub fn run(args: Vec<String>) -> isize
 run_compiler			pub fn run_compiler<'a>(args: &[String],
 search			        fn search(this: &Env,
 search_mod			        fn search_mod(this: &Env,
-sess			    fn sess<'a>(&'a self) -> &'a Session { &self.sess }
 sess			    fn sess<'a>(&'a self) -> &'a Session { &self.tcx.sess }
+sess			    fn sess<'a>(&'a self) -> &'a Session { self.sess }
 sess			    fn sess<'a>(&'a self) -> &'a Session;
 some_input			    fn some_input(&mut self, input: Input, input_path: Option<PathBuf>)
 sort_lint_groups			    fn sort_lint_groups(lints: Vec<(&'static str, Vec<lint::LintId>, bool)>)
@@ -200,6 +200,7 @@ t_nil			    pub fn t_nil(&self) -> Ty<'tcx>
 t_pair			    pub fn t_pair(&self, ty1: Ty<'tcx>, ty2: Ty<'tcx>) -> Ty<'tcx> 
 t_param			    pub fn t_param(&self, space: subst::ParamSpace, index: u32) -> Ty<'tcx> 
 t_rptr			    pub fn t_rptr(&self, r: ty::Region) -> Ty<'tcx> 
+t_rptr_empty			    pub fn t_rptr_empty(&self) -> Ty<'tcx> 
 t_rptr_free			    pub fn t_rptr_free(&self, nid: ast::NodeId, id: u32) -> Ty<'tcx> 
 t_rptr_late_bound			    pub fn t_rptr_late_bound(&self, id: u32) -> Ty<'tcx> 
 t_rptr_late_bound_with_debruijn			    pub fn t_rptr_late_bound_with_debruijn(&self,
@@ -215,4 +216,4 @@ version			pub fn version(binary: &str, matches: &getopts::Matches)
 walk_ty			fn walk_ty() 
 walk_ty_skip_subtree			fn walk_ty_skip_subtree() 
 write			        fn write(&mut self, data: &[u8]) -> io::Result<usize> 
-write_out_deps			fn write_out_deps(sess: &Session,
+write_out_deps			fn write_out_deps(sess: &Session, outputs: &OutputFilenames, id: &str) 

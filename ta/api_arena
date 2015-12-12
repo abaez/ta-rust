@@ -7,10 +7,10 @@ Chunk			impl Chunk
 Chunk			struct Chunk 
 Drop for Arena			impl<'longer_than_self> Drop for Arena<'longer_than_self> 
 Drop for TypedArena			impl<T> Drop for TypedArena<T> 
-EI			        enum EI<'e> { I(Inner), O(Outer<'e>) }
-Inner			        struct Inner { value: u8 }
+EI			        enum EI<'e> 
+Inner			        struct Inner 
 Noncopy			    struct Noncopy 
-Outer			        struct Outer<'a> { inner: &'a Inner }
+Outer			        struct Outer<'a> 
 Point			    struct Point 
 TyDesc			struct TyDesc 
 TypedArena			impl<T> TypedArena<T> 
@@ -20,15 +20,15 @@ TypedArenaChunk			struct TypedArenaChunk<T>
 Wrap			        impl<'a> Wrap<'a> 
 Wrap			        struct Wrap<'a>(TypedArena<EI<'a>>);
 alloc			    pub fn alloc(&self, object: T) -> &mut T 
-alloc			    pub fn alloc<T:'longer_than_self, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
-alloc_copy			    fn alloc_copy<T, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
+alloc			    pub fn alloc<T: 'longer_than_self, F>(&self, op: F) -> &mut T
+alloc_copy			    fn alloc_copy<T, F>(&self, op: F) -> &mut T
 alloc_copy_grow			    fn alloc_copy_grow(&self, n_bytes: usize, align: usize) -> *const u8 
 alloc_copy_inner			    fn alloc_copy_inner(&self, n_bytes: usize, align: usize) -> *const u8 
-alloc_inner			            fn alloc_inner<F:Fn() -> Inner>(&self, f: F) -> &Inner 
-alloc_noncopy			    fn alloc_noncopy<T, F>(&self, op: F) -> &mut T where F: FnOnce() -> T 
-alloc_noncopy_grow			    fn alloc_noncopy_grow(&self, n_bytes: usize,
-alloc_noncopy_inner			    fn alloc_noncopy_inner(&self, n_bytes: usize,
-alloc_outer			            fn alloc_outer<F:Fn() -> Outer<'a>>(&self, f: F) -> &Outer 
+alloc_inner			            fn alloc_inner<F: Fn() -> Inner>(&self, f: F) -> &Inner 
+alloc_noncopy			    fn alloc_noncopy<T, F>(&self, op: F) -> &mut T
+alloc_noncopy_grow			    fn alloc_noncopy_grow(&self, n_bytes: usize, align: usize) -> (*const u8, *const u8) 
+alloc_noncopy_inner			    fn alloc_noncopy_inner(&self, n_bytes: usize, align: usize) -> (*const u8, *const u8) 
+alloc_outer			            fn alloc_outer<F: Fn() -> Outer<'a>>(&self, f: F) -> &Outer 
 as_ptr			    unsafe fn as_ptr(&self) -> *const u8 
 bench_copy			    pub fn bench_copy(b: &mut Bencher) 
 bench_copy_nonarena			    pub fn bench_copy_nonarena(b: &mut Bencher) 
@@ -49,7 +49,7 @@ get_tydesc			unsafe fn get_tydesc<T>() -> *const TyDesc
 grow			    fn grow(&self) 
 new			    pub fn new() -> Arena<'a> 
 new			    pub fn new() -> TypedArena<T> 
-new			    unsafe fn new(next: *mut TypedArenaChunk<T>, capacity: usize)
+new			    unsafe fn new(next: *mut TypedArenaChunk<T>, capacity: usize) -> *mut TypedArenaChunk<T> 
 new_with_size			    pub fn new_with_size(initial_size: usize) -> Arena<'a> 
 round_up			fn round_up(base: usize, align: usize) -> usize 
 start			    fn start(&self) -> *const u8 

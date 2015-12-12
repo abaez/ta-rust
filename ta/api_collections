@@ -2,6 +2,8 @@ AbsIter			struct AbsIter<T>
 AbsTraversal			impl<K, V, E, Impl> AbsTraversal<Impl>
 AbsTraversal			struct AbsTraversal<Impl> 
 Add for String			impl<'a> Add<&'a str> for String 
+AsMut			impl<T> AsMut<Vec<T>> for Vec<T> 
+AsMut for Vec			impl<T> AsMut<[T]> for Vec<T> 
 AsRef			impl<T> AsRef<Vec<T>> for Vec<T> 
 AsRef for Cow			impl<'a, T: ?Sized + ToOwned> AsRef<T> for Cow<'a, T> 
 AsRef for String			impl AsRef<[u8]> for String 
@@ -27,6 +29,7 @@ Borrow for Vec			impl<T> Borrow<[T]> for Vec<T>
 BorrowMut for Vec			impl<T> BorrowMut<[T]> for Vec<T> 
 Bound			pub enum Bound<T> 
 CLike			pub trait CLike 
+Clone for BinaryHeap			impl<T: Clone> Clone for BinaryHeap<T> 
 Clone for Cow			impl<'a, B: ?Sized> Clone for Cow<'a, B> where B: ToOwned 
 Clone for Difference			impl<'a, T> Clone for Difference<'a, T> 
 Clone for EnumSet			impl<E> Clone for EnumSet<E> 
@@ -40,9 +43,11 @@ Clone for Iter			impl<'a, T> Clone for Iter<'a, T>
 Clone for Keys			impl<'a, K, V> Clone for Keys<'a, K, V> 
 Clone for LinkedList			impl<A: Clone> Clone for LinkedList<A> 
 Clone for Node			impl<K: Clone, V: Clone> Clone for Node<K, V> 
+Clone for ParseError			impl Clone for ParseError 
 Clone for Range			impl<'a, K, V> Clone for Range<'a, K, V> 
 Clone for Range			impl<'a, T> Clone for Range<'a, T> 
 Clone for Rawlink			impl<T> Clone for Rawlink<T> 
+Clone for String			impl Clone for String 
 Clone for SymmetricDifference			impl<'a, T> Clone for SymmetricDifference<'a, T> 
 Clone for Union			impl<'a, T> Clone for Union<'a, T> 
 Clone for Values			impl<'a, K, V> Clone for Values<'a, K, V> 
@@ -116,6 +121,7 @@ EnumSet			pub struct EnumSet<E>
 Eq for BTreeMap			impl<K: Eq, V: Eq> Eq for BTreeMap<K, V> {}
 Eq for Cow			impl<'a, B: ?Sized> Eq for Cow<'a, B> where B: Eq + ToOwned {}
 Eq for LinkedList			impl<A: Eq> Eq for LinkedList<A> {}
+Eq for ParseError			impl Eq for ParseError {}
 Eq for Vec			impl<T: Eq> Eq for Vec<T> {}
 Eq for VecDeque			impl<A: Eq> Eq for VecDeque<A> {}
 ExactSizeIterator for Drain			impl<'a, T: 'a> ExactSizeIterator for Drain<'a, T> {}
@@ -156,6 +162,8 @@ Extend for Vec			impl<T> Extend<T> for Vec<T>
 Extend for VecDeque			impl<'a, T: 'a + Copy> Extend<&'a T> for VecDeque<T> 
 Extend for VecDeque			impl<A> Extend<A> for VecDeque<A> 
 ForceResult			pub enum ForceResult<NodeRef, Type> 
+From			impl<T: Ord> From<Vec<T>> for BinaryHeap<T> 
+From			impl<T> From<BinaryHeap<T>> for Vec<T> 
 From			impl<'a, T> From<&'a mut Link<T>> for Rawlink<Node<T>> 
 From for Cow			impl<'a> From<&'a str> for Cow<'a, str> 
 From for Cow			impl<'a> From<String> for Cow<'a, str> 
@@ -304,7 +312,7 @@ Ord for Cow			impl<'a, B: ?Sized> Ord for Cow<'a, B> where B: Ord + ToOwned
 Ord for LinkedList			impl<A: Ord> Ord for LinkedList<A> 
 Ord for Vec			impl<T: Ord> Ord for Vec<T> 
 Ord for VecDeque			impl<A: Ord> Ord for VecDeque<A> 
-ParseError			pub struct ParseError(());
+ParseError			pub enum ParseError {}
 PartialEq			impl<'a, 'b, B: ?Sized, C: ?Sized> PartialEq<Cow<'b, C>> for Cow<'a, B> where
 PartialEq			        impl<'a> PartialEq<
 PartialEq			        impl<'a> PartialEq<
@@ -312,6 +320,7 @@ PartialEq			impl<'a, 'b> PartialEq<Cow<'a, str>> for &'b str
 PartialEq for BTreeMap			impl<K: PartialEq, V: PartialEq> PartialEq for BTreeMap<K, V> 
 PartialEq for Cow			impl<'a, 'b> PartialEq<&'b str> for Cow<'a, str> 
 PartialEq for LinkedList			impl<A: PartialEq> PartialEq for LinkedList<A> 
+PartialEq for ParseError			impl PartialEq for ParseError 
 PartialEq for String			impl PartialEq for String 
 PartialEq for VecDeque			impl<A: PartialEq> PartialEq for VecDeque<A> 
 PartialOrd for BTreeMap			impl<K: PartialOrd, V: PartialOrd> PartialOrd for BTreeMap<K, V> 
@@ -345,6 +354,7 @@ SearchStack			    impl<'a, K, V> SearchStack<'a, K, V, handle::KV, handle::LeafO
 SearchStack			    pub struct SearchStack<'a, K:'a, V:'a, Type, NodeType> 
 Send for Drain			unsafe impl<'a> Send for Drain<'a> {}
 Send for Drain			unsafe impl<'a, T: Send> Send for Drain<'a, T> {}
+Send for Drain			unsafe impl<'a, T: Send> Send for Drain<'a, T> {}
 Send for IntoIter			unsafe impl<T: Send> Send for IntoIter<T> { }
 Send for MoveTraversalImpl			unsafe impl<K: Send, V: Send> Send for MoveTraversalImpl<K, V> {}
 Send for Rawlink			unsafe impl<T:Send> Send for Rawlink<T> {}
@@ -356,6 +366,7 @@ Sub			impl<'a, 'b, T: Ord + Clone> Sub<&'b BTreeSet<T>> for &'a BTreeSet<T>
 Sub for EnumSet			impl<E:CLike> Sub for EnumSet<E> 
 SymmetricDifference			pub struct SymmetricDifference<'a, T:'a> 
 Sync for Drain			unsafe impl<'a> Sync for Drain<'a> {}
+Sync for Drain			unsafe impl<'a, T: Sync> Sync for Drain<'a, T> {}
 Sync for Drain			unsafe impl<'a, T: Sync> Sync for Drain<'a, T> {}
 Sync for IntoIter			unsafe impl<T: Sync> Sync for IntoIter<T> { }
 Sync for MoveTraversalImpl			unsafe impl<K: Sync, V: Sync> Sync for MoveTraversalImpl<K, V> {}
@@ -393,6 +404,8 @@ append			    pub fn append(&mut self, other: &mut Self)
 append			    pub fn append(&mut self, other: &mut Self) 
 as_bytes			    pub fn as_bytes(&self) -> &[u8] 
 as_bytes			    pub fn as_bytes(&self) -> &[u8] 
+as_mut			    fn as_mut(&mut self) -> &mut Vec<T> 
+as_mut			    fn as_mut(&mut self) -> &mut [T] 
 as_mut_ptr			    pub fn as_mut_ptr(&mut self) -> *mut T 
 as_mut_slice			    pub fn as_mut_slice(&mut self) -> &mut [T] 
 as_mut_slices			    pub fn as_mut_slices(&mut self) -> (&mut [T], &mut [T]) 
@@ -473,6 +486,7 @@ clear			    pub fn clear(&mut self)
 clear			    pub fn clear(&mut self) 
 clear			    pub fn clear(&mut self) 
 clone			    fn clone(&self) -> Iter<'a, T> 
+clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> Cow<'a, B> 
 clone			    fn clone(&self) -> Iter<'a, K, V> { Iter { inner: self.inner.clone() } }
 clone			    fn clone(&self) -> Keys<'a, K, V> { Keys { inner: self.inner.clone() } }
@@ -490,10 +504,14 @@ clone			    fn clone(&self) -> Iter<E>
 clone			    fn clone(&self) -> Iter<'a, T> 
 clone			    fn clone(&self) -> LinkedList<A> 
 clone			    fn clone(&self) -> Rawlink<T> 
+clone			    fn clone(&self) -> ParseError 
+clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> Vec<T> { <[T]>::to_vec(&**self) }
 clone			    fn clone(&self) -> Vec<T> 
 clone			    fn clone(&self) -> Iter<'a, T> 
 clone			    fn clone(&self) -> VecDeque<T> 
+clone_from			    fn clone_from(&mut self, source: &Self) 
+clone_from			    fn clone_from(&mut self, source: &Self) 
 clone_from			    fn clone_from(&mut self, other: &Vec<T>) 
 clone_from_slice			    pub fn clone_from_slice(&mut self, src: &[T]) -> usize where T: Clone 
 cmp			    fn cmp(&self, other: &Cow<'a, B>) -> Ordering 
@@ -537,7 +555,7 @@ difference			    pub fn difference<'a>(&'a self, other: &'a BTreeSet<T>) -> Diff
 drain			    pub fn drain(&mut self) -> Drain<T> 
 drain			    pub fn drain<R>(&mut self, range: R) -> Drain where R: RangeArgument<usize> 
 drain			    pub fn drain<R>(&mut self, range: R) -> Drain<T> where R: RangeArgument<usize> 
-drain			    pub fn drain(&mut self) -> Drain<T> 
+drain			    pub fn drain<R>(&mut self, range: R) -> Drain<T> where R: RangeArgument<usize> 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
@@ -558,6 +576,7 @@ eq			    fn eq(&self, other: &BTreeMap<K, V>) -> bool
 eq			    fn eq(&self, other: &LinkedList<A>) -> bool 
 eq			            fn eq(&self, other: &
 eq			            fn eq(&self, other: &
+eq			    fn eq(&self, _: &ParseError) -> bool 
 eq			    fn eq(&self, other: &&'b str) -> bool { PartialEq::eq(&self[..], &other[..]) }
 eq			    fn eq(&self, other: &Cow<'a, str>) -> bool { PartialEq::eq(&self[..], &other[..]) }
 eq			    fn eq(&self, other: &String) -> bool { PartialEq::eq(&self[..], &other[..]) }
@@ -596,6 +615,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			pub mod fmt;
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, _: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -603,6 +623,7 @@ fmt::Debug for BinaryHeap			impl<T: fmt::Debug + Ord> fmt::Debug for BinaryHeap<
 fmt::Debug for Cow			impl<'a, B: ?Sized> fmt::Debug for Cow<'a, B> where
 fmt::Debug for EnumSet			impl<E:CLike + fmt::Debug> fmt::Debug for EnumSet<E> 
 fmt::Debug for LinkedList			impl<A: fmt::Debug> fmt::Debug for LinkedList<A> 
+fmt::Debug for ParseError			impl fmt::Debug for ParseError 
 fmt::Debug for String			impl fmt::Debug for String 
 fmt::Debug for Vec			impl<T: fmt::Debug> fmt::Debug for Vec<T> 
 fmt::Debug for VecDeque			impl<T: fmt::Debug> fmt::Debug for VecDeque<T> 
@@ -613,6 +634,8 @@ fmt::Display for String			impl fmt::Display for String
 fmt::Write for String			impl fmt::Write for String 
 force			    pub fn force(self) -> ForceResult<NodeRef, Type> 
 format			pub fn format(args: Arguments) -> string::String 
+from			    fn from(heap: BinaryHeap<T>) -> Vec<T> 
+from			    fn from(vec: Vec<T>) -> BinaryHeap<T> 
 from			    fn from(node: &'a mut Link<T>) -> Self 
 from			    fn from(_: &str) -> String 
 from			    fn from(s: &'a str) -> Cow<'a, str> 
@@ -760,7 +783,7 @@ into_searcher			    fn into_searcher(self, haystack: &'a str) -> <&'b str as Pat
 into_sorted_vec			    pub fn into_sorted_vec(mut self) -> Vec<T> 
 into_string			    pub fn into_string(self: Box<str>) -> String 
 into_top			        pub fn into_top(mut self) -> &'a mut V 
-into_vec			    pub fn into_vec(self) -> Vec<T> { self.data }
+into_vec			    pub fn into_vec(self) -> Vec<T> 
 into_vec			    pub fn into_vec(self: Box<Self>) -> Vec<T> 
 into_vec			    pub fn into_vec<T>(mut b: Box<[T]>) -> Vec<T> 
 is_char_boundary			    pub fn is_char_boundary(&self, index: usize) -> bool 
@@ -1106,6 +1129,8 @@ swap			    pub fn swap(&mut self, i: usize, j: usize)
 swap_back_remove			    pub fn swap_back_remove(&mut self, index: usize) -> Option<T> 
 swap_front_remove			    pub fn swap_front_remove(&mut self, index: usize) -> Option<T> 
 swap_remove			    pub fn swap_remove(&mut self, index: usize) -> T 
+swap_remove_back			    pub fn swap_remove_back(&mut self, index: usize) -> Option<T> 
+swap_remove_front			    pub fn swap_remove_front(&mut self, index: usize) -> Option<T> 
 symmetric_difference			    pub fn symmetric_difference<'a>(&'a self, other: &'a BTreeSet<T>)
 take			    fn take(&mut self, key: &Q) -> Option<K> 
 take			    fn take(&mut self, key: &Q) -> Option<Self::Key>;
@@ -1160,6 +1185,7 @@ with_capacity			    pub fn with_capacity(capacity: usize) -> String
 with_capacity			    pub fn with_capacity(capacity: usize) -> Vec<T> 
 with_capacity			    pub fn with_capacity(n: usize) -> VecDeque<T> 
 wrap_add			    fn wrap_add(&self, idx: usize, addend: usize) -> usize 
+wrap_copy			    unsafe fn wrap_copy(&self, dst: usize, src: usize, len: usize) 
 wrap_index			    fn wrap_index(&self, idx: usize) -> usize { wrap_index(idx, self.cap()) }
 wrap_index			fn wrap_index(index: usize, size: usize) -> usize 
 wrap_sub			    fn wrap_sub(&self, idx: usize, subtrahend: usize) -> usize 

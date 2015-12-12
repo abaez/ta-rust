@@ -114,6 +114,8 @@ ExplicitRscope			pub struct ExplicitRscope;
 FirstTrait			trait FirstTrait : SecondTrait 
 FnCtxt			impl<'a, 'tcx> FnCtxt<'a, 'tcx> 
 FnCtxt			pub struct FnCtxt<'a, 'tcx: 'a> 
+Foo			enum Foo { B(u32) }
+Foo			enum Foo { B{ i: u32 } }
 Foo			enum Foo { FirstValue(i32) };
 Foo			enum Foo { Q }
 Foo			enum Foo 
@@ -172,6 +174,7 @@ InferredInfo			struct InferredInfo<'a>
 Inherited			impl<'a, 'tcx> Inherited<'a, 'tcx> 
 Inherited			pub struct Inherited<'a, 'tcx: 'a> 
 InstantiatedMethodSig			struct InstantiatedMethodSig<'tcx> 
+IsAssign			enum IsAssign 
 ItemCtxt			impl<'a,'tcx> ItemCtxt<'a,'tcx> 
 ItemCtxt			struct ItemCtxt<'a,'tcx:'a> 
 Iterator for AllTraits			impl<'a> Iterator for AllTraits<'a> 
@@ -279,7 +282,7 @@ UnsafetyState			pub struct UnsafetyState
 UnsizeKind			enum UnsizeKind<'tcx> 
 VarianceTerm			enum VarianceTerm<'a> 
 Vec			impl Vec<u8> { ... } \/\/ error
-Visitor			        struct Visitor<'a> 
+Visitor			        struct Visitor<'a, 'tcx:'a> 
 Visitor for AdjustBorrowKind			impl<'a, 'tcx, 'v> Visitor<'v> for AdjustBorrowKind<'a, 'tcx> 
 Visitor for CheckItemBodiesVisitor			impl<'a, 'tcx> Visitor<'tcx> for CheckItemBodiesVisitor<'a, 'tcx> 
 Visitor for CheckItemTypesVisitor			impl<'a, 'tcx> Visitor<'tcx> for CheckItemTypesVisitor<'a, 'tcx> 
@@ -367,6 +370,7 @@ bar			    fn bar() {} \/\/ ok!
 bar			    fn bar();
 bar			    fn bar<'a,'b:'a>(x: &'a str, y: &'b str);
 bar			    fn bar<'a,'b>(x: &'a str, y: &'b str) 
+bar			fn bar(foo: Foo) -> u32 
 bar			fn bar(x: &str, y: &str) -> &str { ... }
 base_def_to_ty			fn base_def_to_ty<'tcx>(this: &AstConv<'tcx>,
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: Span) -> ty::Region 
@@ -741,7 +745,6 @@ infcx			    fn infcx(&self) -> &'a InferCtxt<'a,'tcx>
 infer_variance			pub fn infer_variance(tcx: &ty::ctxt) 
 inferred_index			    fn inferred_index(&self, param_id: ast::NodeId) -> InferredIndex 
 instantiate_bounds			    fn instantiate_bounds(&self,
-instantiate_default_methods			    fn instantiate_default_methods(
 instantiate_method_sig			    fn instantiate_method_sig(&mut self,
 instantiate_method_substs			    fn instantiate_method_substs(&mut self,
 instantiate_mono_trait_ref			pub fn instantiate_mono_trait_ref<'tcx>(
@@ -749,7 +752,7 @@ instantiate_path			pub fn instantiate_path<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 instantiate_poly_trait_ref			pub fn instantiate_poly_trait_ref<'tcx>(
 instantiate_type			    pub fn instantiate_type(&self,
 instantiate_type_scheme			    fn instantiate_type_scheme<T>(&self,
-int_in_range			        fn int_in_range(ccx: &CrateCtxt, ty: hir::IntTy, disr: ty::Disr) -> bool 
+int_in_range			        fn int_in_range(ccx: &CrateCtxt, ty: ast::IntTy, disr: ty::Disr) -> bool 
 intrinsic			mod intrinsic;
 invariant			    fn invariant(&mut self,
 is_builtin_binop			fn is_builtin_binop<'tcx>(lhs: Ty<'tcx>,
@@ -780,7 +783,9 @@ lookup_in_trait			pub fn lookup_in_trait<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 lookup_in_trait_adjusted			pub fn lookup_in_trait_adjusted<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 lookup_indexing			fn lookup_indexing<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 lookup_op_method			fn lookup_op_method<'a, 'tcx>(fcx: &'a FnCtxt<'a, 'tcx>,
+main			fn main() -> i32 { 0 }
 main			fn main() 
+main			fn main();
 main			fn main()
 main			fn main<T>() { \/\/ error: main function is not allowed to have type parameters
 make_object_type			fn make_object_type<'tcx>(this: &AstConv<'tcx>,
@@ -801,7 +806,7 @@ mk_subregion_due_to_dereference			pub fn mk_subregion_due_to_dereference(rcx: &m
 mk_subty			    pub fn mk_subty(&self,
 mk_trait_substs			    fn mk_trait_substs<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 mutate			    fn mutate(&mut self,
-name_and_trait_def_id			fn name_and_trait_def_id(fcx: &FnCtxt, op: hir::BinOp) -> (&'static str, Option<DefId>) 
+name_and_trait_def_id			fn name_and_trait_def_id(fcx: &FnCtxt,
 new			    pub fn new(expr: hir::Expr, expr_ty: Ty<'tcx>, cast_ty: Ty<'tcx>, span: Span)
 new			    fn new(fcx: &'a FnCtxt<'a, 'tcx>,
 new			    pub fn new(static_candidates: Vec<CandidateSource>,
@@ -959,7 +964,6 @@ simd_shuffle			    fn simd_shuffle<A,B>(a: A, b: A, c: [u32; 8]) -> B;
 simd_shuffle8			    fn simd_shuffle8<A,B>(a: A, b: A, c: [u32; 8]) -> B;
 size_of			    fn size_of<T, U>() -> usize; \/\/ error: intrinsic has wrong number
 size_of			    fn size_of<T>() -> usize; \/\/ ok!
-size_of			    fn size_of<T>() -> usize;
 size_of			    fn size_of<T>(); \/\/ error: intrinsic has wrong type
 solve			    fn solve(&mut self) 
 solve_constraints			fn solve_constraints(constraints_cx: ConstraintContext) 
@@ -975,7 +979,6 @@ struct_variant			fn struct_variant<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 struct_variant			fn struct_variant<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 structurally_resolve_type_or_else			fn structurally_resolve_type_or_else<'a, 'tcx, F>(fcx: &FnCtxt<'a, 'tcx>,
 structurally_resolved_type			pub fn structurally_resolved_type<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-subst_receiver_types_in_method_ty			fn subst_receiver_types_in_method_ty<'tcx>(tcx: &ty::ctxt<'tcx>,
 substs_wf_in_scope			pub fn substs_wf_in_scope<'a,'tcx>(rcx: &mut Rcx<'a,'tcx>,
 subtype			    fn subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> CoerceResult<'tcx> 
 suggest			mod suggest;
@@ -1038,6 +1041,7 @@ ty_of_method			pub fn ty_of_method<'tcx>(this: &AstConv<'tcx>,
 ty_of_method_or_bare_fn			fn ty_of_method_or_bare_fn<'a, 'tcx>(this: &AstConv<'tcx>,
 ty_param_span			    fn ty_param_span(&self,
 ty_param_span			    fn ty_param_span(&self,
+type			struct type when the variant isn't a struct type:
 type_bound			fn type_bound<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>, span: Span, ty: Ty<'tcx>) -> VerifyBound 
 type_derefs_to_local			fn type_derefs_to_local<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 type_error_message			    pub fn type_error_message<M>(&self,
@@ -1048,7 +1052,7 @@ type_scheme_and_predicates_for_def			fn type_scheme_and_predicates_for_def<'a, '
 type_scheme_of_def_id			fn type_scheme_of_def_id<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 type_scheme_of_foreign_item			fn type_scheme_of_foreign_item<'a, 'tcx>(
 type_scheme_of_item			fn type_scheme_of_item<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
-uint_in_range			        fn uint_in_range(ccx: &CrateCtxt, ty: hir::UintTy, disr: ty::Disr) -> bool 
+uint_in_range			        fn uint_in_range(ccx: &CrateCtxt, ty: ast::UintTy, disr: ty::Disr) -> bool 
 unify_receivers			    fn unify_receivers(&mut self,
 unpack_actual_value			    fn unpack_actual_value<T, F>(&self, a: Ty<'tcx>, f: F) -> T where
 unsafety			mod unsafety;
@@ -1065,7 +1069,7 @@ visit::Visitor for CollectTraitDefVisitor			impl<'a, 'tcx, 'v> visit::Visitor<'v
 visit::Visitor for OrphanChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for OrphanChecker<'cx, 'tcx> 
 visit::Visitor for OverlapChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for OverlapChecker<'cx, 'tcx> 
 visit::Visitor for UnsafetyChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for UnsafetyChecker<'cx, 'tcx> 
-visit::Visitor for Visitor			        impl<'v, 'a> visit::Visitor<'v> for Visitor<'a> 
+visit::Visitor for Visitor			        impl<'v, 'a, 'tcx> visit::Visitor<'v> for Visitor<'a, 'tcx> 
 visit_adjustments			    fn visit_adjustments(&self, reason: ResolveReason, id: ast::NodeId) 
 visit_arm			    fn visit_arm(&mut self, a: &hir::Arm) { visit_arm(self, a); }
 visit_arm			fn visit_arm(rcx: &mut Rcx, arm: &hir::Arm) 
@@ -1135,6 +1139,8 @@ write_substs_to_tcx			fn write_substs_to_tcx<'tcx>(tcx: &ty::ctxt<'tcx>,
 write_ty			    pub fn write_ty(&self, node_id: ast::NodeId, ty: Ty<'tcx>) 
 write_ty_to_tcx			fn write_ty_to_tcx<'tcx>(tcx: &ty::ctxt<'tcx>, node_id: ast::NodeId, ty: Ty<'tcx>) 
 writeback			pub mod writeback;
+x			    fn x(self: Box<Foo>) {} \/\/ ok!
+x			    fn x(self: Rc<Foo>) {}
 x86_mm_adds_ep16			    fn x86_mm_adds_ep16(x: i16x8, y: i16x8) -> i16x8;
 x86_mm_adds_epi16			    fn x86_mm_adds_epi16(x: i16x8, y: i16x8) -> i16x8; \/\/ ok!
 x86_mm_adds_epi16			    fn x86_mm_adds_epi16(x: i16x8, y: i16x8) -> i64x8;

@@ -4,6 +4,8 @@ Adapter			        struct Adapter<Iter, E>
 Add			        impl Add for 
 Add			pub trait Add<RHS=Self> 
 Add for Wrapping			        impl Add for Wrapping<
+AddAssign			        impl AddAssign for 
+AddAssign			pub trait AddAssign<Rhs=Self> 
 Alignment			pub enum Alignment 
 Any			impl Any 
 Any			impl Any+Send 
@@ -38,12 +40,18 @@ Binary			struct Binary;
 BitAnd			        impl BitAnd for 
 BitAnd			pub trait BitAnd<RHS=Self> 
 BitAnd for Wrapping			        impl BitAnd for Wrapping<
+BitAndAssign			        impl BitAndAssign for 
+BitAndAssign			pub trait BitAndAssign<Rhs=Self> 
 BitOr			        impl BitOr for 
 BitOr			pub trait BitOr<RHS=Self> 
 BitOr for Wrapping			        impl BitOr for Wrapping<
+BitOrAssign			        impl BitOrAssign for 
+BitOrAssign			pub trait BitOrAssign<Rhs=Self> 
 BitXor			        impl BitXor for 
 BitXor			pub trait BitXor<RHS=Self> 
 BitXor for Wrapping			        impl BitXor for Wrapping<
+BitXorAssign			        impl BitXorAssign for 
+BitXorAssign			pub trait BitXorAssign<Rhs=Self> 
 Borrow			            impl<T> Borrow<[T]> for [T; 
 Borrow			impl<'a, T: ?Sized> Borrow<T> for &'a T 
 Borrow			impl<'a, T: ?Sized> Borrow<T> for &'a mut T 
@@ -100,16 +108,18 @@ Clone for Empty			impl<T> Clone for Empty<T>
 Clone for Iter			impl<'a, A> Clone for Iter<'a, A> 
 Clone for Iter			impl<'a, T> Clone for Iter<'a, T> 
 Clone for Iter			impl<'a, T> Clone for Iter<'a, T> 
-Clone for Peekable			impl<I: Iterator + Clone> Clone for Peekable<I> where I::Item: Clone 
 Clone for RefCell			impl<T: Clone> Clone for RefCell<T> 
+Clone for Shared			impl<T: ?Sized> Clone for Shared<T> 
 Clone for SipHasher			impl Clone for SipHasher 
 Clone for Slice			impl<T> Clone for Slice<T> 
 Clone for Split			impl<'a, T, P> Clone for Split<'a, T, P> where P: Clone + FnMut(&T) -> bool 
 Clone for Windows			impl<'a, T> Clone for Windows<'a, T> 
 Cloned			pub struct Cloned<I> 
 CoerceUnsized			pub trait CoerceUnsized<T> 
+CoerceUnsized			impl<T: ?Sized, U: ?Sized> CoerceUnsized<Shared<U>> for Shared<T> where T: Unsize<U> { }
 Copy			        impl<T:?Sized> Copy for 
 Copy			pub trait Copy : Clone 
+Copy for Shared			impl<T: ?Sized> Copy for Shared<T> { }
 Copy for Slice			impl<T> Copy for Slice<T> {}
 Count			pub enum Count 
 Cycle			pub struct Cycle<I> 
@@ -151,8 +161,9 @@ Decoded			pub struct Decoded
 Default			        impl<T> Default for [T; 
 Default			        impl<T> Default for [T; 
 Default			        impl Default for 
-Default			pub trait Default 
+Default			pub trait Default: Sized 
 Default			impl<'a, T> Default for &'a [T] 
+Default			impl<'a, T> Default for &'a mut [T] 
 Default			impl<'a> Default for &'a str 
 Default			            impl<
 Default for AtomicBool			impl Default for AtomicBool 
@@ -170,6 +181,7 @@ Deref			pub trait Deref
 Deref for NonZero			impl<T: Zeroable> Deref for NonZero<T> 
 Deref for Ref			impl<'b, T: ?Sized> Deref for Ref<'b, T> 
 Deref for RefMut			impl<'b, T: ?Sized> Deref for RefMut<'b, T> 
+Deref for Shared			impl<T: ?Sized> Deref for Shared<T> 
 Deref for Unique			impl<T:?Sized> Deref for Unique<T> 
 DerefMut			impl<'a, T: ?Sized> DerefMut for &'a mut T 
 DerefMut			pub trait DerefMut: Deref 
@@ -184,6 +196,8 @@ Display for str			impl Display for str
 Div			        impl Div for 
 Div			pub trait Div<RHS=Self> 
 Div for Wrapping			        impl Div for Wrapping<
+DivAssign			        impl DivAssign for 
+DivAssign			pub trait DivAssign<Rhs=Self> 
 DoubleEndedIterator			impl<'a, I: DoubleEndedIterator + ?Sized> DoubleEndedIterator for &'a mut I 
 DoubleEndedIterator			pub trait DoubleEndedIterator: Iterator 
 DoubleEndedIterator			        impl<'a, T> DoubleEndedIterator for 
@@ -281,7 +295,7 @@ ExactSizeIterator for ops			        impl ExactSizeIterator for ops::Range<
 Extend			pub trait Extend<A> 
 Filter			pub struct Filter<I, P> 
 FilterMap			pub struct FilterMap<I, F> 
-FixedSizeArray			pub trait FixedSizeArray<T> 
+FixedSizeArray			pub unsafe trait FixedSizeArray<T> 
 FlagV1			enum FlagV1 { SignPlus, SignMinus, Alternate, SignAwareZeroPad, }
 FlatMap			pub struct FlatMap<I, U: IntoIterator, F> 
 Float			pub trait Float: Sized 
@@ -307,9 +321,10 @@ Formatter			pub struct Formatter<'a>
 Fp			impl Fp 
 Fp			pub struct Fp 
 FpCategory			pub enum FpCategory 
-From			pub trait From<T> 
+From			pub trait From<T>: Sized 
+From			        impl From<
 From for T			impl<T> From<T> for T 
-FromIterator			pub trait FromIterator<A> 
+FromIterator			pub trait FromIterator<A>: Sized 
 FromStr			        impl FromStr for 
 FromStr			        impl FromStr for 
 FromStr			pub trait FromStr: Sized 
@@ -437,6 +452,8 @@ MatchesInternal			struct MatchesInternal<'a, P: Pattern<'a>>(P::Searcher);
 Mul			        impl Mul for 
 Mul			pub trait Mul<RHS=Self> 
 Mul for Wrapping			        impl Mul for Wrapping<
+MulAssign			        impl MulAssign for 
+MulAssign			pub trait MulAssign<Rhs=Self> 
 MutableByteVector			    impl MutableByteVector for [u8] 
 MutableByteVector			    pub trait MutableByteVector 
 Neg			        impl Neg for 
@@ -450,7 +467,7 @@ Octal			pub trait Octal
 Octal			struct Octal;
 Once			pub struct Once<T> 
 One			        impl One for 
-One			pub trait One 
+One			pub trait One: Sized 
 Option			impl<'a, T: Clone> Option<&'a T> 
 Option			impl<T: Default> Option<T> 
 Option			impl<T> Option<T> 
@@ -568,6 +585,8 @@ Rem			        impl Rem for
 Rem			pub trait Rem<RHS=Self> 
 Rem for f32			impl Rem for f32 
 Rem for f64			impl Rem for f64 
+RemAssign			        impl RemAssign for 
+RemAssign			pub trait RemAssign<Rhs=Self> 
 Repeat			pub struct Repeat<A> 
 Repr			pub unsafe trait Repr<T> 
 Repr			unsafe impl Repr<Slice<u8>> for str {}
@@ -601,12 +620,18 @@ Send for Iter			unsafe impl<'a, T: Sync> Send for Iter<'a, T> {}
 Send for IterMut			unsafe impl<'a, T: Send> Send for IterMut<'a, T> {}
 Send for RefCell			unsafe impl<T: ?Sized> Send for RefCell<T> where T: Send {}
 Send for Unique			unsafe impl<T: Send + ?Sized> Send for Unique<T> { }
+Shared			impl<T: ?Sized> Shared<T> 
+Shared			pub struct Shared<T: ?Sized> 
 Shl			        impl Shl<
 Shl			pub trait Shl<RHS> 
 Shl for Wrapping			        impl Shl<
+ShlAssign			        impl ShlAssign<
+ShlAssign			pub trait ShlAssign<Rhs> 
 Shr			        impl Shr<
 Shr			pub trait Shr<RHS> 
 Shr for Wrapping			        impl Shr<
+ShrAssign			        impl ShrAssign<
+ShrAssign			pub trait ShrAssign<Rhs=Self> 
 Sign			pub enum Sign 
 Sign			pub enum Sign 
 SipHasher			impl SipHasher 
@@ -641,6 +666,8 @@ StrSearcherImpl			enum StrSearcherImpl
 Sub			        impl Sub for 
 Sub			pub trait Sub<RHS=Self> 
 Sub for Wrapping			        impl Sub for Wrapping<
+SubAssign			        impl SubAssign for 
+SubAssign			pub trait SubAssign<Rhs=Self> 
 Sync			pub unsafe trait Sync 
 Sync			unsafe impl Sync for .. { }
 Sync for AtomicBool			unsafe impl Sync for AtomicBool {}
@@ -682,7 +709,7 @@ Write			pub trait Write
 Write for Adapter			        impl<'a, T: ?Sized> Write for Adapter<'a, T>
 Write for Formatter			impl<'a> Write for Formatter<'a> 
 Zero			        impl Zero for 
-Zero			pub trait Zero 
+Zero			pub trait Zero: Sized 
 Zeroable			pub unsafe trait Zeroable {}
 Zeroable			unsafe impl<T:?Sized> Zeroable for *const T {}
 Zeroable			unsafe impl<T:?Sized> Zeroable for *mut T {}
@@ -709,6 +736,8 @@ add			            pub fn add<'a>(&'a mut self, other: &
 add			            fn add(self, other: Wrapping<
 add			            fn add(self, other: 
 add			    fn add(self, rhs: RHS) -> Self::Output;
+add_assign			            fn add_assign(&mut self, other: 
+add_assign			    fn add_assign(&mut self, Rhs);
 add_small			            pub fn add_small(&mut self, other: 
 algorithm			mod algorithm;
 algorithm_m			pub fn algorithm_m<T: RawFloat>(f: &Big, e: i16) -> T 
@@ -717,6 +746,7 @@ align			    pub fn align(&self) -> Alignment { self.align }
 align_of			pub fn align_of<T>() -> usize 
 align_of_val			pub fn align_of_val<T: ?Sized>(val: &T) -> usize 
 all			    fn all<F>(&mut self, mut f: F) -> bool where
+alternate			    pub fn alternate(&self) -> bool { self.flags & (1 << FlagV1::Alternate as u32) != 0 }
 and			    pub fn and<U>(self, optb: Option<U>) -> Option<U> 
 and			    pub fn and<U>(self, res: Result<U, E>) -> Result<U, E> 
 and_then			    pub fn and_then<U, F: FnOnce(T) -> Option<U>>(self, f: F) -> Option<U> 
@@ -851,7 +881,7 @@ atomic_xsub_acqrel			    pub fn atomic_xsub_acqrel<T>(dst: *mut T, src: T) -> T;
 atomic_xsub_rel			    pub fn atomic_xsub_rel<T>(dst: *mut T, src: T) -> T;
 atomic_xsub_relaxed			    pub fn atomic_xsub_relaxed<T>(dst: *mut T, src: T) -> T;
 base			            fn base(&self) -> u8 { 
-base			    fn base(&self) -> u8 { self.base }
+base			    fn base(&self) -> u8 
 base			    fn base(&self) -> u8;
 bellerophon			pub fn bellerophon<T: RawFloat>(f: &Big, e: i16) -> T 
 big_to_fp			pub fn big_to_fp(f: &Big) -> Fp 
@@ -864,12 +894,18 @@ bit_length			            pub fn bit_length(&self) -> usize
 bitand			            fn bitand(self, other: Wrapping<
 bitand			            fn bitand(self, rhs: 
 bitand			    fn bitand(self, rhs: RHS) -> Self::Output;
+bitand_assign			            fn bitand_assign(&mut self, other: 
+bitand_assign			    fn bitand_assign(&mut self, Rhs);
 bitor			            fn bitor(self, other: Wrapping<
 bitor			            fn bitor(self, rhs: 
 bitor			    fn bitor(self, rhs: RHS) -> Self::Output;
+bitor_assign			            fn bitor_assign(&mut self, other: 
+bitor_assign			    fn bitor_assign(&mut self, Rhs);
 bitxor			            fn bitxor(self, other: Wrapping<
 bitxor			            fn bitxor(self, other: 
 bitxor			    fn bitxor(self, rhs: RHS) -> Self::Output;
+bitxor_assign			            fn bitxor_assign(&mut self, other: 
+bitxor_assign			    fn bitxor_assign(&mut self, Rhs);
 borrow			                fn borrow(&self) -> &[T] 
 borrow			    fn borrow(&self) -> &Borrowed;
 borrow			    fn borrow(&self) -> &T { &**self }
@@ -930,7 +966,7 @@ chars			    fn chars(&self) -> Chars;
 checked_add			        fn checked_add(&self, other: u32) -> Option<Self> 
 checked_add			        pub fn checked_add(self, other: Self) -> Option<Self> 
 checked_add			    fn checked_add(&self, other: u32) -> Option<Self>;
-checked_div			        pub fn checked_div(self, v: Self) -> Option<Self> 
+checked_div			        pub fn checked_div(self, other: Self) -> Option<Self> 
 checked_mul			        fn checked_mul(&self, other: u32) -> Option<Self> 
 checked_mul			        pub fn checked_mul(self, other: Self) -> Option<Self> 
 checked_mul			    fn checked_mul(&self, other: u32) -> Option<Self>;
@@ -956,7 +992,6 @@ clone			    fn clone(&self) -> Self;
 clone			    fn clone(&self) -> ArgumentV1<'a> 
 clone			    fn clone(&self) -> SipHasher 
 clone			    fn clone(&self) -> Empty<T> 
-clone			    fn clone(&self) -> Peekable<I> 
 clone			pub mod clone;
 clone			            fn clone(&self) -> 
 clone			            fn clone(&self) -> 
@@ -964,6 +999,7 @@ clone			    fn clone(&self) -> Iter<'a, A>
 clone			            fn clone(&self) -> Self 
 clone			    fn clone(&self) -> *const T 
 clone			    fn clone(&self) -> *mut T 
+clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> Slice<T> { *self }
 clone			    fn clone(&self) -> Iter<'a, T> { Iter { inner: self.inner } }
 clone			    fn clone(&self) -> Chunks<'a, T> 
@@ -1053,7 +1089,7 @@ debug_map_new			pub fn debug_map_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) ->
 debug_set			    pub fn debug_set<'b>(&'b mut self) -> DebugSet<'b, 'a> 
 debug_set_new			pub fn debug_set_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugSet<'a, 'b> 
 debug_struct			    pub fn debug_struct<'b>(&'b mut self, name: &str) -> DebugStruct<'b, 'a> 
-debug_struct_new			pub fn debug_struct_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>, name: &str)
+debug_struct_new			pub fn debug_struct_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>,
 debug_tuple			    pub fn debug_tuple<'b>(&'b mut self, name: &str) -> DebugTuple<'b, 'a> 
 debug_tuple_new			pub fn debug_tuple_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>, name: &str) -> DebugTuple<'a, 'b> 
 dec2flt			fn dec2flt<T: RawFloat>(s: &str) -> Result<T, ParseFloatError> 
@@ -1071,6 +1107,7 @@ default			    fn default() -> Empty<T>
 default			pub mod default;
 default			    fn default() -> Option<T> { None }
 default			    fn default() -> &'a [T] { &[] }
+default			    fn default() -> &'a mut [T] { &mut [] }
 default			    fn default() -> &'a str { "" }
 default			    fn default() -> AtomicPtr<T> 
 default			    fn default() -> Self 
@@ -1096,9 +1133,12 @@ div			            fn div(self, other: Wrapping<
 div			            fn div(self, other: 
 div			    fn div(self, rhs: RHS) -> Self::Output;
 div_2pow10			fn div_2pow10(x: &mut Big, mut n: usize) -> &mut Big 
+div_assign			            fn div_assign(&mut self, other: 
+div_assign			    fn div_assign(&mut self, Rhs);
 div_rem			            pub fn div_rem(&self, d: &
 div_rem_small			            pub fn div_rem_small(&mut self, other: 
 div_rem_upto_16			fn div_rem_upto_16<'a>(x: &'a mut Big, scale: &Big,
+diy_float			pub mod diy_float;
 do_inspect			    fn do_inspect(&mut self, elt: Option<I::Item>) -> Option<I::Item> 
 downcast_mut			    pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> 
 downcast_ref			    pub fn downcast_ref<T: Any>(&self) -> Option<&T> 
@@ -1244,8 +1284,8 @@ fmt			        impl fmt::
 fmt			        impl fmt::Debug for 
 fmt			    impl fmt::Display for 
 fmt			pub mod fmt;
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			            fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1269,6 +1309,7 @@ fmt::Display for ParseFloatError			impl fmt::Display for ParseFloatError
 fmt::Display for ParseIntError			impl fmt::Display for ParseIntError 
 fmt::Display for RadixFmt			        impl fmt::Display for RadixFmt<
 fmt::Display for Utf8Error			impl fmt::Display for Utf8Error 
+fmt::Pointer for Shared			impl<T> fmt::Pointer for Shared<T> 
 fmt::Pointer for Unique			impl<T> fmt::Pointer for Unique<T> 
 fmt::Write for PadAdapter			impl<'a, 'b: 'a> fmt::Write for PadAdapter<'a, 'b> 
 fmt_int			    fn fmt_int<T: Int>(&self, mut x: T, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1285,6 +1326,7 @@ formatter			    pub fn formatter(&mut self) -> &mut fmt::Formatter<'b>
 fp_to_float			pub fn fp_to_float<T: RawFloat>(x: Fp) -> T 
 from			    fn from(T) -> Self;
 from			    fn from(t: T) -> T { t }
+from			            fn from(small: 
 from_be			        pub fn from_be(x: Self) -> Self 
 from_bits			    fn from_bits(bits: u64) -> Self;
 from_bits			    fn from_bits(bits: u64) -> f32 
@@ -1338,7 +1380,6 @@ ge			    fn ge<I>(mut self, other: I) -> bool where
 ge			    pub fn ge<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 ge			    fn ge(&self, other: &*const T) -> bool { *self >= *other }
 ge			    fn ge(&self, other: &*mut T) -> bool { *self >= *other }
-ge			    fn ge(&self, other: &[T]) -> bool 
 ge			                fn ge(&self, other: &(
 get			    pub fn get(&self) -> *mut T 
 get			    pub fn get(&self) -> T 
@@ -1368,7 +1409,6 @@ gt			    fn gt<I>(mut self, other: I) -> bool where
 gt			    pub fn gt<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 gt			    fn gt(&self, other: &*const T) -> bool { *self > *other }
 gt			    fn gt(&self, other: &*mut T) -> bool { *self > *other }
-gt			    fn gt(&self, other: &[T]) -> bool 
 gt			                fn gt(&self, other: &(
 hash			                fn hash<H: hash::Hasher>(&self, state: &mut H) 
 hash			                fn hash<H: Hasher>(&self, _state: &mut H) {}
@@ -1381,7 +1421,7 @@ hash			            fn hash<H: Hasher>(&self, _: &mut H)
 hash			            fn hash<HH: hash::Hasher>(&self, state: &mut HH) 
 hash			        impl<Ret, 
 hash_slice			                fn hash_slice<H: Hasher>(data: &[
-hash_slice			    fn hash_slice<H: Hasher>(data: &[Self], state: &mut H) where Self: Sized 
+hash_slice			    fn hash_slice<H: Hasher>(data: &[Self], state: &mut H)
 haystack			        fn haystack(&self) -> &'a str 
 haystack			    fn haystack(&self) -> &'a str { self.haystack }
 haystack			    fn haystack(&self) -> &'a str 
@@ -1548,7 +1588,6 @@ le			    fn le<I>(mut self, other: I) -> bool where
 le			    pub fn le<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 le			    fn le(&self, other: &*const T) -> bool { *self <= *other }
 le			    fn le(&self, other: &*mut T) -> bool { *self <= *other }
-le			    fn le(&self, other: &[T]) -> bool 
 le			                fn le(&self, other: &(
 leading_zeros			        pub fn leading_zeros(self) -> u32 
 len			    fn len(&self) -> usize 
@@ -1586,7 +1625,6 @@ lt			    fn lt<I>(mut self, other: I) -> bool where
 lt			    pub fn lt<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 lt			    fn lt(&self, other: &*const T) -> bool { *self < *other }
 lt			    fn lt(&self, other: &*mut T) -> bool { *self < *other }
-lt			    fn lt(&self, other: &[T]) -> bool 
 lt			                fn lt(&self, other: &(
 macros			mod macros;
 make_place			    fn make_place() -> Self;
@@ -1648,6 +1686,8 @@ mul			    pub fn mul(&self, other: &Fp) -> Fp
 mul			            fn mul(self, other: Wrapping<
 mul			            fn mul(self, other: 
 mul			    fn mul(self, rhs: RHS) -> Self::Output;
+mul_assign			            fn mul_assign(&mut self, other: 
+mul_assign			    fn mul_assign(&mut self, Rhs);
 mul_digits			            pub fn mul_digits<'a>(&'a mut self, other: &[
 mul_inner			                fn mul_inner(ret: &mut [
 mul_pow10			pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big 
@@ -1690,10 +1730,11 @@ new			    fn new(fmt: &'a mut fmt::Formatter<'b>) -> PadAdapter<'a, 'b>
 new			    pub fn new<'b, T>(x: &'b T,
 new			    fn new(base: u8) -> Radix 
 new			    pub fn new() -> SipHasher 
-new			    pub unsafe fn new(inner: T) -> NonZero<T> 
+new			        pub unsafe fn new(inner: T) -> NonZero<T> 
 new			    pub fn new(integral: &'a [u8], fractional: &'a [u8], exp: i64) -> Decimal<'a> 
 new			    pub fn new(sig: u64, k: i16) -> Self 
-new			    pub unsafe fn new(ptr: *mut T) -> Unique<T> 
+new			        pub unsafe fn new(ptr: *mut T) -> Unique<T> 
+new			    pub unsafe fn new(ptr: *mut T) -> Self 
 new			    fn new(haystack: &'a str, needle: &'b str) -> StrSearcher<'a, 'b> 
 new			    fn new(needle: &[u8], end: usize) -> TwoWaySearcher 
 new_v1			    pub fn new_v1(pieces: &'a [&'a str],
@@ -1730,8 +1771,8 @@ next			    fn next(&mut self) -> Option<&'a mut [T]>
 next			    fn next(&mut self) -> Option<T> 
 next			            fn next(&mut self) -> Option<
 next			    fn next(&mut self) -> Option<&'a str> 
+next			    fn next(&mut self) -> Option<(usize, &'a str)> 
 next			    fn next(&mut self) -> Option<(usize, char)> 
-next			    fn next(&mut self) -> Option<(usize, usize)> 
 next			    fn next(&mut self) -> Option<char> 
 next			    fn next(&mut self) -> Option<u8> 
 next			        fn next(&mut self) -> SearchStep 
@@ -1764,8 +1805,8 @@ next_back			    fn next_back(&mut self) -> Option<&'a mut [T]>
 next_back			            fn next_back(&mut self) -> Option<
 next_back			    fn next_back(&mut self) -> Option<&'a str> 
 next_back			    fn next_back(&mut self) -> Option<&'a str>
+next_back			    fn next_back(&mut self) -> Option<(usize, &'a str)>
 next_back			    fn next_back(&mut self) -> Option<(usize, char)> 
-next_back			    fn next_back(&mut self) -> Option<(usize, usize)>
 next_back			    fn next_back(&mut self) -> Option<char> 
 next_back			    fn next_back(&mut self) -> Option<u8> 
 next_back			        fn next_back(&mut self) -> SearchStep 
@@ -1936,7 +1977,7 @@ powif64			    pub fn powif64(a: f64, x: i32) -> f64;
 precision			    pub fn precision(&self) -> Option<usize> { self.precision }
 pref_align_of			    pub fn pref_align_of<T>() -> usize;
 prefix			            fn prefix(&self) -> &'static str { 
-prefix			    fn prefix(&self) -> &'static str { "" }
+prefix			    fn prefix(&self) -> &'static str 
 prelude			pub mod prelude;
 prev_float			pub fn prev_float<T: RawFloat>(x: T) -> T 
 prev_permutation			    fn prev_permutation(&mut self) -> bool where Self::Item: Ord;
@@ -1961,6 +2002,8 @@ rem			            fn rem(self, other:
 rem			    fn rem(self, other: f32) -> f32 
 rem			    fn rem(self, other: f64) -> f64 
 rem			    fn rem(self, rhs: RHS) -> Self::Output;
+rem_assign			            fn rem_assign(&mut self, other: 
+rem_assign			    fn rem_assign(&mut self, Rhs);
 repeat			pub fn repeat<T: Clone>(elt: T) -> Repeat<T> 
 replace			pub fn replace<T>(dest: &mut T, mut src: T) -> T 
 replace			pub unsafe fn replace<T>(dest: *mut T, mut src: T) -> T 
@@ -2010,12 +2053,19 @@ shift_max			mod shift_max
 shl			            fn shl(self, other: 
 shl			            fn shl(self, other: 
 shl			    fn shl(self, rhs: RHS) -> Self::Output;
+shl_assign			            fn shl_assign(&mut self, other: 
+shl_assign			    fn shl_assign(&mut self, Rhs);
 show_usize			    fn show_usize(x: &usize, f: &mut Formatter) -> Result 
 shr			            fn shr(self, other: 
 shr			            fn shr(self, other: 
 shr			    fn shr(self, rhs: RHS) -> Self::Output;
+shr_assign			            fn shr_assign(&mut self, other: 
+shr_assign			    fn shr_assign(&mut self, Rhs);
 sig_bits			    fn sig_bits() -> u8 
 sig_bits			    fn sig_bits() -> u8;
+sign_aware_zero_pad			    pub fn sign_aware_zero_pad(&self) -> bool 
+sign_minus			    pub fn sign_minus(&self) -> bool { self.flags & (1 << FlagV1::SignMinus as u32) != 0 }
+sign_plus			    pub fn sign_plus(&self) -> bool { self.flags & (1 << FlagV1::SignPlus as u32) != 0 }
 signum			    fn signum(self) -> f32 
 signum			    fn signum(self) -> f64 
 signum			        pub fn signum(self) -> Self 
@@ -2035,6 +2085,7 @@ sinf32			    pub fn sinf32(x: f32) -> f32;
 sinf64			    pub fn sinf64(x: f64) -> f64;
 sip			mod sip;
 size_from_ptr			fn size_from_ptr<T>(_: *const T) -> usize 
+size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			            fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) { (**self).size_hint() }
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) { (0, None) }
@@ -2116,6 +2167,8 @@ sub			            pub fn sub<'a>(&'a mut self, other: &
 sub			            fn sub(self, other: Wrapping<
 sub			            fn sub(self, other: 
 sub			    fn sub(self, rhs: RHS) -> Self::Output;
+sub_assign			            fn sub_assign(&mut self, other: 
+sub_assign			    fn sub_assign(&mut self, Rhs);
 subslice_offset			    fn subslice_offset(&self, inner: &str) -> usize 
 subslice_offset			    fn subslice_offset(&self, inner: &str) -> usize;
 sum			    fn sum<S=<Self as Iterator>::Item>(self) -> S where
@@ -2261,11 +2314,11 @@ write_fmt			            fn write_fmt(&mut self, args: Arguments) -> Result
 write_fmt			    fn write_fmt(&mut self, args: Arguments) -> Result 
 write_fmt			    pub fn write_fmt(&mut self, fmt: Arguments) -> Result 
 write_formatted_parts			    fn write_formatted_parts(&mut self, formatted: &flt2dec::Formatted) -> Result 
-write_i16			    fn write_i16(&mut self, i: i16) { self.write_u16(i as u16) }
-write_i32			    fn write_i32(&mut self, i: i32) { self.write_u32(i as u32) }
-write_i64			    fn write_i64(&mut self, i: i64) { self.write_u64(i as u64) }
-write_i8			    fn write_i8(&mut self, i: i8) { self.write_u8(i as u8) }
-write_isize			    fn write_isize(&mut self, i: isize) { self.write_usize(i as usize) }
+write_i16			    fn write_i16(&mut self, i: i16) 
+write_i32			    fn write_i32(&mut self, i: i32) 
+write_i64			    fn write_i64(&mut self, i: i64) 
+write_i8			    fn write_i8(&mut self, i: i8) 
+write_isize			    fn write_isize(&mut self, i: isize) 
 write_str			    fn write_str(&mut self, mut s: &str) -> fmt::Result 
 write_str			            fn write_str(&mut self, s: &str) -> Result 
 write_str			    fn write_str(&mut self, s: &str) -> Result 
@@ -2274,7 +2327,7 @@ write_str			    pub fn write_str(&mut self, data: &str) -> Result
 write_u16			    fn write_u16(&mut self, i: u16) 
 write_u32			    fn write_u32(&mut self, i: u32) 
 write_u64			    fn write_u64(&mut self, i: u64) 
-write_u8			    fn write_u8(&mut self, i: u8) { self.write(&[i]) }
+write_u8			    fn write_u8(&mut self, i: u8) 
 write_usize			    fn write_usize(&mut self, i: usize) 
 zero			    fn zero() -> f32 { 0.0 }
 zero			    fn zero() -> f64 { 0.0 }

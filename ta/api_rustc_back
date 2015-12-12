@@ -41,7 +41,6 @@ apple_base			mod apple_base;
 apple_ios_base			mod apple_ios_base;
 as_str			    pub fn as_str<'a>(&'a self) -> &'a str 
 bench			mod bench 
-best_allocator			fn best_allocator() -> String 
 bitrig_base			mod bitrig_base;
 calculate			    pub fn calculate(metadata: &Vec<String>, krate: &hir::Crate) -> Svh 
 ch			        fn ch(x: u32, y: u32, z: u32) -> u32 
@@ -76,7 +75,9 @@ load_file			        fn load_file(path: &Path) -> Result<Target, String>
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 maj			        fn maj(x: u32, y: u32, z: u32) -> u32 
 make			    pub fn make<'a>(st: &'a mut SipHasher) -> StrictVersionHashVisitor<'a> 
+maybe_jemalloc			fn maybe_jemalloc() -> String 
 minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
+mut_ref_slice			pub fn mut_ref_slice<T>(ptr: &mut T) -> &mut [T; 1] 
 netbsd_base			mod netbsd_base;
 new			    fn new() -> FixedBuffer64 
 new			    fn new(h: &[u32; 8]) -> Engine256 
@@ -109,6 +110,7 @@ pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String>
 process_block			    fn process_block(&mut self, data: &[u8]) 
 read_u32_be			fn read_u32_be(input: &[u8]) -> u32 
 read_u32v_be			fn read_u32v_be(dst: &mut[u32], input: &[u8]) 
+ref_slice			pub fn ref_slice<T>(ptr: &T) -> &[T; 1] 
 remaining			    fn remaining(&self) -> usize { 64 - self.buffer_idx }
 remaining			    fn remaining(&self) -> usize;
 reset			    fn reset(&mut self) 
@@ -131,6 +133,7 @@ sigma0			        fn sigma0(x: u32) -> u32
 sigma1			        fn sigma1(x: u32) -> u32 
 size			    fn size(&self) -> usize { 64 }
 size			    fn size(&self) -> usize;
+slice			pub mod slice;
 standard_padding			    fn standard_padding<F>(&mut self, rem: usize, func: F) where F: FnMut(&[u8]);
 standard_padding			    fn standard_padding<F>(&mut self, rem: usize, mut func: F) where F: FnMut(&[u8]) 
 sum0			        fn sum0(x: u32) -> u32 
@@ -138,6 +141,8 @@ sum1			        fn sum1(x: u32) -> u32
 svh			pub mod svh;
 svh_visitor			mod svh_visitor 
 target			pub mod target;
+target			pub fn target() -> Target 
+target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
@@ -183,22 +188,22 @@ visit_expr			        fn visit_expr(&mut self, ex: &Expr)
 visit_fn			        fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
 visit_foreign_item			        fn visit_foreign_item(&mut self, i: &ForeignItem) 
 visit_generics			        fn visit_generics(&mut self, g: &Generics) 
-visit_ident			        fn visit_ident(&mut self, _: Span, ident: Ident) 
 visit_impl_item			        fn visit_impl_item(&mut self, ii: &ImplItem) 
 visit_item			        fn visit_item(&mut self, i: &Item) 
+visit_lifetime			        fn visit_lifetime(&mut self, l: &Lifetime) 
 visit_lifetime_def			        fn visit_lifetime_def(&mut self, l: &LifetimeDef) 
-visit_lifetime_ref			        fn visit_lifetime_ref(&mut self, l: &Lifetime) 
 visit_local			        fn visit_local(&mut self, l: &Local) 
 visit_mod			        fn visit_mod(&mut self, m: &Mod, _s: Span, _n: NodeId) 
-visit_opt_lifetime_ref			        fn visit_opt_lifetime_ref(&mut self, _: Span, l: &Option<Lifetime>) 
+visit_name			        fn visit_name(&mut self, _: Span, name: Name) 
 visit_pat			        fn visit_pat(&mut self, p: &Pat) 
 visit_path			        fn visit_path(&mut self, path: &Path, _: ast::NodeId) 
+visit_path_list_item			        fn visit_path_list_item(&mut self, prefix: &Path, item: &'v PathListItem) 
 visit_stmt			        fn visit_stmt(&mut self, s: &Stmt) 
-visit_struct_def			        fn visit_struct_def(&mut self, s: &StructDef, ident: Ident,
 visit_struct_field			        fn visit_struct_field(&mut self, s: &StructField) 
 visit_trait_item			        fn visit_trait_item(&mut self, ti: &TraitItem) 
 visit_ty			        fn visit_ty(&mut self, t: &Ty) 
-visit_variant			        fn visit_variant(&mut self, v: &Variant, g: &Generics) 
+visit_variant			        fn visit_variant(&mut self, v: &Variant, g: &Generics, item_id: NodeId) 
+visit_variant_data			        fn visit_variant_data(&mut self, s: &VariantData, name: Name,
 windows_base			mod windows_base;
 windows_msvc_base			mod windows_msvc_base;
 write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32) 

@@ -1,5 +1,5 @@
 ::Rng for MyRng			    impl<R: rand::Rng> ::Rng for MyRng<R> 
-AsciiGenerator			pub struct AsciiGenerator<'a, R:'a> 
+AsciiGenerator			pub struct AsciiGenerator<'a, R: 'a> 
 ChaChaRng			impl ChaChaRng 
 ChaChaRng			pub struct ChaChaRng 
 ChiSquared			impl ChiSquared 
@@ -10,7 +10,7 @@ Clone for IsaacRng			impl Clone for IsaacRng
 Closed01			pub struct Closed01<F>(pub F);
 ConstRand			    struct ConstRand(usize);
 Counter			    struct Counter 
-CountingRng			    struct CountingRng { i: u32 }
+CountingRng			    struct CountingRng 
 Default for Counter			    impl Default for Counter 
 Default for ReseedWithDefault			impl Default for ReseedWithDefault 
 Exp			impl Exp 
@@ -27,7 +27,7 @@ GammaLargeShape			struct GammaLargeShape
 GammaRepr			enum GammaRepr 
 GammaSmallShape			impl GammaSmallShape 
 GammaSmallShape			struct GammaSmallShape 
-Generator			pub struct Generator<'a, T, R:'a> 
+Generator			pub struct Generator<'a, T, R: 'a> 
 IndependentSample			pub trait IndependentSample<Support>: Sample<Support> 
 IndependentSample for ChiSquared			impl IndependentSample<f64> for ChiSquared 
 IndependentSample for Exp			impl IndependentSample<f64> for Exp 
@@ -49,7 +49,7 @@ Iterator for AsciiGenerator			impl<'a, R: Rng> Iterator for AsciiGenerator<'a, R
 Iterator for Generator			impl<'a, T: Rand, R: Rng> Iterator for Generator<'a, T, R> 
 LogNormal			impl LogNormal 
 LogNormal			pub struct LogNormal 
-MyRng			    pub struct MyRng<R> { inner: R }
+MyRng			    pub struct MyRng<R> 
 Normal			impl Normal 
 Normal			pub struct Normal 
 Open01			pub struct Open01<F>(pub F);
@@ -79,7 +79,7 @@ Rand for u64			impl Rand for u64
 Rand for u8			impl Rand for u8 
 Rand for usize			impl Rand for usize 
 RandSample			impl<Sup> RandSample<Sup> 
-RandSample			pub struct RandSample<Sup> { _marker: PhantomData<Sup> }
+RandSample			pub struct RandSample<Sup> 
 Range			impl<X: SampleRange + PartialOrd> Range<X> 
 Range			pub struct Range<X> 
 ReseedWithDefault			pub struct ReseedWithDefault;
@@ -119,7 +119,7 @@ StudentT			impl StudentT
 StudentT			pub struct StudentT 
 Weighted			pub struct Weighted<T> 
 WeightedChoice			impl<'a, T: Clone> WeightedChoice<'a, T> 
-WeightedChoice			pub struct WeightedChoice<'a, T:'a> 
+WeightedChoice			pub struct WeightedChoice<'a, T: 'a> 
 XorShiftRng			impl XorShiftRng 
 XorShiftRng			pub struct XorShiftRng 
 bench			mod bench 
@@ -135,7 +135,7 @@ construct_range			            fn construct_range(low:
 construct_range			    fn construct_range(low: Self, high: Self) -> Range<Self>;
 core			fn core(output: &mut [u32; STATE_WORDS], input: &[u32; STATE_WORDS]) 
 default			        fn default() -> Counter 
-default			    fn default() -> ReseedWithDefault { ReseedWithDefault }
+default			    fn default() -> ReseedWithDefault 
 distributions			pub mod distributions;
 exp			    fn exp(self) -> Self;
 exp			    fn exp(self) -> f64 
@@ -179,7 +179,7 @@ new			    pub fn new(items: &'a mut [Weighted<T>]) -> WeightedChoice<'a, T>
 new			    pub fn new(mean: f64, std_dev: f64) -> LogNormal 
 new			    pub fn new(mean: f64, std_dev: f64) -> Normal 
 new			    pub fn new(low: X, high: X) -> Range<X> 
-new			    pub fn new(rng: R, generation_threshold: usize, reseeder: Rsdr) -> ReseedingRng<R,Rsdr> 
+new			    pub fn new(rng: R, generation_threshold: usize, reseeder: Rsdr) -> ReseedingRng<R, Rsdr> 
 new_raw			    fn new_raw(shape: f64, scale: f64) -> GammaLargeShape 
 new_raw			    fn new_raw(shape: f64, scale: f64) -> GammaSmallShape 
 new_unseeded			    pub fn new_unseeded() -> ChaChaRng 
@@ -208,9 +208,9 @@ pdf			        fn pdf(x: f64) -> f64
 powf			    fn powf(self, n: Self) -> Self;
 powf			    fn powf(self, n: f64) -> f64 
 rand			    fn rand<R: Rng>(other: &mut R) -> ChaChaRng 
-rand			    fn rand<R:Rng>(rng: &mut R) -> Exp1 
+rand			    fn rand<R: Rng>(rng: &mut R) -> Exp1 
 rand			        fn rand<R: Rng>(_: &mut R) -> ConstRand 
-rand			    fn rand<R:Rng>(rng: &mut R) -> StandardNormal 
+rand			    fn rand<R: Rng>(rng: &mut R) -> StandardNormal 
 rand			    fn rand<R: Rng>(other: &mut R) -> Isaac64Rng 
 rand			    fn rand<R: Rng>(other: &mut R) -> IsaacRng 
 rand			    fn rand<R: Rng>(rng: &mut R) -> Self;
@@ -219,7 +219,7 @@ rand			                fn rand<R: Rng>(rng: &mut R) ->
 rand			                fn rand<R: Rng>(rng: &mut R) -> Closed01<
 rand			                fn rand<R: Rng>(rng: &mut R) -> Open01<
 rand			            fn rand<R: Rng>(_rng: &mut R) -> ( 
-rand			    fn rand<R: Rng>(_: &mut R) -> () { () }
+rand			    fn rand<R: Rng>(_: &mut R) -> () 
 rand			    fn rand<R: Rng>(rng: &mut R) -> Option<T> 
 rand			    fn rand<R: Rng>(rng: &mut R) -> bool 
 rand			    fn rand<R: Rng>(rng: &mut R) -> char 
@@ -249,13 +249,13 @@ reseed			    fn reseed(&mut self, rng: &mut R);
 reseed_if_necessary			    pub fn reseed_if_necessary(&mut self) 
 reseeding			pub mod reseeding;
 rng			    pub fn rng() -> MyRng<rand::ThreadRng> 
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup { self.ind_sample(rng) }
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup 
 sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Support;
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> T { self.ind_sample(rng) }
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 { self.ind_sample(rng) }
-sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup { self.ind_sample(rng) }
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> T 
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> f64 
+sample			    fn sample<R: Rng>(&mut self, rng: &mut R) -> Sup 
 sample_range			            fn sample_range<R: Rng>(r: &Range<
 sample_range			    fn sample_range<R: Rng>(r: &Range<Self>, rng: &mut R) -> Self;
 set_counter			    pub fn set_counter(&mut self, counter_low: u64, counter_high: u64) 
@@ -273,7 +273,7 @@ tests			mod tests
 tests			mod tests 
 update			    fn update(&mut self) 
 weak_rng			    pub fn weak_rng() -> MyRng<rand::ThreadRng> 
-zero_case			        fn zero_case<R:Rng>(rng: &mut R, _u: f64) -> f64 
-zero_case			        fn zero_case<R:Rng>(rng: &mut R, u: f64) -> f64 
-ziggurat			fn ziggurat<R: Rng, P, Z>(
+zero_case			        fn zero_case<R: Rng>(rng: &mut R, _u: f64) -> f64 
+zero_case			        fn zero_case<R: Rng>(rng: &mut R, u: f64) -> f64 
+ziggurat			fn ziggurat<R: Rng, P, Z>(rng: &mut R,
 ziggurat_tables			mod ziggurat_tables;
