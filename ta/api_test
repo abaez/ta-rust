@@ -5,14 +5,16 @@ Clone for MetricMap			impl Clone for MetricMap
 ColorConfig			pub enum ColorConfig 
 ConsoleTestState			impl<T: Write> ConsoleTestState<T> 
 ConsoleTestState			struct ConsoleTestState<T> 
-GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: libc::HANDLE,
-GetStdHandle			        fn GetStdHandle(which: libc::DWORD) -> libc::HANDLE;
+GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: HANDLE, lpMode: LPDWORD) -> BOOL;
+GetStdHandle			        fn GetStdHandle(which: DWORD) -> HANDLE;
+GetSystemInfo			            fn GetSystemInfo(info: *mut SYSTEM_INFO) -> i32;
 Metric			impl Metric 
 Metric			pub struct Metric 
 MetricMap			impl MetricMap 
 MetricMap			pub struct MetricMap(BTreeMap<String,Metric>);
 NamePadding			enum NamePadding 
 OutputLocation			enum OutputLocation<T> 
+SYSTEM_INFO			        struct SYSTEM_INFO 
 Send for TestDesc			unsafe impl Send for TestDesc {}
 Send for TestResult			unsafe impl Send for TestResult {}
 ShouldPanic			pub enum ShouldPanic 
@@ -40,6 +42,7 @@ bench			pub mod bench
 bench			mod bench 
 bench_n			    pub fn bench_n<F>(&mut self, n: u64, f: F) where F: FnOnce(&mut Bencher) 
 benchmark			    pub fn benchmark<F>(f: F) -> BenchSamples where F: FnMut(&mut Bencher) 
+black_box			pub fn black_box<T>(dummy: T) -> T { dummy }
 black_box			pub fn black_box<T>(dummy: T) -> T 
 calc_result			fn calc_result(desc: &TestDesc, task_result: Result<(), Box<Any+Send>>) -> TestResult 
 callback			    fn callback<T: Write>(event: &TestEvent,

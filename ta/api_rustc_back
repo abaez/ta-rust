@@ -31,7 +31,7 @@ TempDir			pub struct TempDir
 Test			    struct Test 
 ToBits			trait ToBits 
 ToBits for u64			impl ToBits for u64 
-Visitor for StrictVersionHashVisitor			    impl<'a, 'v> Visitor<'v> for StrictVersionHashVisitor<'a> 
+Visitor for StrictVersionHashVisitor			    impl<'a> Visitor<'a> for StrictVersionHashVisitor<'a> 
 _new_in			    fn _new_in(tmpdir: &Path, prefix: &str) -> io::Result<TempDir> 
 abi			pub mod abi;
 add_bytes_to_bits			fn add_bytes_to_bits(bits: u64, bytes: u64) -> u64 
@@ -74,7 +74,7 @@ linux_base			mod linux_base;
 load_file			        fn load_file(path: &Path) -> Result<Target, String> 
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 maj			        fn maj(x: u32, y: u32, z: u32) -> u32 
-make			    pub fn make<'a>(st: &'a mut SipHasher) -> StrictVersionHashVisitor<'a> 
+make			    pub fn make<'a>(st: &'a mut SipHasher, krate: &'a Crate) -> StrictVersionHashVisitor<'a> 
 maybe_jemalloc			fn maybe_jemalloc() -> String 
 minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
 mut_ref_slice			pub fn mut_ref_slice<T>(ptr: &mut T) -> &mut [T; 1] 
@@ -180,30 +180,31 @@ tests			mod tests
 to_bits			    fn to_bits(self) -> (Self, Self);
 to_bits			    fn to_bits(self) -> (u64, u64) 
 to_string			    pub fn to_string(&self) -> &'static str 
-visit_arm			        fn visit_arm(&mut self, a: &Arm) 
-visit_block			        fn visit_block(&mut self, b: &Block) 
-visit_decl			        fn visit_decl(&mut self, d: &Decl) 
-visit_explicit_self			        fn visit_explicit_self(&mut self, es: &ExplicitSelf) 
-visit_expr			        fn visit_expr(&mut self, ex: &Expr) 
-visit_fn			        fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
-visit_foreign_item			        fn visit_foreign_item(&mut self, i: &ForeignItem) 
-visit_generics			        fn visit_generics(&mut self, g: &Generics) 
-visit_impl_item			        fn visit_impl_item(&mut self, ii: &ImplItem) 
-visit_item			        fn visit_item(&mut self, i: &Item) 
-visit_lifetime			        fn visit_lifetime(&mut self, l: &Lifetime) 
-visit_lifetime_def			        fn visit_lifetime_def(&mut self, l: &LifetimeDef) 
-visit_local			        fn visit_local(&mut self, l: &Local) 
-visit_mod			        fn visit_mod(&mut self, m: &Mod, _s: Span, _n: NodeId) 
+visit_arm			        fn visit_arm(&mut self, a: &'a Arm) 
+visit_block			        fn visit_block(&mut self, b: &'a Block) 
+visit_decl			        fn visit_decl(&mut self, d: &'a Decl) 
+visit_explicit_self			        fn visit_explicit_self(&mut self, es: &'a ExplicitSelf) 
+visit_expr			        fn visit_expr(&mut self, ex: &'a Expr) 
+visit_fn			        fn visit_fn(&mut self, fk: FnKind<'a>, fd: &'a FnDecl,
+visit_foreign_item			        fn visit_foreign_item(&mut self, i: &'a ForeignItem) 
+visit_generics			        fn visit_generics(&mut self, g: &'a Generics) 
+visit_impl_item			        fn visit_impl_item(&mut self, ii: &'a ImplItem) 
+visit_item			        fn visit_item(&mut self, i: &'a Item) 
+visit_lifetime			        fn visit_lifetime(&mut self, l: &'a Lifetime) 
+visit_lifetime_def			        fn visit_lifetime_def(&mut self, l: &'a LifetimeDef) 
+visit_local			        fn visit_local(&mut self, l: &'a Local) 
+visit_mod			        fn visit_mod(&mut self, m: &'a Mod, _s: Span, _n: NodeId) 
 visit_name			        fn visit_name(&mut self, _: Span, name: Name) 
-visit_pat			        fn visit_pat(&mut self, p: &Pat) 
-visit_path			        fn visit_path(&mut self, path: &Path, _: ast::NodeId) 
-visit_path_list_item			        fn visit_path_list_item(&mut self, prefix: &Path, item: &'v PathListItem) 
-visit_stmt			        fn visit_stmt(&mut self, s: &Stmt) 
-visit_struct_field			        fn visit_struct_field(&mut self, s: &StructField) 
-visit_trait_item			        fn visit_trait_item(&mut self, ti: &TraitItem) 
-visit_ty			        fn visit_ty(&mut self, t: &Ty) 
-visit_variant			        fn visit_variant(&mut self, v: &Variant, g: &Generics, item_id: NodeId) 
-visit_variant_data			        fn visit_variant_data(&mut self, s: &VariantData, name: Name,
+visit_nested_item			        fn visit_nested_item(&mut self, item: ItemId) 
+visit_pat			        fn visit_pat(&mut self, p: &'a Pat) 
+visit_path			        fn visit_path(&mut self, path: &'a Path, _: ast::NodeId) 
+visit_path_list_item			        fn visit_path_list_item(&mut self, prefix: &'a Path, item: &'a PathListItem) 
+visit_stmt			        fn visit_stmt(&mut self, s: &'a Stmt) 
+visit_struct_field			        fn visit_struct_field(&mut self, s: &'a StructField) 
+visit_trait_item			        fn visit_trait_item(&mut self, ti: &'a TraitItem) 
+visit_ty			        fn visit_ty(&mut self, t: &'a Ty) 
+visit_variant			        fn visit_variant(&mut self, v: &'a Variant, g: &'a Generics, item_id: NodeId) 
+visit_variant_data			        fn visit_variant_data(&mut self, s: &'a VariantData, name: Name,
 windows_base			mod windows_base;
 windows_msvc_base			mod windows_msvc_base;
 write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32) 

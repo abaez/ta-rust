@@ -43,13 +43,13 @@ UserIdentifiedItem			impl UserIdentifiedItem
 UserIdentifiedItem			pub enum UserIdentifiedItem 
 Write for Sink			    impl Write for Sink 
 add_configuration			pub fn add_configuration(cfg: &mut ast::CrateConfig, sess: &Session) 
-all_matching_node_ids			    fn all_matching_node_ids<'a, 'ast>(&'a self, map: &'a hir_map::Map<'ast>)
+all_matching_node_ids			    fn all_matching_node_ids<'a, 'ast>(&'a self,
 allows_unstable_options			    fn allows_unstable_options(matches: &getopts::Matches) -> bool 
 and_then			    pub fn and_then<F: FnOnce() -> Compilation>(self, next: F) -> Compilation 
 anon_src			pub fn anon_src() -> String 
 assert_eq			    pub fn assert_eq(&self, a: Ty<'tcx>, b: Ty<'tcx>) 
 assert_subtype			    pub fn assert_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) 
-assign_node_ids			pub fn assign_node_ids(sess: &Session,
+assign_node_ids			pub fn assign_node_ids(sess: &Session, krate: ast::Crate) -> ast::Crate 
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'ast>> 
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'ast>>;
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'tcx>> 
@@ -64,16 +64,18 @@ check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'t
 check_lub			    pub fn check_lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_lub: Ty<'tcx>) 
 check_not_sub			    pub fn check_not_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
 check_sub			    pub fn check_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
-collect_crate_metadata			pub fn collect_crate_metadata(session: &Session,
-collect_crate_types			pub fn collect_crate_types(session: &Session,
+collect_crate_metadata			pub fn collect_crate_metadata(session: &Session, _attrs: &[ast::Attribute]) -> Vec<String> 
+collect_crate_types			pub fn collect_crate_types(session: &Session, attrs: &[ast::Attribute]) -> Vec<config::CrateType> 
 commit_date_str			pub fn commit_date_str() -> Option<&'static str> 
 commit_hash_str			pub fn commit_hash_str() -> Option<&'static str> 
 compile_input			pub fn compile_input(sess: Session,
 contravariant_region_ptr_err			fn contravariant_region_ptr_err() 
 contravariant_region_ptr_ok			fn contravariant_region_ptr_ok() 
+count_nodes			fn count_nodes(krate: &ast::Crate) -> usize 
 create_region_hierarchy			    pub fn create_region_hierarchy(&self, rh: &RH, parent: CodeExtent) 
 create_simple_region_hierarchy			    pub fn create_simple_region_hierarchy(&self) 
-custom_emit			    fn custom_emit(&mut self,
+cstore_to_cratestore			pub fn cstore_to_cratestore(a: Rc<CStore>) -> Rc<for<'s> CrateStore<'s>>
+custom_emit			    fn custom_emit(&mut self, _cm: &codemap::CodeMap, _sp: RenderSpan, msg: &str, lvl: Level) 
 describe_codegen_flags			fn describe_codegen_flags() 
 describe_debug_flags			fn describe_debug_flags() 
 describe_lints			fn describe_lints(lint_store: &lint::LintStore, loaded_plugins: bool) 
@@ -83,13 +85,13 @@ dummy_type_trace			    pub fn dummy_type_trace(&self) -> infer::TypeTrace<'tcx>
 early_callback			    fn early_callback(&mut self,
 emit			    fn emit(&mut self,
 empty			    fn empty(input: &'a Input,
-errors			fn errors(msgs: &[&str]) -> (Box<Emitter+Send>, usize) 
+errors			fn errors(msgs: &[&str]) -> (Box<Emitter + Send>, usize) 
 escape_dep_filename			fn escape_dep_filename(filename: &str) -> String 
 escaping			fn escaping() 
 expand_err_details			    fn expand_err_details(r: io::Result<()>) -> io::Result<()> 
-expr_to_block			        fn expr_to_block(rules: ast::BlockCheckMode,
+expr_to_block			        fn expr_to_block(rules: ast::BlockCheckMode, e: Option<P<ast::Expr>>) -> P<ast::Block> 
 features_contain			fn features_contain(sess: &Session, s: &str) -> bool 
-flush			        fn flush(&mut self) -> io::Result<()> { Ok(()) }
+flush			        fn flush(&mut self) -> io::Result<()> 
 fold::Folder for ReplaceBodyWithLoop			impl fold::Folder for ReplaceBodyWithLoop 
 fold_block			    fn fold_block(&mut self, b: P<ast::Block>) -> P<ast::Block> 
 fold_impl_item			    fn fold_impl_item(&mut self, i: P<ast::ImplItem>) -> SmallVector<P<ast::ImplItem>> 
@@ -117,7 +119,7 @@ has_ssse3			pub fn has_ssse3(sess: &Session) -> bool
 has_vfp			pub fn has_vfp(sess: &Session) -> bool 
 is_subtype			    pub fn is_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> bool 
 late_callback			    fn late_callback(&mut self,
-list_metadata			    pub fn list_metadata(sess: &Session,
+list_metadata			    pub fn list_metadata(sess: &Session, matches: &getopts::Matches, input: &Input) -> Compilation 
 lookup_item			    pub fn lookup_item(&self, names: &[String]) -> ast::NodeId 
 lub			    pub fn lub(&self) -> Lub<'a, 'tcx> 
 lub_bound_bound			fn lub_bound_bound() 
@@ -133,7 +135,7 @@ make_lub_ty			    pub fn make_lub_ty(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) -> Ty<'t
 make_map			pub fn make_map<'ast>(sess: &Session,
 make_output			fn make_output(matches: &getopts::Matches) -> (Option<PathBuf>, Option<PathBuf>) 
 make_subtype			    pub fn make_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> bool 
-monitor			pub fn monitor<F:FnOnce()+Send+'static>(f: F) 
+monitor			pub fn monitor<F: FnOnce() + Send + 'static>(f: F) 
 needs_ast_map			fn needs_ast_map(ppm: &PpMode, opt_uii: &Option<UserIdentifiedItem>) -> bool 
 needs_expansion			fn needs_expansion(ppm: &PpMode) -> bool 
 new			    fn new() -> ReplaceBodyWithLoop 
@@ -141,19 +143,20 @@ new_id			        fn new_id(&mut self, old_id: ast::NodeId) -> ast::NodeId
 next			    fn next(&mut self) -> Option<ast::NodeId> 
 no_input			    fn no_input(&mut self,
 parse_all_options			    fn parse_all_options(args: &Vec<String>) -> getopts::Matches 
-parse_crate_attrs			fn parse_crate_attrs(sess: &Session, input: &Input) ->
+parse_crate_attrs			fn parse_crate_attrs(sess: &Session, input: &Input) -> Vec<ast::Attribute> 
 parse_pretty			    fn parse_pretty(&mut self,
 parse_pretty			pub fn parse_pretty(sess: &Session,
-phase_1_parse_input			pub fn phase_1_parse_input(sess: &Session, cfg: ast::CrateConfig, input: &Input)
+phase_1_parse_input			pub fn phase_1_parse_input(sess: &Session, cfg: ast::CrateConfig, input: &Input) -> ast::Crate 
 phase_2_configure_and_expand			pub fn phase_2_configure_and_expand(sess: &Session,
 phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: &'tcx Session,
-phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm(tcx: &ty::ctxt, analysis: ty::CrateAnalysis)
+phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'tcx>(tcx: &ty::ctxt<'tcx>,
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
 phase_6_link_output			pub fn phase_6_link_output(sess: &Session,
-post			    fn post(&self,
-pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust::PpAnn { self }
+post			    fn post(&self, s: &mut pprust::State, node: pprust::AnnNode) -> io::Result<()> 
+post			    fn post(&self, s: &mut pprust_hir::State, node: pprust_hir::AnnNode) -> io::Result<()> 
+pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust::PpAnn 
 pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust::PpAnn;
-pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust_hir::PpAnn { self }
+pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust_hir::PpAnn 
 pp_ann			    fn pp_ann<'a>(&'a self) -> &'a pprust_hir::PpAnn;
 pprust::PpAnn for HygieneAnnotation			impl<'ast> pprust::PpAnn for HygieneAnnotation<'ast> 
 pprust::PpAnn for IdentifiedAnnotation			impl<'ast> pprust::PpAnn for IdentifiedAnnotation<'ast> 
@@ -161,10 +164,12 @@ pprust::PpAnn for NoAnn			impl<'ast> pprust::PpAnn for NoAnn<'ast> {}
 pprust_hir::PpAnn for IdentifiedAnnotation			impl<'ast> pprust_hir::PpAnn for IdentifiedAnnotation<'ast> 
 pprust_hir::PpAnn for NoAnn			impl<'ast> pprust_hir::PpAnn for NoAnn<'ast> {}
 pprust_hir::PpAnn for TypedAnnotation			impl<'a, 'tcx> pprust_hir::PpAnn for TypedAnnotation<'a, 'tcx> 
-pre			    fn pre(&self,
+pre			    fn pre(&self, s: &mut pprust::State, node: pprust::AnnNode) -> io::Result<()> 
+pre			    fn pre(&self, s: &mut pprust_hir::State, node: pprust_hir::AnnNode) -> io::Result<()> 
 pretty			pub mod pretty;
 pretty_print_input			pub fn pretty_print_input(sess: Session,
 print_crate_info			    fn print_crate_info(sess: &Session,
+print_flag_list			fn print_flag_list<T>(cmdline_opt: &str,
 print_flowgraph			fn print_flowgraph<W: Write>(variants: Vec<borrowck_dot::Variant>,
 re_early_bound			    pub fn re_early_bound(&self,
 re_free			    pub fn re_free(&self, nid: ast::NodeId, id: u32) -> ty::Region 
@@ -173,13 +178,12 @@ reconstructed_input			    fn reconstructed_input(&self) -> String
 release_str			pub fn release_str() -> Option<&'static str> 
 remove_message			fn remove_message(e: &mut ExpectErrorEmitter, msg: &str, lvl: Level) 
 run			pub fn run(args: Vec<String>) -> isize 
-run_compiler			pub fn run_compiler<'a>(args: &[String],
-search			        fn search(this: &Env,
+run_compiler			pub fn run_compiler<'a>(args: &[String], callbacks: &mut CompilerCalls<'a>) 
+search			        fn search(this: &Env, it: &hir::Item, idx: usize, names: &[String]) -> Option<ast::NodeId> 
 search_mod			        fn search_mod(this: &Env,
-sess			    fn sess<'a>(&'a self) -> &'a Session { &self.tcx.sess }
-sess			    fn sess<'a>(&'a self) -> &'a Session { self.sess }
+sess			    fn sess<'a>(&'a self) -> &'a Session 
 sess			    fn sess<'a>(&'a self) -> &'a Session;
-some_input			    fn some_input(&mut self, input: Input, input_path: Option<PathBuf>)
+some_input			    fn some_input(&mut self,
 sort_lint_groups			    fn sort_lint_groups(lints: Vec<(&'static str, Vec<lint::LintId>, bool)>)
 sort_lints			    fn sort_lints(lints: Vec<(&'static Lint, bool)>) -> Vec<&'static Lint> 
 source_name			pub fn source_name(input: &Input) -> String 
@@ -195,7 +199,7 @@ sub_free_bound_false_infer			fn sub_free_bound_false_infer()
 subst_region_renumber_region			fn subst_region_renumber_region() 
 subst_ty_renumber_bound			fn subst_ty_renumber_bound() 
 subst_ty_renumber_some_bounds			fn subst_ty_renumber_some_bounds() 
-t_fn			    pub fn t_fn(&self,
+t_fn			    pub fn t_fn(&self, input_tys: &[Ty<'tcx>], output_ty: Ty<'tcx>) -> Ty<'tcx> 
 t_nil			    pub fn t_nil(&self) -> Ty<'tcx> 
 t_pair			    pub fn t_pair(&self, ty1: Ty<'tcx>, ty2: Ty<'tcx>) -> Ty<'tcx> 
 t_param			    pub fn t_param(&self, space: subst::ParamSpace, index: u32) -> Ty<'tcx> 
@@ -210,7 +214,7 @@ target_features			pub mod target_features;
 tcx			    pub fn tcx(&self) -> &ty::ctxt<'tcx> 
 test			pub mod test;
 to_one_node_id			    fn to_one_node_id(self, user_option: &str, sess: &Session, map: &hir_map::Map) -> ast::NodeId 
-unw			        fn unw(x: Option<&str>) -> &str { x.unwrap_or("unknown") }
+unw			        fn unw(x: Option<&str>) -> &str 
 usage			fn usage(verbose: bool, include_unstable_options: bool) 
 version			pub fn version(binary: &str, matches: &getopts::Matches) 
 walk_ty			fn walk_ty() 

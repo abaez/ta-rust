@@ -10,7 +10,7 @@ AsRef for Rc			impl<T: ?Sized> AsRef<T> for Rc<T>
 Bar			    struct Bar(u32);
 Box			impl Box<Any + Send> 
 Box			impl Box<Any> 
-Box			impl<T : ?Sized> Box<T> 
+Box			impl<T: ?Sized> Box<T> 
 Box			impl<T> Box<T> 
 Box			pub struct Box<T: ?Sized>(Unique<T>);
 BoxBuilder			        impl<T> BoxBuilder<T> 
@@ -38,7 +38,7 @@ DerefMut for Box			impl<T: ?Sized> DerefMut for Box<T>
 DoubleEndedIterator for Box			impl<I: DoubleEndedIterator + ?Sized> DoubleEndedIterator for Box<I> 
 Drop for Arc			impl<T: ?Sized> Drop for Arc<T> 
 Drop for BoxBuilder			        impl<T> Drop for BoxBuilder<T> 
-Drop for Canary			    impl Drop for Canary
+Drop for Canary			    impl Drop for Canary 
 Drop for IntermediateBox			impl<T: ?Sized> Drop for IntermediateBox<T> 
 Drop for RawVec			impl<T> Drop for RawVec<T> 
 Drop for Rc			impl<T: ?Sized> Drop for Rc<T> 
@@ -50,15 +50,18 @@ Eq for Rc			impl<T: ?Sized + Eq> Eq for Rc<T> {}
 ExactSizeIterator for Box			impl<I: ExactSizeIterator + ?Sized> ExactSizeIterator for Box<I> {}
 ExchangeHeapSingleton			pub struct ExchangeHeapSingleton 
 FnBox			pub trait FnBox<A> 
-FnBox for F			impl<A,F> FnBox<A> for F
-FnOnce for Box			impl<'a,A,R> FnOnce<A> for Box<FnBox<A,Output=R>+'a> 
-FnOnce for Box			impl<'a,A,R> FnOnce<A> for Box<FnBox<A,Output=R>+Send+'a> 
+FnBox for F			impl<A, F> FnBox<A> for F where F: FnOnce<A>
+FnOnce for Box			impl<'a, A, R> FnOnce<A> for Box<FnBox<A, Output = R> + 'a> 
+FnOnce for Box			impl<'a, A, R> FnOnce<A> for Box<FnBox<A, Output = R> + Send + 'a> 
 Foo			    struct Foo 
 Foo			    trait Foo 
 Foo for Bar			    impl Foo for Bar 
+From for Arc			impl<T> From<T> for Arc<T> 
+From for Box			impl<T> From<T> for Box<T> 
+From for Rc			impl<T> From<T> for Rc<T> 
 Hash for Arc			impl<T: ?Sized + Hash> Hash for Arc<T> 
 Hash for Box			impl<T: ?Sized + Hash> Hash for Box<T> 
-Hash for Rc			impl<T: ?Sized+Hash> Hash for Rc<T> 
+Hash for Rc			impl<T: ?Sized + Hash> Hash for Rc<T> 
 InPlace for IntermediateBox			impl<T> InPlace<T> for IntermediateBox<T> 
 IntermediateBox			pub struct IntermediateBox<T: ?Sized> 
 Iterator for Box			impl<I: Iterator + ?Sized> Iterator for Box<I> 
@@ -83,12 +86,12 @@ RcBox			struct RcBox<T: ?Sized>
 RcBoxPtr			trait RcBoxPtr<T: ?Sized> 
 RcBoxPtr for Rc			impl<T: ?Sized> RcBoxPtr<T> for Rc<T> 
 RcBoxPtr for Weak			impl<T: ?Sized> RcBoxPtr<T> for Weak<T> 
-Send for Arc			unsafe impl<T: ?Sized + Sync + Send> Send for Arc<T> { }
+Send for Arc			unsafe impl<T: ?Sized + Sync + Send> Send for Arc<T> {}
 Send for ArcInner			unsafe impl<T: ?Sized + Sync + Send> Send for ArcInner<T> {}
-Send for Weak			unsafe impl<T: ?Sized + Sync + Send> Send for Weak<T> { }
-Sync for Arc			unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> { }
+Send for Weak			unsafe impl<T: ?Sized + Sync + Send> Send for Weak<T> {}
+Sync for Arc			unsafe impl<T: ?Sized + Sync + Send> Sync for Arc<T> {}
 Sync for ArcInner			unsafe impl<T: ?Sized + Sync + Send> Sync for ArcInner<T> {}
-Sync for Weak			unsafe impl<T: ?Sized + Sync + Send> Sync for Weak<T> { }
+Sync for Weak			unsafe impl<T: ?Sized + Sync + Send> Sync for Weak<T> {}
 Test			struct Test;
 Weak			impl<T: ?Sized> Weak<T> 
 Weak			pub struct Weak<T: ?Sized> 
@@ -174,15 +177,18 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for Arc			impl<T: ?Sized + fmt::Debug> fmt::Debug for Arc<T> 
 fmt::Debug for Box			impl<T: fmt::Debug + ?Sized> fmt::Debug for Box<T> 
-fmt::Debug for Rc			impl<T: ?Sized+fmt::Debug> fmt::Debug for Rc<T> 
+fmt::Debug for Rc			impl<T: ?Sized + fmt::Debug> fmt::Debug for Rc<T> 
 fmt::Debug for Weak			impl<T: ?Sized + fmt::Debug> fmt::Debug for Weak<T> 
-fmt::Debug for Weak			impl<T: ?Sized+fmt::Debug> fmt::Debug for Weak<T> 
+fmt::Debug for Weak			impl<T: ?Sized + fmt::Debug> fmt::Debug for Weak<T> 
 fmt::Display for Arc			impl<T: ?Sized + fmt::Display> fmt::Display for Arc<T> 
 fmt::Display for Box			impl<T: fmt::Display + ?Sized> fmt::Display for Box<T> 
-fmt::Display for Rc			impl<T: ?Sized+fmt::Display> fmt::Display for Rc<T> 
+fmt::Display for Rc			impl<T: ?Sized + fmt::Display> fmt::Display for Rc<T> 
 fmt::Pointer for Arc			impl<T> fmt::Pointer for Arc<T> 
 fmt::Pointer for Box			impl<T> fmt::Pointer for Box<T> 
 fmt::Pointer for Rc			impl<T> fmt::Pointer for Rc<T> 
+from			    fn from(t: T) -> Self 
+from			    fn from(t: T) -> Self 
+from			    fn from(t: T) -> Self 
 from_box			    pub fn from_box(mut slice: Box<[T]>) -> Self 
 from_raw			    pub unsafe fn from_raw(raw: *mut T) -> Self 
 from_raw_parts			    pub unsafe fn from_raw_parts(ptr: *mut T, cap: usize) -> Self 
@@ -201,7 +207,7 @@ hash			    fn hash<H: Hasher>(&self, state: &mut H)
 hash			    fn hash<H: hash::Hasher>(&self, state: &mut H) 
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 heap			pub mod heap;
-homura			    fn homura<T: Deref<Target = i32>>(_: T) 
+homura			    fn homura<T: Deref<Target = i32>>(_: T) {}
 inc_strong			    fn inc_strong(&self) 
 inc_weak			    fn inc_weak(&self) 
 inner			    fn inner(&self) -> &ArcInner<T> 
@@ -249,6 +255,7 @@ rc			pub mod rc;
 reallocate			pub unsafe fn reallocate(ptr: *mut u8, old_size: usize, size: usize, align: usize) -> *mut u8 
 reallocate_inplace			pub unsafe fn reallocate_inplace(ptr: *mut u8,
 reserve			    pub fn reserve(&mut self, used_cap: usize, needed_extra_cap: usize) 
+reserve_does_not_overallocate			    fn reserve_does_not_overallocate() 
 reserve_exact			    pub fn reserve_exact(&mut self, used_cap: usize, needed_extra_cap: usize) 
 set			        fn set(&mut self, value: u32) 
 set			        fn set(&mut self, value: u32);
@@ -258,6 +265,7 @@ size_hint			    fn size_hint(&self) -> (usize, Option<usize>)
 strong			    fn strong(&self) -> usize 
 strong_count			    pub fn strong_count(this: &Self) -> usize 
 strong_count			    pub fn strong_count(this: &Self) -> usize 
+tests			mod tests 
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 

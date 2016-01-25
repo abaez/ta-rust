@@ -21,11 +21,11 @@ Clean			impl<'a> Clean<Typedef> for (ty::TypeScheme<'a>, ty::GenericPredicates<'
 Clean			impl<'tcx> Clean<(Vec<TyParamBound>, Vec<TypeBinding>)> for ty::ExistentialBounds<'tcx> 
 Clean			impl<'tcx> Clean<Option<Vec<TyParamBound>>> for subst::Substs<'tcx> 
 Clean			pub trait Clean<T> 
+Clean for CrateNum			impl Clean<ExternalCrate> for CrateNum 
 Clean for ast			impl Clean<Attribute> for ast::Attribute 
 Clean for ast			impl Clean<Attribute> for ast::MetaItem 
 Clean for ast			impl Clean<String> for ast::Name 
 Clean for attr			impl Clean<Stability> for attr::Stability 
-Clean for cstore			impl Clean<ExternalCrate> for cstore::crate_metadata 
 Clean for doctree			impl Clean<Item> for doctree::Constant 
 Clean for doctree			impl Clean<Item> for doctree::DefaultImpl 
 Clean for doctree			impl Clean<Item> for doctree::Enum 
@@ -100,6 +100,7 @@ Context			impl Context
 Context			pub struct Context 
 Crate			pub struct Crate 
 CrateAnalysis			pub struct CrateAnalysis 
+CrateNum			struct CrateNum(ast::CrateNum);
 DefaultImpl			pub struct DefaultImpl 
 DefaultImpl			pub struct DefaultImpl 
 Display for Error			impl Display for Error 
@@ -154,7 +155,7 @@ Lifetime			impl Lifetime
 Lifetime			pub struct Lifetime(String);
 Lock			    impl Lock 
 Lock			    pub struct Lock 
-LockFileEx			        fn LockFileEx(hFile: libc::HANDLE,
+LockFileEx			        fn LockFileEx(hFile: HANDLE,
 Macro			pub struct Macro 
 Macro			pub struct Macro 
 Markdown			pub struct Markdown<'a>(pub &'a str);
@@ -168,6 +169,7 @@ Module			pub struct Module
 Mutability			pub enum Mutability 
 MutableSpace			pub struct MutableSpace(pub clean::Mutability);
 MyOpaque			struct MyOpaque 
+OVERLAPPED			    struct OVERLAPPED 
 Output			struct Output 
 Page			pub struct Page<'a> 
 Path			impl Path 
@@ -223,7 +225,6 @@ TypeBound			pub enum TypeBound
 TypeKind			pub enum TypeKind 
 Typedef			pub struct Typedef 
 Typedef			pub struct Typedef 
-UnlockFileEx			        fn UnlockFileEx(hFile: libc::HANDLE,
 UnsafetySpace			impl UnsafetySpace 
 UnsafetySpace			pub struct UnsafetySpace(pub hir::Unsafety);
 Variant			pub struct Variant 
@@ -312,6 +313,7 @@ collapse_whitespace			fn collapse_whitespace(s: &str) -> String
 collect			    fn collect(path: &Path, krate: &str,
 core			pub mod core;
 count_entries_with_level			    fn count_entries_with_level(&self, level: u32) -> usize 
+derive_id			pub fn derive_id(candidate: String) -> String 
 description			    fn description(&self) -> &str 
 detect_derived			fn detect_derived<M: AttrMetaMethods>(attrs: &[M]) -> bool 
 doc_list			    pub fn doc_list<'a>(&'a self) -> Option<&'a [Attribute]> 
@@ -446,6 +448,7 @@ html			pub mod html
 html_toc_data			struct html_toc_data 
 ignore_private_item			    fn ignore_private_item(&self, it: &clean::Item) -> bool 
 imp			mod imp 
+init_ids			fn init_ids() -> HashMap<String, usize> 
 inline			mod inline;
 into_toc			    pub fn into_toc(mut self) -> Toc 
 is_doc_hidden			    fn is_doc_hidden(a: &clean::Attribute) -> bool 
@@ -506,7 +509,7 @@ new			        pub fn new(p: &Path) -> Lock
 new			    pub fn new(e: io::Error, file: &Path) -> Error 
 new			    pub fn new() -> TocBuilder 
 new			    pub fn new(prefix: PathBuf) -> PluginManager 
-new			    pub fn new(cratename: String, libs: SearchPaths, externs: core::Externs,
+new			    pub fn new(cratename: String, cfgs: Vec<String>, libs: SearchPaths, externs: core::Externs,
 new			    pub fn new(cx: &'a core::DocContext<'a, 'tcx>,
 normal_text			    extern fn normal_text(_ob: *mut hoedown_buffer,
 opts			pub fn opts() -> Vec<getopts::OptGroup> 
@@ -542,7 +545,7 @@ render_impl			fn render_impl(w: &mut fmt::Formatter, cx: &Context, i: &Impl, lin
 render_sources			fn render_sources(cx: &mut Context,
 render_struct			fn render_struct(w: &mut fmt::Formatter, it: &clean::Item,
 reorder			    fn reorder(ty: ItemType) -> u8 
-reset_headers			pub fn reset_headers() 
+reset_ids			pub fn reset_ids() 
 resolve_def			fn resolve_def(cx: &DocContext, id: ast::NodeId) -> Option<DefId> 
 resolve_id			    fn resolve_id(&mut self, id: ast::NodeId, renamed: Option<ast::Name>,
 resolve_type			fn resolve_type(cx: &DocContext,
@@ -552,7 +555,7 @@ run			pub fn run(mut krate: clean::Crate,
 run			pub fn run(input: &str,
 run_core			pub fn run_core(search_paths: SearchPaths, cfgs: Vec<String>, externs: Externs,
 run_plugins			    pub fn run_plugins(&self, krate: clean::Crate) -> (clean::Crate, Vec<PluginJson> ) 
-runtest			fn runtest(test: &str, cratename: &str, libs: SearchPaths,
+runtest			fn runtest(test: &str, cratename: &str, cfgs: Vec<String>, libs: SearchPaths,
 rust_input			fn rust_input(cratefile: &str, externs: core::Externs, matches: &getopts::Matches) -> Output 
 scrape_test_config			fn scrape_test_config(krate: &::rustc_front::hir::Crate) -> TestOptions 
 separate_supertrait_bounds			fn separate_supertrait_bounds(mut g: clean::Generics)
@@ -563,8 +566,10 @@ shortty			fn shortty(item: &clean::Item) -> ItemType
 should_ignore_first_line_indent			    fn should_ignore_first_line_indent() 
 should_leave_multiple_indent_levels			    fn should_leave_multiple_indent_levels() 
 should_not_ignore_first_line_indent_in_a_single_line_para			    fn should_not_ignore_first_line_indent_in_a_single_line_para() 
+should_trim_mixed_indentation			    fn should_trim_mixed_indentation() 
 should_unindent			    fn should_unindent() 
 should_unindent_multiple_paragraphs			    fn should_unindent_multiple_paragraphs() 
+should_unindent_tabs			    fn should_unindent_tabs() 
 simplify			mod simplify;
 singleton			    pub fn singleton(name: String) -> Path 
 span			    fn span(&self) -> codemap::Span { unimplemented!() }
@@ -581,7 +586,7 @@ t			        fn t(s: &str,
 tcx			    pub fn tcx<'a>(&'a self) -> &'a ty::ctxt<'tcx> 
 tcx_opt			    pub fn tcx_opt<'a>(&'a self) -> Option<&'a ty::ctxt<'tcx>> 
 test			pub mod test;
-test			pub fn test(input: &str, libs: SearchPaths, externs: core::Externs,
+test			pub fn test(input: &str, cfgs: Vec<String>, libs: SearchPaths, externs: core::Externs,
 tests			mod tests 
 tests			mod tests 
 to_def_index			    pub fn to_def_index(&self) -> DefIndex 
@@ -599,6 +604,8 @@ try_inline_def			fn try_inline_def(cx: &DocContext, tcx: &ty::ctxt,
 ty_bounds			fn ty_bounds(bounds: Vec<clean::TyParamBound>) -> Vec<clean::TyParamBound> 
 ty_params			pub fn ty_params(mut params: Vec<clean::TyParam>) -> Vec<clean::TyParam> 
 tybounds			fn tybounds(w: &mut fmt::Formatter,
+typename_if_impl			        fn typename_if_impl(item: &clean::Item) -> Option<String> 
+unescape_for_testname			        fn unescape_for_testname(mut s: String) -> String 
 unindent			pub fn unindent(s: &str) -> String 
 unindent_comments			pub fn unindent_comments(krate: clean::Crate) -> plugins::PluginResult 
 unindent_tests			mod unindent_tests 

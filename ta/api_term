@@ -1,93 +1,96 @@
-Attr			    pub enum Attr 
+Attr			pub enum Attr 
 CONSOLE_SCREEN_BUFFER_INFO			struct CONSOLE_SCREEN_BUFFER_INFO 
+Error			pub enum Error 
 Flags			impl Flags 
 Flags			struct Flags 
 FormatOp			enum FormatOp 
 FormatOp			impl FormatOp 
 FormatState			enum FormatState 
-GetConsoleScreenBufferInfo			    fn GetConsoleScreenBufferInfo(handle: libc::HANDLE,
-GetStdHandle			    fn GetStdHandle(which: libc::DWORD) -> libc::HANDLE;
+GetConsoleScreenBufferInfo			    fn GetConsoleScreenBufferInfo(handle: HANDLE, info: *mut CONSOLE_SCREEN_BUFFER_INFO) -> BOOL;
+GetStdHandle			    fn GetStdHandle(which: DWORD) -> HANDLE;
 Param			pub enum Param 
-SetConsoleTextAttribute			    fn SetConsoleTextAttribute(handle: libc::HANDLE, attr: libc::WORD) -> libc::BOOL;
+SetConsoleTextAttribute			    fn SetConsoleTextAttribute(handle: HANDLE, attr: WORD) -> BOOL;
 States			enum States 
+TermInfo			impl TermInfo 
 TermInfo			pub struct TermInfo 
-Terminal			pub trait Terminal<T: Write>: Write 
-Terminal for TerminfoTerminal			impl<T: Write+Send+'static> Terminal<T> for TerminfoTerminal<T> 
-Terminal for WinConsole			impl<T: Write+Send+'static> Terminal<T> for WinConsole<T> 
-TerminfoTerminal			impl<T: Write+Send+'static> TerminfoTerminal<T> 
+Terminal			pub trait Terminal: Write 
+Terminal for TerminfoTerminal			impl<T: Write+Send> Terminal for TerminfoTerminal<T> 
+Terminal for WinConsole			impl<T: Write+Send+'static> Terminal for WinConsole<T> 
+TerminfoTerminal			impl<T: Write+Send> TerminfoTerminal<T> 
 TerminfoTerminal			pub struct TerminfoTerminal<T> 
-UnwrappableTerminal			pub trait UnwrappableTerminal<T: Write>: Terminal<T> 
-UnwrappableTerminal for TerminfoTerminal			impl<T: Write+Send+'static> UnwrappableTerminal<T> for TerminfoTerminal<T> 
-UnwrappableTerminal for WinConsole			impl<T: Write+Send+'static> UnwrappableTerminal<T> for WinConsole<T> 
 Variables			impl Variables 
 Variables			pub struct Variables 
 WinConsole			impl<T: Write+Send+'static> WinConsole<T> 
 WinConsole			pub struct WinConsole<T> 
 Write for TerminfoTerminal			impl<T: Write> Write for TerminfoTerminal<T> 
 Write for WinConsole			impl<T: Write> Write for WinConsole<T> 
-Write for WriterWrapper			impl Write for WriterWrapper 
-WriterWrapper			pub struct WriterWrapper 
+_from_path			    fn _from_path(path: &Path) -> Result<TermInfo, Error> 
 apply			    fn apply(&mut self) 
-attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool>;
-attr			pub mod attr 
-attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool> 
-attr			    fn attr(&mut self, attr: attr::Attr) -> io::Result<bool> 
+apply_cap			    fn apply_cap(&mut self, cmd: &str, params: &[Param]) -> io::Result<bool> 
+attr			    fn attr(&mut self, attr: Attr) -> io::Result<bool>;
+attr			    fn attr(&mut self, attr: Attr) -> io::Result<bool> 
+attr			    fn attr(&mut self, attr: Attr) -> io::Result<bool> 
 bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool>;
 bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool> 
 bg			    fn bg(&mut self, color: color::Color) -> io::Result<bool> 
 bits_to_color			fn bits_to_color(bits: u16) -> color::Color 
-cap_for_attr			fn cap_for_attr(attr: attr::Attr) -> &'static str 
+cap_for_attr			fn cap_for_attr(attr: Attr) -> &'static str 
+cause			    fn cause(&self) -> Option<&error::Error> 
 color			pub mod color 
 color_to_bits			fn color_to_bits(color: color::Color) -> u16 
 compiled			    pub mod compiled;
+description			    fn description(&self) -> &str 
 dim_if_necessary			    fn dim_if_necessary(&self, color: color::Color) -> color::Color 
-expand			pub fn expand(cap: &[u8], params: &[Param], vars: &mut Variables)
+error::Error for Error			impl error::Error for Error 
+expand			pub fn expand(cap: &[u8], params: &[Param], vars: &mut Variables) -> Result<Vec<u8>, String> 
 fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool>;
 fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool> 
 fg			    fn fg(&mut self, color: color::Color) -> io::Result<bool> 
 flush			    fn flush(&mut self) -> io::Result<()> 
 flush			    fn flush(&mut self) -> io::Result<()> 
-flush			    fn flush(&mut self) -> io::Result<()> 
-format			fn format(val: Param, op: FormatOp, flags: Flags) -> Result<Vec<u8> ,String> 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Display for Error			impl fmt::Display for Error 
+format			fn format(val: Param, op: FormatOp, flags: Flags) -> Result<Vec<u8>, String> 
 from_char			    fn from_char(c: char) -> FormatOp 
-get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<Box<PathBuf>> 
-get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T;
-get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.out }
-get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T { &mut self.buf }
-get_ref			    fn get_ref<'a>(&'a self) -> &'a T;
-get_ref			    fn get_ref<'a>(&'a self) -> &'a T { &self.out }
-get_ref			    fn get_ref<'a>(&'a self) -> &'a T { &self.buf }
-get_res			        fn get_res(fmt: &str, cap: &str, params: &[Param], vars: &mut Variables) ->
-msys_terminfo			pub fn msys_terminfo() -> Box<TermInfo> 
-new			    pub fn new(out: T) -> Option<Box<Terminal<T>+Send+'static>> 
+from_env			    pub fn from_env() -> Result<TermInfo, Error> 
+from_name			    pub fn from_name(name: &str) -> Result<TermInfo, Error> 
+from_path			    pub fn from_path<P: AsRef<Path>>(path: P) -> Result<TermInfo, Error> 
+get_dbpath_for_term			pub fn get_dbpath_for_term(term: &str) -> Option<PathBuf> 
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut Self::Output;
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T 
+get_mut			    fn get_mut<'a>(&'a mut self) -> &'a mut T 
+get_ref			    fn get_ref<'a>(&'a self) -> &'a Self::Output;
+get_ref			    fn get_ref<'a>(&'a self) -> &'a T 
+get_ref			    fn get_ref<'a>(&'a self) -> &'a T 
+get_res			        fn get_res(fmt: &str,
+into_inner			    fn into_inner(self) -> Self::Output where Self: Sized;
+into_inner			    fn into_inner(self) -> T
+into_inner			    fn into_inner(self) -> T
+msys_terminfo			pub fn msys_terminfo() -> TermInfo 
+new			    pub fn new(out: T) -> Option<TerminfoTerminal<T>> 
 new			    fn new() -> Flags 
 new			    pub fn new() -> Variables 
-new			    pub fn new(out: T) -> Option<Box<Terminal<T>+Send+'static>> 
-open			pub fn open(term: &str) -> Result<File, String> 
+new			    pub fn new(out: T) -> io::Result<WinConsole<T>> 
+new_with_terminfo			    pub fn new_with_terminfo(out: T, terminfo: TermInfo) -> TerminfoTerminal<T> 
 parm			pub mod parm;
-parse			pub fn parse(file: &mut Read, longnames: bool)
+parse			pub fn parse(file: &mut io::Read, longnames: bool) -> Result<TermInfo, String> 
 parser			pub mod parser 
-read_byte			fn read_byte<R: Read + ?Sized>(r: &mut R) -> io::Result<u8> 
-read_exact			fn read_exact<R: Read + ?Sized>(r: &mut R, sz: usize) -> io::Result<Vec<u8>> 
-read_le_u16			fn read_le_u16<R: Read + ?Sized>(r: &mut R) -> io::Result<u16> 
-reset			    fn reset(&mut self) -> io::Result<()>;
-reset			    fn reset(&mut self) -> io::Result<()> 
-reset			    fn reset(&mut self) -> io::Result<()> 
+read_byte			fn read_byte(r: &mut io::Read) -> io::Result<u8> 
+read_le_u16			fn read_le_u16(r: &mut io::Read) -> io::Result<u16> 
+reset			    fn reset(&mut self) -> io::Result<bool>;
+reset			    fn reset(&mut self) -> io::Result<bool> 
+reset			    fn reset(&mut self) -> io::Result<bool> 
 searcher			pub mod searcher;
-stderr			pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send>> 
-stdout			pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> 
-supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool;
-supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool 
-supports_attr			    fn supports_attr(&self, attr: attr::Attr) -> bool 
+stderr			pub fn stderr() -> Option<Box<StderrTerminal>> 
+stdout			pub fn stdout() -> Option<Box<StdoutTerminal>> 
+supports_attr			    fn supports_attr(&self, attr: Attr) -> bool;
+supports_attr			    fn supports_attr(&self, attr: Attr) -> bool 
+supports_attr			    fn supports_attr(&self, attr: Attr) -> bool 
 terminfo			pub mod terminfo;
-tests			mod tests 
-tests			mod tests 
+test			mod test 
+test			mod test 
 to_char			    fn to_char(self) -> char 
-unwrap			    fn unwrap(self) -> T;
-unwrap			    fn unwrap(self) -> T { self.out }
-unwrap			    fn unwrap(self) -> T { self.buf }
 win			mod win;
-write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 x			    fn x(t: &str) -> String 

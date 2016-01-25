@@ -117,6 +117,7 @@ Clone for Windows			impl<'a, T> Clone for Windows<'a, T>
 Cloned			pub struct Cloned<I> 
 CoerceUnsized			pub trait CoerceUnsized<T> 
 CoerceUnsized			impl<T: ?Sized, U: ?Sized> CoerceUnsized<Shared<U>> for Shared<T> where T: Unsize<U> { }
+CoerceUnsized			impl<T: ?Sized, U: ?Sized> CoerceUnsized<Unique<U>> for Unique<T> where T: Unsize<U> { }
 Copy			        impl<T:?Sized> Copy for 
 Copy			pub trait Copy : Clone 
 Copy for Shared			impl<T: ?Sized> Copy for Shared<T> { }
@@ -162,6 +163,7 @@ Default			        impl<T> Default for [T;
 Default			        impl<T> Default for [T; 
 Default			        impl Default for 
 Default			pub trait Default: Sized 
+Default			        impl<T:?Sized> Default for 
 Default			impl<'a, T> Default for &'a [T] 
 Default			impl<'a, T> Default for &'a mut [T] 
 Default			impl<'a> Default for &'a str 
@@ -503,6 +505,8 @@ ParseIntError			pub struct ParseIntError { kind: IntErrorKind }
 ParseResult			pub enum ParseResult<'a> 
 Part			impl<'a> Part<'a> 
 Part			pub enum Part<'a> 
+PartialEq			        impl<'a, 'b, A: 
+PartialEq			        impl<'a, 'b, A: 
 PartialEq			            impl PartialEq for 
 PartialEq			    impl PartialEq for () 
 PartialEq			    impl<'a, 'b, A: ?Sized, B: ?Sized> PartialEq<&'b B> for &'a A where A: PartialEq<B> 
@@ -510,8 +514,6 @@ PartialEq			    impl<'a, 'b, A: ?Sized, B: ?Sized> PartialEq<&'b B> for &'a mut 
 PartialEq			    impl<'a, 'b, A: ?Sized, B: ?Sized> PartialEq<&'b mut B> for &'a A where A: PartialEq<B> 
 PartialEq			    impl<'a, 'b, A: ?Sized, B: ?Sized> PartialEq<&'b mut B> for &'a mut A where A: PartialEq<B> 
 PartialEq			pub trait PartialEq<Rhs: ?Sized = Self> 
-PartialEq			        impl<'a, 'b, A: 
-PartialEq			        impl<'a, 'b, A: 
 PartialEq			        impl<Ret, 
 PartialEq			impl<T: ?Sized> PartialEq for *const T 
 PartialEq			impl<T: ?Sized> PartialEq for *mut T 
@@ -739,6 +741,7 @@ add			    fn add(self, rhs: RHS) -> Self::Output;
 add_assign			            fn add_assign(&mut self, other: 
 add_assign			    fn add_assign(&mut self, Rhs);
 add_small			            pub fn add_small(&mut self, other: 
+add_with_overflow			    pub fn add_with_overflow<T>(x: T, y: T) -> (T, bool);
 algorithm			mod algorithm;
 algorithm_m			pub fn algorithm_m<T: RawFloat>(f: &Big, e: i16) -> T 
 algorithm_r			fn algorithm_r<T: RawFloat>(f: &Big, e: i16, z0: T) -> T 
@@ -886,9 +889,9 @@ base			    fn base(&self) -> u8;
 bellerophon			pub fn bellerophon<T: RawFloat>(f: &Big, e: i16) -> T 
 big_to_fp			pub fn big_to_fp(f: &Big) -> Fp 
 bignum			pub mod bignum;
-binary_search			    fn binary_search(&self, x: &Self::Item) -> Result<usize, usize> where Self::Item: Ord;
+binary_search			    fn binary_search(&self, x: &Self::Item) -> Result<usize, usize>
 binary_search			    fn binary_search(&self, x: &T) -> Result<usize, usize> where T: Ord 
-binary_search_by			    fn binary_search_by<F>(&self, f: F) -> Result<usize, usize> where
+binary_search_by			    fn binary_search_by<F>(&self, f: F) -> Result<usize, usize>
 binary_search_by			    fn binary_search_by<F>(&self, mut f: F) -> Result<usize, usize> where
 bit_length			            pub fn bit_length(&self) -> usize 
 bitand			            fn bitand(self, other: Wrapping<
@@ -919,6 +922,7 @@ borrow_mut			    fn borrow_mut(&mut self) -> &mut T { self }
 borrow_mut			    pub fn borrow_mut(&self) -> RefMut<T> 
 borrow_state			    pub fn borrow_state(&self) -> BorrowState 
 breakpoint			    pub fn breakpoint();
+bswap			    pub fn bswap<T>(x: T) -> T;
 bswap16			    pub fn bswap16(x: u16) -> u16;
 bswap32			    pub fn bswap32(x: u32) -> u32;
 bswap64			    pub fn bswap64(x: u64) -> u64;
@@ -954,8 +958,6 @@ char_at_reverse			    fn char_at_reverse(&self, i: usize) -> char
 char_at_reverse			    fn char_at_reverse(&self, i: usize) -> char;
 char_indices			    fn char_indices(&self) -> CharIndices 
 char_indices			    fn char_indices(&self) -> CharIndices;
-char_len			    fn char_len(&self) -> usize { self.chars().count() }
-char_len			    fn char_len(&self) -> usize;
 char_range_at			    fn char_range_at(&self, i: usize) -> CharRange 
 char_range_at			    fn char_range_at(&self, start: usize) -> CharRange;
 char_range_at_raw			fn char_range_at_raw(bytes: &[u8], i: usize) -> (u32, usize) 
@@ -1036,7 +1038,6 @@ cmp			    fn cmp(&self, other: &*mut T) -> Ordering
 cmp			    fn cmp(&self, other: &[T]) -> Ordering 
 cmp			        fn cmp(&self, other: &str) -> Ordering 
 cmp			                fn cmp(&self, other: &(
-cmp_macros			mod cmp_macros;
 cmp_slice			unsafe fn cmp_slice(a: &str, b: &str, len: usize) -> i32 
 collect			    fn collect<B: FromIterator<Self::Item>>(self) -> B where Self: Sized 
 compare_and_swap			    pub fn compare_and_swap(&self, current: *mut T, new: *mut T, order: Ordering) -> *mut T 
@@ -1050,8 +1051,6 @@ contains			    fn contains(&self, x: &Self::Item) -> bool where Self::Item: Part
 contains			    fn contains(&self, x: &T) -> bool where T: PartialEq 
 contains			    fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 contains			    fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool;
-contains_char			    fn contains_char<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
-contains_char			    fn contains_char<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool;
 convert			pub mod convert;
 convert			fn convert<T: RawFloat>(mut decimal: Decimal) -> Result<T, ParseFloatError> 
 copy			    pub fn copy<T>(src: *const T, dst: *mut T, count: usize);
@@ -1069,14 +1068,17 @@ count			    fn count(self) -> usize
 count_ones			        pub fn count_ones(self) -> u32 { (self as 
 count_ones			        pub fn count_ones(self) -> u32 
 count_zeros			        pub fn count_zeros(self) -> u32 
+ctlz			    pub fn ctlz<T>(x: T) -> T;
 ctlz16			    pub fn ctlz16(x: u16) -> u16;
 ctlz32			    pub fn ctlz32(x: u32) -> u32;
 ctlz64			    pub fn ctlz64(x: u64) -> u64;
 ctlz8			    pub fn ctlz8(x: u8) -> u8;
+ctpop			    pub fn ctpop<T>(x: T) -> T;
 ctpop16			    pub fn ctpop16(x: u16) -> u16;
 ctpop32			    pub fn ctpop32(x: u32) -> u32;
 ctpop64			    pub fn ctpop64(x: u64) -> u64;
 ctpop8			    pub fn ctpop8(x: u8) -> u8;
+cttz			    pub fn cttz<T>(x: T) -> T;
 cttz16			    pub fn cttz16(x: u16) -> u16;
 cttz32			    pub fn cttz32(x: u32) -> u32;
 cttz64			    pub fn cttz64(x: u64) -> u64;
@@ -1105,6 +1107,7 @@ default			    fn default() -> Self;
 default			    fn default() -> SipHasher 
 default			    fn default() -> Empty<T> 
 default			pub mod default;
+default			            fn default() -> 
 default			    fn default() -> Option<T> { None }
 default			    fn default() -> &'a [T] { &[] }
 default			    fn default() -> &'a mut [T] { &mut [] }
@@ -1146,7 +1149,7 @@ dragon			    pub mod dragon;
 drop			    fn drop(&mut self) 
 drop			pub fn drop<T>(_x: T) { }
 drop			    fn drop(&mut self);
-drop_in_place			    pub fn drop_in_place<T: ?Sized>(_: *mut T);
+drop_in_place			    pub fn drop_in_place<T: ?Sized>(to_drop: *mut T);
 dropped			pub unsafe fn dropped<T>() -> T 
 dropped_impl			    unsafe fn dropped_impl<T>() -> T { intrinsics::init_dropped() }
 eat_digits			fn eat_digits(s: &[u8]) -> (&[u8], &[u8]) 
@@ -1170,6 +1173,8 @@ entry			    pub fn entry(&mut self, entry: &fmt::Debug) -> &mut DebugList<'a, 'b
 entry			    pub fn entry(&mut self, entry: &fmt::Debug) -> &mut DebugSet<'a, 'b> 
 entry			    pub fn entry(&mut self, key: &fmt::Debug, value: &fmt::Debug) -> &mut DebugMap<'a, 'b> 
 enumerate			    fn enumerate(self) -> Enumerate<Self> where Self: Sized 
+eq			            fn eq(&self, other: &
+eq			            fn eq(&self, other: &
 eq			    fn eq(&self, other: &Cell<T>) -> bool 
 eq			    fn eq(&self, other: &RefCell<T>) -> bool 
 eq			                fn eq(&self, other: &
@@ -1178,8 +1183,6 @@ eq			        fn eq(&self, other: & &'b B) -> bool { PartialEq::eq(*self, *other)
 eq			        fn eq(&self, other: &&'b B) -> bool { PartialEq::eq(*self, *other) }
 eq			        fn eq(&self, other: &&'b mut B) -> bool { PartialEq::eq(*self, *other) }
 eq			    fn eq(&self, other: &Rhs) -> bool;
-eq			            fn eq(&self, other: &
-eq			            fn eq(&self, other: &
 eq			    fn eq<I>(mut self, other: I) -> bool where
 eq			    pub fn eq<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 eq			            fn eq(&self, _other: &
@@ -1480,11 +1483,7 @@ infinity			    fn infinity() -> f32 { INFINITY }
 infinity			    fn infinity() -> f64 { INFINITY }
 infinity			    fn infinity() -> Self;
 init			    pub fn init<T>() -> T;
-init			    fn init(&self) -> &[Self::Item];
-init			    fn init(&self) -> &[T] { &self[..self.len() - 1] }
 init_dropped			    pub fn init_dropped<T>() -> T;
-init_mut			    fn init_mut(&mut self) -> &mut [Self::Item];
-init_mut			    fn init_mut(&mut self) -> &mut [T] 
 inspect			    fn inspect<F>(self, f: F) -> Inspect<Self, F> where
 int_macros			mod int_macros;
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8) 
@@ -1533,24 +1532,24 @@ is_infinite			    fn is_infinite(self) -> bool;
 is_nan			    fn is_nan(self) -> bool { self != self }
 is_nan			    fn is_nan(self) -> bool { self != self }
 is_nan			    fn is_nan(self) -> bool;
-is_negative			    fn is_negative(self) -> bool 
-is_negative			    fn is_negative(self) -> bool 
 is_negative			        pub fn is_negative(self) -> bool { self < 0 }
-is_negative			    fn is_negative(self) -> bool;
 is_none			    pub fn is_none(&self) -> bool 
 is_normal			    fn is_normal(self) -> bool 
 is_normal			    fn is_normal(self) -> bool 
 is_normal			    fn is_normal(self) -> bool;
 is_null			    pub fn is_null(self) -> bool where T: Sized 
 is_ok			    pub fn is_ok(&self) -> bool 
-is_positive			    fn is_positive(self) -> bool 
-is_positive			    fn is_positive(self) -> bool 
 is_positive			        pub fn is_positive(self) -> bool { self > 0 }
-is_positive			    fn is_positive(self) -> bool;
 is_power_of_two			        pub fn is_power_of_two(self) -> bool 
 is_prefix_of			        fn is_prefix_of(self, haystack: &'a str) -> bool 
 is_prefix_of			    fn is_prefix_of(self, haystack: &'a str) -> bool 
 is_pretty			    fn is_pretty(&self) -> bool 
+is_sign_negative			    fn is_sign_negative(self) -> bool 
+is_sign_negative			    fn is_sign_negative(self) -> bool 
+is_sign_negative			    fn is_sign_negative(self) -> bool;
+is_sign_positive			    fn is_sign_positive(self) -> bool 
+is_sign_positive			    fn is_sign_positive(self) -> bool 
+is_sign_positive			    fn is_sign_positive(self) -> bool;
 is_some			    pub fn is_some(&self) -> bool 
 is_suffix_of			        fn is_suffix_of(self, haystack: &'a str) -> bool
 is_suffix_of			    fn is_suffix_of(self, haystack: &'a str) -> bool 
@@ -1653,6 +1652,7 @@ matching			    fn matching(usize, usize) -> Self::Output;
 max			pub fn max<T: Ord>(v1: T, v2: T) -> T 
 max			    fn max(self) -> Option<Self::Item> where Self: Sized, Self::Item: Ord
 max_by			    fn max_by<B: Ord, F>(self, f: F) -> Option<Self::Item> where
+max_by_key			    fn max_by_key<B: Ord, F>(self, f: F) -> Option<Self::Item>
 max_encoded_exp			    fn max_encoded_exp() -> i16 
 max_exp			    fn max_exp() -> i16 
 max_exp_int			    fn max_exp_int() -> i16 
@@ -1660,8 +1660,6 @@ max_normal_digits			    fn max_normal_digits() -> usize
 max_normal_digits			    fn max_normal_digits() -> usize;
 max_pow10_no_more_than			pub fn max_pow10_no_more_than(x: u32) -> (u8, u32) 
 max_sig			    fn max_sig() -> u64 
-max_value			        pub fn max_value() -> Self { !0 }
-max_value			        pub fn max_value() -> Self 
 maximal_suffix			    fn maximal_suffix(arr: &[u8], order_greater: bool) -> (usize, usize) 
 mem			pub mod mem;
 min			pub fn min<T: Ord>(v1: T, v2: T) -> T 
@@ -1671,6 +1669,7 @@ min_align_of			pub fn min_align_of<T>() -> usize
 min_align_of_val			    pub fn min_align_of_val<T: ?Sized>(_: &T) -> usize;
 min_align_of_val			pub fn min_align_of_val<T: ?Sized>(val: &T) -> usize 
 min_by			    fn min_by<B: Ord, F>(self, f: F) -> Option<Self::Item> where
+min_by_key			    fn min_by_key<B: Ord, F>(self, f: F) -> Option<Self::Item>
 min_exp			    fn min_exp() -> i16 
 min_exp_int			    fn min_exp_int() -> i16 
 min_pos_norm_value			    fn min_pos_norm_value() -> Self { f32::MIN_POSITIVE }
@@ -1678,8 +1677,6 @@ min_pos_norm_value			    fn min_pos_norm_value() -> Self { f64::MIN_POSITIVE }
 min_pos_norm_value			    fn min_pos_norm_value() -> Self;
 min_sig			    fn min_sig() -> u64 
 min_value			        fn min_value() -> Self { Self::min_value() }
-min_value			        pub fn min_value() -> Self { 0 }
-min_value			        pub fn min_value() -> Self 
 min_value			    fn min_value() -> Self;
 move_val_init			    pub fn move_val_init<T>(dst: *mut T, src: T);
 mul			    pub fn mul(&self, other: &Fp) -> Fp 
@@ -1694,20 +1691,21 @@ mul_pow10			pub fn mul_pow10(x: &mut Big, n: usize) -> &mut Big
 mul_pow2			            pub fn mul_pow2(&mut self, bits: usize) -> &mut 
 mul_pow5			            pub fn mul_pow5(&mut self, mut e: usize) -> &mut 
 mul_small			            pub fn mul_small(&mut self, other: 
+mul_with_overflow			    pub fn mul_with_overflow<T>(x: T, y: T) -> (T, bool);
 multibyte_char_range_at			    fn multibyte_char_range_at(bytes: &[u8], i: usize) -> (u32, usize) 
 multibyte_char_range_at_reverse			        fn multibyte_char_range_at_reverse(s: &str, mut i: usize) -> CharRange 
 mut_ref_slice			pub fn mut_ref_slice<A>(s: &mut A) -> &mut [A] 
 nan			    fn nan() -> f32 { NAN }
 nan			    fn nan() -> f64 { NAN }
 nan			    fn nan() -> Self;
+ne			            fn ne(&self, other: &
+ne			            fn ne(&self, other: &
 ne			                fn ne(&self, other: &
 ne			        fn ne(&self, _other: &()) -> bool { false }
 ne			        fn ne(&self, other: & &'b B) -> bool { PartialEq::ne(*self, *other) }
 ne			        fn ne(&self, other: &&'b B) -> bool { PartialEq::ne(*self, *other) }
 ne			        fn ne(&self, other: &&'b mut B) -> bool { PartialEq::ne(*self, *other) }
 ne			    fn ne(&self, other: &Rhs) -> bool { !self.eq(other) }
-ne			            fn ne(&self, other: &
-ne			            fn ne(&self, other: &
 ne			    fn ne<I>(mut self, other: I) -> bool where
 ne			    pub fn ne<L: Iterator, R: Iterator>(a: L, b: R) -> bool where
 ne			    fn ne(&self, other: &[B]) -> bool 
@@ -1821,8 +1819,6 @@ next_match			    fn next_match(&mut self) -> Option<(usize, usize)>
 next_match_back			        fn next_match_back(&mut self) -> Option<(usize, usize)> 
 next_match_back			    fn next_match_back(&mut self) -> Option<(usize, usize)> 
 next_match_back			    fn next_match_back(&mut self) -> Option<(usize, usize)>
-next_permutation			    fn next_permutation(&mut self) -> bool where Self::Item: Ord;
-next_permutation			    fn next_permutation(&mut self) -> bool where T: Ord 
 next_power_of_two			        pub fn next_power_of_two(self) -> Self 
 next_reject			        fn next_reject(&mut self) -> Option<(usize, usize)> 
 next_reject			    fn next_reject(&mut self) -> Option<(usize, usize)> 
@@ -1962,8 +1958,6 @@ pfe_empty			pub fn pfe_empty() -> ParseFloatError
 pfe_invalid			pub fn pfe_invalid() -> ParseFloatError 
 pointer			    fn pointer(&mut self) -> *mut Data;
 position			    fn position<P>(&mut self, mut predicate: P) -> Option<usize> where
-position_elem			    fn position_elem(&self, t: &Self::Item) -> Option<usize> where Self::Item: PartialEq;
-position_elem			    fn position_elem(&self, x: &T) -> Option<usize> where T: PartialEq 
 possibly_round			    fn possibly_round(buf: &mut [u8], mut len: usize, mut exp: i16, limit: i16,
 pow			        pub fn pow(self, mut exp: u32) -> Self 
 power_of_ten			fn power_of_ten(e: i16) -> Fp 
@@ -1980,8 +1974,6 @@ prefix			            fn prefix(&self) -> &'static str {
 prefix			    fn prefix(&self) -> &'static str 
 prelude			pub mod prelude;
 prev_float			pub fn prev_float<T: RawFloat>(x: T) -> T 
-prev_permutation			    fn prev_permutation(&mut self) -> bool where Self::Item: Ord;
-prev_permutation			    fn prev_permutation(&mut self) -> bool where T: Ord 
 product			    fn product<P=<Self as Iterator>::Item>(self) -> P where
 ptr			pub mod ptr;
 quick_start			fn quick_start<T: RawFloat>(u: &mut Big, v: &mut Big, k: &mut i16) 
@@ -2030,8 +2022,6 @@ round_up			pub fn round_up(d: &mut [u8], n: usize) -> Option<u8>
 roundf32			    pub fn roundf32(x: f32) -> f32;
 roundf64			    pub fn roundf64(x: f64) -> f64;
 rposition			    fn rposition<P>(&mut self, mut predicate: P) -> Option<usize> where
-rposition_elem			    fn rposition_elem(&self, t: &Self::Item) -> Option<usize> where Self::Item: PartialEq;
-rposition_elem			    fn rposition_elem(&self, t: &T) -> Option<usize> where T: PartialEq 
 rsplit			    fn rsplit<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplit<'a, P>
 rsplit_terminator			    fn rsplit_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplitTerminator<'a, P>
 rsplitn			    fn rsplitn<P>(&self,  n: usize, pred: P) -> RSplitN<Self::Item, P>
@@ -2106,9 +2096,9 @@ size_of_val			pub fn size_of_val<T: ?Sized>(val: &T) -> usize
 skip			    fn skip(self, n: usize) -> Skip<Self> where Self: Sized 
 skip_while			    fn skip_while<P>(self, predicate: P) -> SkipWhile<Self, P> where
 slice			pub mod slice;
-slice_chars			    fn slice_chars(&self, begin: usize, end: usize) -> &str 
-slice_chars			    fn slice_chars(&self, begin: usize, end: usize) -> &str;
 slice_error_fail			fn slice_error_fail(s: &str, begin: usize, end: usize) -> ! 
+slice_index_len_fail			fn slice_index_len_fail(index: usize, len: usize) -> ! 
+slice_index_order_fail			fn slice_index_order_fail(index: usize, end: usize) -> ! 
 slice_mut_unchecked			    unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str 
 slice_mut_unchecked			    unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str;
 slice_shift_char			    fn slice_shift_char(&self) -> Option<(char, &str)> 
@@ -2169,8 +2159,7 @@ sub			            fn sub(self, other:
 sub			    fn sub(self, rhs: RHS) -> Self::Output;
 sub_assign			            fn sub_assign(&mut self, other: 
 sub_assign			    fn sub_assign(&mut self, Rhs);
-subslice_offset			    fn subslice_offset(&self, inner: &str) -> usize 
-subslice_offset			    fn subslice_offset(&self, inner: &str) -> usize;
+sub_with_overflow			    pub fn sub_with_overflow<T>(x: T, y: T) -> (T, bool);
 sum			    fn sum<S=<Self as Iterator>::Item>(self) -> S where
 swap			pub fn swap<T>(x: &mut T, y: &mut T) 
 swap			pub unsafe fn swap<T>(x: *mut T, y: *mut T) 
@@ -2183,10 +2172,6 @@ swap			    pub fn swap(&self, val: usize, order: Ordering) -> usize
 swap_bytes			        pub fn swap_bytes(self) -> Self 
 sync			pub mod sync;
 table			mod table;
-tail			    fn tail(&self) -> &[Self::Item];
-tail			    fn tail(&self) -> &[T] { &self[1..] }
-tail_mut			    fn tail_mut(&mut self) -> &mut [Self::Item];
-tail_mut			    fn tail_mut(&mut self) -> &mut [T] { &mut self[1 ..] }
 take			    fn take(self, n: usize) -> Take<Self> where Self: Sized, 
 take			    pub fn take(&mut self) -> Option<T> 
 take_while			    fn take_while<P>(self, predicate: P) -> TakeWhile<Self, P> where
@@ -2254,10 +2239,8 @@ u8_sub_with_overflow			    pub fn u8_sub_with_overflow(x: u8, y: u8) -> (u8, boo
 u8x16			pub struct u8x16(pub u8, pub u8, pub u8, pub u8,
 u8x16			pub struct u8x16(pub u8, pub u8, pub u8, pub u8,
 uint_macros			mod uint_macros;
-unchecked_sdiv			    pub fn unchecked_sdiv<T>(x: T, y: T) -> T;
-unchecked_srem			    pub fn unchecked_srem<T>(x: T, y: T) -> T;
-unchecked_udiv			    pub fn unchecked_udiv<T>(x: T, y: T) -> T;
-unchecked_urem			    pub fn unchecked_urem<T>(x: T, y: T) -> T;
+unchecked_div			    pub fn unchecked_div<T>(x: T, y: T) -> T;
+unchecked_rem			    pub fn unchecked_rem<T>(x: T, y: T) -> T;
 underflow			fn underflow<T: RawFloat>(x: Big, v: Big, rem: Big) -> T 
 uninit			    pub fn uninit<T>() -> T;
 uninitialized			pub unsafe fn uninitialized<T>() -> T 

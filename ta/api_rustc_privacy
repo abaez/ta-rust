@@ -24,7 +24,7 @@ Foo			pub trait Foo { \/\/ we set the Foo trait public
 Foo			trait Foo 
 Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
 Foo for Bar			pub impl Foo for Bar 
-ParentVisitor			struct ParentVisitor 
+ParentVisitor			struct ParentVisitor<'a, 'tcx:'a> 
 PrivacyResult			enum PrivacyResult 
 PrivacyVisitor			impl<'a, 'tcx> PrivacyVisitor<'a, 'tcx> 
 PrivacyVisitor			struct PrivacyVisitor<'a, 'tcx: 'a> 
@@ -34,7 +34,7 @@ VisiblePrivateTypesVisitor			impl<'a, 'tcx> VisiblePrivateTypesVisitor<'a, 'tcx>
 VisiblePrivateTypesVisitor			struct VisiblePrivateTypesVisitor<'a, 'tcx: 'a> 
 Visitor for CheckTypeForPrivatenessVisitor			impl<'a, 'b, 'tcx, 'v> Visitor<'v> for CheckTypeForPrivatenessVisitor<'a, 'b, 'tcx> 
 Visitor for EmbargoVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for EmbargoVisitor<'a, 'tcx> 
-Visitor for ParentVisitor			impl<'v> Visitor<'v> for ParentVisitor 
+Visitor for ParentVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ParentVisitor<'a, 'tcx> 
 Visitor for PrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivacyVisitor<'a, 'tcx> 
 Visitor for SanePrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for SanePrivacyVisitor<'a, 'tcx> 
 Visitor for VisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for VisiblePrivateTypesVisitor<'a, 'tcx> 
@@ -44,7 +44,6 @@ bar			mod bar
 check_all_inherited			    fn check_all_inherited(&self, item: &hir::Item) 
 check_crate			pub fn check_crate(tcx: &ty::ctxt,
 check_field			    fn check_field(&mut self,
-check_inherited			        fn check_inherited(tcx: &ty::ctxt, sp: Span, vis: hir::Visibility) 
 check_method			    fn check_method(&mut self, span: Span, method_def_id: DefId,
 check_path			    fn check_path(&mut self, span: Span, path_id: ast::NodeId, last: ast::Name) 
 check_sane_privacy			    fn check_sane_privacy(&self, item: &hir::Item) 
@@ -54,13 +53,13 @@ def_privacy			    fn def_privacy(&self, did: DefId) -> PrivacyResult
 diagnostics			pub mod diagnostics;
 dummy			    fn dummy(&self) { }
 ensure_public			    fn ensure_public(&self,
-exported_trait			    fn exported_trait(&self, _id: ast::NodeId) -> bool 
 foo			    fn foo();
 foo			    pub fn foo() {} \/\/ error: unnecessary visibility qualifier
 foo			    pub fn foo() {}
 foo			fn foo() 
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ ok!
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ same error
+get			    fn get(&self, id: ast::NodeId) -> Option<AccessLevel> 
 item_is_public			    fn item_is_public(&self, id: &ast::NodeId, vis: hir::Visibility) -> bool 
 local_private_accessible			    fn local_private_accessible(&self, did: DefId) -> bool 
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
@@ -70,18 +69,23 @@ path_is_private_type			    fn path_is_private_type(&self, path_id: ast::NodeId) 
 private_accessible			    fn private_accessible(&self, id: ast::NodeId) -> bool 
 report_error			    fn report_error(&self, result: CheckResult) -> bool 
 trait_is_public			    fn trait_is_public(&self, trait_id: ast::NodeId) -> bool 
+trait_level			    fn trait_level(&self, trait_ref: &hir::TraitRef) -> Option<AccessLevel> 
+ty_level			    fn ty_level(&self, ty: &hir::Ty) -> Option<AccessLevel> 
+update			    fn update(&mut self, id: ast::NodeId, level: Option<AccessLevel>) -> Option<AccessLevel> 
 visit_block			    fn visit_block(&mut self, _: &hir::Block) {}
+visit_block			    fn visit_block(&mut self, b: &'v hir::Block) 
 visit_expr			    fn visit_expr(&mut self, _: &hir::Expr) {}
 visit_expr			    fn visit_expr(&mut self, expr: &hir::Expr) 
-visit_fn			    fn visit_fn(&mut self, a: visit::FnKind<'v>, b: &'v hir::FnDecl,
-visit_fn			    fn visit_fn(&mut self, fk: visit::FnKind<'v>, fd: &'v hir::FnDecl,
+visit_fn			    fn visit_fn(&mut self, a: intravisit::FnKind<'v>, b: &'v hir::FnDecl,
 visit_foreign_item			    fn visit_foreign_item(&mut self, a: &hir::ForeignItem) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &hir::ForeignItem) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, item: &hir::ForeignItem) 
 visit_generics			    fn visit_generics(&mut self, generics: &hir::Generics) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v hir::ImplItem) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
+visit_macro_def			    fn visit_macro_def(&mut self, md: &'v hir::MacroDef) 
 visit_mod			    fn visit_mod(&mut self, m: &hir::Mod, _sp: Span, id: ast::NodeId) 
+visit_nested_item			    fn visit_nested_item(&mut self, item: hir::ItemId) 
 visit_pat			    fn visit_pat(&mut self, pattern: &hir::Pat) 
 visit_path			    fn visit_path(&mut self, path: &hir::Path, id: ast::NodeId) 
 visit_path_list_item			    fn visit_path_list_item(&mut self, prefix: &hir::Path, item: &hir::PathListItem) 

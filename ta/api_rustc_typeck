@@ -243,6 +243,7 @@ SecondTrait			trait SecondTrait : FirstTrait
 SeedBorrowKind			impl<'a,'tcx> SeedBorrowKind<'a,'tcx> 
 SeedBorrowKind			struct SeedBorrowKind<'a,'tcx:'a> 
 SelfInfo			struct SelfInfo<'a, 'tcx> 
+Send			unsafe impl Send for &'static Foo 
 ShiftedRscope			impl<'r> ShiftedRscope<'r> 
 ShiftedRscope			pub struct ShiftedRscope<'r> 
 SizedByDefault			enum SizedByDefault { Yes, No, }
@@ -361,6 +362,7 @@ astconv			mod astconv;
 atomic_fence			    fn atomic_fence(); \/\/ ok!
 atomic_foo			    fn atomic_foo(); \/\/ error: unrecognized atomic operation
 autoderef			pub fn autoderef<'a, 'tcx, T, F>(fcx: &FnCtxt<'a, 'tcx>,
+bad_struct_kind_err			fn bad_struct_kind_err(sess: &Session, pat: &hir::Pat, path: &hir::Path, lint: bool) 
 bar			    fn bar(&mut self) { }
 bar			    fn bar(&self) -> bool { self.0 > 5 }
 bar			    fn bar(&self) { }
@@ -610,6 +612,7 @@ early_bound_lifetimes_from_generics			fn early_bound_lifetimes_from_generics(spa
 elaborate_bounds			    fn elaborate_bounds<F>(
 enforce_builtin_binop_types			fn enforce_builtin_binop_types<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 enforce_illegal_method_limitations			    fn enforce_illegal_method_limitations(&self, pick: &probe::Pick) 
+enforce_impl_lifetimes_are_constrained			fn enforce_impl_lifetimes_are_constrained<'tcx>(tcx: &ty::ctxt<'tcx>,
 enforce_impl_params_are_constrained			fn enforce_impl_params_are_constrained<'tcx>(tcx: &ty::ctxt<'tcx>,
 enforce_trait_manually_implementable			fn enforce_trait_manually_implementable(tcx: &ty::ctxt, sp: Span, trait_def_id: DefId) 
 ensure_drop_params_and_item_params_correspond			fn ensure_drop_params_and_item_params_correspond<'tcx>(
@@ -753,6 +756,13 @@ instantiate_poly_trait_ref			pub fn instantiate_poly_trait_ref<'tcx>(
 instantiate_type			    pub fn instantiate_type(&self,
 instantiate_type_scheme			    fn instantiate_type_scheme<T>(&self,
 int_in_range			        fn int_in_range(ccx: &CrateCtxt, ty: ast::IntTy, disr: ty::Disr) -> bool 
+intravisit::Visitor for CoherenceCheckVisitor			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for CoherenceCheckVisitor<'a, 'tcx> 
+intravisit::Visitor for CollectItemTypesVisitor			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for CollectItemTypesVisitor<'a, 'tcx> 
+intravisit::Visitor for CollectTraitDefVisitor			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for CollectTraitDefVisitor<'a, 'tcx> 
+intravisit::Visitor for OrphanChecker			impl<'cx, 'tcx,'v> intravisit::Visitor<'v> for OrphanChecker<'cx, 'tcx> 
+intravisit::Visitor for OverlapChecker			impl<'cx, 'tcx,'v> intravisit::Visitor<'v> for OverlapChecker<'cx, 'tcx> 
+intravisit::Visitor for UnsafetyChecker			impl<'cx, 'tcx,'v> intravisit::Visitor<'v> for UnsafetyChecker<'cx, 'tcx> 
+intravisit::Visitor for Visitor			        impl<'v, 'a, 'tcx> intravisit::Visitor<'v> for Visitor<'a, 'tcx> 
 intrinsic			mod intrinsic;
 invariant			    fn invariant(&mut self,
 is_builtin_binop			fn is_builtin_binop<'tcx>(lhs: Ty<'tcx>,
@@ -858,8 +868,8 @@ param_ty			    fn param_ty(&self,
 param_ty_must_outlive			fn param_ty_must_outlive<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 parameters_for_region			fn parameters_for_region(region: &ty::Region) -> Option<Parameter> 
 parameters_for_regions_in_substs			fn parameters_for_regions_in_substs(substs: &subst::Substs) -> Vec<Parameter> 
-parameters_for_trait_ref			pub fn parameters_for_trait_ref<'tcx>(trait_ref: &ty::TraitRef<'tcx>) -> Vec<Parameter> 
-parameters_for_type			pub fn parameters_for_type<'tcx>(ty: Ty<'tcx>) -> Vec<Parameter> 
+parameters_for_trait_ref			pub fn parameters_for_trait_ref<'tcx>(trait_ref: &ty::TraitRef<'tcx>,
+parameters_for_type			pub fn parameters_for_type<'tcx>(ty: Ty<'tcx>,
 parameters_for_type_shallow			fn parameters_for_type_shallow<'tcx>(ty: Ty<'tcx>) -> Vec<Parameter> 
 partial_cmp			    fn partial_cmp(&self, other: &TraitInfo) -> Option<Ordering> { Some(self.cmp(other)) }
 partition_bounds			pub fn partition_bounds<'a>(tcx: &ty::ctxt,
@@ -927,7 +937,7 @@ report_error			    fn report_error(&self, e: infer::FixupError)
 report_lifetime_number_error			fn report_lifetime_number_error(tcx: &ty::ctxt, span: Span, number: usize, expected: usize) 
 report_mismatched_types			    pub fn report_mismatched_types(&self,
 report_overlap_error			    fn report_overlap_error(&self, trait_def_id: DefId,
-report_overlap_note			    fn report_overlap_note(&self, impl1: DefId, impl2: DefId) 
+report_overlap_note			    fn report_overlap_note(&self, impl2: DefId) 
 report_unknown_field			    fn report_unknown_field<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 report_unused_parameter			fn report_unused_parameter(tcx: &ty::ctxt,
 require_c_abi_if_variadic			fn require_c_abi_if_variadic(tcx: &ty::ctxt,
@@ -960,6 +970,7 @@ self_type_matches_expected_vid			fn self_type_matches_expected_vid<'a,'tcx>(
 sess			    pub fn sess(&self) -> &Session 
 set_body_id			    fn set_body_id(&mut self, body_id: ast::NodeId) -> ast::NodeId 
 set_repeating_scope			    fn set_repeating_scope(&mut self, scope: ast::NodeId) -> ast::NodeId 
+setup_constraining_predicates			pub fn setup_constraining_predicates<'tcx>(_tcx: &ty::ctxt<'tcx>,
 simd_shuffle			    fn simd_shuffle<A,B>(a: A, b: A, c: [u32; 8]) -> B;
 simd_shuffle8			    fn simd_shuffle8<A,B>(a: A, b: A, c: [u32; 8]) -> B;
 size_of			    fn size_of<T, U>() -> usize; \/\/ error: intrinsic has wrong number
@@ -1063,13 +1074,6 @@ values			enum values because there are no zero-variant enum values. There is no 
 variance			pub mod variance;
 variant			enum variant, one of the fields was not provided. Erroneous code example:
 variant			enum variant, one of the fields was specified more than once. Erroneous code
-visit::Visitor for CoherenceCheckVisitor			impl<'a, 'tcx, 'v> visit::Visitor<'v> for CoherenceCheckVisitor<'a, 'tcx> 
-visit::Visitor for CollectItemTypesVisitor			impl<'a, 'tcx, 'v> visit::Visitor<'v> for CollectItemTypesVisitor<'a, 'tcx> 
-visit::Visitor for CollectTraitDefVisitor			impl<'a, 'tcx, 'v> visit::Visitor<'v> for CollectTraitDefVisitor<'a, 'tcx> 
-visit::Visitor for OrphanChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for OrphanChecker<'cx, 'tcx> 
-visit::Visitor for OverlapChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for OverlapChecker<'cx, 'tcx> 
-visit::Visitor for UnsafetyChecker			impl<'cx, 'tcx,'v> visit::Visitor<'v> for UnsafetyChecker<'cx, 'tcx> 
-visit::Visitor for Visitor			        impl<'v, 'a, 'tcx> visit::Visitor<'v> for Visitor<'a, 'tcx> 
 visit_adjustments			    fn visit_adjustments(&self, reason: ResolveReason, id: ast::NodeId) 
 visit_arm			    fn visit_arm(&mut self, a: &hir::Arm) { visit_arm(self, a); }
 visit_arm			fn visit_arm(rcx: &mut Rcx, arm: &hir::Arm) 
@@ -1082,28 +1086,24 @@ visit_expr			    fn visit_expr(&mut self, ex: &hir::Expr) { visit_expr(self, ex)
 visit_expr			fn visit_expr(rcx: &mut Rcx, expr: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, expr: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &hir::Expr) 
-visit_fn			    fn visit_fn(&mut self, _: visit::FnKind<'tcx>, _: &'tcx hir::FnDecl,
-visit_fn			    fn visit_fn(&mut self, _fk: visit::FnKind<'v>, fd: &'v hir::FnDecl,
+visit_fn			    fn visit_fn(&mut self, _: intravisit::FnKind<'tcx>, _: &'tcx hir::FnDecl,
+visit_fn			    fn visit_fn(&mut self, _fk: intravisit::FnKind<'v>, fd: &'v hir::FnDecl,
 visit_fn			    fn visit_fn(&mut self,
 visit_fn			    fn visit_fn(&mut self,
 visit_fn_body			    fn visit_fn_body(&mut self,
 visit_foreign_item			    fn visit_foreign_item(&mut self, i: &hir::ForeignItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'v hir::ImplItem) 
 visit_item			            fn visit_item(&mut self, i: &'v hir::Item) 
-visit_item			    fn visit_item(&mut self, _: &hir::Item) { }
 visit_item			    fn visit_item(&mut self, i: &'tcx hir::Item) 
-visit_item			    fn visit_item(&mut self, i: &hir::Item) { visit_item(self, i); }
-visit_item			fn visit_item(_rcx: &mut Rcx, _item: &hir::Item) 
-visit_item			    fn visit_item(&mut self, _: &'v hir::Item) { }
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
-visit_item			    fn visit_item(&mut self, _: &hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &Item) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &'v hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &'v hir::Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
+visit_liberated_fn_sigs			    fn visit_liberated_fn_sigs(&self) 
 visit_local			    fn visit_local(&mut self, local: &'tcx hir::Local) 
 visit_local			    fn visit_local(&mut self, l: &hir::Local) { visit_local(self, l); }
 visit_local			fn visit_local(rcx: &mut Rcx, l: &hir::Local) 
