@@ -75,6 +75,7 @@ return {
   ["type"]  = "type %1(alias) = %2(type);%0",
   ["print"] = 'println!("{%1}\\n", %2);%0',
   ["!!"]    = "%1(macro)!(%2(param))%0",
+  ["{"]     = "{\n\t%0\n",
 
   -- tasks and communication
   ["spawn"]   = "spawn(move || {\n\t%0\n});",
