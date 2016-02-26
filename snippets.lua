@@ -10,7 +10,7 @@ return {
 
   -- functions
   fn    = "fn %1(name)(%2(&self)) %3(-> %4(type) ){\n\t%0\n}",
-  gfn   = "fn %1(name)<%2(T)>(%3(%4(param): %2)) %5(-> %6(%2)) {\n\t%0\n}",
+  gfn   = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5(type) ){\n\t%0\n}",
   divfn = "fn %1(name)(%2(param)) ! {\n\t%0\n}",
 
   -- closures
