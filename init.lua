@@ -14,8 +14,8 @@ local raw = require("rust.builder.raw")
 textadept.editing.api_files.rust = completer.api_files
 textadept.editing.autocompleters.rust = completer.autocomplete
 
-local _keys = require("modules.rust.keys")
-local _snippets = require("modules.rust.snippets")
+local _keys = require("rust.keys")
+local _snippets = require("rust.snippets")
 
 if io.get_project_root() then
   api.add_apitag(raw.get_project_name())
