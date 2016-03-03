@@ -4,6 +4,11 @@ GraphWalk for LabelledGraph			    impl<'a> GraphWalk<'a, Node, &'a Edge> for Lab
 GraphWalk for LabelledGraphWithEscStrs			    impl<'a> GraphWalk<'a, Node, &'a Edge> for LabelledGraphWithEscStrs 
 Id			impl<'a> Id<'a> 
 Id			pub struct Id<'a> 
+IntoCow			impl<'a, T: Clone> IntoCow<'a, [T]> for &'a [T] 
+IntoCow			impl<'a> IntoCow<'a, str> for &'a str 
+IntoCow			pub trait IntoCow<'a, B: ?Sized> where B: ToOwned 
+IntoCow for String			impl<'a> IntoCow<'a, str> for String 
+IntoCow for Vec			impl<'a, T: Clone> IntoCow<'a, [T]> for Vec<T> 
 LabelText			impl<'a> LabelText<'a> 
 LabelText			pub enum LabelText<'a> 
 LabelledGraph			    impl LabelledGraph 
@@ -41,6 +46,9 @@ html			    pub fn html<S: IntoCow<'a, str>>(s: S) -> LabelText<'a>
 id_name			    fn id_name<'a>(n: &Node) -> Id<'a> 
 in_range			        fn in_range(low: char, c: char, high: char) -> bool 
 indent			    fn indent<W: Write>(w: &mut W) -> io::Result<()> 
+into_cow			    fn into_cow(self) -> Cow<'a, B>;
+into_cow			    fn into_cow(self) -> Cow<'a, [T]> 
+into_cow			    fn into_cow(self) -> Cow<'a, str> 
 is_constituent			        fn is_constituent(c: char) -> bool 
 is_letter_or_underscore			        fn is_letter_or_underscore(c: char) -> bool 
 label			    pub fn label<S: IntoCow<'a, str>>(s: S) -> LabelText<'a> 

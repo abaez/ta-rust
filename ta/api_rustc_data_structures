@@ -7,6 +7,8 @@ BitMatrix			pub struct BitMatrix
 BitVector			impl BitVector 
 BitVector			pub struct BitVector 
 Clone for Ivar			impl<T: Copy> Clone for Ivar<T> 
+Combine			impl Combine for () 
+Combine			pub trait Combine 
 Debug for Edge			impl<E: Debug> Debug for Edge<E> 
 Default for FnvHasher			impl Default for FnvHasher 
 Delegate			struct Delegate<K>(PhantomData<K>);
@@ -43,9 +45,11 @@ SnapshotVecDelegate for Edge			impl<N> SnapshotVecDelegate for Edge<N>
 SnapshotVecDelegate for Node			impl<N> SnapshotVecDelegate for Node<N> 
 TransitiveRelation			impl<T:Debug+PartialEq> TransitiveRelation<T> 
 TransitiveRelation			pub struct TransitiveRelation<T:Debug+PartialEq> 
+TupleSlice			        impl<T> TupleSlice<T> for 
+TupleSlice			pub trait TupleSlice<T> 
 UndoLog			pub enum UndoLog<D:SnapshotVecDelegate> 
 UnificationTable			impl<'tcx,K,V> UnificationTable<K>
-UnificationTable			impl<'tcx,K> UnificationTable<K>
+UnificationTable			impl<'tcx,K:UnifyKey> UnificationTable<K>
 UnificationTable			impl<K:UnifyKey> UnificationTable<K> 
 UnificationTable			pub struct UnificationTable<K:UnifyKey> 
 UnifyKey			pub trait UnifyKey : Copy + Clone + Debug + PartialEq 
@@ -54,6 +58,8 @@ UnifyKey for UnitKey			impl UnifyKey for UnitKey
 UnitKey			struct UnitKey(u32);
 VarValue			impl<K:UnifyKey> VarValue<K> 
 VarValue			pub struct VarValue<K:UnifyKey> 
+VecCell			impl<T> VecCell<T> 
+VecCell			pub struct VecCell<T> 
 __noop_fix_for_27438			pub fn __noop_fix_for_27438() {}
 actions_since_snapshot			    pub fn actions_since_snapshot(&self,
 add			    pub fn add(&mut self, source: usize, target: usize) -> bool 
@@ -64,12 +70,18 @@ add_node			    pub fn add_node(&mut self, data: N) -> NodeIndex
 adjacent_edges			    pub fn adjacent_edges(&self, source: NodeIndex, direction: Direction) -> AdjacentEdges<N,E> 
 all_edges			    pub fn all_edges<'a>(&'a self) -> &'a [Edge<E>] 
 all_nodes			    pub fn all_nodes<'a>(&'a self) -> &'a [Node<N>] 
+as_mut_slice			            fn as_mut_slice(&mut self) -> &mut [T] 
+as_mut_slice			    fn as_mut_slice(&mut self) -> &mut [T];
+as_slice			            fn as_slice(&self) -> &[T] 
+as_slice			    fn as_slice(&self) -> &[T];
 assert_open_snapshot			    fn assert_open_snapshot(&self, snapshot: &Snapshot) 
 basic			fn basic() 
 big_array			fn big_array() 
 big_array_bench			fn big_array_bench(b: &mut Bencher) 
 bitvec			pub mod bitvec;
 clone			    fn clone(&self) -> Ivar<T> 
+combine			    fn combine(&self, _other: &()) {}
+combine			    fn combine(&self, other: &Self) -> Self;
 commit			    pub fn commit(&mut self, snapshot: Snapshot) 
 commit			    pub fn commit(&mut self, snapshot: Snapshot<K>) 
 compute_closure			    fn compute_closure(&self) -> BitMatrix 
@@ -95,6 +107,7 @@ edge_data			    pub fn edge_data<'a>(&'a self, idx: EdgeIndex) -> &'a E
 edge_id			    pub fn edge_id(&self) -> usize { self.0 }
 even_odd			fn even_odd() 
 find			    pub fn find(&mut self, id: K) -> K 
+find_value			    pub fn find_value(&mut self, id: K) -> K::Value 
 finish			    fn finish(&self) -> u64 { self.0 }
 first_adjacent			    pub fn first_adjacent(&self, node: NodeIndex, dir: Direction) -> EdgeIndex 
 fmt			    fn fmt(&self, f: &mut Formatter) -> Result<(), Error> 
@@ -179,6 +192,7 @@ postdom_upper_bound			    pub fn postdom_upper_bound(&self, a: &T, b: &T) -> Opt
 predecessor_nodes			    pub fn predecessor_nodes<'a>(&'a self, target: NodeIndex) -> AdjacentSources<N,E> 
 probe			    pub fn probe(&mut self, a_id: K) -> Option<V> 
 push			    pub fn push(&mut self, elem: D::Value) -> usize 
+push			    pub fn push(&self, data: T) -> usize 
 range			    fn range(&self, element: usize) -> (usize, usize) 
 record			    pub fn record(&mut self, action: D::Undo) 
 redirect			    fn redirect(self, to: K) -> VarValue<K> 
@@ -195,10 +209,12 @@ set			    fn set(&mut self, key: K, new_value: VarValue<K>)
 snapshot			    pub fn snapshot(&mut self) -> Snapshot<K> 
 snapshot_vec			pub mod snapshot_vec;
 source			    pub fn source(&self) -> NodeIndex 
+source_or_target			    pub fn source_or_target(&self, direction: Direction) -> NodeIndex 
 sources			    fn sources(self) -> AdjacentSources<'g,N,E> 
 start_snapshot			    pub fn start_snapshot(&mut self) -> Snapshot 
 successor_nodes			    pub fn successor_nodes<'a>(&'a self, source: NodeIndex) -> AdjacentTargets<N,E> 
 sv::SnapshotVecDelegate for Delegate			impl<K:UnifyKey> sv::SnapshotVecDelegate for Delegate<K> 
+swap			    pub fn swap(&self, mut data: Vec<T>) -> Vec<T> 
 tag			    fn tag(k: Option<Self>) -> &'static str;
 tag			    fn tag(_: Option<IntKey>) -> &'static str { "IntKey" }
 tag			    fn tag(_: Option<UnitKey>) -> &'static str { "UnitKey" }
@@ -207,6 +223,7 @@ targets			    fn targets(self) -> AdjacentTargets<'g,N,E>
 tests			mod tests;
 tests			mod tests;
 transitive_relation			pub mod transitive_relation;
+tuple_slice			pub mod tuple_slice;
 u64s			fn u64s(elements: usize) -> usize 
 unify			pub mod unify;
 unify			    fn unify(&mut self, root_a: VarValue<K>, root_b: VarValue<K>, new_value: K::Value) 
@@ -224,6 +241,8 @@ union_two_vecs			fn union_two_vecs()
 unioned			    pub fn unioned(&mut self, a_id: K, b_id: K) -> bool 
 unsolved_variables			    pub fn unsolved_variables(&mut self) -> Vec<K> 
 unwrap			    pub fn unwrap(&self) -> T 
+veccell			pub mod veccell;
+with_capacity			    pub fn with_capacity(capacity: usize) -> VecCell<T>
 with_closure			    fn with_closure<OP,R>(&self, op: OP) -> R
 word_mask			fn word_mask(index: usize) -> (usize, u64) 
 write			    fn write(&mut self, bytes: &[u8]) 

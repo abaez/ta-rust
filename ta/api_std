@@ -69,6 +69,8 @@ AsRawSocket			pub trait AsRawSocket
 AsRawSocket for net			impl AsRawSocket for net::TcpListener 
 AsRawSocket for net			impl AsRawSocket for net::TcpStream 
 AsRawSocket for net			impl AsRawSocket for net::UdpSocket 
+AsRef for CStr			impl AsRef<CStr> for CStr 
+AsRef for CString			impl AsRef<CStr> for CString 
 AsRef for Component			impl<'a> AsRef<OsStr> for Component<'a> 
 AsRef for Components			impl<'a> AsRef<OsStr> for Components<'a> 
 AsRef for Components			impl<'a> AsRef<Path> for Components<'a> 
@@ -92,6 +94,8 @@ AsciiExt for Wtf8			impl AsciiExt for Wtf8
 AsciiExt for char			impl AsciiExt for char 
 AsciiExt for str			impl AsciiExt for str 
 AsciiExt for u8			impl AsciiExt for u8 
+AssertRecoverSafe			impl<T> AssertRecoverSafe<T> 
+AssertRecoverSafe			pub struct AssertRecoverSafe<T>(T);
 B			    struct B;
 BY_HANDLE_FILE_INFORMATION			pub struct BY_HANDLE_FILE_INFORMATION 
 Barrier			impl Barrier 
@@ -130,6 +134,7 @@ BufWriter			impl<W: Write> BufWriter<W>
 BufWriter			pub struct BufWriter<W: Write> 
 Buffer			impl<T> Buffer<T> 
 Buffer			struct Buffer<T> 
+BuildHasher for RandomState			impl BuildHasher for RandomState 
 Builder			impl Builder 
 Builder			pub struct Builder 
 Bytes			pub struct Bytes<R> 
@@ -231,12 +236,13 @@ DefaultResizePolicy			struct DefaultResizePolicy;
 DefaultState			pub struct DefaultState<H>(marker::PhantomData<H>);
 DeleteCriticalSection			    pub fn DeleteCriticalSection(CriticalSection: *mut CRITICAL_SECTION);
 DeleteFileW			    pub fn DeleteFileW(lpPathName: LPCWSTR) -> BOOL;
-Deref for CString			impl Deref for CString 
+Deref for AssertRecoverSafe			impl<T> Deref for AssertRecoverSafe<T> 
 Deref for Handle			impl Deref for Handle 
 Deref for MutexGuard			impl<'mutex, T: ?Sized> Deref for MutexGuard<'mutex, T> 
 Deref for ReentrantMutexGuard			impl<'mutex, T> Deref for ReentrantMutexGuard<'mutex, T> 
 Deref for RwLockReadGuard			impl<'rwlock, T: ?Sized> Deref for RwLockReadGuard<'rwlock, T> 
 Deref for RwLockWriteGuard			impl<'rwlock, T: ?Sized> Deref for RwLockWriteGuard<'rwlock, T> 
+DerefMut for AssertRecoverSafe			impl<T> DerefMut for AssertRecoverSafe<T> 
 DerefMut for MutexGuard			impl<'mutex, T: ?Sized> DerefMut for MutexGuard<'mutex, T> 
 DerefMut for RwLockWriteGuard			impl<'rwlock, T: ?Sized> DerefMut for RwLockWriteGuard<'rwlock, T> 
 DeviceIoControl			    pub fn DeviceIoControl(hDevice: HANDLE,
@@ -373,6 +379,7 @@ Error for JoinPathsError			impl Error for JoinPathsError
 Error for NulError			impl Error for NulError 
 Error for PoisonError			impl<T: Send + Reflect> Error for PoisonError<T> 
 Error for StringError			        impl Error for StringError 
+Error for StripPrefixError			impl Error for StripPrefixError 
 Error for SystemTimeError			impl Error for SystemTimeError 
 Error for TryLockError			impl<T: Send + Reflect> Error for TryLockError<T> 
 Error for VarError			impl Error for VarError 
@@ -475,12 +482,14 @@ From for Box			impl<'a, 'b> From<&'b str> for Box<Error + Send + Sync + 'a>
 From for Box			impl<'a, E: Error + 'a> From<E> for Box<Error + 'a> 
 From for Box			impl<'a, E: Error + Send + Sync + 'a> From<E> for Box<Error + Send + Sync + 'a> 
 From for Box			impl<'a> From<&'a str> for Box<Error> 
+From for CString			impl<'a> From<&'a CStr> for CString 
 From for Cow			impl<'a> From<&'a Path> for Cow<'a, Path> 
 From for Cow			impl<'a> From<PathBuf> for Cow<'a, Path> 
 From for Ipv4Addr			impl From<u32> for Ipv4Addr 
 From for OsString			impl From<String> for OsString 
 From for PathBuf			impl From<OsString> for PathBuf 
 From for PathBuf			impl From<String> for PathBuf 
+From for Vec			impl From<CString> for Vec<u8> 
 From for io			impl From<NulError> for io::Error 
 From for u32			impl From<Ipv4Addr> for u32 
 FromInner			pub trait FromInner<Inner> 
@@ -529,7 +538,7 @@ FullBucket			impl<K, V, M> FullBucket<K, V, M>
 FullBucket			pub struct FullBucket<K, V, M> 
 GET_FILEEX_INFO_LEVELS			pub enum GET_FILEEX_INFO_LEVELS 
 GUID			pub struct GUID 
-GapThenFull			struct GapThenFull<K, V, M> 
+GapThenFull			pub struct GapThenFull<K, V, M> 
 GetCommandLineW			    pub fn GetCommandLineW() -> *mut LPCWSTR;
 GetConsoleMode			    pub fn GetConsoleMode(hConsoleHandle: HANDLE,
 GetCurrentDirectoryW			    pub fn GetCurrentDirectoryW(nBufferLength: DWORD, lpBuffer: LPWSTR) -> DWORD;
@@ -558,6 +567,7 @@ Handle			impl<'rx, T: Send> Handle<'rx, T>
 Handle			pub struct Handle<'rx, T:Send+'rx> 
 Handle			impl Handle 
 Handle			pub struct Handle(RawHandle);
+Handler			enum Handler 
 Handler			impl Handler 
 Handler			pub struct Handler 
 Handler			impl Handler 
@@ -576,9 +586,7 @@ HashMap			pub struct HashMap<K, V, S = RandomState>
 HashSet			impl<T, S> HashSet<T, S>
 HashSet			impl<T: Hash + Eq> HashSet<T, RandomState> 
 HashSet			pub struct HashSet<T, S = RandomState> 
-HashState			pub trait HashState 
 HashState for DefaultState			impl<H: Default + hash::Hasher> HashState for DefaultState<H> 
-HashState for RandomState			impl HashState for RandomState 
 IMAGEHLP_LINE64			pub struct IMAGEHLP_LINE64 
 Incoming			pub struct Incoming<'a> { listener: &'a TcpListener }
 Index for HashMap			impl<'a, K, Q: ?Sized, V, S> Index<&'a Q> for HashMap<K, V, S>
@@ -591,8 +599,6 @@ Instant			impl Instant
 Instant			pub struct Instant 
 Instant			impl Instant 
 Instant			pub struct Instant(time::Instant);
-InternalBufWriter			impl<W: Read + Write> InternalBufWriter<W> 
-InternalBufWriter			struct InternalBufWriter<W: Write>(BufWriter<W>);
 Intersection			pub struct Intersection<'a, T: 'a, S: 'a> 
 Into for PathBuf			impl Into<OsString> for PathBuf 
 IntoCow			impl<'a> IntoCow<'a, Path> for &'a Path 
@@ -742,8 +748,10 @@ Lines			pub struct Lines<B>
 LoadLibraryW			    pub fn LoadLibraryW(name: LPCWSTR) -> HMODULE;
 LocalFree			    pub fn LocalFree(ptr: *mut c_void);
 LocalKey			impl<T: 'static> LocalKey<T> 
-LocalKey			pub struct LocalKey<T:'static> 
+LocalKey			pub struct LocalKey<T: 'static> 
 LocalKeyState			pub enum LocalKeyState 
+Location			impl<'a> Location<'a> 
+Location			pub struct Location<'a> 
 LookupHost			pub struct LookupHost(net_imp::LookupHost);
 LookupHost			pub struct LookupHost 
 LookupPrivilegeValueW			    pub fn LookupPrivilegeValueW(lpSystemName: LPCWSTR,
@@ -841,6 +849,8 @@ Packet			    struct Packet<T>(Arc<(Mutex<T>, Condvar)>);
 Packet			struct Packet<T>(Arc<UnsafeCell<Option<Result<T>>>>);
 Packets			struct Packets { cur: *mut Handle<'static, ()> }
 PanicData			struct PanicData 
+PanicInfo			impl<'a> PanicInfo<'a> 
+PanicInfo			pub struct PanicInfo<'a> 
 Parser			impl<'a> Parser<'a> 
 Parser			struct Parser<'a> 
 PartialEq			        impl<'a, 'b> PartialEq<
@@ -876,8 +886,6 @@ Path			impl Path
 Path			pub struct Path 
 PathBuf			impl PathBuf 
 PathBuf			pub struct PathBuf 
-PathExt			pub trait PathExt 
-PathExt for Path			impl PathExt for Path 
 Permissions			impl Permissions 
 Permissions			pub struct Permissions(fs_imp::FilePermissions);
 PermissionsExt			pub trait PermissionsExt 
@@ -936,7 +944,6 @@ Read for Cursor			impl<T> Read for Cursor<T> where T: AsRef<[u8]>
 Read for Empty			impl Read for Empty 
 Read for ErrorRepeat			    impl Read for ErrorRepeat 
 Read for File			impl Read for File 
-Read for InternalBufWriter			impl<W: Read + Write> Read for InternalBufWriter<W> 
 Read for PositionReader			        impl Read for PositionReader 
 Read for R			        impl Read for R 
 Read for Repeat			impl Read for Repeat 
@@ -957,6 +964,18 @@ ReaderRng			pub struct ReaderRng<R>
 Receiver			impl<T> Receiver<T> 
 Receiver			pub struct Receiver<T> 
 Recover			trait Recover<Q: ?Sized> 
+RecoverSafe			impl RecoverSafe for .. {}
+RecoverSafe			impl<'a, T: RefRecoverSafe + ?Sized> RecoverSafe for &'a T {}
+RecoverSafe			impl<T: RefRecoverSafe + ?Sized> RecoverSafe for *const T {}
+RecoverSafe			impl<T: RefRecoverSafe + ?Sized> RecoverSafe for *mut T {}
+RecoverSafe			pub trait RecoverSafe {}
+RecoverSafe for Arc			impl<T: RefRecoverSafe + ?Sized> RecoverSafe for Arc<T> {}
+RecoverSafe for AssertRecoverSafe			impl<T> RecoverSafe for AssertRecoverSafe<T> {}
+RecoverSafe for Mutex			impl<T: ?Sized> RecoverSafe for Mutex<T> {}
+RecoverSafe for Rc			impl<T: RefRecoverSafe + ?Sized> RecoverSafe for Rc<T> {}
+RecoverSafe for RwLock			impl<T: ?Sized> RecoverSafe for RwLock<T> {}
+RecoverSafe for Shared			impl<T: RefRecoverSafe + ?Sized> RecoverSafe for Shared<T> {}
+RecoverSafe for Unique			impl<T: RecoverSafe> RecoverSafe for Unique<T> {}
 RecvError			pub struct RecvError;
 ReentrantMutex			impl<T> ReentrantMutex<T> 
 ReentrantMutex			pub struct ReentrantMutex<T> 
@@ -966,6 +985,9 @@ ReentrantMutex			impl ReentrantMutex
 ReentrantMutex			pub struct ReentrantMutex { inner: UnsafeCell<c::CRITICAL_SECTION> }
 ReentrantMutexGuard			impl<'mutex, T> ReentrantMutexGuard<'mutex, T> 
 ReentrantMutexGuard			pub struct ReentrantMutexGuard<'a, T: 'a> 
+RefRecoverSafe			impl RefRecoverSafe for .. {}
+RefRecoverSafe			pub trait RefRecoverSafe {}
+RefRecoverSafe for AssertRecoverSafe			impl<T> RefRecoverSafe for AssertRecoverSafe<T> {}
 ReleaseSRWLockExclusive			    pub fn ReleaseSRWLockExclusive(SRWLock: PSRWLOCK) -> () 
 ReleaseSRWLockShared			    pub fn ReleaseSRWLockShared(SRWLock: PSRWLOCK) -> () 
 RemoveDirectoryW			    pub fn RemoveDirectoryW(lpPathName: LPCWSTR) -> BOOL;
@@ -1141,6 +1163,7 @@ Stdout			pub struct Stdout(Output);
 StdoutLock			pub struct StdoutLock<'a> 
 StdoutRaw			struct StdoutRaw(stdio::Stdout);
 StringError			        struct StringError(String);
+StripPrefixError			pub struct StripPrefixError(());
 Sub			impl<'a, 'b, T, S> Sub<&'b HashSet<T, S>> for &'a HashSet<T, S>
 Sub for Duration			impl Sub for Duration 
 Sub for Instant			impl Sub<Duration> for Instant 
@@ -1347,7 +1370,7 @@ __deregister_frame_info			        fn __deregister_frame_info(eh_frame_begin: *co
 __gcc_personality_sj0			        fn __gcc_personality_sj0(version: c_int,
 __gcc_personality_v0			        fn __gcc_personality_v0(state: uw::_Unwind_State,
 __gcc_personality_v0			        fn __gcc_personality_v0(version: c_int,
-__getit			        fn __getit() -> &'static 
+__getit			        unsafe fn __getit() -> 
 __init			        fn __init() -> 
 __rand			pub mod __rand 
 __register_frame_info			        fn __register_frame_info(eh_frame_begin: *const u8, object: *mut u8);
@@ -1366,13 +1389,13 @@ _new			    fn _new(kind: ErrorKind, error: Box<error::Error+Send+Sync>) -> Error
 _open			    fn _open(&self, path: &Path) -> io::Result<File> 
 _print			pub fn _print(args: fmt::Arguments) 
 _push			    fn _push(&mut self, path: &Path) 
-_relative_from			    fn _relative_from<'a>(&'a self, base: &'a Path) -> Option<&'a Path> 
 _remove_dir_all			fn _remove_dir_all(path: &Path) -> io::Result<()> 
 _remove_var			fn _remove_var(k: &OsStr) 
 _set_extension			    fn _set_extension(&mut self, extension: &OsStr) -> bool 
 _set_file_name			    fn _set_file_name(&mut self, file_name: &OsStr) 
 _set_var			fn _set_var(k: &OsStr, v: &OsStr) 
 _starts_with			    fn _starts_with(&self, base: &Path) -> bool 
+_strip_prefix			    fn _strip_prefix<'a>(&'a self, base: &'a Path)
 _tlv_atexit			            fn _tlv_atexit(dtor: unsafe extern fn(*mut u8),
 _var			fn _var(key: &OsStr) -> Result<String, VarError> 
 _var_os			fn _var_os(key: &OsStr) -> Option<OsString> 
@@ -1492,6 +1515,7 @@ as_raw_socket			    fn as_raw_socket(&self) -> RawSocket
 as_raw_socket			    fn as_raw_socket(&self) -> RawSocket;
 as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat { &self.as_inner().stat }
 as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat;
+as_ref			    fn as_ref(&self) -> &CStr 
 as_ref			    fn as_ref(&self) -> &OsStr 
 as_ref			    fn as_ref(&self) -> &OsStr 
 as_ref			    fn as_ref(&self) -> &Path 
@@ -1583,6 +1607,7 @@ both_ready			    fn both_ready()
 broadcast			    fn broadcast<W: Write>(self, other: W) -> Broadcast<Self, W>
 broadcast			    fn broadcast() 
 buffered			mod buffered;
+build_hasher			    fn build_hasher(&self) -> SipHasher 
 build_with_zero1			    fn build_with_zero1() 
 build_with_zero2			    fn build_with_zero2() 
 build_with_zero3			    fn build_with_zero3() 
@@ -1611,8 +1636,6 @@ can_recv			    pub fn can_recv(&mut self) -> bool
 can_recv			    pub fn can_recv(&mut self) -> Result<bool, Receiver<T>> 
 can_recv			    pub fn can_recv(&self) -> bool 
 cannot			                         enum cannot be exhaustively matched against",
-canonicalize			    fn canonicalize(&self) -> io::Result<PathBuf> { canonicalize(self) }
-canonicalize			    fn canonicalize(&self) -> io::Result<PathBuf>;
 canonicalize			pub fn canonicalize<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> 
 canonicalize			    pub fn canonicalize(&self) -> io::Result<PathBuf> 
 canonicalize			pub fn canonicalize(p: &Path) -> io::Result<PathBuf> 
@@ -1627,6 +1650,7 @@ cast_from_usize			    pub unsafe fn cast_from_usize(signal_ptr: usize) -> Signal
 cast_to_usize			    pub unsafe fn cast_to_usize(self) -> usize 
 catch_panic			pub fn catch_panic<F, R>(f: F) -> Result<R>
 cause			    fn cause(&self) -> Option<&Error> { None }
+cause			    fn cause(&self) -> Option<&Error> 
 cause			    fn cause(&self) -> Option<&error::Error> 
 cause			    fn cause(&self) -> Option<&std_error::Error> 
 cause			    fn cause(&self) -> Option<&error::Error> 
@@ -1637,8 +1661,6 @@ cbrt			    pub fn cbrt(self) -> f64
 cbrtf			        pub fn cbrtf(n: c_float) -> c_float;
 ceil			    pub fn ceil(self) -> f32 
 ceil			    pub fn ceil(self) -> f64 
-ceilf			        fn ceilf(f: f32) -> f32 { (f as f64).ceil() as f32 }
-ceilf			        fn ceilf(f: f32) -> f32 { unsafe { intrinsics::ceilf32(f) } }
 cell_allowed			    fn cell_allowed() 
 chain			    fn chain<R: Read>(self, next: R) -> Chain<Self, R> where Self: Sized 
 chan_gone_concurrent			    fn chan_gone_concurrent() 
@@ -1771,6 +1793,7 @@ consume			    fn consume(&mut self, n: usize) { self.inner.consume(n) }
 consume			    fn consume(&mut self, _n: usize) {}
 contains			    pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
 contains_key			    pub fn contains_key<Q: ?Sized>(&self, k: &Q) -> bool
+contains_zero_byte			    fn contains_zero_byte(x: usize) -> bool 
 copy			pub fn copy<P: AsRef<Path>, Q: AsRef<Path>>(from: P, to: Q) -> io::Result<u64> 
 copy			pub fn copy<R: ?Sized, W: ?Sized>(reader: &mut R, writer: &mut W) -> io::Result<u64>
 copy			pub fn copy(from: &Path, to: &Path) -> io::Result<u64> 
@@ -1786,8 +1809,6 @@ copy_file_src_dir			    fn copy_file_src_dir()
 copy_src_does_not_exist			    fn copy_src_does_not_exist() 
 cos			    pub fn cos(self) -> f32 
 cos			    pub fn cos(self) -> f64 
-cosf			        fn cosf(f: f32) -> f32 { (f as f64).cos() as f32 }
-cosf			        fn cosf(f: f32) -> f32 { unsafe { intrinsics::cosf32(f) } }
 cosh			    pub fn cosh(self) -> f32 
 cosh			        pub fn cosh(n: c_double) -> c_double;
 cosh			    pub fn cosh(self) -> f64 
@@ -1852,6 +1873,7 @@ default			    fn default() -> HashMap<K, V, S>
 default			    fn default() -> RandomState 
 default			    fn default() -> HashSet<T, S> 
 default			    fn default() -> DefaultState<H> { DefaultState(marker::PhantomData) }
+default_handler			fn default_handler(info: &PanicInfo) 
 delete_junction			    fn delete_junction(p: &Path) -> io::Result<()> 
 demangle			    fn demangle() 
 demangle			pub fn demangle(writer: &mut Write, s: &str) -> io::Result<()> 
@@ -1862,12 +1884,14 @@ dequeue			    fn dequeue(&mut self) -> Option<SignalToken>
 dequeue			    fn dequeue(&mut self) -> T 
 deref			    fn deref(&self) -> &CStr 
 deref			    fn deref(&self) -> &OsStr 
+deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &Path 
 deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &T { unsafe { &*self.__data.get() } }
 deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &Wtf8 
 deref			    fn deref(&self) -> &RawHandle { &self.0 }
+deref_mut			    fn deref_mut(&mut self) -> &mut T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T 
 description			    fn description(&self) -> &str { self.inner.description() }
@@ -1884,6 +1908,7 @@ description			            fn description(&self) -> &str
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
+description			    fn description(&self) -> &str { "prefix not found" }
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str 
 description			    fn description(&self) -> &str { "failed to join paths" }
@@ -1913,7 +1938,6 @@ dev			    fn dev(&self) -> raw::dev_t;
 difference			    pub fn difference<'a>(&'a self, other: &'a HashSet<T, S>) -> Difference<'a, T, S> 
 dir_entry_methods			    fn dir_entry_methods() 
 directory_junctions_are_directories			fn directory_junctions_are_directories() 
-dirent			    fn dirent(&self) -> *mut libc::dirent 
 display			    pub fn display(&self) -> Display 
 distance			    pub fn distance(&self) -> usize 
 div			    fn div() 
@@ -2014,6 +2038,7 @@ eh			pub mod eh;
 eh_frame_registry			pub mod eh_frame_registry 
 elapsed			    pub fn elapsed(&self) -> Duration 
 elapsed			    pub fn elapsed(&self) -> Result<Duration, SystemTimeError> 
+elf			pub mod elf 
 empty			pub fn empty() -> Empty { Empty { _priv: () } }
 empty_reads			    fn empty_reads() 
 encode_wide			    pub fn encode_wide(&self) -> EncodeWide 
@@ -2089,8 +2114,6 @@ error_string			pub fn error_string(errno: i32) -> String
 error_string			pub fn error_string(errnum: i32) -> String 
 escape_default			pub fn escape_default(c: u8) -> EscapeDefault 
 exception_cleanup			    extern fn exception_cleanup(_unwind_code: uw::_Unwind_Reason_Code,
-exists			    fn exists(&self) -> bool { metadata(self).is_ok() }
-exists			    fn exists(&self) -> bool;
 exists			    pub fn exists(&self) -> bool 
 exit			pub fn exit(code: i32) -> ! 
 exit			pub fn exit(code: i32) -> ! 
@@ -2104,8 +2127,6 @@ exp2			    pub fn exp2(self) -> f64
 exp_m1			    pub fn exp_m1(self) -> f32 
 exp_m1			    pub fn exp_m1(self) -> f64 
 expect_full			    pub fn expect_full(self) -> FullBucket<K, V, M> 
-expf			        fn expf(f: f32) -> f32 { (f as f64).exp() as f32 }
-expf			        fn expf(f: f32) -> f32 { unsafe { intrinsics::expf32(f) } }
 expm1			        pub fn expm1(n: c_double) -> c_double;
 expm1f			        pub fn expm1f(n: c_float) -> c_float;
 ext			pub mod ext;
@@ -2122,6 +2143,7 @@ f			        fn f(i: i32, tx: Sender<()>)
 f32			impl f32 
 f64			impl f64 
 fail			        fn fail(output: &mut AnonPipe) -> ! 
+fallback			mod fallback 
 fallback			    unsafe fn fallback() -> Option<OsString> { None }
 fallback			    unsafe fn fallback() -> Option<OsString> 
 fast_rebind			    fn fast_rebind() 
@@ -2135,6 +2157,7 @@ fdimf			        pub fn fdimf(a: c_float, b: c_float) -> c_float;
 ffi			pub mod ffi;
 ffi			pub mod ffi;
 ffi			pub mod ffi;
+file			    pub fn file(&self) -> &str 
 file_attr			    pub fn file_attr(&self) -> io::Result<FileAttr> 
 file_attr			    pub fn file_attr(&self) -> io::Result<FileAttr> 
 file_attributes			    fn file_attributes(&self) -> u32 { self.as_inner().attrs() }
@@ -2195,8 +2218,6 @@ flags_and_attributes			    fn flags_and_attributes(&mut self, val: u32) -> &mut 
 flags_and_attributes			    pub fn flags_and_attributes(&mut self, val: u32) 
 floor			    pub fn floor(self) -> f32 
 floor			    pub fn floor(self) -> f64 
-floorf			        fn floorf(f: f32) -> f32 { (f as f64).floor() as f32 }
-floorf			        fn floorf(f: f32) -> f32 { unsafe { intrinsics::floorf32(f) } }
 flowinfo			    pub fn flowinfo(&self) -> u32 { ntoh(self.inner.sin6_flowinfo) }
 flush			    fn flush(&mut self) -> io::Result<()> { self.inner.flush() }
 flush			            fn flush(&mut self) -> io::Result<()> 
@@ -2233,7 +2254,7 @@ fmt			    fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
-fmt			            fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			            fn fmt(&self, _: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -2245,6 +2266,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error> 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -2282,6 +2304,7 @@ fmt::Debug for Ipv4Addr			impl fmt::Debug for Ipv4Addr
 fmt::Debug for Ipv6Addr			impl fmt::Debug for Ipv6Addr 
 fmt::Debug for LineWriter			impl<W: Write> fmt::Debug for LineWriter<W> where W: fmt::Debug 
 fmt::Debug for Mutex			impl<T: ?Sized + fmt::Debug + 'static> fmt::Debug for Mutex<T> 
+fmt::Debug for Output			impl fmt::Debug for Output 
 fmt::Debug for Path			impl fmt::Debug for Path 
 fmt::Debug for PathBuf			impl fmt::Debug for PathBuf 
 fmt::Debug for PoisonError			impl<T> fmt::Debug for PoisonError<T> 
@@ -2329,6 +2352,7 @@ fmt::Display for SendError			impl<T> fmt::Display for SendError<T>
 fmt::Display for SocketAddr			impl fmt::Display for SocketAddr 
 fmt::Display for SocketAddrV4			impl fmt::Display for SocketAddrV4 
 fmt::Display for SocketAddrV6			impl fmt::Display for SocketAddrV6 
+fmt::Display for StripPrefixError			impl fmt::Display for StripPrefixError 
 fmt::Display for SystemTimeError			impl fmt::Display for SystemTimeError 
 fmt::Display for TestError			        impl fmt::Display for TestError 
 fmt::Display for TryLockError			impl<T: Send + Reflect> fmt::Display for TryLockError<T> 
@@ -2356,6 +2380,8 @@ from			    fn from(err: E) -> Box<Error + Send + Sync + 'a>
 from			    fn from(err: String) -> Box<Error + Send + Sync> 
 from			    fn from(str_err: String) -> Box<Error> 
 from			    fn from(_: NulError) -> io::Error 
+from			    fn from(s: &'a CStr) -> CString 
+from			    fn from(s: CString) -> Vec<u8> 
 from			    fn from(s: &'a T) -> OsString 
 from			    fn from(s: String) -> OsString 
 from			    fn from(iie: IntoInnerError<W>) -> Error { iie.1 }
@@ -2404,7 +2430,6 @@ from_iter			    fn from_iter<T: IntoIterator<Item=CodePoint>>(iter: T) -> Wtf8Bu
 from_millis			    pub fn from_millis(millis: u64) -> Duration 
 from_mode			    fn from_mode(mode: raw::mode_t) -> Permissions 
 from_mode			    fn from_mode(mode: raw::mode_t) -> Self;
-from_ptr			    pub unsafe fn from_ptr(ptr: *const c_char) -> CString 
 from_ptr			    pub unsafe fn from_ptr<'a>(ptr: *const c_char) -> &'a CStr 
 from_raw			    pub unsafe fn from_raw(ptr: *mut c_char) -> CString 
 from_raw_fd			    unsafe fn from_raw_fd(fd: RawFd) -> Self;
@@ -2434,8 +2459,6 @@ from_str			    pub fn from_str(str: &str) -> Wtf8Buf
 from_str			    pub fn from_str(value: &str) -> &Wtf8 
 from_str			    pub fn from_str(s: &str) -> &Slice 
 from_str			    pub fn from_str(s: &str) -> &Slice 
-from_str_radix			    pub fn from_str_radix(s: &str, radix: u32) -> Result<f32, ParseFloatError> 
-from_str_radix			    pub fn from_str_radix(s: &str, radix: u32) -> Result<f64, ParseFloatError> 
 from_string			    pub fn from_string(string: String) -> Wtf8Buf 
 from_string			    pub fn from_string(s: String) -> Buf 
 from_string			    pub fn from_string(s: String) -> Buf 
@@ -2494,7 +2517,6 @@ get_mode			        fn get_mode(_fd: c_int) -> Option<(bool, bool)>
 get_mode			        fn get_mode(fd: c_int) -> Option<(bool, bool)> 
 get_mut			    pub fn get_mut(&mut self) -> &mut V 
 get_mut			    pub fn get_mut<Q: ?Sized>(&mut self, k: &Q) -> Option<&mut V>
-get_mut			    fn get_mut(&mut self) -> &mut BufWriter<W> 
 get_mut			    pub fn get_mut(&mut self) -> &mut R { &mut self.inner }
 get_mut			    pub fn get_mut(&mut self) -> &mut W { self.inner.as_mut().unwrap() }
 get_mut			    pub fn get_mut(&mut self) -> &mut W { self.inner.get_mut() }
@@ -2572,9 +2594,7 @@ hash::Hash for SocketAddrV6			impl hash::Hash for SocketAddrV6
 hash_map			pub mod hash_map 
 hash_set			pub mod hash_set 
 hash_state			pub mod hash_state 
-hasher			    fn hasher(&self) -> SipHasher 
 hasher			    fn hasher(&self) -> H { Default::default() }
-hasher			    fn hasher(&self) -> Self::Hasher;
 hashmap			    fn hashmap() 
 hashmap_as_queue			fn hashmap_as_queue(b: &mut Bencher) 
 hexify			    fn hexify(b: u8) -> u8 
@@ -2600,7 +2620,6 @@ imp			mod imp;
 imp			mod imp;
 imp			mod imp 
 imp			mod imp 
-imp			mod imp 
 impls			mod impls;
 in6_addr			pub struct in6_addr 
 in_addr			pub struct in_addr 
@@ -2609,6 +2628,7 @@ include_cur_dir			    fn include_cur_dir(&self) -> bool
 incoming			    pub fn incoming(&self) -> Incoming 
 index			    fn index(&self, index: &Q) -> &V 
 index			    pub fn index(&self) -> usize 
+index			    fn index(&self, _index: ops::RangeFull) -> &CStr 
 index			    fn index(&self, _index: ops::RangeFull) -> &OsStr 
 index			    fn index(&self, _range: ops::RangeFull) -> &Wtf8 
 index			    fn index(&self, range: ops::Range<usize>) -> &Wtf8 
@@ -2622,14 +2642,13 @@ init			    pub unsafe fn init(_argc: isize, _argv: *const *const u8)
 init			    pub unsafe fn init(argc: isize, argv: *const *const u8) 
 init			pub unsafe fn init(argc: isize, argv: *const *const u8) { imp::init(argc, argv) }
 init			unsafe fn init() -> bool 
-init			pub fn init() { }
 init			pub fn init() 
 init			    pub unsafe fn init(&mut self) 
 init			pub fn init() {}
 init			    pub unsafe fn init() 
 init			    pub unsafe fn init() -> Option<usize> { None }
 init			    pub unsafe fn init() -> Option<usize> 
-init			pub fn init() {}
+init			pub fn init() 
 init			    pub unsafe fn init(&mut self) 
 init			pub fn init() 
 init			pub unsafe fn init() 
@@ -2722,7 +2741,6 @@ into_option			    fn into_option(self) -> Option<FullBucket<K, V, M>>
 into_os_string			    pub fn into_os_string(self) -> OsString 
 into_pthread_t			    fn into_pthread_t(self) -> RawPthread 
 into_pthread_t			    fn into_pthread_t(self) -> RawPthread;
-into_ptr			    pub fn into_ptr(self) -> *const c_char 
 into_raw			    pub fn into_raw(self) -> *mut c_char 
 into_raw			    pub fn into_raw(self) -> c_int 
 into_raw			    pub fn into_raw(self) -> c::HANDLE 
@@ -2782,8 +2800,6 @@ is_char_device			    fn is_char_device(&self) -> bool { self.as_inner().is(libc:
 is_char_device			    fn is_char_device(&self) -> bool;
 is_code_point_boundary			pub fn is_code_point_boundary(slice: &Wtf8, index: usize) -> bool 
 is_colon			    fn is_colon(b: &u8) -> bool { *b == b':' }
-is_dir			    fn is_dir(&self) -> bool 
-is_dir			    fn is_dir(&self) -> bool;
 is_dir			    pub fn is_dir(&self) -> bool { self.0.is_dir() }
 is_dir			    pub fn is_dir(&self) -> bool { self.file_type().is_dir() }
 is_dir			    pub fn is_dir(&self) -> bool 
@@ -2797,8 +2813,6 @@ is_empty			    pub fn is_empty(&self) -> bool { self.map.is_empty() }
 is_eof			    fn is_eof(&self) -> bool 
 is_fifo			    fn is_fifo(&self) -> bool { self.as_inner().is(libc::S_IFIFO) }
 is_fifo			    fn is_fifo(&self) -> bool;
-is_file			    fn is_file(&self) -> bool 
-is_file			    fn is_file(&self) -> bool;
 is_file			    pub fn is_file(&self) -> bool { self.0.is_file() }
 is_file			    pub fn is_file(&self) -> bool { self.file_type().is_file() }
 is_file			    pub fn is_file(&self) -> bool 
@@ -2915,6 +2929,7 @@ lgammaf_r			        pub fn lgammaf_r(n: c_float, sign: &mut c_int) -> c_float;
 libbacktrace			pub mod libbacktrace;
 libunwind			pub mod libunwind;
 limit			    pub fn limit(&self) -> u64 { self.limit }
+line			    pub fn line(&self) -> u32 
 lines			    fn lines() 
 lines			    fn lines(self) -> Lines<Self> where Self: Sized 
 link			pub fn link(src: &Path, dst: &Path) -> io::Result<()> 
@@ -2929,6 +2944,7 @@ ln_1p			    pub fn ln_1p(self) -> f64
 load			            fn load() -> usize 
 local_addr			    pub fn local_addr(&self) -> io::Result<SocketAddr> 
 local_addr			    pub fn local_addr(&self) -> io::Result<SocketAddr> 
+location			    pub fn location(&self) -> Option<&Location> 
 lock			    pub fn lock(&self) -> StderrLock 
 lock			    pub fn lock(&self) -> StdinLock 
 lock			    pub fn lock(&self) -> StdoutLock 
@@ -2942,18 +2958,13 @@ log			    pub fn log(self, base: f32) -> f32 { self.ln() \/ base.ln() }
 log			    pub fn log(self, base: f64) -> f64 { self.ln() \/ base.ln() }
 log10			    pub fn log10(self) -> f32 
 log10			    pub fn log10(self) -> f64 
-log10f			        fn log10f(f: f32) -> f32 { (f as f64).log10() as f32 }
-log10f			        fn log10f(f: f32) -> f32 { unsafe { intrinsics::log10f32(f) } }
 log1p			        pub fn log1p(n: c_double) -> c_double;
 log1pf			        pub fn log1pf(n: c_float) -> c_float;
 log2			    pub fn log2(self) -> f32 
 log2			    pub fn log2(self) -> f64 
 log_enabled			pub fn log_enabled() -> bool 
-log_panic			fn log_panic(obj: &(Any+Send), file: &'static str, line: u32,
 logb			        pub fn logb(n: c_double) -> c_double;
 logbf			        pub fn logbf(n: c_float) -> c_float;
-logf			        fn logf(f: f32) -> f32 { (f as f64).ln() as f32 }
-logf			        fn logf(f: f32) -> f32 { unsafe { intrinsics::logf32(f) } }
 lookup			pub fn lookup(module: &str, symbol: &str) -> Option<usize> 
 lookup_addr			pub fn lookup_addr(addr: &IpAddr) -> io::Result<String> 
 lookup_addr			pub fn lookup_addr(addr: &IpAddr) -> io::Result<String> 
@@ -2987,10 +2998,25 @@ map			pub mod map;
 map			        fn map() -> RefCell<HashMap<i32, i32>> 
 map_result			pub fn map_result<T, U, F>(result: LockResult<T>, f: F)
 marker::Sync for KeyInner			    unsafe impl<T> marker::Sync for KeyInner<T> { }
+matches_begin			    fn matches_begin() 
+matches_begin_reversed			    fn matches_begin_reversed() 
+matches_end			    fn matches_end() 
+matches_end_reversed			    fn matches_end_reversed() 
+matches_nul			    fn matches_nul() 
+matches_nul_reversed			    fn matches_nul_reversed() 
+matches_one			    fn matches_one() 
+matches_one_reversed			    fn matches_one_reversed() 
+matches_past_nul			    fn matches_past_nul() 
+matches_past_nul_reversed			    fn matches_past_nul_reversed() 
 max			    pub fn max(self, other: f32) -> f32 
 max			    pub fn max(self, other: f64) -> f64 
-metadata			    fn metadata(&self) -> io::Result<Metadata> { metadata(self) }
-metadata			    fn metadata(&self) -> io::Result<Metadata>;
+memchr			mod memchr;
+memchr			    pub fn memchr(x: u8, text: &[u8]) -> Option<usize> 
+memchr			pub fn memchr(needle: u8, haystack: &[u8]) -> Option<usize> 
+memchr_specific			    fn memchr_specific(needle: u8, haystack: &[u8]) -> Option<usize> 
+memrchr			    pub fn memrchr(x: u8, text: &[u8]) -> Option<usize> 
+memrchr			pub fn memrchr(needle: u8, haystack: &[u8]) -> Option<usize> 
+memrchr_specific			    fn memrchr_specific(needle: u8, haystack: &[u8]) -> Option<usize> 
 metadata			    pub fn metadata(&self) -> io::Result<Metadata> 
 metadata			pub fn metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata> 
 metadata			    pub fn metadata(&self) -> io::Result<fs::Metadata> 
@@ -3070,6 +3096,7 @@ new			    pub fn new(ip: Ipv6Addr, port: u16, flowinfo: u32, scope_id: u32)
 new			    pub fn new(a: u16, b: u16, c: u16, d: u16, e: u16, f: u16, g: u16,
 new			    pub fn new(a: u8, b: u8, c: u8, d: u8) -> Ipv4Addr 
 new			    fn new(s: &'a str) -> Parser<'a> 
+new			    pub fn new(t: T) -> AssertRecoverSafe<T> 
 new			    pub fn new() -> PathBuf 
 new			    pub fn new<S: AsRef<OsStr> + ?Sized>(s: &S) -> &Path 
 new			    pub fn new<S: AsRef<OsStr>>(program: S) -> Command 
@@ -3190,6 +3217,10 @@ nextafter			        pub fn nextafter(x: c_double, y: c_double) -> c_double;
 nextafterf			        pub fn nextafterf(x: c_float, y: c_float) -> c_float;
 nlink			    fn nlink(&self) -> raw::nlink_t { self.as_raw_stat().st_nlink as raw::nlink_t }
 nlink			    fn nlink(&self) -> raw::nlink_t;
+no_match			    fn no_match() 
+no_match_empty			    fn no_match_empty() 
+no_match_empty_reversed			    fn no_match_empty_reversed() 
+no_match_reversed			    fn no_match_reversed() 
 no_runtime			    fn no_runtime() 
 notify_all			    fn notify_all() 
 notify_all			    pub fn notify_all(&'static self) { unsafe { self.inner.notify_all() } }
@@ -3241,6 +3272,8 @@ oneshot_single_thread_try_recv_open			    fn oneshot_single_thread_try_recv_open
 oneshot_single_thread_try_send_closed			    fn oneshot_single_thread_try_send_closed() 
 oneshot_single_thread_try_send_closed2			    fn oneshot_single_thread_try_send_closed2() 
 oneshot_single_thread_try_send_open			    fn oneshot_single_thread_try_send_open() 
+oom_handler			fn oom_handler() -> ! 
+oom_handler			fn oom_handler() -> ! 
 open			    pub fn open(_filename: Option<&OsStr>) -> Result<*mut u8, String> 
 open			    pub fn open(filename: Option<&OsStr>) -> Result<*mut u8, String> 
 open			    pub fn open(filename: Option<&Path>) -> Result<DynamicLibrary, String> 
@@ -3257,9 +3290,11 @@ opendir			    fn opendir(p: &Path, write: bool) -> io::Result<File>
 ops			impl ops::Index<ops::Range<usize>> for Wtf8 
 ops			impl ops::Index<ops::RangeFrom<usize>> for Wtf8 
 ops			impl ops::Index<ops::RangeTo<usize>> for Wtf8 
+ops::Deref for CString			impl ops::Deref for CString 
 ops::Deref for OsString			impl ops::Deref for OsString 
 ops::Deref for PathBuf			impl ops::Deref for PathBuf 
 ops::Deref for Wtf8Buf			impl ops::Deref for Wtf8Buf 
+ops::Index for CString			impl ops::Index<ops::RangeFull> for CString 
 ops::Index for OsString			impl ops::Index<ops::RangeFull> for OsString 
 ops::Index for Wtf8			impl ops::Index<ops::RangeFull> for Wtf8 
 or_insert			    pub fn or_insert(self, default: V) -> &'a mut V 
@@ -3270,6 +3305,7 @@ os			pub mod os;
 os			pub mod os;
 os			pub mod os;
 os			pub mod os;
+os			pub mod os 
 os2c			fn os2c(s: &OsStr) -> CString 
 os2path			fn os2path(s: &[u16]) -> PathBuf 
 os_datasync			        unsafe fn os_datasync(fd: c_int) -> c_int { libc::fdatasync(fd) }
@@ -3284,6 +3320,7 @@ output			    pub fn output(&mut self) -> io::Result<Output>
 output			pub fn output(w: &mut Write, idx: isize, addr: *mut libc::c_void,
 output_fileline			pub fn output_fileline(w: &mut Write, file: &[u8], line: libc::c_int,
 page_size			pub fn page_size() -> usize 
+panic			pub mod panic;
 panic			pub unsafe fn panic(data: Box<Any + Send + 'static>) -> ! 
 panic			pub unsafe fn panic(data: Box<Any + Send + 'static>) -> ! 
 panic			pub unsafe fn panic(data: Box<Any + Send + 'static>) -> ! 
@@ -3323,6 +3360,7 @@ path			    pub fn path(&self) -> PathBuf { self.0.path() }
 path			pub mod path;
 path			    pub fn path(&self) -> PathBuf 
 path			    pub fn path(&self) -> PathBuf 
+payload			    pub fn payload(&self) -> &(Any + Send) 
 pcinfo_cb			    extern fn pcinfo_cb(data: *mut libc::c_void,
 peek			    pub fn peek(self) -> BucketState<K, V, M> 
 peek			    pub fn peek(&self) -> Option<Component<'a>> 
@@ -3350,8 +3388,6 @@ port_gone_concurrent			    fn port_gone_concurrent()
 port_gone_concurrent_shared			    fn port_gone_concurrent_shared() 
 position			    pub fn position(&self) -> u64 { self.pos }
 postinit_lock			    pub fn postinit_lock(&self) -> MutexGuard<()> 
-powf			        fn powf(f: f32, n: f32) -> f32 { (f as f64).powf(n as f64) as f32 }
-powf			        fn powf(f: f32, n: f32) -> f32 { unsafe { intrinsics::powf32(f, n) } }
 powf			    pub fn powf(self, n: f32) -> f32 
 powf			    pub fn powf(self, n: f64) -> f64 
 powi			    pub fn powi(self, n: i32) -> f32 { num::Float::powi(self, n) }
@@ -3405,6 +3441,7 @@ process			pub mod process;
 process			pub mod process;
 process			pub mod process;
 process			pub mod process;
+propagate			pub fn propagate(payload: Box<Any + Send>) -> ! 
 push			    pub fn push<T: AsRef<OsStr>>(&mut self, s: T) 
 push			    pub fn push<P: AsRef<Path>>(&mut self, path: P) 
 push			    pub fn push(&self, t: T) 
@@ -3485,8 +3522,6 @@ read_atomically			    fn read_atomically<T, F>(&mut self, cb: F) -> Option<T> wh
 read_char			    fn read_char(&mut self) -> Option<char> 
 read_char_buffered			    fn read_char_buffered() 
 read_digit			    fn read_digit(&mut self, radix: u8) -> Option<u8> 
-read_dir			    fn read_dir(&self) -> io::Result<ReadDir> { read_dir(self) }
-read_dir			    fn read_dir(&self) -> io::Result<ReadDir>;
 read_dir			pub fn read_dir<P: AsRef<Path>>(path: P) -> io::Result<ReadDir> 
 read_dir			    pub fn read_dir(&self) -> io::Result<fs::ReadDir> 
 read_dir_not_found			    fn read_dir_not_found() 
@@ -3508,8 +3543,6 @@ read_line			    fn read_line(&mut self, buf: &mut String) -> io::Result<usize>
 read_line			    fn read_line(&mut self, buf: &mut String) -> Result<usize> 
 read_line			    fn read_line() 
 read_line			    pub fn read_line(&self, buf: &mut String) -> io::Result<usize> 
-read_link			    fn read_link(&self) -> io::Result<PathBuf> { read_link(self) }
-read_link			    fn read_link(&self) -> io::Result<PathBuf>;
 read_link			pub fn read_link<P: AsRef<Path>>(path: P) -> io::Result<PathBuf> 
 read_link			    pub fn read_link(&self) -> io::Result<PathBuf> 
 read_mut			    pub fn read_mut(&mut self) -> (&mut K, &mut V) 
@@ -3563,6 +3596,7 @@ realpath_works			    fn realpath_works()
 realpath_works_tricky			    fn realpath_works_tricky() 
 recip			    pub fn recip(self) -> f32 { num::Float::recip(self) }
 recip			    pub fn recip(self) -> f64 { num::Float::recip(self) }
+recover			pub fn recover<F: FnOnce() -> R + RecoverSafe, R>(f: F) -> Result<R> 
 recursive			    pub fn recursive(&mut self, recursive: bool) -> &mut Self 
 recursive_mkdir			    fn recursive_mkdir() 
 recursive_mkdir_failure			    fn recursive_mkdir_failure() 
@@ -3604,6 +3638,7 @@ rename			pub fn rename(old: &Path, new: &Path) -> io::Result<()>
 rename			pub fn rename(old: &Path, new: &Path) -> io::Result<()> 
 reparse_point			    fn reparse_point<'a>(&self,
 repeat			pub fn repeat(byte: u8) -> Repeat { Repeat { byte: byte } }
+repeat_byte			    fn repeat_byte(b: u8) -> usize 
 repeat_repeats			    fn repeat_repeats() 
 replace			    fn replace(&mut self, key: K) -> Option<K> 
 replace			    fn replace(&mut self, key: Self::Key) -> Option<Self::Key>;
@@ -3634,17 +3669,12 @@ rtdeps			mod rtdeps;
 run_dtors			unsafe fn run_dtors() 
 run_output			    pub fn run_output(mut cmd: Command) -> String 
 rust_begin_unwind			pub extern fn rust_begin_unwind(msg: fmt::Arguments,
-rust_current_exe			        fn rust_current_exe() -> *const c_char;
-rust_dir_get_ino			            fn rust_dir_get_ino(ptr: *mut libc::dirent) -> raw::ino_t;
-rust_dir_get_mode			            fn rust_dir_get_mode(ptr: *mut libc::dirent) -> c_int;
-rust_dirent_t_size			            fn rust_dirent_t_size() -> c_int;
 rust_eh_personality			    extern fn rust_eh_personality(
 rust_eh_personality			    pub extern fn rust_eh_personality(
 rust_eh_personality			fn rust_eh_personality() 
 rust_eh_personality_catch			    pub extern fn rust_eh_personality_catch(
 rust_exception_class			fn rust_exception_class() -> uw::_Unwind_Exception_Class 
-rust_list_dir_val			            fn rust_list_dir_val(ptr: *mut libc::dirent) -> *const c_char;
-rust_panic			fn rust_panic(cause: Box<Any + Send + 'static>) -> ! 
+rust_panic			pub fn rust_panic(cause: Box<Any + Send + 'static>) -> ! 
 rust_try			        fn rust_try(f: extern fn(*mut u8),
 rwlock			mod rwlock;
 rwlock			pub mod rwlock;
@@ -3713,6 +3743,7 @@ set_current_dir			pub fn set_current_dir<P: AsRef<Path>>(p: P) -> io::Result<()>
 set_current_dir_works			    fn set_current_dir_works() 
 set_extension			    pub fn set_extension<S: AsRef<OsStr>>(&mut self, extension: S) -> bool 
 set_file_name			    pub fn set_file_name<S: AsRef<OsStr>>(&mut self, file_name: S) 
+set_handler			pub fn set_handler<F>(handler: F) where F: Fn(&PanicInfo) + 'static + Sync + Send 
 set_len			    pub fn set_len(&self, size: u64) -> io::Result<()> 
 set_mode			    fn set_mode(&mut self, mode: raw::mode_t) 
 set_mode			    fn set_mode(&mut self, mode: raw::mode_t);
@@ -3762,7 +3793,7 @@ shutdown			    pub fn shutdown(&self, how: Shutdown) -> io::Result<()>
 shutdown_smoke			    fn shutdown_smoke() 
 sigaddset			        fn sigaddset(set: *mut libc::sigset_t, signum: libc::c_int) -> libc::c_int;
 sigaddset			    unsafe fn sigaddset(set: *mut libc::sigset_t, signum: libc::c_int) -> libc::c_int 
-siginfo_si_addr			    unsafe fn siginfo_si_addr(info: *mut libc::siginfo_t) -> *mut libc::c_void 
+siginfo_si_addr			    unsafe fn siginfo_si_addr(info: *mut libc::siginfo_t) -> usize 
 siginfo_t			        struct siginfo_t 
 signal			    pub fn signal(&self) -> bool 
 signal			    fn signal(&self) -> Option<i32> 
@@ -3777,8 +3808,6 @@ sin			    pub fn sin(self) -> f64
 sin_cos			    pub fn sin_cos(self) -> (f32, f32) 
 sin_cos			    pub fn sin_cos(self) -> (f64, f64) 
 since_epoch			    fn since_epoch() 
-sinf			        fn sinf(f: f32) -> f32 { (f as f64).sin() as f32 }
-sinf			        fn sinf(f: f32) -> f32 { unsafe { intrinsics::sinf32(f) } }
 sinh			    pub fn sinh(self) -> f32 
 sinh			        pub fn sinh(n: c_double) -> c_double;
 sinh			    pub fn sinh(self) -> f64 
@@ -3924,6 +3953,7 @@ stress			    fn stress()
 stress_bound			        unsafe fn stress_bound(bound: usize) 
 stress_factor			    pub fn stress_factor() -> usize 
 stress_shared			    fn stress_shared() 
+strip_prefix			    pub fn strip_prefix<'a, P: ?Sized>(&'a self, base: &'a P)
 sub			    fn sub(self, rhs: &HashSet<T, S>) -> HashSet<T, S> 
 sub			    fn sub() 
 sub			    fn sub(self, rhs: Duration) -> Duration 
@@ -3957,8 +3987,6 @@ symlink			pub fn symlink(src: &Path, dst: &Path) -> io::Result<()>
 symlink_dir			pub fn symlink_dir<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q)
 symlink_file			pub fn symlink_file<P: AsRef<Path>, Q: AsRef<Path>>(src: P, dst: Q)
 symlink_inner			pub fn symlink_inner(src: &Path, dst: &Path, dir: bool) -> io::Result<()> 
-symlink_metadata			    fn symlink_metadata(&self) -> io::Result<Metadata> { symlink_metadata(self) }
-symlink_metadata			    fn symlink_metadata(&self) -> io::Result<Metadata>;
 symlink_metadata			pub fn symlink_metadata<P: AsRef<Path>>(path: P) -> io::Result<Metadata> 
 symlink_metadata			    pub fn symlink_metadata(&self) -> io::Result<fs::Metadata> 
 symlink_noexist			    fn symlink_noexist() 
@@ -3974,7 +4002,6 @@ sync_channel			pub fn sync_channel<T>(bound: usize) -> (SyncSender<T>, Receiver<
 sync_data			    pub fn sync_data(&self) -> io::Result<()> 
 sync_doesnt_kill_anything			    fn sync_doesnt_kill_anything() 
 sync_tests			mod sync_tests 
-syscall			            fn syscall(number: libc::c_long, ...) -> libc::c_long;
 system_time_elapsed			    fn system_time_elapsed() 
 system_time_math			    fn system_time_math() 
 table			mod table;
@@ -3985,6 +4012,7 @@ take			    pub fn take<Q: ?Sized>(&mut self, value: &Q) -> Option<T>
 take			    pub fn take(mut self) -> (EmptyBucket<K, V, M>, K, V) 
 take			    fn take(self, limit: u64) -> Take<Self> where Self: Sized 
 take_eof			    fn take_eof() 
+take_handler			pub fn take_handler() -> Box<Fn(&PanicInfo) + 'static + Sync + Send> 
 take_some_bytes			    fn take_some_bytes() 
 take_to_wake			    fn take_to_wake(&mut self) -> SignalToken 
 take_to_wake			    fn take_to_wake(&mut self) -> SignalToken 
@@ -4010,6 +4038,7 @@ temp_dir			pub fn temp_dir() -> PathBuf
 test			    fn test() 
 test			mod test 
 test			    fn test() 
+tests			mod tests 
 tests			mod tests 
 tests			mod tests 
 tests			mod tests 
@@ -4195,6 +4224,7 @@ trylock_works			    fn trylock_works()
 tsa			pub fn tsa<A: ToSocketAddrs>(a: A) -> Result<Vec<SocketAddr>, String> 
 two_mutexes			    fn two_mutexes() 
 type_id			    fn type_id(&self) -> TypeId where Self: 'static 
+u64x2			struct u64x2(u64, u64);
 u8_slice_as_os_str			unsafe fn u8_slice_as_os_str(s: &[u8]) -> &OsStr 
 udp			mod udp;
 udp_clone_smoke			    fn udp_clone_smoke() 
@@ -4283,10 +4313,14 @@ with_capacity			    pub fn with_capacity(cap: usize, inner: W) -> LineWriter<W>
 with_capacity			    pub fn with_capacity(n: usize) -> Wtf8Buf 
 with_capacity_and_hash_state			    pub fn with_capacity_and_hash_state(capacity: usize, hash_state: S)
 with_capacity_and_hash_state			    pub fn with_capacity_and_hash_state(capacity: usize, hash_state: S)
+with_capacity_and_hasher			    pub fn with_capacity_and_hasher(capacity: usize, hash_builder: S)
+with_capacity_and_hasher			    pub fn with_capacity_and_hasher(capacity: usize, hasher: S)
 with_extension			    pub fn with_extension<S: AsRef<OsStr>>(&self, extension: S) -> PathBuf 
 with_file_name			    pub fn with_file_name<S: AsRef<OsStr>>(&self, file_name: S) -> PathBuf 
 with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashMap<K, V, S> 
 with_hash_state			    pub fn with_hash_state(hash_state: S) -> HashSet<T, S> 
+with_hasher			    pub fn with_hasher(hash_builder: S) -> HashMap<K, V, S> 
+with_hasher			    pub fn with_hasher(hasher: S) -> HashSet<T, S> 
 write			    fn write(&mut self, buf: &[u8]) -> io::Result<usize> 
 write			    pub fn write(&mut self, write: bool) -> &mut OpenOptions 
 write			            fn write(&mut self, buf: &[u8]) -> io::Result<usize> { Ok(buf.len()) }

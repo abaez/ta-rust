@@ -59,6 +59,8 @@ RestrictionResult			pub enum RestrictionResult<'tcx>
 RestrictionsContext			impl<'a, 'tcx> RestrictionsContext<'a, 'tcx> 
 RestrictionsContext			struct RestrictionsContext<'a, 'tcx: 'a> 
 StaticInitializerCtxt			struct StaticInitializerCtxt<'a, 'tcx: 'a> 
+TheDarkKnight			impl TheDarkKnight 
+TheDarkKnight			struct TheDarkKnight;
 ToInteriorKind			trait ToInteriorKind { fn cleaned(self) -> InteriorKind; }
 ToInteriorKind for mc			impl ToInteriorKind for mc::InteriorKind 
 UseError			enum UseError<'tcx> 
@@ -151,7 +153,6 @@ euv::Delegate for GatherLoanCtxt			impl<'a, 'tcx> euv::Delegate<'tcx> for Gather
 existing_base_paths			    fn existing_base_paths(&self, lp: &Rc<LoanPath<'tcx>>)
 existing_move_path			    fn existing_move_path(&self, lp: &Rc<LoanPath<'tcx>>)
 extend			    fn extend(&self,
-fileline_help			    pub fn fileline_help(&self, s: Span, m: &str) 
 fixup_fragment_sets			pub fn fixup_fragment_sets<'tcx>(this: &MoveData<'tcx>, tcx: &ty::ctxt<'tcx>) 
 fixup_fragment_sets			    fn fixup_fragment_sets(&self, tcx: &ty::ctxt<'tcx>) 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -226,8 +227,10 @@ node_id			    fn node_id(&'a self, n: &Node<'a>) -> dot::Id<'a> { self.inner.nod
 node_label			    fn node_label(&'a self, n: &Node<'a>) -> dot::LabelText<'a> 
 nodes			    fn nodes(&'a self) -> dot::Nodes<'a, Node<'a>> { self.inner.nodes() }
 non_member			    fn non_member(elem: MovePathIndex, set: &[MovePathIndex]) -> bool 
-note_and_explain_bckerr			    pub fn note_and_explain_bckerr(&self, err: BckError<'tcx>) 
-note_move_destination			fn note_move_destination(bccx: &BorrowckCtxt,
+note_and_explain_bckerr			    pub fn note_and_explain_bckerr(&self, db: &mut DiagnosticBuilder, err: BckError<'tcx>) 
+note_move_destination			fn note_move_destination(err: &mut DiagnosticBuilder,
+nothing_is_true			    fn nothing_is_true(&self) {} \/\/ First case, we don't take ownership
+nothing_is_true			    fn nothing_is_true(self) {}
 opt_loan_path			pub fn opt_loan_path<'tcx>(cmt: &mc::cmt<'tcx>) -> Option<Rc<LoanPath<'tcx>>> 
 owned_ptr_base_path			fn owned_ptr_base_path<'a, 'tcx>(loan_path: &'a LoanPath<'tcx>) -> &'a LoanPath<'tcx> 
 owned_ptr_base_path_rc			fn owned_ptr_base_path_rc<'tcx>(loan_path: &Rc<LoanPath<'tcx>>) -> Rc<LoanPath<'tcx>> 
@@ -258,11 +261,11 @@ set_path_first_move			    fn set_path_first_move(&self,
 short_name			    pub fn short_name(&self) -> &'static str 
 source			    fn source(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.source(edge) }
 span_bug			    pub fn span_bug(&self, s: Span, m: &str) 
-span_end_note			    pub fn span_end_note(&self, s: Span, m: &str) 
 span_err			    pub fn span_err(&self, s: Span, m: &str) 
 span_err_with_code			    pub fn span_err_with_code(&self, s: Span, msg: &str, code: &str) 
-span_note			    pub fn span_note(&self, s: Span, m: &str) 
 statement_scope_span			fn statement_scope_span(tcx: &ty::ctxt, region: ty::Region) -> Option<Span> 
+struct_span_err			    pub fn struct_span_err(&self, s: Span, m: &str) -> DiagnosticBuilder<'a> 
+struct_span_err_with_code			    pub fn struct_span_err_with_code(&self,
 target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.target(edge) }
 tcx			    pub fn tcx(&self) -> &'a ty::ctxt<'tcx> { self.bccx.tcx }
 tcx			    pub fn tcx(&self) -> &'a ty::ctxt<'tcx> { self.bccx.tcx }

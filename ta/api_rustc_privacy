@@ -6,10 +6,9 @@ Bar			mod Bar
 Bar			pub impl Bar {} \/\/ error: unnecessary visibility qualifier
 Bar			pub struct Bar<T: Foo>(pub T); \/\/ ok!
 Bar			pub struct Bar<T: Foo>(pub T); \/\/ same error
-Bar			pub trait Bar : Foo {} \/\/ error: private trait in exported type parameter bound
+Bar			pub trait Bar : Foo {} \/\/ error: private trait in public interface
 Bar			pub trait Bar : Foo {} \/\/ ok!
 Bar			struct Bar;
-CheckTypeForPrivatenessVisitor			struct CheckTypeForPrivatenessVisitor<'a, 'b: 'a, 'tcx: 'b> 
 EmbargoVisitor			impl<'a, 'tcx> EmbargoVisitor<'a, 'tcx> 
 EmbargoVisitor			struct EmbargoVisitor<'a, 'tcx: 'a> 
 FieldName			enum FieldName 
@@ -24,21 +23,28 @@ Foo			pub trait Foo { \/\/ we set the Foo trait public
 Foo			trait Foo 
 Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
 Foo for Bar			pub impl Foo for Bar 
+ObsoleteCheckTypeForPrivatenessVisitor			struct ObsoleteCheckTypeForPrivatenessVisitor<'a, 'b: 'a, 'tcx: 'b> 
+ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx> ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
+ObsoleteVisiblePrivateTypesVisitor			struct ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx: 'a> 
 ParentVisitor			struct ParentVisitor<'a, 'tcx:'a> 
 PrivacyResult			enum PrivacyResult 
 PrivacyVisitor			impl<'a, 'tcx> PrivacyVisitor<'a, 'tcx> 
 PrivacyVisitor			struct PrivacyVisitor<'a, 'tcx: 'a> 
+PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
+PrivateItemsInPublicInterfacesVisitor			struct PrivateItemsInPublicInterfacesVisitor<'a, 'tcx: 'a> 
 SanePrivacyVisitor			impl<'a, 'tcx> SanePrivacyVisitor<'a, 'tcx> 
 SanePrivacyVisitor			struct SanePrivacyVisitor<'a, 'tcx: 'a> 
-VisiblePrivateTypesVisitor			impl<'a, 'tcx> VisiblePrivateTypesVisitor<'a, 'tcx> 
-VisiblePrivateTypesVisitor			struct VisiblePrivateTypesVisitor<'a, 'tcx: 'a> 
-Visitor for CheckTypeForPrivatenessVisitor			impl<'a, 'b, 'tcx, 'v> Visitor<'v> for CheckTypeForPrivatenessVisitor<'a, 'b, 'tcx> 
+SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
+SearchInterfaceForPrivateItemsVisitor			struct SearchInterfaceForPrivateItemsVisitor<'a, 'tcx: 'a> 
 Visitor for EmbargoVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for EmbargoVisitor<'a, 'tcx> 
+Visitor for ObsoleteCheckTypeForPrivatenessVisitor			impl<'a, 'b, 'tcx, 'v> Visitor<'v> for ObsoleteCheckTypeForPrivatenessVisitor<'a, 'b, 'tcx> 
+Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
 Visitor for ParentVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ParentVisitor<'a, 'tcx> 
 Visitor for PrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivacyVisitor<'a, 'tcx> 
+Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 Visitor for SanePrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for SanePrivacyVisitor<'a, 'tcx> 
-Visitor for VisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for VisiblePrivateTypesVisitor<'a, 'tcx> 
-bar			    pub fn bar() -> Bar { \/\/ error: private type in exported type signature
+Visitor for SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a, 'v> Visitor<'v> for SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
+bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
 bar			    pub fn bar() -> Bar { \/\/ ok!
 bar			mod bar 
 check_all_inherited			    fn check_all_inherited(&self, item: &hir::Item) 
@@ -48,7 +54,7 @@ check_method			    fn check_method(&mut self, span: Span, method_def_id: DefId,
 check_path			    fn check_path(&mut self, span: Span, path_id: ast::NodeId, last: ast::Name) 
 check_sane_privacy			    fn check_sane_privacy(&self, item: &hir::Item) 
 check_static_method			    fn check_static_method(&mut self,
-check_ty_param_bound			    fn check_ty_param_bound(&self,
+check_ty_param_bound			    fn check_ty_param_bound(&mut self,
 def_privacy			    fn def_privacy(&self, did: DefId) -> PrivacyResult 
 diagnostics			pub mod diagnostics;
 dummy			    fn dummy(&self) { }
@@ -60,6 +66,9 @@ foo			fn foo()
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ ok!
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ same error
 get			    fn get(&self, id: ast::NodeId) -> Option<AccessLevel> 
+is_public_trait_ref			    fn is_public_trait_ref(&self, trait_ref: &hir::TraitRef) -> bool 
+is_public_ty			    fn is_public_ty(&self, ty: &hir::Ty) -> bool 
+is_public_type_alias			    fn is_public_type_alias(&self, item: &hir::Item, path: &hir::Path) -> bool 
 item_is_public			    fn item_is_public(&self, id: &ast::NodeId, vis: hir::Visibility) -> bool 
 local_private_accessible			    fn local_private_accessible(&self, did: DefId) -> bool 
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
@@ -86,10 +95,12 @@ visit_item			    fn visit_item(&mut self, item: &hir::Item)
 visit_macro_def			    fn visit_macro_def(&mut self, md: &'v hir::MacroDef) 
 visit_mod			    fn visit_mod(&mut self, m: &hir::Mod, _sp: Span, id: ast::NodeId) 
 visit_nested_item			    fn visit_nested_item(&mut self, item: hir::ItemId) 
+visit_pat			    fn visit_pat(&mut self, _: &hir::Pat) {}
 visit_pat			    fn visit_pat(&mut self, pattern: &hir::Pat) 
 visit_path			    fn visit_path(&mut self, path: &hir::Path, id: ast::NodeId) 
 visit_path_list_item			    fn visit_path_list_item(&mut self, prefix: &hir::Path, item: &hir::PathListItem) 
 visit_struct_field			    fn visit_struct_field(&mut self, s: &hir::StructField) 
+visit_trait_ref			    fn visit_trait_ref(&mut self, trait_ref: &hir::TraitRef) 
 visit_ty			    fn visit_ty(&mut self, t: &hir::Ty) 
 visit_ty			    fn visit_ty(&mut self, ty: &hir::Ty) 
 visit_variant			    fn visit_variant(&mut self, v: &hir::Variant, g: &hir::Generics, item_id: ast::NodeId) 

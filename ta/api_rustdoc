@@ -25,6 +25,7 @@ Clean for CrateNum			impl Clean<ExternalCrate> for CrateNum
 Clean for ast			impl Clean<Attribute> for ast::Attribute 
 Clean for ast			impl Clean<Attribute> for ast::MetaItem 
 Clean for ast			impl Clean<String> for ast::Name 
+Clean for attr			impl Clean<Deprecation> for attr::Deprecation 
 Clean for attr			impl Clean<Stability> for attr::Stability 
 Clean for doctree			impl Clean<Item> for doctree::Constant 
 Clean for doctree			impl Clean<Item> for doctree::DefaultImpl 
@@ -103,6 +104,7 @@ CrateAnalysis			pub struct CrateAnalysis
 CrateNum			struct CrateNum(ast::CrateNum);
 DefaultImpl			pub struct DefaultImpl 
 DefaultImpl			pub struct DefaultImpl 
+Deprecation			pub struct Deprecation 
 Display for Error			impl Display for Error 
 DocContext			impl<'b, 'tcx> DocContext<'b, 'tcx> 
 DocContext			pub struct DocContext<'a, 'tcx: 'a> 
@@ -263,6 +265,7 @@ build_struct			fn build_struct(cx: &DocContext, tcx: &ty::ctxt, did: DefId) -> c
 build_type			fn build_type(cx: &DocContext, tcx: &ty::ctxt, did: DefId) -> clean::ItemEnum 
 builder_smoke			    fn builder_smoke() 
 cache			pub fn cache() -> Arc<Cache> 
+clean			    fn clean(&self, _: &DocContext) -> Deprecation 
 clean			    fn clean(&self, _: &DocContext) -> ImplPolarity 
 clean			    fn clean(&self, _: &DocContext) -> Lifetime 
 clean			    fn clean(&self, _: &DocContext) -> Mutability 
@@ -313,6 +316,7 @@ collapse_whitespace			fn collapse_whitespace(s: &str) -> String
 collect			    fn collect(path: &Path, krate: &str,
 core			pub mod core;
 count_entries_with_level			    fn count_entries_with_level(&self, level: u32) -> usize 
+deprecation			    fn deprecation(&self, id: ast::NodeId) -> Option<attr::Deprecation> 
 derive_id			pub fn derive_id(candidate: String) -> String 
 description			    fn description(&self) -> &str 
 detect_derived			fn detect_derived<M: AttrMetaMethods>(attrs: &[M]) -> bool 
@@ -416,6 +420,7 @@ get			    pub fn get(&self) -> hir::Unsafety
 getQueryStringParams	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getQueryStringParams() 
 getVirtualKey	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getVirtualKey(ev) 
 get_basic_keywords			fn get_basic_keywords() -> &'static str 
+get_deprecation			fn get_deprecation(cx: &DocContext, def_id: DefId) -> Option<Deprecation> 
 get_index_search_type			fn get_index_search_type(item: &clean::Item,
 get_index_type			fn get_index_type(clean_type: &clean::Type) -> Type 
 get_index_type_name			fn get_index_type_name(clean_type: &clean::Type) -> Option<String> 
@@ -618,7 +623,7 @@ visit_enum_def			    pub fn visit_enum_def(&mut self, it: &hir::Item,
 visit_fn			    pub fn visit_fn(&mut self, item: &hir::Item,
 visit_item			    pub fn visit_item(&mut self, item: &hir::Item,
 visit_macro			    fn visit_macro(&self, def: &hir::MacroDef) -> Macro 
-visit_mod_contents			    pub fn visit_mod_contents(&mut self, span: Span, attrs: Vec<ast::Attribute> ,
+visit_mod_contents			    pub fn visit_mod_contents(&mut self, span: Span, attrs: hir::HirVec<ast::Attribute>,
 visit_variant_data			    pub fn visit_variant_data(&mut self, item: &hir::Item,
 visit_view_path			    fn visit_view_path(&mut self, path: hir::ViewPath_,
 where_clauses			pub fn where_clauses(cx: &DocContext, clauses: Vec<WP>) -> Vec<WP> 

@@ -1,5 +1,7 @@
 BoxPointers			impl BoxPointers 
 BoxPointers			pub struct BoxPointers;
+Deprecated			impl Deprecated 
+Deprecated			pub struct Deprecated;
 DropWithReprExtern			pub struct DropWithReprExtern;
 EarlyLintPass for UnusedParens			impl EarlyLintPass for UnusedParens 
 FfiResult			enum FfiResult 
@@ -8,6 +10,7 @@ ImproperCTypesVisitor			impl<'a, 'tcx> ImproperCTypesVisitor<'a, 'tcx>
 ImproperCTypesVisitor			struct ImproperCTypesVisitor<'a, 'tcx: 'a> 
 InvalidNoMangleItems			pub struct InvalidNoMangleItems;
 LateLintPass for BoxPointers			impl LateLintPass for BoxPointers 
+LateLintPass for Deprecated			impl LateLintPass for Deprecated 
 LateLintPass for DropWithReprExtern			impl LateLintPass for DropWithReprExtern 
 LateLintPass for ImproperCTypes			impl LateLintPass for ImproperCTypes 
 LateLintPass for InvalidNoMangleItems			impl LateLintPass for InvalidNoMangleItems 
@@ -21,7 +24,6 @@ LateLintPass for NonSnakeCase			impl LateLintPass for NonSnakeCase
 LateLintPass for NonUpperCaseGlobals			impl LateLintPass for NonUpperCaseGlobals 
 LateLintPass for PathStatements			impl LateLintPass for PathStatements 
 LateLintPass for PluginAsLibrary			impl LateLintPass for PluginAsLibrary 
-LateLintPass for Stability			impl LateLintPass for Stability 
 LateLintPass for TypeLimits			impl LateLintPass for TypeLimits 
 LateLintPass for UnconditionalRecursion			impl LateLintPass for UnconditionalRecursion 
 LateLintPass for UnsafeCode			impl LateLintPass for UnsafeCode 
@@ -34,6 +36,7 @@ LateLintPass for UnusedResults			impl LateLintPass for UnusedResults
 LateLintPass for UnusedUnsafe			impl LateLintPass for UnusedUnsafe 
 LateLintPass for WhileTrue			impl LateLintPass for WhileTrue 
 LintPass for BoxPointers			impl LintPass for BoxPointers 
+LintPass for Deprecated			impl LintPass for Deprecated 
 LintPass for DropWithReprExtern			impl LintPass for DropWithReprExtern 
 LintPass for ImproperCTypes			impl LintPass for ImproperCTypes 
 LintPass for InvalidNoMangleItems			impl LintPass for InvalidNoMangleItems 
@@ -47,7 +50,6 @@ LintPass for NonSnakeCase			impl LintPass for NonSnakeCase
 LintPass for NonUpperCaseGlobals			impl LintPass for NonUpperCaseGlobals 
 LintPass for PathStatements			impl LintPass for PathStatements 
 LintPass for PluginAsLibrary			impl LintPass for PluginAsLibrary 
-LintPass for Stability			impl LintPass for Stability 
 LintPass for TypeLimits			impl LintPass for TypeLimits 
 LintPass for UnconditionalRecursion			impl LintPass for UnconditionalRecursion 
 LintPass for UnsafeCode			impl LintPass for UnsafeCode 
@@ -76,8 +78,6 @@ NonUpperCaseGlobals			impl NonUpperCaseGlobals
 NonUpperCaseGlobals			pub struct NonUpperCaseGlobals;
 PathStatements			pub struct PathStatements;
 PluginAsLibrary			pub struct PluginAsLibrary;
-Stability			impl Stability 
-Stability			pub struct Stability;
 TypeLimits			impl TypeLimits 
 TypeLimits			pub struct TypeLimits 
 UnconditionalRecursion			pub struct UnconditionalRecursion;
@@ -143,7 +143,6 @@ check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_it
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
 check_ty			        fn check_ty(cx: &LateContext, ty: &hir::Ty) 
 check_type_for_ffi			    fn check_type_for_ffi(&self,
-check_unsigned_negation_feature			        fn check_unsigned_negation_feature(cx: &LateContext, span: Span) 
 check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &LateContext, pats: &[P<hir::Pat>]) 
 check_unused_parens_core			    fn check_unused_parens_core(&self, cx: &EarlyContext, value: &ast::Expr, msg: &str,
 check_upper_case			    fn check_upper_case(cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
@@ -157,6 +156,7 @@ exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &LateContext, _: &[ast::A
 expr_refers_to_this_fn			        fn expr_refers_to_this_fn(tcx: &ty::ctxt,
 expr_refers_to_this_method			        fn expr_refers_to_this_method(tcx: &ty::ctxt,
 float_ty_range			        fn float_ty_range(float_ty: ast::FloatTy) -> (f64, f64) 
+forbid_unsigned_negation			        fn forbid_unsigned_negation(cx: &LateContext, span: Span) 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
@@ -169,14 +169,14 @@ is_comparison			        fn is_comparison(binop: hir::BinOp) -> bool
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'tcx>(tcx: &ty::ctxt<'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
 is_valid			        fn is_valid<T:cmp::PartialOrd>(binop: hir::BinOp, v: T,
-lint			    fn lint(&self, cx: &LateContext, _id: DefId,
+lint			    fn lint(&self, cx: &LateContext, _id: DefId, span: Span,
 marked			                              struct marked #[repr(C)]: {}", s));
 method_call_refers_to_method			        fn method_call_refers_to_method<'tcx>(tcx: &ty::ctxt<'tcx>,
 method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId, span: Span) -> MethodLateContext 
 new			    pub fn new() -> MissingDebugImplementations 
 new			    pub fn new() -> MissingDoc 
 new			    pub fn new() -> TypeLimits 
-output			        fn output(cx: &LateContext, span: Span, stability: &Option<&attr::Stability>,
+output			        fn output(cx: &LateContext, lint: &'static Lint, span: Span, note: Option<&str>) 
 register_builtins			pub fn register_builtins(store: &mut lint::LintStore, sess: Option<&Session>) 
 rev_binop			        fn rev_binop(binop: hir::BinOp) -> hir::BinOp 
 to_camel_case			        fn to_camel_case(s: &str) -> String 

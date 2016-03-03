@@ -94,8 +94,10 @@ Sync for ArcInner			unsafe impl<T: ?Sized + Sync + Send> Sync for ArcInner<T> {}
 Sync for Weak			unsafe impl<T: ?Sized + Sync + Send> Sync for Weak<T> {}
 Test			struct Test;
 Weak			impl<T: ?Sized> Weak<T> 
+Weak			impl<T> Weak<T> 
 Weak			pub struct Weak<T: ?Sized> 
 Weak			impl<T: ?Sized> Weak<T> 
+Weak			impl<T> Weak<T> 
 Weak			pub struct Weak<T: ?Sized> 
 __rust_allocate			    fn __rust_allocate(size: usize, align: usize) -> *mut u8;
 __rust_deallocate			    fn __rust_deallocate(ptr: *mut u8, old_size: usize, align: usize);
@@ -105,6 +107,7 @@ __rust_usable_size			    fn __rust_usable_size(size: usize, align: usize) -> usi
 alloc_guard			fn alloc_guard(alloc_size: usize) 
 alloc_owned_small			    fn alloc_owned_small(b: &mut Bencher) 
 allocate			pub unsafe fn allocate(size: usize, align: usize) -> *mut u8 
+amortized_new_size			    fn amortized_new_size(&self, used_cap: usize, needed_extra_cap: usize) -> (usize, usize) 
 any_move			fn any_move() 
 arc			pub mod arc;
 as_mut			    fn as_mut(&mut self) -> &mut T 
@@ -145,12 +148,14 @@ default			    fn default() -> Arc<T>
 default			    fn default() -> Box<T> 
 default			    fn default() -> Box<[T]> 
 default			    fn default() -> Rc<T> 
+default_oom_handler			fn default_oom_handler() -> ! 
 deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &T 
 deref			fn deref() 
 deref			    fn deref(&self) -> &T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T 
 double			    pub fn double(&mut self) 
+double_in_place			    pub fn double_in_place(&mut self) -> bool 
 downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any + Send>> 
 downcast			    pub fn downcast<T: Any>(self) -> Result<Box<T>, Box<Any>> 
 downgrade			    pub fn downgrade(this: &Self) -> Weak<T> 
@@ -230,18 +235,19 @@ make_mut			    pub fn make_mut(this: &mut Self) -> &mut T
 make_place			    fn make_place() -> IntermediateBox<T> 
 make_place			    fn make_place(self) -> IntermediateBox<T> 
 make_place			fn make_place<T>() -> IntermediateBox<T> 
-make_unique			    pub fn make_unique(this: &mut Self) -> &mut T 
-make_unique			    pub fn make_unique(&mut self) -> &mut T 
 manually_share_arc			    fn manually_share_arc() 
 ne			    fn ne(&self, other: &Arc<T>) -> bool 
 ne			    fn ne(&self, other: &Box<T>) -> bool 
 ne			    fn ne(&self, other: &Rc<T>) -> bool 
+new			    pub fn new() -> Weak<T> 
 new			    pub fn new(data: T) -> Arc<T> 
 new			    pub fn new(x: T) -> Box<T> 
 new			    pub fn new() -> Self 
+new			    pub fn new() -> Weak<T> 
 new			    pub fn new(value: T) -> Rc<T> 
 next			    fn next(&mut self) -> Option<I::Item> 
 next_back			    fn next_back(&mut self) -> Option<I::Item> 
+oom			pub mod oom;
 oom			pub fn oom() -> ! 
 partial_cmp			    fn partial_cmp(&self, other: &Arc<T>) -> Option<Ordering> 
 partial_cmp			    fn partial_cmp(&self, other: &Box<T>) -> Option<Ordering> 
@@ -257,8 +263,10 @@ reallocate_inplace			pub unsafe fn reallocate_inplace(ptr: *mut u8,
 reserve			    pub fn reserve(&mut self, used_cap: usize, needed_extra_cap: usize) 
 reserve_does_not_overallocate			    fn reserve_does_not_overallocate() 
 reserve_exact			    pub fn reserve_exact(&mut self, used_cap: usize, needed_extra_cap: usize) 
+reserve_in_place			    pub fn reserve_in_place(&mut self, used_cap: usize, needed_extra_cap: usize) -> bool 
 set			        fn set(&mut self, value: u32) 
 set			        fn set(&mut self, value: u32);
+set_oom_handler			pub fn set_oom_handler(handler: fn() -> !) 
 show_arc			    fn show_arc() 
 shrink_to_fit			    pub fn shrink_to_fit(&mut self, amount: usize) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
