@@ -64,7 +64,7 @@ end
 -- accordingly. If a syntax error is found it is displayed as an annotation.
 events.connect(events.FILE_AFTER_SAVE, function()
   -- enable [rustfmt](https://github.com/rust-lang-nursery/rustfmt)
-  if buffer:get_lexer() ~= 'rust' and not _RUSTFMT then return end
+  if buffer:get_lexer() ~= 'rust' or not _RUSTFMT then return end
   fmt()
 end)
 
