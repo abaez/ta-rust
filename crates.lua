@@ -1,8 +1,8 @@
---- keeps all the user configurations.
--- Modify at your own discretion.
-
 --- all crates as of v1.0.0
--- @table crates
+-- @author Alejandro Baez <https://keybase.io/baez>
+-- @copyright 2016
+-- @license MIT (see LICENSE)
+-- @module  crates
 return {
   "alloc",
   "arena",
