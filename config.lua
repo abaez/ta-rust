@@ -3,7 +3,7 @@
 
 --- all crates as of v1.0.0
 -- @table crates
-local crates = {
+return {
   "alloc",
   "arena",
   "collections",
@@ -43,9 +43,3 @@ local crates = {
   "url",
   "uuid",
 }
-
-local config = {
-}
-
-
-return crates, config
