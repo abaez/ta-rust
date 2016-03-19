@@ -29,9 +29,7 @@ local function build(project_name, project_full_path, raw)
     tmpline = tmpline:gsub("{?$.+", "")
     tmpline = tmpline:gsub("/%^", "")
 
-    if line:find("(!_).+") or line:find("^test_") then
-      ; -- purposely left blank to ignore
-    else
+    if not (line:find("(!_).+") or line:find("^test_")) then
       fapi:write(tmpline, "\n")
     end
   end
