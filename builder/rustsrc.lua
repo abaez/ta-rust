@@ -9,39 +9,7 @@
 
 --- all crates as of v1.0.0 (rev: daabc8a0).
 -- @table crates
-local crates = {
-  "alloc",
-  "arena",
-  "collections",
-  "core",
-  "flate",
-  "fmt_macros",
-  "getopts",
-  "graphviz",
-  "libc",
-  "log",
-  "rand",
-  "rbml",
-  "rustc",
-  "rustc_back",
-  "rustc_bitflags",
-  "rustc_borrowck",
-  "rustc_data_structures",
-  "rustc_driver",
-  "rustc_lint",
-  "rustc_llvm",
-  "rustc_privacy",
-  "rustc_resolve",
-  "rustc_trans",
-  "rustc_typeck",
-  "rustc_unicode",
-  "rustdoc",
-  "serialize",
-  "std",
-  "syntax",
-  "term",
-  "test",
-}
+local crates = require("crates")
 
 
 

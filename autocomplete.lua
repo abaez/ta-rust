@@ -4,7 +4,7 @@
 -- @license MIT (see LICENSE)
 -- @module autocomplete
 
-local crates = require("rust.crates")
+local crates = require("rust.builder.crates")
 
 local _RUST = _USERHOME .. '/modules/rust/ta/'
 local _RUSTSRC = "/data/Code/rust/src"
