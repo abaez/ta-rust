@@ -7,11 +7,20 @@
 -- @license MIT (see LICENSE)
 -- @module rustsrc
 
---- all crates as of v1.0.0 (rev: daabc8a0).
 -- @table crates
 local crates = require("crates")
 
+local HELP = [[
+usage: rustsrc.lua [rust src location]
 
+example:
+lua rustsrc.lua /data/Code/src/rust
+
+options:
+  -h  Display this message
+  -p  rust src location
+  -t  tags.rust location
+]]
 
 --- converts ctags.rust into correct formatting for use.
 -- @function parse_ctags
@@ -71,26 +80,36 @@ local function formatter(crate, path, parsed)
   ftag:close()
 end
 
-
-function get_location()
-  print("Give a rust absolute literal source location "
-    .. "such as: '/data/git/rust' ): ")
-  return io.input():read()
+local function rust_path()
+  return arg[1] == '-p' and arg[2] or arg[1]
 end
 
+local function ctags_rust()
+  for i = 1, #arg do
+    if arg[i] == '-t' then
+      return arg[i+1]
+    end
+  end
+end
 
 function main()
   local _USERHOME = os.getenv("HOME") .. "/.textadept"
-  local ctag_rust = _USERHOME .. "/modules/rust/ctags.rust"
-  local rust_path = get_location()
+  local ctag_rust = ctags_rust() or _USERHOME .. "/modules/rust/ctags.rust"
   local parsed = parse_ctags(ctag_rust)
 
   for _, lib in ipairs(crates) do
     print("building:", lib)
-    formatter(lib, rust_path, parsed)
+    formatter(lib, rust_path(), parsed)
   end
 
   os.remove("tags")
 end
 
-main()
+if arg[1] ~= nil and arg[1] ~= '-h' then
+  main()
+else
+  print(HELP)
+  os.exit()
+end
+
+
