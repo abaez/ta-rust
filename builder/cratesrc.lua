@@ -1,7 +1,11 @@
 #!/usr/bin/env lua
 
 local header = [[
---- crates
+--- all crates as of v1.8.0
+-- @author Alejandro Baez <https://keybase.io/baez>
+-- @copyright 2016
+-- @license MIT (see LICENSE)
+-- @module crates
 
 ]]
 
