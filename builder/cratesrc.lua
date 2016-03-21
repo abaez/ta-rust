@@ -31,7 +31,7 @@ local priv = {
 
 local B = {
   new = function(self, str)
-    setmetatable(meta, self)
+    setmetatable(priv, self)
     self.__index = self
 
     self.Listed = priv.L(str)
