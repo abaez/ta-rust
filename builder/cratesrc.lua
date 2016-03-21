@@ -13,8 +13,8 @@ local priv = {
   L = function(str)
     print("fetching the file,", str)
     local tmp = {}
-    for line in io.lines(str) do
-      tmp[#tmp + 1] = line
+    for line in io.popen(str):lines("*l") do
+      tmp[#tmp + 1] = line:gsub("^[libc]?lib", "")
     end
 
     return tmp
@@ -59,9 +59,8 @@ local B = {
 
 local home = os.getenv("HOME")
 crate = home ~= nil and
-  B:new(os.execute(
-    "ls /data/Code/src/rust/src | grep lib | sed 's/lib//gi'")) or
-    error("Couldn't access environment for $HOME")
+  B:new("ls /data/Code/src/rust/src | grep lib") or
+    error("Couldn't access environment for rust src")
 crate:write("crates.lua")
 
 print('done')
