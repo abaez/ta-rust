@@ -59,9 +59,10 @@ local B = {
 
 local home = os.getenv("HOME")
 crate = home ~= nil and
-  B:new(home .. "/.textadept/modules/rust/crates.txt") or
-  error("Couldn't access environment for $HOME")
-crate:write(home .. "/Downloads/example.lua")
+  B:new(os.execute(
+    "ls /data/Code/src/rust/src | grep lib | sed 's/lib//gi'")) or
+    error("Couldn't access environment for $HOME")
+crate:write("crates.lua")
 
 print('done')
 
