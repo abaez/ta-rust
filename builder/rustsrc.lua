@@ -7,7 +7,8 @@
 -- @license MIT (see LICENSE)
 -- @module rustsrc
 
--- @table crates
+--- @table crates
+-- see {crates} for more info
 local crates = require("crates")
 
 local HELP = [[
@@ -24,7 +25,6 @@ options:
 ]]
 
 --- converts ctags.rust into correct formatting for use.
--- @function parse_ctags
 -- @param f the path of the ctags.rust file.
 function parse_ctags(f)
   local ctag_options = ""
@@ -44,7 +44,6 @@ end
 
 
 --- builds the api and tags for textadept from parsed ctags.rust file.
--- @function formatter
 -- @param crate the library/crate to build.
 -- @param path the location of your rust source.
 -- @param parsed output of parse_ctags.
@@ -79,6 +78,8 @@ local function formatter(crate, path, parsed)
   ftag:close()
 end
 
+--- initiates the rust src api/tag build.
+-- @param t a table containing optional tag and path locations.
 function run(t)
   local _USERHOME = os.getenv("HOME") .. "/.textadept"
   local parsed = parse_ctags(t.tag or _USERHOME .. "/modules/rust/ctags.rust")
@@ -92,7 +93,9 @@ function run(t)
   os.remove("tags")
 end
 
-
+--- table of parameter actions.
+-- see HELP for documentation of each function.
+-- @table actions
 actions = {
   ["-c"] = function()
     return require("cratesrc")()
