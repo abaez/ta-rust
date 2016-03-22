@@ -20,7 +20,7 @@ options:
   -h                        Display this message
   -p  [rust src loc]        rust src location
   -t  [tags.rust loc]       ctags.rust file location
-  -c                        Update crates.lua
+  -c                        Update crates.lua with build
 ]]
 
 --- converts ctags.rust into correct formatting for use.
