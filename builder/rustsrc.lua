@@ -69,9 +69,7 @@ local function formatter(crate, path, parsed)
       tline = tline:gsub("/%^.+\"", "0")
     end
 
-    if line:find("(!_).+") or line:find("^test_") then
-      ; -- purposely left blank since no continue
-    else
+    if not (line:find("(!_).+") or line:find("^test_")) then
       fapi:write(aline, "\n")
       ftag:write(tline, "\n")
     end
@@ -82,7 +80,7 @@ local function formatter(crate, path, parsed)
 end
 
 function run(t)
-  local _USERHOM = os.getenv("HOME") .. "/.textadept"
+  local _USERHOME = os.getenv("HOME") .. "/.textadept"
   local parsed = parse_ctags(t.tag or _USERHOME .. "/modules/rust/ctags.rust")
   local rust_path = t.path or "/data/Code/src/rust"
 
