@@ -81,45 +81,55 @@ local function formatter(crate, path, parsed)
   ftag:close()
 end
 
-local function rust_path()
-  return arg[1] == '-p' and arg[2] or arg[1]
-end
-
-local function ctags_rust()
-  for i = 1, #arg do
-    if arg[i] == '-t' then
-      return arg[i+1]
-    end
-  end
-end
-
-local function crates_update()
-  for i = 1, #arg do
-    if arg[i] == '-c' then
-      return require("cratesrc")()
-    end
-  end
-end
-
-function main()
-  local _USERHOME = os.getenv("HOME") .. "/.textadept"
-  local ctag_rust = ctags_rust() or _USERHOME .. "/modules/rust/ctags.rust"
-  local parsed = parse_ctags(ctag_rust)
-  crates_update()
+function run(t)
+  local _USERHOM = os.getenv("HOME") .. "/.textadept"
+  local parsed = parse_ctags(t.tag or _USERHOME .. "/modules/rust/ctags.rust")
+  local rust_path = t.path or "/data/Code/src/rust"
 
   for _, lib in ipairs(crates) do
     print("building:", lib)
-    formatter(lib, rust_path(), parsed)
+    formatter(lib, rust_path, parsed)
   end
 
   os.remove("tags")
 end
 
-if arg[1] ~= nil and arg[1] ~= '-h' then
-  main()
+
+actions = {
+  ["-c"] = function()
+    return require("cratesrc")()
+  end,
+
+  ["-h"] = function()
+    print(HELP)
+    os.exit()
+  end,
+
+  ["-p"] = function(e)
+    return arg[e+1]
+  end,
+
+  ["-t"] = function(e)
+    return arg[e+1]
+  end
+}
+
+if arg[1] ~= nil then
+  tmp = {}
+
+  for i=1,#arg do
+    if arg[i] == "-c" then
+      actions[arg[i]]()
+    elseif arg[i] == "-h" then
+      actions[arg[i]]()
+    elseif arg[i] == "-p" then
+      tmp.path = actions[arg[i]](i)
+    elseif arg[i] == "-t" then
+      tmp.tag = actions[arg[i]](i)
+    end
+  end
+
+  run(tmp)
 else
-  print(HELP)
-  os.exit()
+  actions["-h"]()
 end
-
-
