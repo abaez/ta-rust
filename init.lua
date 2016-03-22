@@ -5,6 +5,7 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
+_RACER = true
 
 local completer = require("rust.autocomplete")
 local api = require("rust.builder.api")
@@ -12,7 +13,8 @@ local tag = require("rust.builder.tag")
 local raw = require("rust.builder.raw")
 
 textadept.editing.api_files.rust = completer.api_files
-textadept.editing.autocompleters.rust = completer.autocomplete
+textadept.editing.autocompleters.rust = _RACER and
+  completer.auto.racer or completer.auto.ctags
 
 local _keys = require("rust.keys")
 local _snippets = require("rust.snippets")
