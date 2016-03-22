@@ -56,12 +56,17 @@ local B = {
   end
 }
 
+function main()
+  local home = os.getenv("HOME")
+  crate = home ~= nil and
+    B:new("ls " .. "/data/Code/src/rust" .. "/src | grep lib") or
+      error("Couldn't access environment for rust src")
+  crate:write("crates.lua")
 
-local home = os.getenv("HOME")
-crate = home ~= nil and
-  B:new("ls /data/Code/src/rust/src | grep lib") or
-    error("Couldn't access environment for rust src")
-crate:write("crates.lua")
+  print('done')
+end
 
-print('done')
+local t = {}
+setmetatable(t, {__call = main})
 
+return t

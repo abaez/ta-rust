@@ -26,6 +26,7 @@ return {
   "rustc_back",
   "rustc_bitflags",
   "rustc_borrowck",
+  "rustc_const_eval",
   "rustc_data_structures",
   "rustc_driver",
   "rustc_front",

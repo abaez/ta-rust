@@ -17,9 +17,10 @@ example:
 lua rustsrc.lua /data/Code/src/rust
 
 options:
-  -h  Display this message
-  -p  rust src location
-  -t  tags.rust location
+  -h                        Display this message
+  -p  [rust src loc]        rust src location
+  -t  [tags.rust loc]       ctags.rust file location
+  -c                        Update crates.lua
 ]]
 
 --- converts ctags.rust into correct formatting for use.
@@ -92,10 +93,19 @@ local function ctags_rust()
   end
 end
 
+local function crates_update()
+  for i = 1, #arg do
+    if arg[i] == '-c' then
+      return require("cratesrc")()
+    end
+  end
+end
+
 function main()
   local _USERHOME = os.getenv("HOME") .. "/.textadept"
   local ctag_rust = ctags_rust() or _USERHOME .. "/modules/rust/ctags.rust"
   local parsed = parse_ctags(ctag_rust)
+  crates_update()
 
   for _, lib in ipairs(crates) do
     print("building:", lib)
