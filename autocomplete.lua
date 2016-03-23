@@ -84,7 +84,7 @@ function auto.racer()
     if res:match("MATCH") then
       local name = res:match("([%w_]+)(%p)")
 
-      if not list[name] then
+      if not list[name] or name:match(name_patt) then
         local _, k = res:match("(%prs%p)([%w_]+)(%p)")
         list[#list + 1] = ("%s%s%d"):format(name, sep, xpms["c"])
         list[name] = true
