@@ -62,18 +62,19 @@ function auto.racer()
   -- symbol behind caret
   local line, pos = buffer:get_cur_line()
   local part = line:sub(1, pos):match("([%w_]*)$")
-  if part == '' then return nil end -- nothing to match against
+  --if part == '' then return nil end -- nothing to match against
 
-  -- run racer and error check
-  local num  = buffer:line_from_position(buffer.current_pos) + 1
-  local cmd = ("racer complete-with-snippet %d %d %s"):format(
-    num,
-    pos, buffer.filename)
+  local file = buffer.filename .. ".tmp"
+  local num = buffer:line_from_position(buffer.current_pos) + 1
+
+  io.open(file,"w"):write(io.open(buffer.filename):read("*a")):close()
+  local cmd = ("racer complete-with-snippet %d %d %s"):format(num,pos,file)
   local proc, err = spawn(cmd)
   if err ~= nil then
     error(err)
     return nil -- nothing to match
   end
+  os.remove(file)
 
   -- search through results for completions of symbol
   local name_patt = '^' .. part
@@ -84,7 +85,7 @@ function auto.racer()
     if res:match("MATCH") then
       local name = res:match("([%w_]+)(%p)")
 
-      if not list[name] or name:match(name_patt) then
+      if not list[name]then
         local _, k = res:match("(%prs%p)([%w_]+)(%p)")
         list[#list + 1] = ("%s%s%d"):format(name, sep, xpms["c"])
         list[name] = true
