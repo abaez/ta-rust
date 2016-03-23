@@ -64,6 +64,7 @@ function auto.racer()
   local part = line:sub(1, pos):match("([%w_]*)$")
   if part == '' then return nil end -- nothing to match against
 
+  -- run racer and error check
   local num  = buffer:line_from_position(buffer.current_pos) + 1
   local cmd = ("racer complete-with-snippet %d %d %s"):format(
     num,
@@ -74,18 +75,21 @@ function auto.racer()
     return nil -- nothing to match
   end
 
+  -- search through results for completions of symbol
+  local name_patt = '^' .. part
   local sep = string.char(buffer.auto_c_type_separator)
-  pattern = "MATCH ([%w_]*).*"
 
-  local line = proc:read()
-  while line ~= nil do
-    if line:match(pattern) then
-      sub, matches = line:gsub(pattern, "%1")
-      list[#list + 1] = ("%s%s%d"):format(sub, sep, xpms["c"])
-      list[sub] = true
-    end
+  local res = proc:read()
+  while res ~= nil and res:match("MATCH") do
+      if res:find(name_patt) and not res:find('^!') and not list[res] then
+        local k = res:match('%s(%a)$')
+        --if k then
+          list[#list + 1] = ("%s%s%d"):format(name, sep, xpms['c'])
+          list[name] = true
+        --end
+      end
 
-    line = proc:read()
+    res = proc:read()
   end
 
   proc:wait()
