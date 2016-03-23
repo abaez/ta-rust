@@ -62,9 +62,11 @@ function auto.racer()
   -- symbol behind caret
   local line, pos = buffer:get_cur_line()
   local part = line:sub(1, pos):match("([%w_]*)$")
+  if part == '' then return nil end -- nothing to match against
 
+  local num  = buffer:line_from_position(buffer.current_pos) + 1
   local cmd = ("racer complete-with-snippet %d %d %s"):format(
-    buffer:line_from_position(buffer.current_pos) + 1,
+    num,
     pos, buffer.filename)
   local proc, err = spawn(cmd)
   if err ~= nil then
