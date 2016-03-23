@@ -82,10 +82,10 @@ function auto.racer()
   local res = proc:read()
   while res ~= nil do
     if res:match("MATCH") then
-      local name = res:match("([%w_]+)(%p.+)")
+      local name = res:match("([%w_]+)(%p)")
 
       if not list[name] then
-        local _, k = res:match("(/.+%prs%p)([%w_]+)(%p)")
+        local _, k = res:match("(%prs%p)([%w_]+)(%p)")
         list[#list + 1] = ("%s%s%d"):format(name, sep, xpms["c"])
         list[name] = true
       end
