@@ -57,27 +57,33 @@ end
 
 --- potential autocomplete with racer
 function auto.racer()
-  local tmp = {}
+  local list = {}
 
   -- symbol behind caret
   local line, pos = buffer:get_cur_line()
   local part = line:sub(1, pos):match("([%w_]*)$")
 
-  local cmd = ("racer complete-with-snippet %s %s %s"):format(
-    line, pos, buffer.filename)
+  local cmd = ("racer complete-with-snippet %d %d %s"):format(
+    buffer:line_from_position(buffer.current_pos) + 1,
+    pos, buffer.filename)
   local proc, err = spawn(cmd)
-  if not proc then
+  if err ~= nil then
     error(err)
+    return nil -- nothing to match
   end
 
   local sep = string.char(buffer.auto_c_type_separator)
-  pattern = "MATCH ([^,]*).*"
-  for line in proc:read("*l") do
+  pattern = "MATCH ([%w_]*).*"
+
+  local line = proc:read()
+  while line ~= nil do
     if line:match(pattern) then
       sub, matches = line:gsub(pattern, "%1")
-      tmp[#tmp + 1] = ("%s%s%d"):format(sub, sep, xpms["c"])
-      tmp[sub] = true
+      list[#list + 1] = ("%s%s%d"):format(sub, sep, xpms["c"])
+      list[sub] = true
     end
+
+    line = proc:read()
   end
 
   proc:wait()
