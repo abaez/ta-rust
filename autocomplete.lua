@@ -80,15 +80,20 @@ function auto.racer()
   local sep = string.char(buffer.auto_c_type_separator)
 
   local res = proc:read()
-  while res ~= nil and res:match("MATCH") do
-      if res:find(name_patt) and not res:find('^!') and not list[res] then
-        local k = res:match('%s(%a)$')
+  while res ~= nil do
+    if res:match("MATCH") then
+
+      local name = res:match("([%w_]+)(%p.+)")
+
+
+      if not list[name] then
+        local k = res:match("(%w+)%s(%w+:)")
         --if k then
           list[#list + 1] = ("%s%s%d"):format(name, sep, xpms['c'])
           list[name] = true
         --end
       end
-
+    end
     res = proc:read()
   end
 
