@@ -87,6 +87,7 @@ function auto.racer()
 
       if not list[name]then
         local _, k = res:match("(%prs%p)([%w_]+)(%p)")
+        k = k:sub(1,1):lower()
         list[#list + 1] = ("%s%s%d"):format(name, sep, xpms["c"])
         list[name] = true
       end
