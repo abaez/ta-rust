@@ -64,22 +64,20 @@ function auto.racer()
   local part = line:sub(1, pos):match("([%w_]*)$")
   --if part == '' then return nil end -- nothing to match against
 
+  -- spawn racer initiation
   local file = buffer.filename .. ".tmp"
   local num = buffer:line_from_position(buffer.current_pos) + 1
-
   io.open(file,"w"):write(io.open(buffer.filename):read("*a")):close()
   local cmd = ("racer complete-with-snippet %d %d %s"):format(num,pos,file)
   local proc, err = spawn(cmd)
   if err ~= nil then
     error(err)
-    return nil -- nothing to match
+    return nil -- nothing to match anyway
   end
   os.remove(file)
 
-  -- search through results for completions of symbol
-  local name_patt = '^' .. part
+  -- search through results for completions
   local sep = string.char(buffer.auto_c_type_separator)
-
   local res = proc:read()
   while res ~= nil do
     if res:match("MATCH") then
