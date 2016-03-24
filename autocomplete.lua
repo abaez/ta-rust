@@ -62,7 +62,6 @@ function auto.racer()
   -- symbol behind caret
   local line, pos = buffer:get_cur_line()
   local part = line:sub(1, pos):match("([%w_]*)$")
-  --if part == '' then return nil end -- nothing to match against
 
   -- spawn racer initiation
   local file = buffer.filename .. ".tmp"
@@ -74,16 +73,16 @@ function auto.racer()
     error(err)
     return nil -- nothing to match anyway
   end
-  os.remove(file)
 
   -- search through results for completions
+  local name_part = '^' .. part
   local sep = string.char(buffer.auto_c_type_separator)
   local res = proc:read()
   while res ~= nil do
     if res:match("MATCH") then
       local name = res:match("([%w_]+)(%p)")
 
-      if not list[name]then
+      if not list[name] and name:find(name_part) then
         local _, k = res:match("(%prs%p)([%w_]+)(%p)")
         k = k:sub(1,1):lower()
         list[#list + 1] = ("%s%s%d"):format(name, sep, xpms["c"])
@@ -94,6 +93,7 @@ function auto.racer()
   end
 
   proc:wait()
+  os.remove(file)
   return #part, list
 end
 
