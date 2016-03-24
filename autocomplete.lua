@@ -66,7 +66,7 @@ function auto.racer()
   -- spawn racer initiation
   local file = buffer.filename .. ".tmp"
   local num = buffer:line_from_position(buffer.current_pos) + 1
-  io.open(file,"w"):write(io.open(buffer.filename):read("*a")):close()
+  io.open(file,"w"):write(buffer:get_text()):close()
   local cmd = ("racer complete-with-snippet %d %d %s"):format(num,pos,file)
   local proc, err = spawn(cmd)
   if err ~= nil then
