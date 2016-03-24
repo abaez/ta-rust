@@ -5,8 +5,6 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
-_RACER = true
-
 local completer = require("rust.autocomplete")
 local api = require("rust.builder.api")
 local tag = require("rust.builder.tag")
