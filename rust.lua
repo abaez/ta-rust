@@ -45,12 +45,10 @@ local keyword = token(l.KEYWORD, word_match{
 })
 
 -- Library types
-local library = token(l.LABEL, l.upper * (l.lower + l.dec_num)^1)
+local library = token('library', l.upper * (l.lower + l.dec_num)^1)
 
 -- syntax extensions
-local extension = l.word^1 * S("!")
-
-local func = token(l.FUNCTION, extension)
+local extension = token('extension', l.word^1 * S("!"))
 
 -- Types.
 local type = token(l.TYPE, word_match{
@@ -66,21 +64,27 @@ local identifier = token(l.IDENTIFIER, l.word)
 local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
 -- Attributes.
-local attribute = token(l.PREPROCESSOR, "#[" *
+local attribute = token('attribute', S('#![')^1 *
                         (l.nonnewline - ']')^0 * P("]")^-1)
 
 M._rules = {
   {'whitespace', ws},
   {'keyword', keyword},
-  {'function', func},
+  {'extension', extension},
   {'library', library},
   {'type', type},
-  {'identifier', identifier},
   {'string', string},
   {'comment', comment},
   {'number', number},
+  {'attribute', attribute},
   {'operator', operator},
-  {'preprocessor', attribute},
+  {'identifier', identifier},
+}
+
+M._tokenstyles = {
+  attribute = l.STYLE_PREPROCESSOR,
+  library = l.STYLE_CLASS,
+  extension = l.STYLE_FUNCTION
 }
 
 M._foldsymbols = {
