@@ -1,6 +1,3 @@
-::std::ops::Index for ImportResolutionPerNamespace			impl<'a> ::std::ops::Index<Namespace> for ImportResolutionPerNamespace<'a> 
-::std::ops::Index for NameBindings			impl<'a> ::std::ops::Index<Namespace> for NameBindings<'a> 
-::std::ops::IndexMut for ImportResolutionPerNamespace			impl<'a> ::std::ops::IndexMut<Namespace> for ImportResolutionPerNamespace<'a> 
 AssocItemResolveResult			enum AssocItemResolveResult 
 Bar			    pub mod Bar { }
 Bar			impl Bar 
@@ -13,12 +10,10 @@ Baz			trait Baz : Foo
 BindingInfo			struct BindingInfo 
 BuildReducedGraphVisitor			struct BuildReducedGraphVisitor<'a, 'b: 'a, 'tcx: 'b> 
 CrateMap			pub struct CrateMap 
-DefOrModule			enum DefOrModule<'a> 
 Deref for GraphBuilder			impl<'a, 'b:'a, 'tcx:'b> Deref for GraphBuilder<'a, 'b, 'tcx> 
 Deref for UnusedImportCheckVisitor			impl<'a, 'b, 'tcx:'b> Deref for UnusedImportCheckVisitor<'a, 'b, 'tcx> 
 DerefMut for GraphBuilder			impl<'a, 'b:'a, 'tcx:'b> DerefMut for GraphBuilder<'a, 'b, 'tcx> 
 DerefMut for UnusedImportCheckVisitor			impl<'a, 'b, 'tcx:'b> DerefMut for UnusedImportCheckVisitor<'a, 'b, 'tcx> 
-DuplicateCheckingMode			enum DuplicateCheckingMode 
 FallbackChecks			enum FallbackChecks 
 FallbackSuggestion			enum FallbackSuggestion 
 Foo			    pub struct Foo;
@@ -43,12 +38,9 @@ GraphBuilder			struct GraphBuilder<'a, 'b: 'a, 'tcx: 'b>
 ImportDirective			impl ImportDirective 
 ImportDirective			pub struct ImportDirective 
 ImportDirectiveSubclass			pub enum ImportDirectiveSubclass 
-ImportResolution			pub struct ImportResolution<'a> 
-ImportResolutionPerNamespace			impl<'a> ImportResolutionPerNamespace<'a> 
-ImportResolutionPerNamespace			pub struct ImportResolutionPerNamespace<'a> 
 ImportResolver			impl<'a, 'b:'a, 'tcx:'b> ImportResolver<'a, 'b, 'tcx> 
 ImportResolver			struct ImportResolver<'a, 'b: 'a, 'tcx: 'b> 
-ImportResolvingError			struct ImportResolvingError 
+ImportResolvingError			struct ImportResolvingError<'a> 
 LocalDef			impl LocalDef 
 LocalDef			struct LocalDef 
 MakeGlobMap			pub enum MakeGlobMap 
@@ -56,41 +48,42 @@ ModulePrefixResult			enum ModulePrefixResult<'a>
 ModuleS			impl<'a> ModuleS<'a> 
 ModuleS			pub struct ModuleS<'a> 
 MyTrait			    pub trait MyTrait 
+MyTrait for Option			impl MyTrait for Option<u8> 
+MyTrait for Option			impl<T> MyTrait for Option<T> 
+MyTrait for Option			impl<u8> MyTrait for Option<u8> 
 NameBinding			impl<'a> NameBinding<'a> 
-NameBinding			pub struct NameBinding<'a>(Rc<RefCell<Option<NsDef<'a>>>>);
-NameBindings			impl<'a> NameBindings<'a> 
-NameBindings			pub struct NameBindings<'a> 
-NameSearchType			enum NameSearchType 
+NameBinding			pub struct NameBinding<'a> 
+NameBindingKind			enum NameBindingKind<'a> 
+NameResolution			impl<'a> NameResolution<'a> 
+NameResolution			pub struct NameResolution<'a> 
 Namespace			pub enum Namespace 
-NamespaceResult			enum NamespaceResult<'a> 
-NamespaceResult			impl<'a> NamespaceResult<'a> 
-NsDef			impl<'a> NsDef<'a> 
-NsDef			struct NsDef<'a> 
 ParentLink			enum ParentLink<'a> 
 PatternBindingMode			enum PatternBindingMode 
 PrimitiveTypeTable			impl PrimitiveTypeTable 
 PrimitiveTypeTable			struct PrimitiveTypeTable 
 ResolutionError			pub enum ResolutionError<'a> 
-ResolveResult			enum ResolveResult<T> 
 ResolveResult			impl<T> ResolveResult<T> 
+ResolveResult			pub enum ResolveResult<T> 
 Resolver			impl<'a, 'tcx> Resolver<'a, 'tcx> 
 Resolver			pub struct Resolver<'a, 'tcx: 'a> 
 ResolverArenas			pub struct ResolverArenas<'a> 
-Rib			impl Rib 
-Rib			struct Rib 
-RibKind			enum RibKind 
+Rib			impl<'a> Rib<'a> 
+Rib			struct Rib<'a> 
+RibKind			enum RibKind<'a> 
 Shadowable			pub enum Shadowable 
 SomeTrait			trait SomeTrait 
 SomeTrait for Foo			impl SomeTrait for Foo { \/\/ ok!
-SomeTrait for Foo			impl SomeTrait for Foo {} \/\/ error: use of undeclared trait name `SomeTrait`
+SomeTrait for Foo			impl SomeTrait for Foo {} \/\/ error: trait `SomeTrait` is not in scope
 Something			enum Something 
-Something			impl Something {} \/\/ error: use of undeclared type name `Something`
+Something			impl Something {} \/\/ error: type name `Something` is not in scope
 Something			impl Something {} \/\/ ok!
 Something			struct Something;
+SuggestedCandidates			pub struct SuggestedCandidates 
 SuggestionType			enum SuggestionType 
-Target			impl<'a> Target<'a> 
-Target			pub struct Target<'a> 
-TypeParameters			enum TypeParameters<'a> 
+ToNameBinding			impl<'a> ToNameBinding<'a> for (Def, Span, DefModifiers) 
+ToNameBinding			impl<'a> ToNameBinding<'a> for (Module<'a>, Span) 
+ToNameBinding			trait ToNameBinding<'a> 
+TypeParameters			enum TypeParameters<'tcx, 'a> 
 UnresolvedNameContext			pub enum UnresolvedNameContext 
 UnusedImportCheckVisitor			impl<'a, 'b, 'tcx> UnusedImportCheckVisitor<'a, 'b, 'tcx> 
 UnusedImportCheckVisitor			struct UnusedImportCheckVisitor<'a, 'b: 'a, 'tcx: 'b> 
@@ -101,11 +94,9 @@ Visitor for UnusedImportCheckVisitor			impl<'a, 'b, 'v, 'tcx> Visitor<'v> for Un
 a			    fn a() {}
 a			    fn a();
 abc			struct abc;
-add_child			    fn add_child(&self,
-add_export			    fn add_export(&mut self, module: Module<'b>, name: Name, resolution: &ImportResolution<'b>) 
 add_trait_info			        fn add_trait_info(found_traits: &mut Vec<DefId>, trait_def_id: DefId, name: Name) 
 adjust_local_def			    fn adjust_local_def(&mut self, local_def: LocalDef, span: Span) -> Option<Def> 
-all_imports_resolved			    fn all_imports_resolved(&self) -> bool 
+and_then			    fn and_then<U, F: FnOnce(T) -> ResolveResult<U>>(self, f: F) -> ResolveResult<U> 
 arenas			    fn arenas() -> ResolverArenas<'a> 
 b			    fn b() {} \/\/ error: method `b` is not a member of trait `Foo`
 b			    fn b() {} \/\/ ok!
@@ -116,7 +107,7 @@ bar			    fn bar() -> <Self as Foo>::Bar; \/\/ ok!
 bar			    fn bar() -> Self::Bar; \/\/ like this
 bar			    fn bar() -> Self::Bar;
 bar			    fn bar() 
-bar			    fn bar(N); \/\/ error: use of undeclared type name `N`
+bar			    fn bar(N); \/\/ error: type name `N` is not in scope
 bar			    fn bar(Self::N); \/\/ ok!
 bar			    fn bar(self) {}
 bar			    fn bar(y: T) { \/\/ T is defined in the "outer" function
@@ -127,7 +118,6 @@ baz			    pub mod baz {}
 baz			    pub struct baz;
 binding_mode_map			    fn binding_mode_map(&mut self, pat: &Pat) -> BindingMap 
 block_needs_anonymous_module			    fn block_needs_anonymous_module(&mut self, block: &Block) -> bool 
-borrow			    fn borrow(&self) -> ::std::cell::Ref<Option<NsDef<'a>>> 
 build_import_directive			    fn build_import_directive(&mut self,
 build_reduced_graph			    fn build_reduced_graph(self, krate: &hir::Crate) 
 build_reduced_graph			pub fn build_reduced_graph(resolver: &mut Resolver, krate: &hir::Crate) 
@@ -140,29 +130,21 @@ build_reduced_graph_for_item			    fn build_reduced_graph_for_item(&mut self, it
 build_reduced_graph_for_variant			    fn build_reduced_graph_for_variant(&mut self,
 check_consistent_bindings			    fn check_consistent_bindings(&mut self, arm: &Arm) 
 check_crate			pub fn check_crate(resolver: &mut Resolver, krate: &hir::Crate) 
-check_for_conflicting_import			    fn check_for_conflicting_import(&mut self,
-check_for_conflicts_between_external_crates_and_items			    fn check_for_conflicts_between_external_crates_and_items(&self,
-check_for_conflicts_between_imports_and_items			    fn check_for_conflicts_between_imports_and_items(&mut self,
-check_for_conflicts_for_external_crate			    fn check_for_conflicts_for_external_crate(&self, module: Module<'a>, name: Name, span: Span) 
 check_if_primitive_type_name			    fn check_if_primitive_type_name(&self, name: Name, span: Span) 
-check_that_import_is_importable			    fn check_that_import_is_importable(&mut self,
 check_trait_item			    fn check_trait_item<F>(&self, name: Name, span: Span, err: F)
 check_unused			mod check_unused;
-collect_mod			    fn collect_mod<'a>(names: &mut Vec<ast::Name>, module: Module<'a>) 
-create_from_def			    fn create_from_def(def: Def, modifiers: DefModifiers, span: Option<Span>) -> Self 
-create_from_module			    fn create_from_module(module: Module<'a>) -> Self 
+collect_mod			    fn collect_mod(names: &mut Vec<ast::Name>, module: Module) 
 create_from_module			    fn create_from_module(module: Module<'a>, span: Option<Span>) -> Self 
 create_resolver			pub fn create_resolver<'a, 'tcx>(session: &'a Session,
 dec_glob_count			    pub fn dec_glob_count(&self) 
 dec_pub_count			    pub fn dec_pub_count(&self) 
 dec_pub_glob_count			    pub fn dec_pub_glob_count(&self) 
+decrement_outstanding_references_for			    fn decrement_outstanding_references_for(&self, name: Name, ns: Namespace) 
 def			    fn def(&self) -> Option<Def> 
 def_and_lp			    fn def_and_lp(&self) -> (Def, LastPrivate) 
 def_id			    fn def_id(&self) -> Option<DefId> 
-define_module			    fn define_module(&self, module: Module<'a>, sp: Span) 
-define_type			    fn define_type(&self, def: Def, sp: Span, modifiers: DefModifiers) 
-define_value			    fn define_value(&self, def: Def, sp: Span, modifiers: DefModifiers) 
-defined			    fn defined(&self) -> bool 
+define			    fn define<T: ToNameBinding<'b>>(&self, parent: Module<'b>, name: Name, ns: Namespace, def: T) 
+define			    fn define(&mut self,
 defined_with			    fn defined_with(&self, modifiers: DefModifiers) -> bool 
 deref			    fn deref(&self) -> &Resolver<'b, 'tcx> 
 deref			    fn deref<'c>(&'c self) -> &'c Resolver<'b, 'tcx> 
@@ -170,7 +152,6 @@ deref_mut			    fn deref_mut(&mut self) -> &mut Resolver<'b, 'tcx>
 deref_mut			    fn deref_mut<'c>(&'c mut self) -> &'c mut Resolver<'b, 'tcx> 
 diagnostics			pub mod diagnostics;
 do_something			        fn do_something();
-dump_module			    fn dump_module(&mut self, module_: Module<'a>) 
 enforce_default_binding_mode			    fn enforce_default_binding_mode(&mut self,
 err_path_resolution			fn err_path_resolution() -> PathResolution 
 extract_path_and_node_id			        fn extract_path_and_node_id(t: &Ty,
@@ -187,7 +168,7 @@ foo			    pub fn foo(&self, x: T)
 foo			fn foo() {}
 foo			fn foo(f: i32, f: i32) {} \/\/ error: identifier `f` is bound more than
 foo			fn foo(f: i32, g: i32) {} \/\/ ok!
-foo			fn foo(x: T) {} \/\/ error: use of undeclared type name `T`
+foo			fn foo(x: T) {} \/\/ type name `T` is not in scope
 foo			fn foo<T, T>(s: T, u: T) {} \/\/ error: the name `T` is already used for a type
 foo			fn foo<T, Y>(s: T, u: Y) {} \/\/ ok!
 foo			fn foo<T: Copy>(x: T) 
@@ -195,52 +176,54 @@ foo			fn foo<T>(x: T)
 foo			fn foo<T>(x: T) {} \/\/ ok!
 foo			mod foo 
 foo			pub mod foo 
+for_each_child			    fn for_each_child<F: FnMut(Name, Namespace, &'a NameBinding<'a>)>(&self, mut f: F) 
 from_def			    fn from_def(def: Def) -> Self 
-get_binding			                        fn get_binding<'a>(this: &mut Resolver,
 get_module			        fn get_module<'a, 'tcx>(this: &mut Resolver<'a, 'tcx>,
 get_nearest_normal_module_parent			    fn get_nearest_normal_module_parent(&mut self, module_: Module<'a>) -> Option<Module<'a>> 
 get_nearest_normal_module_parent_or_self			    fn get_nearest_normal_module_parent_or_self(&mut self, module_: Module<'a>) -> Module<'a> 
+get_ribs			    fn get_ribs<'b>(&'b mut self, ns: Namespace) -> &'b mut Vec<Rib<'a>> 
 get_trait_name			    fn get_trait_name(&self, did: DefId) -> Name 
 get_traits_containing_item			    fn get_traits_containing_item(&mut self, name: Name) -> Vec<DefId> 
 handle_external_def			    fn handle_external_def(&mut self,
+import			    fn import<'a>(&self, binding: &'a NameBinding<'a>) -> NameBinding<'a> 
 import_directive_subclass_to_string			fn import_directive_subclass_to_string(subclass: ImportDirectiveSubclass) -> String 
 import_path_to_string			fn import_path_to_string(names: &[Name], subclass: ImportDirectiveSubclass) -> String 
+import_resolving_error			    fn import_resolving_error(&self, e: ImportResolvingError<'b>) 
 inc_glob_count			    pub fn inc_glob_count(&self) 
 inc_pub_count			    pub fn inc_pub_count(&self) 
 inc_pub_glob_count			    pub fn inc_pub_glob_count(&self) 
-index			    fn index(&self, namespace: Namespace) -> &NameBinding<'a> 
-index			    fn index(&self, ns: Namespace) -> &ImportResolution<'a> 
-index_mut			    fn index_mut(&mut self, ns: Namespace) -> &mut ImportResolution<'a> 
+increment_outstanding_references_for			    fn increment_outstanding_references_for(&self, name: Name, ns: Namespace) 
 intern			    fn intern(&mut self, string: &str, primitive_type: PrimTy) 
+is_extern_crate			    fn is_extern_crate(&self) -> bool 
+is_import			    fn is_import(&self) -> bool 
+is_item			        fn is_item(statement: &hir::Stmt) -> bool 
 is_normal			    fn is_normal(&self) -> bool 
 is_public			    fn is_public(&self) -> bool 
 is_static_method			        fn is_static_method(this: &Resolver, did: DefId) -> bool 
 is_trait			    fn is_trait(&self) -> bool 
-is_unbound			    fn is_unbound(&self) -> bool 
-is_unknown			    fn is_unknown(&self) -> bool 
+local_def_id			    fn local_def_id(&self) -> Option<DefId> 
+lookup_candidates			    fn lookup_candidates<FilterFn>(&mut self,
 main			fn main () 
 main			fn main() {}
-merge_import_resolution			    fn merge_import_resolution(&mut self,
-modifiers			    fn modifiers(&self) -> Option<DefModifiers> 
 module			    fn module(&self) -> Option<Module<'a>> 
-module_to_string			fn module_to_string<'a>(module: Module<'a>) -> String 
+module_to_string			fn module_to_string(module: Module) -> String 
 names_to_string			fn names_to_string(names: &[Name]) -> String 
 new			    fn new() -> PrimitiveTypeTable 
-new			    fn new() -> Self 
-new			    fn new(kind: RibKind) -> Rib 
+new			    fn new(kind: RibKind<'a>) -> Rib<'a> 
 new			    fn new(parent_link: ParentLink<'a>, def: Option<Def>, external: bool, is_public: bool) -> Self 
 new			    fn new(session: &'a Session,
-new			    pub fn new(id: NodeId, is_public: bool) -> Self 
 new			    pub fn new(module_path: Vec<Name>,
-new			    pub fn new(target_module: Module<'a>, binding: NameBinding<'a>, shadowable: Shadowable)
+new_extern_crate_module			    fn new_extern_crate_module(&self,
 new_module			    fn new_module(&self,
+new_name_binding			    fn new_name_binding(&self, name_binding: NameBinding<'a>) -> &'a NameBinding<'a> 
 path_names_to_string			fn path_names_to_string(path: &Path, depth: usize) -> String 
 populate_external_module			    fn populate_external_module(&mut self, module: Module<'b>) 
 populate_module_if_necessary			    fn populate_module_if_necessary(&mut self, module: Module<'b>) 
 populate_module_if_necessary			pub fn populate_module_if_necessary<'a, 'tcx>(resolver: &mut Resolver<'a, 'tcx>,
 record_candidate_traits_for_expr_if_necessary			    fn record_candidate_traits_for_expr_if_necessary(&mut self, expr: &Expr) 
 record_def			    fn record_def(&mut self, node_id: NodeId, resolution: PathResolution) 
-record_import_use			    fn record_import_use(&mut self, import_id: NodeId, name: Name) 
+record_use			    fn record_use(&mut self, name: Name, ns: Namespace, binding: &'a NameBinding<'a>) 
+report_conflict			    fn report_conflict(&mut self,
 report_unresolved_imports			    fn report_unresolved_imports(&mut self, module_: Module<'a>) 
 resolve_arm			    fn resolve_arm(&mut self, arm: &Arm) 
 resolve_bare_identifier_pattern			    fn resolve_bare_identifier_pattern(&mut self,
@@ -250,7 +233,7 @@ resolve_crate			pub fn resolve_crate<'a, 'tcx>(session: &'a Session,
 resolve_crate_relative_path			    fn resolve_crate_relative_path(&mut self,
 resolve_error			fn resolve_error<'b, 'a: 'b, 'tcx: 'a>(resolver: &'b Resolver<'a, 'tcx>,
 resolve_expr			    fn resolve_expr(&mut self, expr: &Expr) 
-resolve_function			    fn resolve_function(&mut self, rib_kind: RibKind, declaration: &FnDecl, block: &Block) 
+resolve_function			    fn resolve_function(&mut self, rib_kind: RibKind<'a>, declaration: &FnDecl, block: &Block) 
 resolve_generics			    fn resolve_generics(&mut self, generics: &Generics) 
 resolve_glob_import			    fn resolve_glob_import(&mut self,
 resolve_identifier			    fn resolve_identifier(&mut self,
@@ -260,17 +243,16 @@ resolve_import_for_module			    fn resolve_import_for_module(&mut self,
 resolve_imports			mod resolve_imports;
 resolve_imports			    fn resolve_imports(&mut self) 
 resolve_imports			pub fn resolve_imports(resolver: &mut Resolver) 
-resolve_imports_for_module			    fn resolve_imports_for_module(&mut self, module: Module<'b>) -> Vec<ImportResolvingError> 
+resolve_imports_for_module			    fn resolve_imports_for_module(&mut self,
 resolve_imports_for_module_subtree			    fn resolve_imports_for_module_subtree(&mut self,
 resolve_item			    fn resolve_item(&mut self, item: &Item) 
-resolve_item_by_name_in_lexical_scope			    fn resolve_item_by_name_in_lexical_scope(&mut self,
 resolve_item_in_lexical_scope			    fn resolve_item_in_lexical_scope(&mut self,
 resolve_local			    fn resolve_local(&mut self, local: &Local) 
-resolve_module_in_lexical_scope			    fn resolve_module_in_lexical_scope(&mut self,
 resolve_module_path			    fn resolve_module_path(&mut self,
 resolve_module_path_from_root			    fn resolve_module_path_from_root(&mut self,
 resolve_module_prefix			    fn resolve_module_prefix(&mut self,
 resolve_module_relative_path			    fn resolve_module_relative_path(&mut self,
+resolve_name			    fn resolve_name(&self, name: Name, ns: Namespace, allow_private_imports: bool)
 resolve_name_in_module			    fn resolve_name_in_module(&mut self,
 resolve_path			    pub fn resolve_path(&mut self,
 resolve_pattern			    fn resolve_pattern(&mut self,
@@ -279,16 +261,20 @@ resolve_single_import			    fn resolve_single_import(&mut self,
 resolve_struct_error			fn resolve_struct_error<'b, 'a: 'b, 'tcx: 'a>(resolver: &'b Resolver<'a, 'tcx>,
 resolve_trait_reference			    fn resolve_trait_reference(&mut self,
 resolve_type			    fn resolve_type(&mut self, ty: &Ty) 
+result			    pub fn result(&self, outstanding_globs: usize) -> ResolveResult<&'a NameBinding<'a>> 
 search_label			    fn search_label(&self, name: Name) -> Option<DefLike> 
-search_parent_externals			        fn search_parent_externals<'a>(needle: Name, module: Module<'a>)
-set			    fn set(&self, ns_def: NsDef<'a>) 
-set_modifiers			    fn set_modifiers(&self, modifiers: DefModifiers) 
-shadowable			    pub fn shadowable(&self, namespace: Namespace) -> Shadowable 
+search_parent_externals			        fn search_parent_externals(needle: Name, module: Module) -> Option<Module> 
+show_candidates			fn show_candidates(session: &mut DiagnosticBuilder,
 something			mod something 
 something_that_does_exist			enum something_that_does_exist 
 something_that_does_exist			mod something_that_does_exist 
-span			    fn span(&self) -> Option<Span> 
-success			    fn success(&self) -> bool 
+success			    fn success(self) -> Option<T> 
+to_name_binding			    fn to_name_binding(self) -> NameBinding<'a> 
+to_name_binding			    fn to_name_binding(self) -> NameBinding<'a>;
+try_define			    fn try_define<T>(&self, parent: Module<'b>, name: Name, ns: Namespace, def: T)
+try_define			    pub fn try_define(&mut self, binding: &'a NameBinding<'a>) -> Result<(), &'a NameBinding<'a>> 
+try_define_child			    fn try_define_child(&self, name: Name, ns: Namespace, binding: &'a NameBinding<'a>)
+u8			struct u8 
 visit_arm			    fn visit_arm(&mut self, arm: &Arm) 
 visit_block			    fn visit_block(&mut self, block: &Block) 
 visit_block			    fn visit_block(&mut self, block: &Block) 
@@ -311,7 +297,7 @@ with_current_self_type			    fn with_current_self_type<T, F>(&mut self, self_typ
 with_label_rib			    fn with_label_rib<F>(&mut self, f: F)
 with_no_errors			    fn with_no_errors<T, F>(&mut self, f: F) -> T
 with_optional_trait_ref			    fn with_optional_trait_ref<T, F>(&mut self, opt_trait_ref: Option<&TraitRef>, f: F) -> T
-with_scope			    fn with_scope<F>(&mut self, name: Option<Name>, f: F)
+with_scope			    fn with_scope<F>(&mut self, id: NodeId, f: F)
 with_self_rib			    fn with_self_rib<F>(&mut self, self_def: Def, f: F)
-with_type_parameter_rib			    fn with_type_parameter_rib<F>(&mut self, type_parameters: TypeParameters, f: F)
+with_type_parameter_rib			    fn with_type_parameter_rib<'b, F>(&'b mut self, type_parameters: TypeParameters<'a, 'b>, f: F)
 xyz			struct xyz;

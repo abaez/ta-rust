@@ -559,10 +559,10 @@ Peekable			pub struct Peekable<I: Iterator>
 PhantomData			pub struct PhantomData<T:?Sized>;
 Place			pub trait Place<Data: ?Sized> 
 Placer			pub trait Placer<Data: ?Sized> 
-Pointer			impl<'a, T> Pointer for &'a T 
-Pointer			impl<'a, T> Pointer for &'a mut T 
-Pointer			impl<T> Pointer for *const T 
-Pointer			impl<T> Pointer for *mut T 
+Pointer			impl<'a, T: ?Sized> Pointer for &'a T 
+Pointer			impl<'a, T: ?Sized> Pointer for &'a mut T 
+Pointer			impl<T: ?Sized> Pointer for *const T 
+Pointer			impl<T: ?Sized> Pointer for *mut T 
 Pointer			pub trait Pointer 
 Position			pub enum Position 
 RMatchIndices			        struct RMatchIndices;
@@ -815,18 +815,32 @@ atomic_and_acq			    pub fn atomic_and_acq<T>(dst: *mut T, src: T) -> T;
 atomic_and_acqrel			    pub fn atomic_and_acqrel<T>(dst: *mut T, src: T) -> T;
 atomic_and_rel			    pub fn atomic_and_rel<T>(dst: *mut T, src: T) -> T;
 atomic_and_relaxed			    pub fn atomic_and_relaxed<T>(dst: *mut T, src: T) -> T;
-atomic_compare_and_swap			unsafe fn atomic_compare_and_swap<T>(dst: *mut T, old:T, new:T, order: Ordering) -> T 
+atomic_compare_exchange			unsafe fn atomic_compare_exchange<T>(dst: *mut T,
+atomic_compare_exchange_weak			unsafe fn atomic_compare_exchange_weak<T>(dst: *mut T,
 atomic_cxchg			    pub fn atomic_cxchg<T>(dst: *mut T, old: T, src: T) -> T;
 atomic_cxchg_acq			    pub fn atomic_cxchg_acq<T>(dst: *mut T, old: T, src: T) -> T;
+atomic_cxchg_acq_failrelaxed			    pub fn atomic_cxchg_acq_failrelaxed<T>(dst: *mut T, old: T, src: T) -> T;
 atomic_cxchg_acqrel			    pub fn atomic_cxchg_acqrel<T>(dst: *mut T, old: T, src: T) -> T;
+atomic_cxchg_acqrel_failrelaxed			    pub fn atomic_cxchg_acqrel_failrelaxed<T>(dst: *mut T, old: T, src: T) -> T;
+atomic_cxchg_failacq			    pub fn atomic_cxchg_failacq<T>(dst: *mut T, old: T, src: T) -> T;
+atomic_cxchg_failrelaxed			    pub fn atomic_cxchg_failrelaxed<T>(dst: *mut T, old: T, src: T) -> T;
 atomic_cxchg_rel			    pub fn atomic_cxchg_rel<T>(dst: *mut T, old: T, src: T) -> T;
 atomic_cxchg_relaxed			    pub fn atomic_cxchg_relaxed<T>(dst: *mut T, old: T, src: T) -> T;
+atomic_cxchgweak			    pub fn atomic_cxchgweak<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_acq			    pub fn atomic_cxchgweak_acq<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_acq_failrelaxed			    pub fn atomic_cxchgweak_acq_failrelaxed<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_acqrel			    pub fn atomic_cxchgweak_acqrel<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_acqrel_failrelaxed			    pub fn atomic_cxchgweak_acqrel_failrelaxed<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_failacq			    pub fn atomic_cxchgweak_failacq<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_failrelaxed			    pub fn atomic_cxchgweak_failrelaxed<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_rel			    pub fn atomic_cxchgweak_rel<T>(dst: *mut T, old: T, src: T) -> (T, bool);
+atomic_cxchgweak_relaxed			    pub fn atomic_cxchgweak_relaxed<T>(dst: *mut T, old: T, src: T) -> (T, bool);
 atomic_fence			    pub fn atomic_fence();
 atomic_fence_acq			    pub fn atomic_fence_acq();
 atomic_fence_acqrel			    pub fn atomic_fence_acqrel();
 atomic_fence_rel			    pub fn atomic_fence_rel();
 atomic_load			    pub fn atomic_load<T>(src: *const T) -> T;
-atomic_load			unsafe fn atomic_load<T>(dst: *const T, order:Ordering) -> T 
+atomic_load			unsafe fn atomic_load<T>(dst: *const T, order: Ordering) -> T 
 atomic_load_acq			    pub fn atomic_load_acq<T>(src: *const T) -> T;
 atomic_load_relaxed			    pub fn atomic_load_relaxed<T>(src: *const T) -> T;
 atomic_load_unordered			    pub fn atomic_load_unordered<T>(src: *const T) -> T;
@@ -857,7 +871,7 @@ atomic_singlethreadfence_acq			    pub fn atomic_singlethreadfence_acq();
 atomic_singlethreadfence_acqrel			    pub fn atomic_singlethreadfence_acqrel();
 atomic_singlethreadfence_rel			    pub fn atomic_singlethreadfence_rel();
 atomic_store			    pub fn atomic_store<T>(dst: *mut T, val: T);
-atomic_store			unsafe fn atomic_store<T>(dst: *mut T, val: T, order:Ordering) 
+atomic_store			unsafe fn atomic_store<T>(dst: *mut T, val: T, order: Ordering) 
 atomic_store_rel			    pub fn atomic_store_rel<T>(dst: *mut T, val: T);
 atomic_store_relaxed			    pub fn atomic_store_relaxed<T>(dst: *mut T, val: T);
 atomic_store_unordered			    pub fn atomic_store_unordered<T>(dst: *mut T, val: T);
@@ -935,6 +949,7 @@ borrow_mut			    fn borrow_mut(&mut self) -> &mut T { &mut **self }
 borrow_mut			    fn borrow_mut(&mut self) -> &mut T { self }
 borrow_mut			    pub fn borrow_mut(&self) -> RefMut<T> 
 borrow_state			    pub fn borrow_state(&self) -> BorrowState 
+bound_intermediate_digits			fn bound_intermediate_digits(decimal: &Decimal, e: i64) -> u64 
 breakpoint			    pub fn breakpoint();
 bswap			    pub fn bswap<T>(x: T) -> T;
 build_hasher			    fn build_hasher(&self) -> H 
@@ -1061,6 +1076,8 @@ compare_and_swap			    pub fn compare_and_swap(&self, current: *mut T, new: *mut
 compare_and_swap			    pub fn compare_and_swap(&self, current: bool, new: bool, order: Ordering) -> bool 
 compare_and_swap			    pub fn compare_and_swap(&self, current: isize, new: isize, order: Ordering) -> isize 
 compare_and_swap			    pub fn compare_and_swap(&self, current: usize, new: usize, order: Ordering) -> usize 
+compare_exchange			    pub fn compare_exchange(&self,
+compare_exchange_weak			    pub fn compare_exchange_weak(&self,
 compare_with_half_ulp			pub fn compare_with_half_ulp(f: &Big, ones_place: usize) -> Ordering 
 consts			pub mod consts 
 consts			pub mod consts 
@@ -1072,6 +1089,8 @@ contains_nonascii			fn contains_nonascii(x: usize) -> bool
 convert			pub mod convert;
 convert			fn convert<T: RawFloat>(mut decimal: Decimal) -> Result<T, ParseFloatError> 
 copy			    pub fn copy<T>(src: *const T, dst: *mut T, count: usize);
+copy_from_slice			    fn copy_from_slice(&mut self, src: &[Self::Item]) where Self::Item: Copy;
+copy_from_slice			    fn copy_from_slice(&mut self, src: &[T]) where T: Copy 
 copy_memory			    pub fn copy_memory(src: &[u8], dst: &mut [u8]) 
 copy_nonoverlapping			    pub fn copy_nonoverlapping<T>(src: *const T, dst: *mut T, count: usize);
 copysignf32			    pub fn copysignf32(x: f32, y: f32) -> f32;
@@ -1216,6 +1235,7 @@ exp_bits			    fn exp_bits() -> u8
 exp_bits			    fn exp_bits() -> u8;
 expect			    pub fn expect(self, msg: &str) -> T 
 expect			    pub fn expect(self, msg: &str) -> T 
+expect_failed			fn expect_failed(msg: &str) -> ! 
 expf32			    pub fn expf32(x: f32) -> f32;
 expf64			    pub fn expf64(x: f64) -> f64;
 explicit_sig_bits			    fn explicit_sig_bits() -> u8 
@@ -1338,7 +1358,6 @@ from_bits			    fn from_bits(bits: u64) -> Self;
 from_bits			    fn from_bits(bits: u64) -> f32 
 from_bits			    fn from_bits(bits: u64) -> f64 
 from_digit			pub fn from_digit(num: u32, radix: u32) -> Option<char> 
-from_i8_unchecked			    unsafe fn from_i8_unchecked(v: i8) -> Ordering 
 from_int			    fn from_int(x: u64) -> Self;
 from_int			    fn from_int(x: u64) -> f32 
 from_int			    fn from_int(x: u64) -> f64 
@@ -1348,6 +1367,7 @@ from_iter			    fn from_iter<I: IntoIterator<Item=Result<A, E>>>(iter: I) -> Res
 from_le			        pub fn from_le(x: Self) -> Self 
 from_raw_parts			pub unsafe fn from_raw_parts<'a, T>(p: *const T, len: usize) -> &'a [T] 
 from_raw_parts_mut			pub unsafe fn from_raw_parts_mut<'a, T>(p: *mut T, len: usize) -> &'a mut [T] 
+from_raw_parts_mut			unsafe fn from_raw_parts_mut<'a>(p: *mut u8, len: usize) -> &'a mut str 
 from_small			            pub fn from_small(v: 
 from_str			            fn from_str(src: &str) -> Result<Self, ParseFloatError> 
 from_str			            fn from_str(src: &str) -> Result<Self, ParseIntError> 
@@ -1951,6 +1971,7 @@ raw			pub mod raw;
 rawfp			pub mod rawfp;
 read			pub unsafe fn read<T>(src: *const T) -> T 
 read_and_drop			pub unsafe fn read_and_drop<T>(dest: *mut T) -> T 
+read_volatile			pub unsafe fn read_volatile<T>(src: *const T) -> T 
 recip			    fn recip(self) -> f32 { 1.0 \/ self }
 recip			    fn recip(self) -> f64 { 1.0 \/ self }
 recip			    fn recip(self) -> Self;
@@ -2115,6 +2136,7 @@ store			    pub fn store(&self, val: isize, order: Ordering)
 store			    pub fn store(&self, val: usize, order: Ordering) 
 str			pub mod str;
 strategy			pub mod strategy 
+strongest_failure_ordering			fn strongest_failure_ordering(order: Ordering) -> Ordering 
 sub			            pub fn sub<'a>(&'a mut self, other: &
 sub			            fn sub(self, other: Wrapping<
 sub			            fn sub(self, other: 
@@ -2173,7 +2195,7 @@ trim_right_matches			    fn trim_right_matches<'a, P: Pattern<'a>>(&'a self, pat
 trivial_cases			fn trivial_cases<T: RawFloat>(decimal: &Decimal) -> Option<T> 
 truncf32			    pub fn truncf32(x: f32) -> f32;
 truncf64			    pub fn truncf64(x: f64) -> f64;
-try			    pub fn try(f: fn(*mut u8), data: *mut u8) -> *mut u8;
+try			    pub fn try(f: fn(*mut u8), data: *mut u8, local_ptr: *mut u8) -> i32;
 tuple			mod tuple;
 type_id			    pub fn type_id<T: ?Sized + 'static>() -> u64;
 type_name			    pub fn type_name<T: ?Sized>() -> &'static str;
@@ -2193,6 +2215,7 @@ unreachable			    pub fn unreachable() -> !;
 unwrap			    pub fn unwrap(self) -> T 
 unwrap			    pub fn unwrap(self) -> T 
 unwrap_err			    pub fn unwrap_err(self) -> E 
+unwrap_failed			fn unwrap_failed<E: fmt::Debug>(msg: &str, error: E) -> ! 
 unwrap_or			    pub fn unwrap_or(self, def: T) -> T 
 unwrap_or			    pub fn unwrap_or(self, optb: T) -> T 
 unwrap_or_0			fn unwrap_or_0(opt: Option<&u8>) -> u8 
@@ -2235,6 +2258,7 @@ write			    pub fn write(&self, out: &mut [u8]) -> Option<usize>
 write			pub unsafe fn write<T>(dst: *mut T, src: T) 
 write_bytes			        fn write_bytes(buf: &mut Write, s: &[u8]) -> Result 
 write_bytes			    pub fn write_bytes<T>(dst: *mut T, val: u8, count: usize);
+write_char			            fn write_char(&mut self, c: char) -> Result 
 write_char			    fn write_char(&mut self, c: char) -> Result 
 write_fmt			            fn write_fmt(&mut self, args: Arguments) -> Result 
 write_fmt			    fn write_fmt(&mut self, args: Arguments) -> Result 
@@ -2255,6 +2279,7 @@ write_u32			    fn write_u32(&mut self, i: u32)
 write_u64			    fn write_u64(&mut self, i: u64) 
 write_u8			    fn write_u8(&mut self, i: u8) 
 write_usize			    fn write_usize(&mut self, i: usize) 
+write_volatile			pub unsafe fn write_volatile<T>(dst: *mut T, src: T) 
 zero			    fn zero() -> f32 { 0.0 }
 zero			    fn zero() -> f64 { 0.0 }
 zero			            fn zero() -> Self { 0 }

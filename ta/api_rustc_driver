@@ -42,9 +42,10 @@ TypedAnnotation			struct TypedAnnotation<'a, 'tcx: 'a>
 UserIdentifiedItem			impl UserIdentifiedItem 
 UserIdentifiedItem			pub enum UserIdentifiedItem 
 Write for Sink			    impl Write for Sink 
+abort_msg			fn abort_msg(err_count: usize) -> String 
+abort_on_err			pub fn abort_on_err<T>(result: Result<T, usize>, sess: &Session) -> T 
 add_configuration			pub fn add_configuration(cfg: &mut ast::CrateConfig, sess: &Session) 
 all_matching_node_ids			    fn all_matching_node_ids<'a, 'ast>(&'a self,
-allows_unstable_options			    fn allows_unstable_options(matches: &getopts::Matches) -> bool 
 and_then			    pub fn and_then<F: FnOnce() -> Compilation>(self, next: F) -> Compilation 
 anon_src			pub fn anon_src() -> String 
 assert_eq			    pub fn assert_eq(&self, a: Ty<'tcx>, b: Ty<'tcx>) 
@@ -60,6 +61,7 @@ build_controller			    fn build_controller(&mut self, sess: &Session) -> Compile
 build_output_filenames			pub fn build_output_filenames(input: &Input,
 call_with_pp_support			    fn call_with_pp_support<'tcx, A, B, F>(&self,
 call_with_pp_support_hir			    fn call_with_pp_support_hir<'tcx, A, B, F>(&self,
+check_cfg			fn check_cfg(sopts: &config::Options,
 check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'tcx>) 
 check_lub			    pub fn check_lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_lub: Ty<'tcx>) 
 check_not_sub			    pub fn check_not_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
@@ -68,13 +70,13 @@ collect_crate_metadata			pub fn collect_crate_metadata(session: &Session, _attrs
 collect_crate_types			pub fn collect_crate_types(session: &Session, attrs: &[ast::Attribute]) -> Vec<config::CrateType> 
 commit_date_str			pub fn commit_date_str() -> Option<&'static str> 
 commit_hash_str			pub fn commit_hash_str() -> Option<&'static str> 
-compile_input			pub fn compile_input(sess: Session,
+compile_input			pub fn compile_input(sess: &Session,
 contravariant_region_ptr_err			fn contravariant_region_ptr_err() 
 contravariant_region_ptr_ok			fn contravariant_region_ptr_ok() 
 count_nodes			fn count_nodes(krate: &ast::Crate) -> usize 
 create_region_hierarchy			    pub fn create_region_hierarchy(&self, rh: &RH, parent: CodeExtent) 
 create_simple_region_hierarchy			    pub fn create_simple_region_hierarchy(&self) 
-custom_emit			    fn custom_emit(&mut self, _sp: RenderSpan, msg: &str, lvl: Level) 
+custom_emit			    fn custom_emit(&mut self, _sp: &RenderSpan, msg: &str, lvl: Level) 
 describe_codegen_flags			fn describe_codegen_flags() 
 describe_debug_flags			fn describe_debug_flags() 
 describe_lints			fn describe_lints(lint_store: &lint::LintStore, loaded_plugins: bool) 
@@ -87,16 +89,17 @@ empty			    fn empty(input: &'a Input,
 errors			fn errors(msgs: &[&str]) -> (Box<Emitter + Send>, usize) 
 escape_dep_filename			fn escape_dep_filename(filename: &str) -> String 
 escaping			fn escaping() 
+exit_on_err			fn exit_on_err() -> ! 
 expand_err_details			    fn expand_err_details(r: io::Result<()>) -> io::Result<()> 
 expr_to_block			        fn expr_to_block(rules: ast::BlockCheckMode, e: Option<P<ast::Expr>>) -> P<ast::Block> 
 features_contain			fn features_contain(sess: &Session, s: &str) -> bool 
 flush			        fn flush(&mut self) -> io::Result<()> 
 fold::Folder for ReplaceBodyWithLoop			impl fold::Folder for ReplaceBodyWithLoop 
 fold_block			    fn fold_block(&mut self, b: P<ast::Block>) -> P<ast::Block> 
-fold_impl_item			    fn fold_impl_item(&mut self, i: P<ast::ImplItem>) -> SmallVector<P<ast::ImplItem>> 
-fold_item_underscore			    fn fold_item_underscore(&mut self, i: ast::Item_) -> ast::Item_ 
+fold_impl_item			    fn fold_impl_item(&mut self, i: ast::ImplItem) -> SmallVector<ast::ImplItem> 
+fold_item_kind			    fn fold_item_kind(&mut self, i: ast::ItemKind) -> ast::ItemKind 
 fold_mac			    fn fold_mac(&mut self, mac: ast::Mac) -> ast::Mac 
-fold_trait_item			    fn fold_trait_item(&mut self, i: P<ast::TraitItem>) -> SmallVector<P<ast::TraitItem>> 
+fold_trait_item			    fn fold_trait_item(&mut self, i: ast::TraitItem) -> SmallVector<ast::TraitItem> 
 from_str			    fn from_str(s: &str) -> Result<UserIdentifiedItem, ()> 
 gather_flowgraph_variants			fn gather_flowgraph_variants(sess: &Session) -> Vec<borrowck_dot::Variant> 
 glb			    pub fn glb(&self) -> Glb<'a, 'tcx> 
@@ -105,6 +108,7 @@ glb_bound_free			fn glb_bound_free()
 glb_bound_free_infer			fn glb_bound_free_infer() 
 glb_bound_static			fn glb_bound_static() 
 glb_free_free_with_common_scope			fn glb_free_free_with_common_scope() 
+handle_explain			fn handle_explain(code: &str,
 handle_options			pub fn handle_options(mut args: Vec<String>) -> Option<getopts::Matches> 
 has_avx			pub fn has_avx(sess: &Session) -> bool 
 has_avx2			pub fn has_avx2(sess: &Session) -> bool 
@@ -140,7 +144,6 @@ new			    fn new() -> ReplaceBodyWithLoop
 new_id			        fn new_id(&mut self, old_id: ast::NodeId) -> ast::NodeId 
 next			    fn next(&mut self) -> Option<ast::NodeId> 
 no_input			    fn no_input(&mut self,
-parse_all_options			    fn parse_all_options(args: &Vec<String>) -> getopts::Matches 
 parse_crate_attrs			fn parse_crate_attrs(sess: &Session, input: &Input) -> Vec<ast::Attribute> 
 parse_pretty			    fn parse_pretty(&mut self,
 parse_pretty			pub fn parse_pretty(sess: &Session,
@@ -176,7 +179,7 @@ reconstructed_input			    fn reconstructed_input(&self) -> String
 release_str			pub fn release_str() -> Option<&'static str> 
 remove_message			fn remove_message(e: &mut ExpectErrorEmitter, msg: &str, lvl: Level) 
 run			pub fn run(args: Vec<String>) -> isize 
-run_compiler			pub fn run_compiler<'a>(args: &[String], callbacks: &mut CompilerCalls<'a>) 
+run_compiler			pub fn run_compiler<'a>(args: &[String],
 search			        fn search(this: &Env, it: &hir::Item, idx: usize, names: &[String]) -> Option<ast::NodeId> 
 search_mod			        fn search_mod(this: &Env,
 sess			    fn sess<'a>(&'a self) -> &'a Session 

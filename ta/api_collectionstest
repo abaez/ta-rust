@@ -21,6 +21,9 @@ FnOnce for Counter			impl<'a, 'b, 'c> FnOnce<(&'c i32,)> for Counter<'a, 'b>
 Foo			    struct Foo(&'static str, i32);
 Foo			enum Foo 
 Foo			struct Foo;
+IntoCow			impl<'a> IntoCow<'a, str> for &'a str 
+IntoCow			pub trait IntoCow<'a, B: ?Sized> where B: ToOwned 
+IntoCow for String			impl<'a> IntoCow<'a, str> for String 
 Ord for Bad			    impl Ord for Bad 
 Ord for Foo			    impl Ord for Foo 
 PartialEq for Bad			    impl PartialEq for Bad 
@@ -195,6 +198,8 @@ half_a_million_letter_a			    fn half_a_million_letter_a() -> String
 half_a_million_letter_x			    fn half_a_million_letter_x() -> String 
 hash			fn hash<T: Hash>(t: &T) -> u64 
 insert			fn insert() 
+into_cow			    fn into_cow(self) -> Cow<'a, B>;
+into_cow			    fn into_cow(self) -> Cow<'a, str> 
 into_iter			    fn into_iter<'new>(v: IntoIter<&'static str>) -> IntoIter<&'new str> { v }
 into_iter_key			    fn into_iter_key<'new>(v: IntoIter<&'static str, ()>) -> IntoIter<&'new str, ()> { v }
 into_iter_val			    fn into_iter_val<'new>(v: IntoIter<(), &'static str>) -> IntoIter<(), &'new str> { v }
@@ -203,6 +208,7 @@ iter			    fn iter<'a, 'new>(v: Iter<'a, &'static str>) -> Iter<'a, &'new str> {
 iter_1000			    pub fn iter_1000(b: &mut Bencher) 
 iter_100000			    pub fn iter_100000(b: &mut Bencher) 
 iter_20			    pub fn iter_20(b: &mut Bencher) 
+iter_equal			    fn iter_equal<I: Iterator<Item=i32>>(it: I, slice: &[i32]) 
 iter_key			    fn iter_key<'a, 'new>(v: Iter<'a, &'static str, ()>) -> Iter<'a, &'new str, ()> { v }
 iter_val			    fn iter_val<'a, 'new>(v: Iter<'a, (), &'static str>) -> Iter<'a, (), &'new str> { v }
 iterator			    fn iterator(b: &mut Bencher) 

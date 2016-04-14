@@ -37,6 +37,7 @@ Drop for ArchiveRO			impl Drop for ArchiveRO
 Drop for Child			impl<'a> Drop for Child<'a> 
 Drop for Iter			impl<'a> Drop for Iter<'a> 
 Drop for ObjectFile			impl Drop for ObjectFile 
+Drop for OperandBundleDef			impl Drop for OperandBundleDef 
 Drop for SectionIter			impl Drop for SectionIter 
 Drop for TargetData			impl Drop for TargetData 
 ExecutionEngine_opaque			pub enum ExecutionEngine_opaque {}
@@ -119,7 +120,6 @@ LLVMBuildAtomicStore			    pub fn LLVMBuildAtomicStore(B: BuilderRef,
 LLVMBuildBinOp			    pub fn LLVMBuildBinOp(B: BuilderRef,
 LLVMBuildBitCast			    pub fn LLVMBuildBitCast(B: BuilderRef,
 LLVMBuildBr			    pub fn LLVMBuildBr(B: BuilderRef, Dest: BasicBlockRef) -> ValueRef;
-LLVMBuildCall			    pub fn LLVMBuildCall(B: BuilderRef,
 LLVMBuildCast			    pub fn LLVMBuildCast(B: BuilderRef,
 LLVMBuildCondBr			    pub fn LLVMBuildCondBr(B: BuilderRef,
 LLVMBuildExactSDiv			    pub fn LLVMBuildExactSDiv(B: BuilderRef,
@@ -149,7 +149,6 @@ LLVMBuildInsertElement			    pub fn LLVMBuildInsertElement(B: BuilderRef,
 LLVMBuildInsertValue			    pub fn LLVMBuildInsertValue(B: BuilderRef,
 LLVMBuildIntCast			    pub fn LLVMBuildIntCast(B: BuilderRef,
 LLVMBuildIntToPtr			    pub fn LLVMBuildIntToPtr(B: BuilderRef,
-LLVMBuildInvoke			    pub fn LLVMBuildInvoke(B: BuilderRef,
 LLVMBuildIsNotNull			    pub fn LLVMBuildIsNotNull(B: BuilderRef, Val: ValueRef, Name: *const c_char)
 LLVMBuildIsNull			    pub fn LLVMBuildIsNull(B: BuilderRef, Val: ValueRef, Name: *const c_char)
 LLVMBuildLShr			    pub fn LLVMBuildLShr(B: BuilderRef,
@@ -417,36 +416,8 @@ LLVMGetVectorSize			    pub fn LLVMGetVectorSize(VectorTy: TypeRef) -> c_uint;
 LLVMGetVisibility			    pub fn LLVMGetVisibility(Global: ValueRef) -> c_uint;
 LLVMGetVolatile			    pub fn LLVMGetVolatile(MemoryAccessInst: ValueRef) -> Bool;
 LLVMHasMetadata			    pub fn LLVMHasMetadata(Val: ValueRef) -> c_int;
-LLVMInitializeAArch64AsmParser			    pub fn LLVMInitializeAArch64AsmParser();
-LLVMInitializeAArch64AsmPrinter			    pub fn LLVMInitializeAArch64AsmPrinter();
-LLVMInitializeAArch64Target			    pub fn LLVMInitializeAArch64Target();
-LLVMInitializeAArch64TargetInfo			    pub fn LLVMInitializeAArch64TargetInfo();
-LLVMInitializeAArch64TargetMC			    pub fn LLVMInitializeAArch64TargetMC();
-LLVMInitializeARMAsmParser			    pub fn LLVMInitializeARMAsmParser();
-LLVMInitializeARMAsmPrinter			    pub fn LLVMInitializeARMAsmPrinter();
-LLVMInitializeARMTarget			    pub fn LLVMInitializeARMTarget();
-LLVMInitializeARMTargetInfo			    pub fn LLVMInitializeARMTargetInfo();
-LLVMInitializeARMTargetMC			    pub fn LLVMInitializeARMTargetMC();
 LLVMInitializeFunctionPassManager			    pub fn LLVMInitializeFunctionPassManager(FPM: PassManagerRef) -> Bool;
-LLVMInitializeMipsAsmParser			    pub fn LLVMInitializeMipsAsmParser();
-LLVMInitializeMipsAsmPrinter			    pub fn LLVMInitializeMipsAsmPrinter();
-LLVMInitializeMipsTarget			    pub fn LLVMInitializeMipsTarget();
-LLVMInitializeMipsTargetInfo			    pub fn LLVMInitializeMipsTargetInfo();
-LLVMInitializeMipsTargetMC			    pub fn LLVMInitializeMipsTargetMC();
-LLVMInitializePNaClTarget			    pub fn LLVMInitializePNaClTarget();
-LLVMInitializePNaClTargetInfo			    pub fn LLVMInitializePNaClTargetInfo();
-LLVMInitializePNaClTargetMC			    pub fn LLVMInitializePNaClTargetMC();
 LLVMInitializePasses			    pub fn LLVMInitializePasses();
-LLVMInitializePowerPCAsmParser			    pub fn LLVMInitializePowerPCAsmParser();
-LLVMInitializePowerPCAsmPrinter			    pub fn LLVMInitializePowerPCAsmPrinter();
-LLVMInitializePowerPCTarget			    pub fn LLVMInitializePowerPCTarget();
-LLVMInitializePowerPCTargetInfo			    pub fn LLVMInitializePowerPCTargetInfo();
-LLVMInitializePowerPCTargetMC			    pub fn LLVMInitializePowerPCTargetMC();
-LLVMInitializeX86AsmParser			    pub fn LLVMInitializeX86AsmParser();
-LLVMInitializeX86AsmPrinter			    pub fn LLVMInitializeX86AsmPrinter();
-LLVMInitializeX86Target			    pub fn LLVMInitializeX86Target();
-LLVMInitializeX86TargetInfo			    pub fn LLVMInitializeX86TargetInfo();
-LLVMInitializeX86TargetMC			    pub fn LLVMInitializeX86TargetMC();
 LLVMInlineAsm			    pub fn LLVMInlineAsm(Ty: TypeRef,
 LLVMInsertBasicBlockInContext			    pub fn LLVMInsertBasicBlockInContext(C: ContextRef,
 LLVMInsertIntoBuilder			    pub fn LLVMInsertIntoBuilder(Builder: BuilderRef, Instr: ValueRef);
@@ -511,9 +482,10 @@ LLVMRunPassManager			    pub fn LLVMRunPassManager(PM: PassManagerRef, M: Module
 LLVMRustAddAlwaysInlinePass			    pub fn LLVMRustAddAlwaysInlinePass(P: PassManagerBuilderRef,
 LLVMRustAddAnalysisPasses			    pub fn LLVMRustAddAnalysisPasses(T: TargetMachineRef,
 LLVMRustAddBuilderLibraryInfo			    pub fn LLVMRustAddBuilderLibraryInfo(PMB: PassManagerBuilderRef,
+LLVMRustAddHandler			    pub fn LLVMRustAddHandler(CatchSwitch: ValueRef,
 LLVMRustAddLibraryInfo			    pub fn LLVMRustAddLibraryInfo(PM: PassManagerRef, M: ModuleRef,
 LLVMRustAddModuleFlag			    pub fn LLVMRustAddModuleFlag(M: ModuleRef,
-LLVMRustAddPass			    pub fn LLVMRustAddPass(PM: PassManagerRef, Pass: *const c_char) -> bool;
+LLVMRustAddPass			    pub fn LLVMRustAddPass(PM: PassManagerRef, Pass: PassRef);
 LLVMRustArchiveChildData			    pub fn LLVMRustArchiveChildData(ACR: ArchiveChildRef,
 LLVMRustArchiveChildFree			    pub fn LLVMRustArchiveChildFree(ACR: ArchiveChildRef);
 LLVMRustArchiveChildName			    pub fn LLVMRustArchiveChildName(ACR: ArchiveChildRef,
@@ -523,13 +495,23 @@ LLVMRustArchiveIteratorNext			    pub fn LLVMRustArchiveIteratorNext(AIR: Archiv
 LLVMRustArchiveMemberFree			    pub fn LLVMRustArchiveMemberFree(Member: RustArchiveMemberRef);
 LLVMRustArchiveMemberNew			    pub fn LLVMRustArchiveMemberNew(Filename: *const c_char,
 LLVMRustArrayType			    pub fn LLVMRustArrayType(ElementType: TypeRef, ElementCount: u64) -> TypeRef;
+LLVMRustBuildCall			    pub fn LLVMRustBuildCall(B: BuilderRef,
+LLVMRustBuildCatchPad			    pub fn LLVMRustBuildCatchPad(B: BuilderRef,
+LLVMRustBuildCatchRet			    pub fn LLVMRustBuildCatchRet(B: BuilderRef,
+LLVMRustBuildCatchSwitch			    pub fn LLVMRustBuildCatchSwitch(Builder: BuilderRef,
+LLVMRustBuildCleanupPad			    pub fn LLVMRustBuildCleanupPad(B: BuilderRef,
+LLVMRustBuildCleanupRet			    pub fn LLVMRustBuildCleanupRet(B: BuilderRef,
+LLVMRustBuildInvoke			    pub fn LLVMRustBuildInvoke(B: BuilderRef,
 LLVMRustBuildLandingPad			    pub fn LLVMRustBuildLandingPad(B: BuilderRef,
+LLVMRustBuildOperandBundleDef			    pub fn LLVMRustBuildOperandBundleDef(Name: *const c_char,
 LLVMRustConfigurePassManagerBuilder			    pub fn LLVMRustConfigurePassManagerBuilder(PMB: PassManagerBuilderRef,
 LLVMRustCreateMemoryBufferWithContentsOfFile			    pub fn LLVMRustCreateMemoryBufferWithContentsOfFile(Path: *const c_char)
 LLVMRustCreateTargetMachine			    pub fn LLVMRustCreateTargetMachine(Triple: *const c_char,
 LLVMRustDebugMetadataVersion			    pub fn LLVMRustDebugMetadataVersion() -> u32;
 LLVMRustDestroyArchive			    pub fn LLVMRustDestroyArchive(AR: ArchiveRef);
 LLVMRustDisposeTargetMachine			    pub fn LLVMRustDisposeTargetMachine(T: TargetMachineRef);
+LLVMRustFindAndCreatePass			    pub fn LLVMRustFindAndCreatePass(Pass: *const c_char) -> PassRef;
+LLVMRustFreeOperandBundleDef			    pub fn LLVMRustFreeOperandBundleDef(Bundle: OperandBundleDefRef);
 LLVMRustGetLastError			    pub fn LLVMRustGetLastError() -> *const c_char;
 LLVMRustGetModuleDataLayout			    pub fn LLVMRustGetModuleDataLayout(M: ModuleRef) -> TargetDataRef;
 LLVMRustGetSectionName			    pub fn LLVMRustGetSectionName(SI: SectionIteratorRef,
@@ -537,6 +519,7 @@ LLVMRustLinkInExternalBitcode			    pub fn LLVMRustLinkInExternalBitcode(M: Modu
 LLVMRustLoadDynamicLibrary			    pub fn LLVMRustLoadDynamicLibrary(path: *const c_char) -> Bool;
 LLVMRustMarkAllFunctionsNounwind			    pub fn LLVMRustMarkAllFunctionsNounwind(M: ModuleRef);
 LLVMRustOpenArchive			    pub fn LLVMRustOpenArchive(path: *const c_char) -> ArchiveRef;
+LLVMRustPassKind			    pub fn LLVMRustPassKind(Pass: PassRef) -> SupportedPassKind;
 LLVMRustPrintModule			    pub fn LLVMRustPrintModule(PM: PassManagerRef,
 LLVMRustPrintPassTimings			    pub fn LLVMRustPrintPassTimings();
 LLVMRustPrintPasses			    pub fn LLVMRustPrintPasses();
@@ -546,6 +529,7 @@ LLVMRustSetDLLStorageClass			    pub fn LLVMRustSetDLLStorageClass(V: ValueRef,
 LLVMRustSetDataLayoutFromTargetMachine			    pub fn LLVMRustSetDataLayoutFromTargetMachine(M: ModuleRef,
 LLVMRustSetLLVMOptions			    pub fn LLVMRustSetLLVMOptions(Argc: c_int, Argv: *const *const c_char);
 LLVMRustSetNormalizedTarget			    pub fn LLVMRustSetNormalizedTarget(M: ModuleRef, triple: *const c_char);
+LLVMRustSetPersonalityFn			    pub fn LLVMRustSetPersonalityFn(B: BuilderRef, Pers: ValueRef);
 LLVMRustWriteArchive			    pub fn LLVMRustWriteArchive(Dst: *const c_char,
 LLVMRustWriteOutputFile			    pub fn LLVMRustWriteOutputFile(T: TargetMachineRef,
 LLVMSetAlignment			    pub fn LLVMSetAlignment(Global: ValueRef, Bytes: c_uint);
@@ -606,6 +590,9 @@ Module_opaque			pub enum Module_opaque {}
 ObjectFile			impl ObjectFile 
 ObjectFile			pub struct ObjectFile 
 ObjectFile_opaque			pub enum ObjectFile_opaque {}
+OperandBundleDef			impl OperandBundleDef 
+OperandBundleDef			pub struct OperandBundleDef 
+OperandBundleDef_opaque			pub enum OperandBundleDef_opaque {}
 OptimizationDiagnostic			impl OptimizationDiagnostic 
 OptimizationDiagnostic			pub struct OptimizationDiagnostic 
 OptimizationDiagnosticKind			impl OptimizationDiagnosticKind 
@@ -628,6 +615,7 @@ SetInstructionCallConv			pub fn SetInstructionCallConv(instr: ValueRef, cc: Call
 SetLinkage			pub fn SetLinkage(global: ValueRef, link: Linkage) 
 SetUnnamedAddr			pub fn SetUnnamedAddr(global: ValueRef, unnamed: bool) 
 SpecialAttribute			pub enum SpecialAttribute 
+SupportedPassKind			pub enum SupportedPassKind 
 SynchronizationScope			pub enum SynchronizationScope 
 TargetData			pub struct TargetData 
 TargetData_opaque			pub enum TargetData_opaque {}
@@ -645,7 +633,7 @@ apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef)
 apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef);
 apply_llfn			    pub fn apply_llfn(&self, llfn: ValueRef) 
 archive_ro			pub mod archive_ro;
-arg			    pub fn arg<'a, T: AttrHelper + 'static>(&'a mut self, idx: usize, a: T) -> &'a mut AttrBuilder 
+arg			    pub fn arg<T: AttrHelper + 'static>(&mut self, idx: usize, a: T) -> &mut AttrBuilder 
 build_string			pub fn build_string<F>(f: F) -> Option<String> where F: FnOnce(RustStringRef)
 data			    pub fn data(&self) -> &'a [u8] 
 debug_loc_to_string			pub unsafe fn debug_loc_to_string(c: ContextRef, tr: DebugLocRef) -> String 
@@ -658,22 +646,24 @@ get_param			pub fn get_param(llfn: ValueRef, index: c_uint) -> ValueRef
 get_params			pub fn get_params(llfn: ValueRef) -> Vec<ValueRef> 
 init			            fn init() { }
 init			            fn init() 
-init_pnacl			    fn init_pnacl() { }
-init_pnacl			    fn init_pnacl() 
 initialize_available_targets			pub fn initialize_available_targets() 
 iter			    pub fn iter(&self) -> Iter 
+last_error			pub fn last_error() -> Option<String> 
 llvmdeps			mod llvmdeps 
+main			fn main() 
 mk_section_iter			pub fn mk_section_iter(llof: ObjectFileRef) -> SectionIter 
 mk_target_data			pub fn mk_target_data(string_rep: &str) -> TargetData 
 name			    pub fn name(&self) -> Option<&'a str> 
 new			    pub fn new() -> AttrBuilder 
 new			    pub fn new(llmb: MemoryBufferRef) -> Option<ObjectFile> 
-next			    fn next(&mut self) -> Option<Child<'a>> 
+new			    pub fn new(name: &str, vals: &[ValueRef]) -> OperandBundleDef 
+next			    fn next(&mut self) -> Option<Result<Child<'a>, String>> 
 open			    pub fn open(dst: &Path) -> Option<ArchiveRO> 
 path2cstr			        fn path2cstr(p: &Path) -> CString 
 raw			    pub fn raw(&self) -> ::ArchiveChildRef { self.ptr }
 raw			    pub fn raw(&self) -> ArchiveRef { self.ptr }
-ret			    pub fn ret<'a, T: AttrHelper + 'static>(&'a mut self, a: T) -> &'a mut AttrBuilder 
+raw			    pub fn raw(&self) -> OperandBundleDefRef 
+ret			    pub fn ret<T: AttrHelper + 'static>(&mut self, a: T) -> &mut AttrBuilder 
 set_thread_local			pub fn set_thread_local(global: ValueRef, is_thread_local: bool) 
 twine_to_string			pub unsafe fn twine_to_string(tr: TwineRef) -> String 
 unpack			    pub unsafe fn unpack(di: DiagnosticInfoRef) -> Diagnostic 

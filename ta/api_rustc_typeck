@@ -12,10 +12,10 @@ B			enum B
 B			enum B {}
 B			impl B 
 Bad			enum Bad 
-Bad			struct Bad(String); \/\/ This will cause an error
-Bad			struct Bad(u16, u32, u32); \/\/ This will cause an error
-Bad			struct Bad; \/\/ This will cause an error
-Bad			struct Bad<T>(T, T, T); \/\/ This will cause an error
+Bad			struct Bad(String);
+Bad			struct Bad(u16, u32, u32);
+Bad			struct Bad;
+Bad			struct Bad<T>(T, T, T);
 Bar			enum Bar { A(u8), B(&bool), }        \/\/ error
 Bar			enum Bar { A, B, C }
 Bar			enum Bar<'a> { A(u8), B(&'a bool), } \/\/ correct
@@ -47,7 +47,7 @@ BindingRscope			impl BindingRscope
 BindingRscope			pub struct BindingRscope 
 Bounds			impl<'tcx> Bounds<'tcx> 
 Bounds			pub struct Bounds<'tcx> 
-Bytes			impl Bytes { ... } \/\/ error, same as above
+Bytes			impl Bytes { } \/\/ error, same as above
 CallResolution			struct CallResolution<'tcx> 
 CallStep			enum CallStep<'tcx> 
 Candidate			impl<'tcx> Candidate<'tcx> 
@@ -70,9 +70,9 @@ CoherenceChecker			struct CoherenceChecker<'a, 'tcx: 'a>
 CollectItemTypesVisitor			struct CollectItemTypesVisitor<'a, 'tcx: 'a> 
 ConfirmContext			impl<'a,'tcx> ConfirmContext<'a,'tcx> 
 ConfirmContext			struct ConfirmContext<'a, 'tcx:'a> 
-Constraint			struct Constraint<'a> 
+Constraint			pub struct Constraint<'a> 
 ConstraintContext			impl<'a, 'tcx> ConstraintContext<'a, 'tcx> 
-ConstraintContext			struct ConstraintContext<'a, 'tcx: 'a> 
+ConstraintContext			pub struct ConstraintContext<'a, 'tcx: 'a> 
 ConvertedBinding			struct ConvertedBinding<'tcx> 
 Copy			impl Copy for &'static Bar { } \/\/ error
 Copy for Foo			impl Copy for Foo { } \/\/ error
@@ -98,6 +98,8 @@ ElidableRscope			impl ElidableRscope
 ElidableRscope			pub struct ElidableRscope 
 ElisionFailureInfo			pub struct ElisionFailureInfo 
 Empty			enum Empty {}
+Enterprise			impl Enterprise for .. { }
+Enterprise			trait Enterprise {}
 Enum			enum Enum 
 Eq for TraitInfo			impl Eq for TraitInfo {}
 Error			enum Error<'tcx> 
@@ -107,8 +109,8 @@ ExplicitRscope			pub struct ExplicitRscope;
 FirstTrait			trait FirstTrait : SecondTrait 
 FnCtxt			impl<'a, 'tcx> FnCtxt<'a, 'tcx> 
 FnCtxt			pub struct FnCtxt<'a, 'tcx: 'a> 
+Foo			enum Foo { B { i: u32 } }
 Foo			enum Foo { B(u32) }
-Foo			enum Foo { B{ i: u32 } }
 Foo			enum Foo { FirstValue(i32) };
 Foo			enum Foo { Q }
 Foo			enum Foo 
@@ -117,8 +119,6 @@ Foo			enum Foo<T>
 Foo			impl Foo { }
 Foo			impl Foo 
 Foo			pub struct Foo; \/\/ you define your type in your crate
-Foo			pub struct Foo<T=U, U=()> 
-Foo			pub struct Foo<U=(), T=U> 
 Foo			struct Foo { x: &bool }        \/\/ error
 Foo			struct Foo { x: Box<Foo> } \/\/ error
 Foo			struct Foo { x: Option<Box<Foo>> }
@@ -132,8 +132,10 @@ Foo			struct Foo<'a, T>
 Foo			struct Foo<'a> { x: &'a bool } \/\/ correct
 Foo			struct Foo<'a> 
 Foo			struct Foo<'a>(&'a str);
+Foo			struct Foo<T=U, U=()> 
 Foo			struct Foo<T> { x: T }
 Foo			struct Foo<T> 
+Foo			struct Foo<U=(), T=U> 
 Foo			trait Foo { fn foo(&self) { } }
 Foo			trait Foo 
 Foo			trait Foo {}
@@ -146,11 +148,11 @@ Foo for Baz			impl Foo for Baz { } \/\/ error, `Baz` implements `Bar` which impl
 Foo for MyStruct			impl Foo for MyStruct 
 Foo for Wrapper			impl <T> Foo for Wrapper<T> where Wrapper<T>: Clone 
 Foo for Wrapper			impl Foo for Wrapper<u32> where Wrapper<u32>: Clone 
-ForeignTrait for MyType			impl<T> ForeignTrait for MyType<T> { ... } \/\/ Ok
-ForeignTrait for T			impl<T> ForeignTrait for T { ... } \/\/ error
+ForeignTrait for MyType			impl<T> ForeignTrait for MyType<T> { } \/\/ Ok
+ForeignTrait for T			impl<T> ForeignTrait for T { } \/\/ error
 ForeignTrait for T0			impl<P1, ..., Pm> ForeignTrait<T1, ..., Tn> for T0 { ... }
-ForeignTrait2			impl<T> ForeignTrait2<MyType<T>, T> for MyType2 { ... } \/\/ Ok
-ForeignTrait2			impl<T> ForeignTrait2<T, MyType<T>> for MyType2 { ... } \/\/ error
+ForeignTrait2			impl<T> ForeignTrait2<MyType<T>, T> for MyType2 { } \/\/ Ok
+ForeignTrait2			impl<T> ForeignTrait2<T, MyType<T>> for MyType2 { } \/\/ error
 From for i32			impl From<Foo> for i32 { \/\/ or you use a type from your crate as
 Fruit			enum Fruit 
 GatherLocalsVisitor			impl<'a, 'tcx> GatherLocalsVisitor<'a, 'tcx> 
@@ -160,10 +162,10 @@ GetTypeParameterBounds			impl<'tcx> GetTypeParameterBounds<'tcx> for ()
 GetTypeParameterBounds			trait GetTypeParameterBounds<'tcx> 
 GetTypeParameterBounds for hir			impl<'tcx> GetTypeParameterBounds<'tcx> for hir::Generics 
 GetTypeParameterBounds for ty			impl<'tcx> GetTypeParameterBounds<'tcx> for ty::GenericPredicates<'tcx> 
-Good			struct Good(u32); \/\/ This will not
-Good			struct Good(u32, u32, u32); \/\/ This will not
-InferredIndex			struct InferredIndex(usize);
-InferredInfo			struct InferredInfo<'a> 
+Good			struct Good(u32);
+Good			struct Good(u32, u32, u32);
+InferredIndex			pub struct InferredIndex(pub usize);
+InferredInfo			pub struct InferredInfo<'a> 
 Inherited			impl<'a, 'tcx> Inherited<'a, 'tcx> 
 Inherited			pub struct Inherited<'a, 'tcx: 'a> 
 InstantiatedMethodSig			struct InstantiatedMethodSig<'tcx> 
@@ -171,16 +173,15 @@ IsAssign			enum IsAssign
 ItemCtxt			impl<'a,'tcx> ItemCtxt<'a,'tcx> 
 ItemCtxt			struct ItemCtxt<'a,'tcx:'a> 
 Iterator for AllTraits			impl<'a> Iterator for AllTraits<'a> 
-ListNode			struct ListNode 
+LiveLongAndProsper			impl LiveLongAndProsper for (u8, u8) 
+LiveLongAndProsper			trait LiveLongAndProsper 
 M			    fn M() {} \/\/ ok!
 M			    fn M();
 MethodError			pub enum MethodError<'tcx> 
 Mode			pub enum Mode 
-MyMod			mod MyMod 
 MyStruct			struct MyStruct;
 MyStruct			struct MyStruct<T> 
 MyStructWrapper			struct MyStructWrapper<T: Foo> 
-MySubMod			    mod MySubMod { }
 MyTrait			trait MyTrait 
 MyTrait			trait MyTrait {type X; }
 MyTrait			trait MyTrait {}
@@ -194,7 +195,6 @@ MyType2			struct MyType2;
 MyWrapper			struct MyWrapper<'a> { foo: &'a MyTrait }
 MyWrapper			struct MyWrapper<T: MyTrait> { foo: T }
 N			    fn N() {}
-NineString			impl NineString 
 NoMatchData			impl<'tcx> NoMatchData<'tcx> 
 NoMatchData			pub struct NoMatchData<'tcx> 
 Number			enum Number 
@@ -205,7 +205,7 @@ OrphanChecker			impl<'cx, 'tcx> OrphanChecker<'cx, 'tcx>
 OrphanChecker			struct OrphanChecker<'cx, 'tcx:'cx> 
 OverlapChecker			impl<'cx, 'tcx> OverlapChecker<'cx, 'tcx> 
 OverlapChecker			struct OverlapChecker<'cx, 'tcx:'cx> 
-ParamKind			enum ParamKind 
+ParamKind			pub enum ParamKind 
 Parameter			pub enum Parameter 
 PartialEq for TraitInfo			impl PartialEq for TraitInfo 
 PartialOrd for TraitInfo			impl PartialOrd for TraitInfo 
@@ -243,12 +243,11 @@ SizedByDefault			enum SizedByDefault { Yes, No, }
 SolveContext			impl<'a, 'tcx> SolveContext<'a, 'tcx> 
 SolveContext			struct SolveContext<'a, 'tcx: 'a> 
 SomeStruct			struct SomeStruct 
-SomeTypeThatDoesntExist			impl SomeTypeThatDoesntExist {  }
 SubjectNode			pub enum SubjectNode { Subject(ast::NodeId), None }
 T1			trait T1 {}
 T2			trait T2 {}
 TermsContext			impl<'a, 'tcx> TermsContext<'a, 'tcx> 
-TermsContext			struct TermsContext<'a, 'tcx: 'a> 
+TermsContext			pub struct TermsContext<'a, 'tcx: 'a> 
 Test			impl Test 
 Test			struct Test;
 Thing			enum Thing 
@@ -265,6 +264,8 @@ TupleArgumentsFlag			enum TupleArgumentsFlag
 TypeAndSubsts			pub struct TypeAndSubsts<'tcx> 
 TypeContext			enum TypeContext 
 TypeFolder for Resolver			impl<'cx, 'tcx> TypeFolder<'tcx> for Resolver<'cx, 'tcx> 
+TypeWrapper			impl TypeWrapper 
+TypeWrapper			struct TypeWrapper((u8, u8));
 UnelidableRscope			impl UnelidableRscope 
 UnelidableRscope			pub struct UnelidableRscope(Option<Vec<ElisionFailureInfo>>);
 UnresolvedTypeAction			pub enum UnresolvedTypeAction 
@@ -273,8 +274,8 @@ UnsafetyChecker			struct UnsafetyChecker<'cx, 'tcx:'cx>
 UnsafetyState			impl UnsafetyState 
 UnsafetyState			pub struct UnsafetyState 
 UnsizeKind			enum UnsizeKind<'tcx> 
-VarianceTerm			enum VarianceTerm<'a> 
-Vec			impl Vec<u8> { ... } \/\/ error
+VarianceTerm			pub enum VarianceTerm<'a> 
+Vec			impl Vec<u8> { } \/\/ error
 Visitor			        struct Visitor<'a, 'tcx:'a> 
 Visitor for AdjustBorrowKind			impl<'a, 'tcx, 'v> Visitor<'v> for AdjustBorrowKind<'a, 'tcx> 
 Visitor for CheckItemBodiesVisitor			impl<'a, 'tcx> Visitor<'tcx> for CheckItemBodiesVisitor<'a, 'tcx> 
@@ -289,12 +290,12 @@ Visitor for WritebackCx			impl<'cx, 'tcx, 'v> Visitor<'v> for WritebackCx<'cx, '
 Wrapper			struct Wrapper<T> 
 WritebackCx			impl<'cx, 'tcx> WritebackCx<'cx, 'tcx> 
 WritebackCx			struct WritebackCx<'cx, 'tcx: 'cx> 
-Xform			trait Xform 
+Xform			pub trait Xform 
 Xform for ty			impl Xform for ty::Variance 
 _match			pub mod _match;
 add			    fn add(self, rhs: Foo) -> Foo 
 add_constraint			    fn add_constraint(&mut self,
-add_constraints_from_crate			fn add_constraints_from_crate<'a, 'tcx>(terms_cx: TermsContext<'a, 'tcx>,
+add_constraints_from_crate			pub fn add_constraints_from_crate<'a, 'tcx>(terms_cx: TermsContext<'a, 'tcx>)
 add_constraints_from_mt			    fn add_constraints_from_mt(&mut self,
 add_constraints_from_region			    fn add_constraints_from_region(&mut self,
 add_constraints_from_sig			    fn add_constraints_from_sig(&mut self,
@@ -364,7 +365,7 @@ bar			    fn bar();
 bar			    fn bar<'a,'b:'a>(x: &'a str, y: &'b str);
 bar			    fn bar<'a,'b>(x: &'a str, y: &'b str) 
 bar			fn bar(foo: Foo) -> u32 
-bar			fn bar(x: &str, y: &str) -> &str { ... }
+bar			fn bar(x: &str, y: &str) -> &str { }
 base_def_to_ty			fn base_def_to_ty<'tcx>(this: &AstConv<'tcx>,
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: Span) -> ty::Region 
 base_object_lifetime_default			    fn base_object_lifetime_default(&self, _span: Span) -> ty::Region 
@@ -373,7 +374,7 @@ base_object_lifetime_default			    fn base_object_lifetime_default(&self, span: 
 baz			    fn baz(&self) -> bool { self.0 > 5 }
 baz			    fn baz(&self) -> bool { true }
 baz			    fn baz(&self) -> bool;
-baz			fn baz<'a>(x: &'a str, y: &str) -> &str { ... }
+baz			fn baz<'a>(x: &'a str, y: &str) -> &str { }
 bb			    fn bb() -> i32 { 0 }
 blank_fn_ctxt			pub fn blank_fn_ctxt<'a, 'tcx>(ccx: &'a CrateCtxt<'a, 'tcx>,
 borrow			    fn borrow(&mut self,
@@ -387,7 +388,7 @@ check			pub fn check(tcx: &ty::ctxt)
 check			pub mod check;
 check_addr_ptr_cast			    fn check_addr_ptr_cast<'a>(&self,
 check_argument_types			fn check_argument_types<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-check_assoc_item_is_const			fn check_assoc_item_is_const(pcx: &pat_ctxt, def: def::Def, span: Span) -> bool 
+check_assoc_item_is_const			fn check_assoc_item_is_const(pcx: &pat_ctxt, def: Def, span: Span) -> bool 
 check_bare_fn			fn check_bare_fn<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 check_binop			pub fn check_binop<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 check_binop_assign			pub fn check_binop_assign<'a,'tcx>(fcx: &FnCtxt<'a,'tcx>,
@@ -402,13 +403,13 @@ check_coherence			pub fn check_coherence(crate_context: &CrateCtxt)
 check_const			fn check_const<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 check_const_in_type			fn check_const_in_type<'a,'tcx>(ccx: &'a CrateCtxt<'a,'tcx>,
 check_const_with_ty			fn check_const_with_ty<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-check_crate			pub fn check_crate(tcx: &ty::ctxt, trait_map: ty::TraitMap) 
+check_crate			pub fn check_crate(tcx: &ty::ctxt, trait_map: ty::TraitMap) -> CompileResult 
 check_decl_initializer			pub fn check_decl_initializer<'a,'tcx>(fcx: &FnCtxt<'a,'tcx>,
 check_decl_local			pub fn check_decl_local<'a,'tcx>(fcx: &FnCtxt<'a,'tcx>, local: &'tcx hir::Local)  
 check_def_id			    fn check_def_id(&self, item: &hir::Item, def_id: DefId) 
 check_dereferencable			pub fn check_dereferencable<'a, 'tcx>(pcx: &pat_ctxt<'a, 'tcx>,
 check_drop_impl			pub fn check_drop_impl(tcx: &ty::ctxt, drop_impl_did: DefId) -> Result<(), ()> 
-check_drop_impls			pub fn check_drop_impls(ccx: &CrateCtxt) 
+check_drop_impls			pub fn check_drop_impls(ccx: &CrateCtxt) -> CompileResult 
 check_enum_variants			pub fn check_enum_variants<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
 check_expr			fn check_expr<'a,'tcx>(fcx: &FnCtxt<'a,'tcx>, expr: &'tcx hir::Expr)  
 check_expr_closure			pub fn check_expr_closure<'a,'tcx>(fcx: &FnCtxt<'a,'tcx>,
@@ -437,12 +438,12 @@ check_implementations_of_coerce_unsized			    fn check_implementations_of_coerce
 check_implementations_of_copy			    fn check_implementations_of_copy(&self) 
 check_intrinsic_type			pub fn check_intrinsic_type(ccx: &CrateCtxt, it: &hir::ForeignItem) 
 check_item			    fn check_item(&self, item: &hir::Item) 
-check_item_bodies			pub fn check_item_bodies(ccx: &CrateCtxt) 
+check_item_bodies			pub fn check_item_bodies(ccx: &CrateCtxt) -> CompileResult 
 check_item_body			pub fn check_item_body<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>, it: &'tcx hir::Item) 
 check_item_fn			    fn check_item_fn(&mut self,
 check_item_type			pub fn check_item_type<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>, it: &'tcx hir::Item) 
 check_item_type			    fn check_item_type(&mut self,
-check_item_types			pub fn check_item_types(ccx: &CrateCtxt) 
+check_item_types			pub fn check_item_types(ccx: &CrateCtxt) -> CompileResult 
 check_item_well_formed			    fn check_item_well_formed(&mut self, item: &hir::Item) 
 check_legal_trait_for_method_call			pub fn check_legal_trait_for_method_call(ccx: &CrateCtxt, span: Span, trait_id: DefId) 
 check_lit			fn check_lit<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
@@ -454,7 +455,7 @@ check_method_call			    fn check_method_call<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 check_method_receiver			    fn check_method_receiver<'fcx>(&mut self,
 check_overloaded_binop			fn check_overloaded_binop<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 check_pat			pub fn check_pat<'a, 'tcx>(pcx: &pat_ctxt<'a, 'tcx>,
-check_pat_enum			pub fn check_pat_enum<'a, 'tcx>(pcx: &pat_ctxt<'a, 'tcx>,
+check_pat_enum			fn check_pat_enum<'a, 'tcx>(pcx: &pat_ctxt<'a, 'tcx>,
 check_pat_struct			pub fn check_pat_struct<'a, 'tcx>(pcx: &pat_ctxt<'a, 'tcx>, pat: &'tcx hir::Pat,
 check_platform_intrinsic_type			pub fn check_platform_intrinsic_type(ccx: &CrateCtxt,
 check_primitive_impl			    fn check_primitive_impl(&self,
@@ -482,7 +483,7 @@ check_type_defn			    fn check_type_defn<F>(&mut self, item: &hir::Item, mut loo
 check_unsafety_coherence			    fn check_unsafety_coherence(&mut self, item: &'v hir::Item,
 check_user_unop			pub fn check_user_unop<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 check_variances_for_type_defn			    fn check_variances_for_type_defn(&self,
-check_wf_new			pub fn check_wf_new(ccx: &CrateCtxt) 
+check_wf_new			pub fn check_wf_new(ccx: &CrateCtxt) -> CompileResult 
 check_where_clauses			    fn check_where_clauses<'fcx>(&mut self,
 closure			mod closure;
 closure_analyze_const			pub fn closure_analyze_const(fcx: &FnCtxt,
@@ -528,6 +529,7 @@ constrain_callee			fn constrain_callee(rcx: &mut Rcx,
 constrain_cast			fn constrain_cast(rcx: &mut Rcx,
 constrain_index			fn constrain_index<'a, 'tcx>(rcx: &mut Rcx<'a, 'tcx>,
 constrained_type_params			mod constrained_type_params;
+constraints			mod constraints;
 consume			    fn consume(&mut self,
 consume_pat			    fn consume_pat(&mut self,
 contravariant			    fn contravariant(&mut self,
@@ -575,7 +577,7 @@ default_type_parameters			    fn default_type_parameters(&self)
 defined			trait defined in another crate) where
 demand			pub mod demand;
 demo			fn demo(devil: fn () -> !) 
-determine_parameters_to_be_inferred			fn determine_parameters_to_be_inferred<'a, 'tcx>(tcx: &'a ty::ctxt<'tcx>,
+determine_parameters_to_be_inferred			pub fn determine_parameters_to_be_inferred<'a, 'tcx>(
 determine_self_type			fn determine_self_type<'a, 'tcx>(this: &AstConv<'tcx>,
 diagnostics			pub mod diagnostics;
 disr_in_range			    fn disr_in_range(ccx: &CrateCtxt,
@@ -583,9 +585,7 @@ do_check			    fn do_check<'a>(&self, fcx: &FnCtxt<'a, 'tcx>) -> Result<CastKind
 do_check			    fn do_check<'a, 'tcx>(ccx: &CrateCtxt<'a, 'tcx>,
 do_something			    fn do_something(&self) -> T;
 do_something			    fn do_something() 
-do_something			fn do_something() 
 do_something			fn do_something(x: Foo::Bar) { }
-do_something			fn do_something(x: MyMod::MySubMod) { }
 do_something_else			    fn do_something_else<T: Clone>(&self, bar: T);
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) {}
@@ -655,9 +655,9 @@ foo			    fn foo(x: bool) -> Self { Bar }
 foo			    fn foo(x: i16) { }
 foo			    fn foo(x: u16);
 foo			    fn foo<T: Default>(x: T) -> Self;
-foo			extern "C" fn foo (x: u8, ...);
+foo			extern "C" fn foo(x: u8, ...);
 foo			fn foo() -> ! { return; } \/\/ error
-foo			fn foo() -> &str { ... }
+foo			fn foo() -> &str { }
 foo			fn foo() -> _ { 5 } \/\/ error, explicitly write out the return type instead
 foo			fn foo() -> u8 
 foo			fn foo() -> usize { 12 }
@@ -690,6 +690,8 @@ get_item_type_scheme			    fn get_item_type_scheme(&self, span: Span, id: DefId)
 get_item_type_scheme			    fn get_item_type_scheme(&self, _: Span, id: DefId)
 get_item_type_scheme			    fn get_item_type_scheme(&self, span: Span, id: DefId)
 get_or_create_type_parameter_def			fn get_or_create_type_parameter_def<'a,'tcx>(ccx: &CrateCtxt<'a,'tcx>,
+get_state			    fn get_state(&self) -> String 
+get_state			    fn get_state(&self) -> String;
 get_str			    fn get_str(&self) -> &'static str 
 get_trait_def			    fn get_trait_def(&self, span: Span, id: DefId)
 get_trait_def			    fn get_trait_def(&self, _: Span, id: DefId)
@@ -700,7 +702,7 @@ get_type_parameter_bounds			    fn get_type_parameter_bounds(&self,
 get_type_parameter_bounds			    fn get_type_parameter_bounds(&self,
 get_type_substs_for_defs			fn get_type_substs_for_defs<'tcx>(this: &AstConv<'tcx>,
 get_value			    fn get_value<'a>(&'a self) -> &'a str { &self.value }
-glb			fn glb(v1: ty::Variance, v2: ty::Variance) -> ty::Variance 
+glb			pub fn glb(v1: ty::Variance, v2: ty::Variance) -> ty::Variance 
 handle_external_def			        fn handle_external_def(traits: &mut AllTraitsVec,
 has_applicable_self			    fn has_applicable_self(&self, item: &ty::ImplOrTraitItem) -> bool 
 has_dtor_of_interest			fn has_dtor_of_interest<'tcx>(tcx: &ty::ctxt<'tcx>,
@@ -762,7 +764,7 @@ link_region			fn link_region<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 link_region_from_node_type			fn link_region_from_node_type<'a, 'tcx>(rcx: &Rcx<'a, 'tcx>,
 local_ty			    pub fn local_ty(&self, span: Span, nid: ast::NodeId) -> Ty<'tcx> 
 lookup			pub fn lookup<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
-lookup_full_def			fn lookup_full_def(tcx: &ty::ctxt, sp: Span, id: ast::NodeId) -> def::Def 
+lookup_full_def			fn lookup_full_def(tcx: &ty::ctxt, sp: Span, id: ast::NodeId) -> Def 
 lookup_in_trait			pub fn lookup_in_trait<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 lookup_in_trait_adjusted			pub fn lookup_in_trait_adjusted<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
 lookup_indexing			fn lookup_indexing<'a, 'tcx>(fcx: &FnCtxt<'a, 'tcx>,
@@ -812,11 +814,12 @@ next			    fn next(&mut self) -> Option<TraitInfo>
 next_disr			    fn next_disr(tcx: &ty::ctxt,
 next_region			    fn next_region(&self) -> ty::Region 
 node_ty			    pub fn node_ty(&self, id: ast::NodeId) -> Ty<'tcx> 
+nor			struct nor an enum. Erroneous code example:
 normalize_associated_type			    fn normalize_associated_type(&self,
 normalize_associated_types_in			pub fn normalize_associated_types_in<'a,'tcx,T>(infcx: &InferCtxt<'a,'tcx>,
 normalize_associated_types_in			    fn normalize_associated_types_in<T>(&self, span: Span, value: &T) -> T
 normalize_associated_types_in			    fn normalize_associated_types_in<T>(&self,
-num_inferred			    fn num_inferred(&self) -> usize 
+num_inferred			    pub fn num_inferred(&self) -> usize 
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region> 
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region> 
 object_lifetime_default			    fn object_lifetime_default(&self, span: Span) -> Option<ty::Region>;
@@ -929,7 +932,6 @@ rscope			mod rscope;
 rvalue_hint			    fn rvalue_hint(tcx: &ty::ctxt<'tcx>, ty: Ty<'tcx>) -> Expectation<'tcx> 
 select_all_obligations_and_apply_defaults			    fn select_all_obligations_and_apply_defaults(&self) 
 select_all_obligations_or_error			    fn select_all_obligations_or_error(&self) 
-select_new_obligations			    fn select_new_obligations(&self) 
 select_obligations_where_possible			    fn select_obligations_where_possible(&self) 
 self_type_matches_expected_vid			fn self_type_matches_expected_vid<'a,'tcx>(
 sess			    pub fn sess(&self) -> &Session 
@@ -942,8 +944,9 @@ simd_shuffle8			    fn simd_shuffle8<A,B>(a: A, b: A, c: [u32; 8]) -> B;
 size_of			    fn size_of<T, U>() -> usize; \/\/ error: intrinsic has wrong number
 size_of			    fn size_of<T>() -> usize; \/\/ ok!
 size_of			    fn size_of<T>(); \/\/ error: intrinsic has wrong type
+solve			mod solve;
 solve			    fn solve(&mut self) 
-solve_constraints			fn solve_constraints(constraints_cx: ConstraintContext) 
+solve_constraints			pub fn solve_constraints(constraints_cx: ConstraintContext) 
 some_func			fn some_func(i: &mut i32) 
 some_func			fn some_func(x: &mut i32) 
 some_func			fn some_func(x: &u32) 
@@ -977,6 +980,7 @@ tcx			    fn tcx(&self) -> &'cx ty::ctxt<'tcx>
 tcx			    fn tcx<'a>(&'a self) -> &'a ty::ctxt<'tcx> 
 tcx			    fn tcx(&self) -> &ty::ctxt<'tcx> { self.ccx.tcx }
 tcx			    fn tcx(&self) -> &'a ty::ctxt<'tcx> 
+terms			mod terms;
 to_option			    fn to_option<'a>(self, fcx: &FnCtxt<'a, 'tcx>) -> Option<Ty<'tcx>> 
 to_source			    fn to_source(&self) -> CandidateSource 
 to_ty			    pub fn to_ty(&self, ast_t: &hir::Ty) -> Ty<'tcx> 
@@ -1054,6 +1058,7 @@ visit_fn			    fn visit_fn(&mut self, _: intravisit::FnKind<'tcx>, _: &'tcx hir:
 visit_fn			    fn visit_fn(&mut self, _fk: intravisit::FnKind<'v>, fd: &'v hir::FnDecl,
 visit_fn			    fn visit_fn(&mut self,
 visit_fn_body			    fn visit_fn_body(&mut self,
+visit_fru_field_types			    fn visit_fru_field_types(&self) 
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'v hir::ImplItem) 
 visit_item			            fn visit_item(&mut self, i: &'v hir::Item) 
 visit_item			    fn visit_item(&mut self, i: &'tcx hir::Item) 
@@ -1064,6 +1069,7 @@ visit_item			    fn visit_item(&mut self, item: &'v hir::Item)
 visit_item			    fn visit_item(&mut self, item: &'v hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
+visit_item			    fn visit_item(&mut self, item: &hir::Item) 
 visit_liberated_fn_sigs			    fn visit_liberated_fn_sigs(&self) 
 visit_local			    fn visit_local(&mut self, local: &'tcx hir::Local) 
 visit_local			    fn visit_local(&mut self, l: &hir::Local) { visit_local(self, l); }
@@ -1071,7 +1077,6 @@ visit_local			fn visit_local(rcx: &mut Rcx, l: &hir::Local)
 visit_local			    fn visit_local(&mut self, l: &hir::Local) 
 visit_method_map_entry			    fn visit_method_map_entry(&self,
 visit_node_id			    fn visit_node_id(&self, reason: ResolveReason, id: ast::NodeId) 
-visit_old_school_wf			    fn visit_old_school_wf(&mut self,
 visit_pat			    fn visit_pat(&mut self, p: &'tcx hir::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &hir::Pat) 
 visit_region_obligations			    fn visit_region_obligations(&mut self, node_id: ast::NodeId)
@@ -1108,6 +1113,7 @@ x86_mm_movemask_pd			    fn x86_mm_movemask_pd(x: f64x2) -> i32;
 x86_mm_movemask_pd			    fn x86_mm_movemask_pd(x: f64x2, y: f64x2, z: f64x2) -> i32;
 x86_mm_movemask_pd			    fn x86_mm_movemask_pd<T>(x: f64x2) -> i32;
 xform			    fn xform(&mut self,
+xform			mod xform;
 xform			    fn xform(self, v: Self) -> Self;
 xform			    fn xform(self, v: ty::Variance) -> ty::Variance 
 xform_method_self_ty			    fn xform_method_self_ty(&self,

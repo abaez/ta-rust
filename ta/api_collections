@@ -12,6 +12,7 @@ BTreeMap			pub struct BTreeMap<K, V>
 BTreeSet			impl<T: Ord> BTreeSet<T> 
 BTreeSet			impl<T> BTreeSet<T> 
 BTreeSet			pub struct BTreeSet<T> 
+BackPlace			pub struct BackPlace<'a, T: 'a> 
 BinaryHeap			impl<T: Ord> BinaryHeap<T> 
 BinaryHeap			pub struct BinaryHeap<T> 
 BitAnd			impl<'a, 'b, T: Ord + Clone> BitAnd<&'b BTreeSet<T>> for &'a BTreeSet<T> 
@@ -35,6 +36,7 @@ Clone for Difference			impl<'a, T> Clone for Difference<'a, T>
 Clone for EnumSet			impl<E> Clone for EnumSet<E> 
 Clone for Handle			impl<Node: Copy, Type> Clone for Handle<Node, Type> 
 Clone for Intersection			impl<'a, T> Clone for Intersection<'a, T> 
+Clone for IntoIter			impl<T: Clone> Clone for IntoIter<T> 
 Clone for Iter			impl<'a, T> Clone for Iter<'a, T> 
 Clone for Iter			impl<'a, K, V> Clone for Iter<'a, K, V> 
 Clone for Iter			impl<'a, T> Clone for Iter<'a, T> 
@@ -109,6 +111,7 @@ Drop for LinkedList			impl<T> Drop for LinkedList<T>
 Drop for Vec			impl<T> Drop for Vec<T> 
 Drop for VecDeque			impl<T> Drop for VecDeque<T> 
 Edge			    pub enum Edge { }
+EncodeUtf16			pub struct EncodeUtf16<'a> 
 Entry			impl<'a, K: Ord, V> Entry<'a, K, V> 
 Entry			pub enum Entry<'a, K: 'a, V: 'a> 
 EnumSet			impl<E: CLike> EnumSet<E> 
@@ -124,13 +127,13 @@ ExactSizeIterator for Drain			impl<'a, T> ExactSizeIterator for Drain<'a, T> {}
 ExactSizeIterator for Drain			impl<'a, T: 'a> ExactSizeIterator for Drain<'a, T> {}
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
 ExactSizeIterator for IntoIter			impl<K, V> ExactSizeIterator for IntoIter<K, V> 
-ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
+ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> 
 ExactSizeIterator for IntoIter			impl<A> ExactSizeIterator for IntoIter<A> {}
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
 ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
 ExactSizeIterator for Iter			impl<'a, K: 'a, V: 'a> ExactSizeIterator for Iter<'a, K, V> 
-ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
+ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> 
 ExactSizeIterator for Iter			impl<'a, A> ExactSizeIterator for Iter<'a, A> {}
 ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
 ExactSizeIterator for IterMut			impl<'a, K: 'a, V: 'a> ExactSizeIterator for IterMut<'a, K, V> 
@@ -160,8 +163,10 @@ ForceResult			pub enum ForceResult<Leaf, Internal>
 From			impl<T: Ord> From<Vec<T>> for BinaryHeap<T> 
 From			impl<T> From<BinaryHeap<T>> for Vec<T> 
 From			impl<'a, T> From<&'a mut Link<T>> for Rawlink<Node<T>> 
+From			impl<'a, T: Clone> From<Vec<T>> for Cow<'a, [T]> 
 From for Cow			impl<'a> From<&'a str> for Cow<'a, str> 
 From for Cow			impl<'a> From<String> for Cow<'a, str> 
+From for Cow			impl<'a, T: Clone> From<&'a [T]> for Cow<'a, [T]> 
 From for String			impl<'a> From<&'a str> for String 
 From for Vec			impl<'a, T: Clone> From<&'a [T]> for Vec<T> 
 From for Vec			impl<'a> From<&'a str> for Vec<u8> 
@@ -180,6 +185,7 @@ FromStr for String			impl FromStr for String
 FromUtf16Error			pub struct FromUtf16Error(());
 FromUtf8Error			impl FromUtf8Error 
 FromUtf8Error			pub struct FromUtf8Error 
+FrontPlace			pub struct FrontPlace<'a, T: 'a> 
 Handle			impl<'a, K, V, NodeType> Handle<NodeRef<marker::Mut<'a>, K, V, NodeType>, marker::KV> 
 Handle			impl<'a, K, V> Handle<NodeRef<marker::Mut<'a>, K, V, marker::Internal>, marker::Edge> 
 Handle			impl<'a, K, V> Handle<NodeRef<marker::Mut<'a>, K, V, marker::Internal>, marker::KV> 
@@ -196,6 +202,8 @@ Hash for VecDeque			impl<A: Hash> Hash for VecDeque<A>
 Hole			impl<'a, T> Hole<'a, T> 
 Hole			struct Hole<'a, T: 'a> 
 Immut			    pub struct Immut<'a>(PhantomData<&'a ()>);
+InPlace for BackPlace			impl<'a, T> InPlace<T> for BackPlace<'a, T> 
+InPlace for FrontPlace			impl<'a, T> InPlace<T> for FrontPlace<'a, T> 
 Index for BTreeMap			impl<'a, K: Ord, Q: ?Sized, V> Index<&'a Q> for BTreeMap<K, V>
 Index for Vec			impl<T> Index<usize> for Vec<T> 
 Index for VecDeque			impl<A> Index<usize> for VecDeque<A> 
@@ -219,7 +227,7 @@ IntoIter			pub struct IntoIter<T>
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
-IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T> where T: Ord 
+IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T>
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a BTreeMap<K, V> 
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a mut BTreeMap<K, V> 
 IntoIterator			impl<'a, T> IntoIterator for &'a BTreeSet<T> 
@@ -252,6 +260,7 @@ Iterator for Drain			impl<'a, T: 'a> Iterator for Drain<'a, T>
 Iterator for Drain			impl<'a> Iterator for Drain<'a> 
 Iterator for Drain			impl<'a, T> Iterator for Drain<'a, T> 
 Iterator for Drain			impl<'a, T: 'a> Iterator for Drain<'a, T> 
+Iterator for EncodeUtf16			impl<'a> Iterator for EncodeUtf16<'a> 
 Iterator for Intersection			impl<'a, T: Ord> Iterator for Intersection<'a, T> 
 Iterator for IntoIter			impl<T> Iterator for IntoIter<T> 
 Iterator for IntoIter			impl<K, V> Iterator for IntoIter<K, V> 
@@ -274,7 +283,6 @@ Iterator for Range			impl<'a, T> Iterator for Range<'a, T>
 Iterator for RangeMut			impl<'a, K, V> Iterator for RangeMut<'a, K, V> 
 Iterator for SymmetricDifference			impl<'a, T: Ord> Iterator for SymmetricDifference<'a, T> 
 Iterator for Union			impl<'a, T: Ord> Iterator for Union<'a, T> 
-Iterator for Utf16Units			impl<'a> Iterator for Utf16Units<'a> 
 Iterator for Values			impl<'a, K, V> Iterator for Values<'a, K, V> 
 KV			    pub enum KV { }
 Keys			pub struct Keys<'a, K: 'a, V: 'a> 
@@ -324,6 +332,10 @@ PartialOrd for LinkedList			impl<A: PartialOrd> PartialOrd for LinkedList<A>
 PartialOrd for Vec			impl<T: PartialOrd> PartialOrd for Vec<T> 
 PartialOrd for VecDeque			impl<A: PartialOrd> PartialOrd for VecDeque<A> 
 Pattern			impl<'a, 'b> Pattern<'a> for &'b String 
+Place for BackPlace			impl<'a, T> Place<T> for BackPlace<'a, T> 
+Place for FrontPlace			impl<'a, T> Place<T> for FrontPlace<'a, T> 
+Placer for BackPlace			impl<'a, T> Placer<T> for BackPlace<'a, T> 
+Placer for FrontPlace			impl<'a, T> Placer<T> for FrontPlace<'a, T> 
 Range			impl<'a, K, V> Range<'a, K, V> 
 Range			pub struct Range<'a, K: 'a, V: 'a> 
 Range			pub struct Range<'a, T: 'a> 
@@ -370,7 +382,6 @@ ToString			pub trait ToString
 ToString for T			impl<T: fmt::Display + ?Sized> ToString for T 
 UnderflowResult			enum UnderflowResult<'a, K, V> 
 Union			pub struct Union<'a, T: 'a> 
-Utf16Units			pub struct Utf16Units<'a> 
 VacantEntry			impl<'a, K: Ord, V> VacantEntry<'a, K, V> 
 VacantEntry			pub struct VacantEntry<'a, K: 'a, V: 'a> 
 Values			pub struct Values<'a, K: 'a, V: 'a> 
@@ -419,6 +430,7 @@ back			    pub fn back(&self) -> Option<&T>
 back			    pub fn back(&self) -> Option<&T> 
 back_mut			    pub fn back_mut(&mut self) -> Option<&mut T> 
 back_mut			    pub fn back_mut(&mut self) -> Option<&mut T> 
+back_place			    pub fn back_place(&mut self) -> BackPlace<T> 
 bench_pop_back_100			    fn bench_pop_back_100(b: &mut test::Bencher) 
 bench_pop_front_100			    fn bench_pop_front_100(b: &mut test::Bencher) 
 bench_push_back_100			    fn bench_push_back_100(b: &mut test::Bencher) 
@@ -494,6 +506,7 @@ clone			    fn clone(&self) -> LinkedList<A>
 clone			    fn clone(&self) -> Rawlink<T> 
 clone			    fn clone(&self) -> ParseError 
 clone			    fn clone(&self) -> Self 
+clone			    fn clone(&self) -> IntoIter<T> 
 clone			    fn clone(&self) -> Vec<T> 
 clone			    fn clone(&self) -> Iter<'a, T> 
 clone			    fn clone(&self) -> VecDeque<T> 
@@ -520,6 +533,7 @@ contains			    pub fn contains(&self, x: &T) -> bool
 contains			    pub fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 contains_key			    pub fn contains_key<Q: ?Sized>(&self, key: &Q) -> bool where K: Borrow<Q>, Q: Ord 
 copy			    unsafe fn copy(&self, dst: usize, src: usize, len: usize) 
+copy_from_slice			    pub fn copy_from_slice(&mut self, src: &[T]) where T: Copy 
 copy_nonoverlapping			    unsafe fn copy_nonoverlapping(&self, dst: usize, src: usize, len: usize) 
 correct_parent_link			    fn correct_parent_link(mut self) 
 count			    fn count(self) -> usize 
@@ -552,6 +566,7 @@ drop			    fn drop(&mut self)
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 element			    fn element(&self) -> &T 
+encode_utf16			    pub fn encode_utf16(&self) -> EncodeUtf16 
 end			    fn end(&self) -> Option<&T> 
 ends_with			    pub fn ends_with(&self, needle: &[T]) -> bool
 ends_with			    pub fn ends_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool
@@ -590,6 +605,8 @@ extend			    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T)
 extend_desugared			    fn extend_desugared<I: Iterator<Item = T>>(&mut self, mut iterator: I) 
 extend_from_slice			    pub fn extend_from_slice(&mut self, other: &[T]) 
 extend_with_element			    fn extend_with_element(&mut self, n: usize, value: T) 
+finalize			    unsafe fn finalize(self) 
+finalize			unsafe fn finalize<T>(node: IntermediateBox<Node<T>>) -> Box<Node<T>> 
 find			    pub fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize> 
 first			    pub fn first(&self) -> Option<&T> 
 first_edge			    pub fn first_edge(self) -> Handle<Self, marker::Edge> 
@@ -617,6 +634,7 @@ fmt::Debug for VecDeque			impl<T: fmt::Debug> fmt::Debug for VecDeque<T>
 fmt::Display for Cow			impl<'a, B: ?Sized> fmt::Display for Cow<'a, B>
 fmt::Display for FromUtf16Error			impl fmt::Display for FromUtf16Error 
 fmt::Display for FromUtf8Error			impl fmt::Display for FromUtf8Error 
+fmt::Display for ParseError			impl fmt::Display for ParseError 
 fmt::Display for String			impl fmt::Display for String 
 fmt::Write for String			impl fmt::Write for String 
 force			    pub fn force(self) -> ForceResult<
@@ -629,8 +647,10 @@ from			    fn from(_: &str) -> String
 from			    fn from(s: &'a str) -> Cow<'a, str> 
 from			    fn from(s: &'a str) -> String 
 from			    fn from(s: String) -> Cow<'a, str> 
+from			    fn from(s: &'a [T]) -> Cow<'a, [T]> 
 from			    fn from(s: &'a [T]) -> Vec<T> 
 from			    fn from(s: &'a str) -> Vec<u8> 
+from			    fn from(v: Vec<T>) -> Cow<'a, [T]> 
 from_elem			pub fn from_elem<T: Clone>(elem: T, n: usize) -> Vec<T> 
 from_internal			    fn from_internal(node: Box<InternalNode<K, V>>) -> Self 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> BinaryHeap<T> 
@@ -660,6 +680,7 @@ front			    pub fn front(&self) -> Option<&T>
 front			    pub fn front(&self) -> Option<&T> 
 front_mut			    pub fn front_mut(&mut self) -> Option<&mut T> 
 front_mut			    pub fn front_mut(&mut self) -> Option<&mut T> 
+front_place			    pub fn front_place(&mut self) -> FrontPlace<T> 
 fuzz_test			    fn fuzz_test(sz: i32) 
 get			    unsafe fn get(&self, index: usize) -> &T 
 get			    fn get(&self, key: &Q) -> Option<&K> 
@@ -814,6 +835,7 @@ len			    fn len(&self) -> usize { self.length }
 len			    fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
+len			    fn len(&self) -> usize { self.iter.len() }
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
@@ -828,6 +850,7 @@ link_no_prev			fn link_no_prev<T>(mut next: Box<Node<T>>) -> Link<T>
 linked_list			pub mod linked_list;
 list_from			    fn list_from<T: Clone>(v: &[T]) -> LinkedList<T> 
 macros			mod macros;
+make_place			    fn make_place(self) -> Self 
 map			pub mod map;
 map_uppercase_sigma			        fn map_uppercase_sigma(from: &str, i: usize, to: &mut String) 
 marker			pub mod marker 
@@ -928,6 +951,7 @@ partial_cmp			    fn partial_cmp(&self, other: &Vec<T>) -> Option<Ordering>
 partial_cmp			    fn partial_cmp(&self, other: &VecDeque<A>) -> Option<Ordering> 
 peek			    pub fn peek(&self) -> Option<&T> 
 peek_next			    pub fn peek_next(&mut self) -> Option<&mut A> 
+pointer			    fn pointer(&mut self) -> *mut T 
 pop			    pub fn pop(&mut self) -> Option<T> 
 pop			    pub fn pop(&mut self) -> (K, V, Option<Root<K, V>>) 
 pop			    pub fn pop(&mut self) -> Option<char> 

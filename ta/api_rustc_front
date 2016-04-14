@@ -69,7 +69,7 @@ NodeIdAssigner for MockAssigner			    impl NodeIdAssigner for MockAssigner
 ParenthesizedParameterData			pub struct ParenthesizedParameterData 
 PartialEq for Ident			impl PartialEq for Ident 
 Pat			pub struct Pat 
-Pat_			pub enum Pat_ 
+PatKind			pub enum PatKind 
 Path			pub struct Path 
 PathListItem_			impl PathListItem_ 
 PathListItem_			pub enum PathListItem_ 
@@ -274,7 +274,7 @@ lower_binop			pub fn lower_binop(_lctx: &LoweringContext, b: BinOp) -> hir::BinO
 lower_block			pub fn lower_block(lctx: &LoweringContext, b: &Block) -> P<hir::Block> 
 lower_block_check_mode			pub fn lower_block_check_mode(lctx: &LoweringContext, b: &BlockCheckMode) -> hir::BlockCheckMode 
 lower_bounds			fn lower_bounds(lctx: &LoweringContext, bounds: &TyParamBounds) -> hir::TyParamBounds 
-lower_capture_clause			pub fn lower_capture_clause(_lctx: &LoweringContext, c: CaptureClause) -> hir::CaptureClause 
+lower_capture_clause			pub fn lower_capture_clause(_lctx: &LoweringContext, c: CaptureBy) -> hir::CaptureClause 
 lower_constness			pub fn lower_constness(_lctx: &LoweringContext, c: Constness) -> hir::Constness 
 lower_crate			pub fn lower_crate(lctx: &LoweringContext, c: &Crate) -> hir::Crate 
 lower_decl			pub fn lower_decl(lctx: &LoweringContext, d: &Decl) -> P<hir::Decl> 
@@ -291,7 +291,7 @@ lower_impl_item			pub fn lower_impl_item(lctx: &LoweringContext, i: &ImplItem) -
 lower_impl_polarity			pub fn lower_impl_polarity(_lctx: &LoweringContext, i: ImplPolarity) -> hir::ImplPolarity 
 lower_item			pub fn lower_item(lctx: &LoweringContext, i: &Item) -> hir::Item 
 lower_item_id			pub fn lower_item_id(_lctx: &LoweringContext, i: &Item) -> hir::ItemId 
-lower_item_underscore			pub fn lower_item_underscore(lctx: &LoweringContext, i: &Item_) -> hir::Item_ 
+lower_item_kind			pub fn lower_item_kind(lctx: &LoweringContext, i: &ItemKind) -> hir::Item_ 
 lower_lifetime			pub fn lower_lifetime(_lctx: &LoweringContext, l: &Lifetime) -> hir::Lifetime 
 lower_lifetime_def			pub fn lower_lifetime_def(lctx: &LoweringContext, l: &LifetimeDef) -> hir::LifetimeDef 
 lower_lifetime_defs			pub fn lower_lifetime_defs(lctx: &LoweringContext,
@@ -308,6 +308,7 @@ lower_parenthesized_parameter_data			pub fn lower_parenthesized_parameter_data(l
 lower_pat			pub fn lower_pat(lctx: &LoweringContext, p: &Pat) -> P<hir::Pat> 
 lower_path			pub fn lower_path(lctx: &LoweringContext, p: &Path) -> hir::Path 
 lower_path_full			pub fn lower_path_full(lctx: &LoweringContext, p: &Path, maybe_hygienic: bool) -> hir::Path 
+lower_path_list_item			fn lower_path_list_item(path_list_ident: &PathListItem) -> hir::PathListItem 
 lower_path_parameters			pub fn lower_path_parameters(lctx: &LoweringContext,
 lower_poly_trait_ref			pub fn lower_poly_trait_ref(lctx: &LoweringContext, p: &PolyTraitRef) -> hir::PolyTraitRef 
 lower_stmt			pub fn lower_stmt(lctx: &LoweringContext, s: &Stmt) -> hir::Stmt 
@@ -407,7 +408,7 @@ noop_fold_where_clause			pub fn noop_fold_where_clause<T: Folder>(WhereClause { 
 noop_fold_where_predicate			pub fn noop_fold_where_predicate<T: Folder>(pred: WherePredicate, fld: &mut T) -> WherePredicate 
 parse_sess			        fn parse_sess(&self) -> &parse::ParseSess 
 parse_sess			        fn parse_sess(&self) -> &parse::ParseSess;
-pat			fn pat(lctx: &LoweringContext, span: Span, pat: hir::Pat_) -> P<hir::Pat> 
+pat			fn pat(lctx: &LoweringContext, span: Span, pat: hir::PatKind) -> P<hir::Pat> 
 pat_enum			fn pat_enum(lctx: &LoweringContext,
 pat_ident			fn pat_ident(lctx: &LoweringContext, span: Span, ident: hir::Ident) -> P<hir::Pat> 
 pat_ident_binding_mode			fn pat_ident_binding_mode(lctx: &LoweringContext,
@@ -425,7 +426,7 @@ post			    fn post(&self, _state: &mut State, _node: AnnNode) -> io::Result<()>
 pprust			    pub mod pprust;
 pre			    fn pre(&self, _state: &mut State, _node: AnnNode) -> io::Result<()> 
 print			pub mod print 
-print_arg			    pub fn print_arg(&mut self, input: &hir::Arg) -> io::Result<()> 
+print_arg			    pub fn print_arg(&mut self, input: &hir::Arg, is_closure: bool) -> io::Result<()> 
 print_arm			    fn print_arm(&mut self, arm: &hir::Arm) -> io::Result<()> 
 print_associated_const			    fn print_associated_const(&mut self,
 print_associated_type			    fn print_associated_type(&mut self,
@@ -453,7 +454,7 @@ print_expr_struct			    fn print_expr_struct(&mut self,
 print_expr_tup			    fn print_expr_tup(&mut self, exprs: &[P<hir::Expr>]) -> io::Result<()> 
 print_expr_unary			    fn print_expr_unary(&mut self, op: hir::UnOp, expr: &hir::Expr) -> io::Result<()> 
 print_expr_vec			    fn print_expr_vec(&mut self, exprs: &[P<hir::Expr>]) -> io::Result<()> 
-print_extern_opt_abi			    pub fn print_extern_opt_abi(&mut self, opt_abi: Option<abi::Abi>) -> io::Result<()> 
+print_extern_opt_abi			    pub fn print_extern_opt_abi(&mut self, opt_abi: Option<Abi>) -> io::Result<()> 
 print_fn			    pub fn print_fn(&mut self,
 print_fn_args			    pub fn print_fn_args(&mut self,
 print_fn_args_and_ret			    pub fn print_fn_args_and_ret(&mut self,

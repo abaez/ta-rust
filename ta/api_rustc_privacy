@@ -4,11 +4,11 @@ Bar			    struct Bar(u32);
 Bar			impl Bar {}
 Bar			mod Bar 
 Bar			pub impl Bar {} \/\/ error: unnecessary visibility qualifier
-Bar			pub struct Bar<T: Foo>(pub T); \/\/ ok!
-Bar			pub struct Bar<T: Foo>(pub T); \/\/ same error
 Bar			pub trait Bar : Foo {} \/\/ error: private trait in public interface
 Bar			pub trait Bar : Foo {} \/\/ ok!
 Bar			struct Bar;
+Bar2			pub struct Bar2<T: Foo>(pub T); \/\/ ok!
+Bar2			pub struct Bar2<T: Foo>(pub T); \/\/ same error
 EmbargoVisitor			impl<'a, 'tcx> EmbargoVisitor<'a, 'tcx> 
 EmbargoVisitor			struct EmbargoVisitor<'a, 'tcx: 'a> 
 FieldName			enum FieldName 
@@ -32,6 +32,8 @@ PrivacyVisitor			impl<'a, 'tcx> PrivacyVisitor<'a, 'tcx>
 PrivacyVisitor			struct PrivacyVisitor<'a, 'tcx: 'a> 
 PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 PrivateItemsInPublicInterfacesVisitor			struct PrivateItemsInPublicInterfacesVisitor<'a, 'tcx: 'a> 
+ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
+ReachEverythingInTheInterfaceVisitor			struct ReachEverythingInTheInterfaceVisitor<'b, 'a: 'b, 'tcx: 'a> 
 SanePrivacyVisitor			impl<'a, 'tcx> SanePrivacyVisitor<'a, 'tcx> 
 SanePrivacyVisitor			struct SanePrivacyVisitor<'a, 'tcx: 'a> 
 SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
@@ -42,6 +44,7 @@ Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> 
 Visitor for ParentVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ParentVisitor<'a, 'tcx> 
 Visitor for PrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivacyVisitor<'a, 'tcx> 
 Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
+Visitor for ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a, 'v> Visitor<'v> for ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
 Visitor for SanePrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for SanePrivacyVisitor<'a, 'tcx> 
 Visitor for SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a, 'v> Visitor<'v> for SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
 bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
@@ -72,10 +75,12 @@ is_public_type_alias			    fn is_public_type_alias(&self, item: &hir::Item, path
 item_is_public			    fn item_is_public(&self, id: &ast::NodeId, vis: hir::Visibility) -> bool 
 local_private_accessible			    fn local_private_accessible(&self, did: DefId) -> bool 
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
-new			        pub fn new(x: isize) 
+new			        pub fn new(x: isize) -> Foo 
 nodestr			    fn nodestr(&self, id: ast::NodeId) -> String 
 path_is_private_type			    fn path_is_private_type(&self, path_id: ast::NodeId) -> bool 
 private_accessible			    fn private_accessible(&self, id: ast::NodeId) -> bool 
+reach			    fn reach<'b>(&'b mut self) -> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
+reach_aliased_type			    fn reach_aliased_type(&mut self, item: &hir::Item, path: &hir::Path) 
 report_error			    fn report_error(&self, result: CheckResult) -> bool 
 trait_is_public			    fn trait_is_public(&self, trait_id: ast::NodeId) -> bool 
 trait_level			    fn trait_level(&self, trait_ref: &hir::TraitRef) -> Option<AccessLevel> 

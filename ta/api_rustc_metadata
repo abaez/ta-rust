@@ -109,7 +109,7 @@ ctxt			pub struct ctxt<'a, 'tcx: 'a>
 custom_coerce_unsized_kind			    fn custom_coerce_unsized_kind(&self, def: DefId)
 data			    pub fn data<'a>(&'a self) -> &'a [u8] { self.data.as_slice() }
 decode_ast			fn decode_ast(par_doc: rbml::Doc) -> InlinedItem 
-decode_def			fn decode_def(dcx: &DecodeContext, dsr: &mut reader::Decoder) -> def::Def 
+decode_def			fn decode_def(dcx: &DecodeContext, dsr: &mut reader::Decoder) -> Def 
 decode_inlined_item			pub fn decode_inlined_item<'tcx>(cdata: &cstore::crate_metadata,
 decode_item_ast			fn decode_item_ast(par_doc: rbml::Doc) -> hir::Item 
 decode_side_tables			fn decode_side_tables(dcx: &DecodeContext,
@@ -286,12 +286,13 @@ encoder			pub mod encoder;
 encoder			impl<'a, 'tcx> encoder::EncodeContext<'a, 'tcx> 
 eq_int			            fn eq_int(a: isize, b: isize) -> bool { a == b }
 existing_match			    fn existing_match(&self, name: &str, hash: Option<&Svh>, kind: PathKind)
+expect_variant_kind			    fn expect_variant_kind<'tcx>(family: Family, tcx: &ty::ctxt<'tcx>) -> ty::VariantKind 
 extern_item_path			    fn extern_item_path(&self, def: DefId) -> Vec<hir_map::PathElem> 
 extern_mod_stmt_cnum			    fn extern_mod_stmt_cnum(&self, emod_id: ast::NodeId) -> Option<ast::CrateNum>
 extract_crate_info			    fn extract_crate_info(&self, i: &ast::Item) -> Option<CrateInfo> 
 extract_crate_info_hir			    fn extract_crate_info_hir(&self, i: &hir::Item) -> Option<CrateInfo> 
 extract_one			    fn extract_one(&mut self, m: HashMap<PathBuf, PathKind>, flavor: &str,
-family_to_variant_kind			    fn family_to_variant_kind<'tcx>(family: Family, tcx: &ty::ctxt<'tcx>) -> ty::VariantKind 
+family_to_variant_kind			fn family_to_variant_kind<'tcx>(family: Family) -> Option<ty::VariantKind> 
 find_commandline_library			    fn find_commandline_library(&mut self, locs: &[String]) -> Option<Library> 
 find_library_crate			    fn find_library_crate(&mut self) -> Option<Library> 
 find_plugin_registrar			    pub fn find_plugin_registrar(&mut self, span: Span, name: &str)
@@ -328,6 +329,7 @@ get_item_attrs			pub fn get_item_attrs(cdata: Cmd,
 get_item_name			pub fn get_item_name(intr: &IdentInterner, cdata: Cmd, id: DefIndex) -> ast::Name 
 get_item_path			pub fn get_item_path(cdata: Cmd, id: DefIndex) -> Vec<hir_map::PathElem> 
 get_item_variances			pub fn get_item_variances(cdata: Cmd, id: DefIndex) -> ty::ItemVariances 
+get_macro_span			pub fn get_macro_span(doc: rbml::Doc) -> Span 
 get_meta_items			fn get_meta_items(md: rbml::Doc) -> Vec<P<ast::MetaItem>> 
 get_metadata_section			fn get_metadata_section(target: &Target, filename: &Path)
 get_metadata_section_imp			fn get_metadata_section_imp(target: &Target, filename: &Path)
@@ -342,6 +344,7 @@ get_provided_trait_methods			pub fn get_provided_trait_methods<'tcx>(intr: Rc<Id
 get_reachable_ids			pub fn get_reachable_ids(cdata: Cmd) -> Vec<DefId> 
 get_repr_attrs			pub fn get_repr_attrs(cdata: Cmd, id: DefIndex) -> Vec<attr::ReprAttr> 
 get_stability			pub fn get_stability(cdata: Cmd, id: DefIndex) -> Option<attr::Stability> 
+get_struct_ctor_def_id			pub fn get_struct_ctor_def_id(cdata: Cmd, node_id: DefIndex) -> Option<DefId>
 get_struct_field_attrs			pub fn get_struct_field_attrs(cdata: Cmd) -> FnvHashMap<DefId, Vec<ast::Attribute>> 
 get_struct_field_names			pub fn get_struct_field_names(intr: &IdentInterner, cdata: Cmd, id: DefIndex)
 get_struct_variant			    fn get_struct_variant<'tcx>(intr: &IdentInterner,
@@ -357,6 +360,7 @@ get_type			pub fn get_type<'tcx>(cdata: Cmd, id: DefIndex, tcx: &ty::ctxt<'tcx>)
 get_used_libraries			    pub fn get_used_libraries<'a>(&'a self)
 get_used_link_args			    pub fn get_used_link_args<'a>(&'a self) -> &'a RefCell<Vec<String> > 
 get_variant_fields			    fn get_variant_fields<'tcx>(intr: &IdentInterner,
+get_variant_kind			pub fn get_variant_kind(cdata: Cmd, node_id: DefIndex) -> Option<VariantKind>
 hash			    pub fn hash(&self) -> Svh { decoder::get_crate_hash(self.data()) }
 id			    fn id(&mut self, id: ast::NodeId) 
 id			    fn id(&mut self, id: ast::NodeId);
@@ -383,15 +387,15 @@ is_default_impl			pub fn is_default_impl(cdata: Cmd, impl_id: DefIndex) -> bool
 is_defaulted_trait			    fn is_defaulted_trait(&self, trait_def_id: DefId) -> bool
 is_defaulted_trait			pub fn is_defaulted_trait(cdata: Cmd, trait_id: DefIndex) -> bool 
 is_explicitly_linked			    fn is_explicitly_linked(&self, cnum: ast::CrateNum) -> bool
-is_extern_fn			    fn is_extern_fn(&self, tcx: &ty::ctxt<'tcx>, did: DefId) -> bool
-is_extern_fn			pub fn is_extern_fn(cdata: Cmd, id: DefIndex, tcx: &ty::ctxt) -> bool 
+is_extern_item			    fn is_extern_item(&self, tcx: &ty::ctxt<'tcx>, did: DefId) -> bool 
+is_extern_item			pub fn is_extern_item(cdata: Cmd, id: DefIndex, tcx: &ty::ctxt) -> bool 
 is_impl			    fn is_impl(&self, did: DefId) -> bool
 is_impl			pub fn is_impl(cdata: Cmd, id: DefIndex) -> bool 
+is_item_mir_available			    fn is_item_mir_available(&self, def: DefId) -> bool 
+is_item_mir_available			pub fn is_item_mir_available<'tcx>(cdata: Cmd, id: DefIndex) -> bool 
 is_last			        fn is_last(b: char, c: char) -> bool { return c == b; }
 is_staged_api			    fn is_staged_api(&self, data: &[u8]) -> bool 
 is_staged_api			    fn is_staged_api(&self, cnum: ast::CrateNum) -> bool
-is_static			    fn is_static(&self, did: DefId) -> bool
-is_static			pub fn is_static(cdata: Cmd, id: DefIndex) -> bool 
 is_static_method			    fn is_static_method(&self, def: DefId) -> bool
 is_static_method			pub fn is_static_method(cdata: Cmd, id: DefIndex) -> bool 
 is_statically_included_foreign_item			    fn is_statically_included_foreign_item(&self, id: ast::NodeId) -> bool
@@ -546,7 +550,7 @@ read_capture_mode			    fn read_capture_mode(&mut self) -> hir::CaptureClause
 read_capture_mode			    fn read_capture_mode(&mut self) -> hir::CaptureClause;
 read_cast_kind			    fn read_cast_kind<'a, 'b>(&mut self, dcx: &DecodeContext<'a, 'b, 'tcx>)
 read_cast_kind			    fn read_cast_kind<'b, 'c>(&mut self, _dcx: &DecodeContext<'b, 'c, 'tcx>)
-read_crates			    pub fn read_crates(&mut self, krate: &hir::Crate) 
+read_crates			    pub fn read_crates(&mut self) 
 read_def_id			    fn read_def_id(&mut self, dcx: &DecodeContext) -> DefId 
 read_def_id			    fn read_def_id(&mut self, dcx: &DecodeContext) -> DefId;
 read_def_id_nodcx			    fn read_def_id_nodcx(&mut self,
@@ -605,6 +609,8 @@ should_link			fn should_link(i: &ast::Item) -> bool
 should_link_hir			fn should_link_hir(i: &hir::Item) -> bool 
 simplify_ast			fn simplify_ast(ii: InlinedItemRef) -> InlinedItem 
 stability			    fn stability(&self, def: DefId) -> Option<attr::Stability>
+staticlibname			    fn staticlibname(&self) -> (String, String) 
+struct_ctor_def_id			    fn struct_ctor_def_id(&self, struct_def_id: DefId) -> Option<DefId>
 struct_field_family_to_visibility			fn struct_field_family_to_visibility(family: Family) -> hir::Visibility 
 struct_field_names			    fn struct_field_names(&self, def: DefId) -> Vec<ast::Name>
 tag			    fn tag<F>(&mut self, tag_id: c::astencode_tag, f: F) where F: FnOnce(&mut Self);
@@ -613,17 +619,17 @@ tcx			    fn tcx<'s>(&'s self) -> &'s ty::ctxt<'tcx>
 tls::DecodingContext for DecodingContext			impl<'a, 'tcx: 'a> tls::DecodingContext<'tcx> for DecodingContext<'a, 'tcx> 
 tls::EncodingContext for encoder			impl<'a, 'tcx: 'a> tls::EncodingContext<'tcx> for encoder::EncodeContext<'a, 'tcx> 
 tls_context			pub mod tls_context;
+tr			    fn tr(&self, dcx: &DecodeContext) -> Def 
 tr			    fn tr(&self, dcx: &DecodeContext) -> DefId 
 tr			    fn tr(&self, dcx: &DecodeContext) -> Option<DefId> 
 tr			    fn tr(&self, dcx: &DecodeContext) -> Self;
 tr			    fn tr(&self, dcx: &DecodeContext) -> codemap::Span 
-tr			    fn tr(&self, dcx: &DecodeContext) -> def::Def 
 tr			    fn tr(&self, dcx: &DecodeContext) -> ty::Freevar 
 tr			trait tr 
+tr for Def			impl tr for Def 
 tr for DefId			impl tr for DefId 
 tr for Option			impl tr for Option<DefId> 
 tr for codemap			impl tr for codemap::Span 
-tr for def			impl tr for def::Def 
 tr for ty			impl tr for ty::Freevar 
 tr_def_id			    pub fn tr_def_id(&self, did: DefId) -> DefId 
 tr_id			    pub fn tr_id(&self, id: ast::NodeId) -> ast::NodeId 
@@ -649,6 +655,7 @@ used_libraries			    fn used_libraries(&self) -> Vec<(String, NativeLibraryKind)
 used_link_args			    fn used_link_args(&self) -> Vec<String>
 validate			        fn validate(me: &CrateReader, krate: ast::CrateNum,
 variant_disr_val			fn variant_disr_val(d: rbml::Doc) -> Option<ty::Disr> 
+variant_kind			    fn variant_kind(&self, def_id: DefId) -> Option<VariantKind> 
 verify_rustc_version			    fn verify_rustc_version(&self,
 visit			        fn visit(cstore: &CStore, cnum: ast::CrateNum,
 visit_def_id			        fn visit_def_id(&mut self, def_id: &mut DefId) 

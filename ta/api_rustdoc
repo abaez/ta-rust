@@ -205,6 +205,9 @@ StructField			pub enum StructField
 StructType			pub enum StructType 
 TY_PRIMITIVE	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var TY_PRIMITIVE = itemTypes.indexOf("primitive");
 TestOptions			pub struct TestOptions 
+ToJson for IndexItem			impl ToJson for IndexItem 
+ToJson for IndexItemFunctionType			impl ToJson for IndexItemFunctionType 
+ToJson for Type			impl ToJson for Type 
 ToSource			trait ToSource 
 ToSource for syntax			impl ToSource for syntax::codemap::Span 
 Toc			impl Toc 
@@ -358,7 +361,6 @@ fmt::Display for AbiSpace			impl fmt::Display for AbiSpace
 fmt::Display for CommaSep			impl<'a, T: fmt::Display> fmt::Display for CommaSep<'a, T> 
 fmt::Display for ConstnessSpace			impl fmt::Display for ConstnessSpace 
 fmt::Display for Escape			impl<'a> fmt::Display for Escape<'a> 
-fmt::Display for IndexItemFunctionType			impl fmt::Display for IndexItemFunctionType 
 fmt::Display for Initializer			impl<'a> fmt::Display for Initializer<'a> 
 fmt::Display for Item			impl<'a> fmt::Display for Item<'a> 
 fmt::Display for ItemType			impl fmt::Display for ItemType 
@@ -371,7 +373,6 @@ fmt::Display for Sidebar			impl<'a> fmt::Display for Sidebar<'a>
 fmt::Display for Source			impl<'a> fmt::Display for Source<'a> 
 fmt::Display for Toc			impl fmt::Display for Toc 
 fmt::Display for TyParamBounds			impl<'a> fmt::Display for TyParamBounds<'a> 
-fmt::Display for Type			impl fmt::Display for Type 
 fmt::Display for UnsafetySpace			impl fmt::Display for UnsafetySpace 
 fmt::Display for VisSpace			impl fmt::Display for VisSpace 
 fmt::Display for WhereClause			impl<'a> fmt::Display for WhereClause<'a> 
@@ -456,7 +457,7 @@ imp			mod imp
 init_ids			fn init_ids() -> HashMap<String, usize> 
 inline			mod inline;
 into_toc			    pub fn into_toc(mut self) -> Toc 
-is_doc_hidden			    fn is_doc_hidden(a: &clean::Attribute) -> bool 
+is_doc_hidden			fn is_doc_hidden(a: &clean::Attribute) -> bool 
 is_enum			    pub fn is_enum(&self) -> bool 
 is_fn			    pub fn is_fn(&self) -> bool 
 is_hidden_from_doc			    pub fn is_hidden_from_doc(&self) -> bool 
@@ -495,6 +496,7 @@ load_attrs			pub fn load_attrs(cx: &DocContext, tcx: &ty::ctxt,
 load_external_files			pub fn load_external_files(names: &[String]) -> Option<String> 
 load_plugin			    pub fn load_plugin(&mut self, name: String) 
 load_string			pub fn load_string(input: &Path) -> io::Result<Option<String>> 
+main			fn main() 
 main			pub fn main() 
 main_args			pub fn main_args(args: &[String]) -> isize 
 make_item_keywords			fn make_item_keywords(it: &clean::Item) -> String 
@@ -534,7 +536,7 @@ push			    pub fn push<'a>(&'a mut self, level: u32, name: String, id: String) -
 record_extern_fqn			pub fn record_extern_fqn(cx: &DocContext, did: DefId, kind: clean::TypeKind) 
 recurse			    fn recurse<T, F>(&mut self, s: String, f: F) -> T where
 redirect			pub fn redirect(dst: &mut io::Write, url: &str) -> io::Result<()> 
-register_def			fn register_def(cx: &DocContext, def: def::Def) -> DefId 
+register_def			fn register_def(cx: &DocContext, def: Def) -> DefId 
 register_header			    pub fn register_header(&mut self, name: &str, level: u32) 
 render			pub fn render<T: fmt::Display, S: fmt::Display>(
 render			pub fn render(w: &mut fmt::Formatter, s: &str, print_toc: bool) -> fmt::Result 
@@ -545,9 +547,11 @@ render_assoc_item			fn render_assoc_item(w: &mut fmt::Formatter, meth: &clean::I
 render_assoc_items			fn render_assoc_items(w: &mut fmt::Formatter,
 render_attributes			fn render_attributes(w: &mut fmt::Formatter, it: &clean::Item) -> fmt::Result 
 render_default_items			    fn render_default_items(w: &mut fmt::Formatter,
-render_deref_methods			fn render_deref_methods(w: &mut fmt::Formatter, cx: &Context, impl_: &Impl) -> fmt::Result 
+render_deref_methods			fn render_deref_methods(w: &mut fmt::Formatter, cx: &Context, impl_: &Impl,
 render_impl			fn render_impl(w: &mut fmt::Formatter, cx: &Context, i: &Impl, link: AssocItemLink,
 render_sources			fn render_sources(cx: &mut Context,
+render_stability_since			fn render_stability_since(w: &mut fmt::Formatter,
+render_stability_since_raw			fn render_stability_since_raw<'a>(w: &mut fmt::Formatter,
 render_struct			fn render_struct(w: &mut fmt::Formatter, it: &clean::Item,
 reorder			    fn reorder(ty: ItemType) -> u8 
 reset_ids			pub fn reset_ids() 
@@ -580,6 +584,7 @@ singleton			    pub fn singleton(name: String) -> Path
 span			    fn span(&self) -> codemap::Span { unimplemented!() }
 stability			    fn stability(&self, id: ast::NodeId) -> Option<attr::Stability> 
 stability_class			    pub fn stability_class(&self) -> String 
+stable_since			    pub fn stable_since(&self) -> Option<&str> 
 statik			    pub fn statik() -> Lifetime 
 strip_hidden			pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult 
 strip_private			pub fn strip_private(mut krate: clean::Crate) -> plugins::PluginResult 
@@ -595,6 +600,7 @@ test			pub fn test(input: &str, cfgs: Vec<String>, libs: SearchPaths, externs: c
 tests			mod tests 
 tests			mod tests 
 to_def_index			    pub fn to_def_index(&self) -> DefIndex 
+to_json			    fn to_json(&self) -> Json 
 to_src			    fn to_src(&self, cx: &DocContext) -> String 
 to_src			    fn to_src(&self, cx: &DocContext) -> String;
 to_static_str			    pub fn to_static_str(&self) -> &'static str 
@@ -603,7 +609,7 @@ to_url_str			    pub fn to_url_str(&self) -> &'static str
 toc			    pub mod toc;
 trait_did			    fn trait_did(&self) -> Option<DefId> 
 trait_is_same_or_supertrait			fn trait_is_same_or_supertrait(cx: &DocContext, child: DefId,
-trait_item			    fn trait_item(w: &mut fmt::Formatter, cx: &Context, m: &clean::Item)
+trait_item			    fn trait_item(w: &mut fmt::Formatter, cx: &Context, m: &clean::Item, t: &clean::Item)
 try_inline			pub fn try_inline(cx: &DocContext, id: ast::NodeId, into: Option<ast::Name>)
 try_inline_def			fn try_inline_def(cx: &DocContext, tcx: &ty::ctxt,
 ty_bounds			fn ty_bounds(bounds: Vec<clean::TyParamBound>) -> Vec<clean::TyParamBound> 
