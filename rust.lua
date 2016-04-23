@@ -64,7 +64,7 @@ local identifier = token(l.IDENTIFIER, l.word)
 local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
 -- Attributes.
-local attribute = token('attribute', S('#![')^1 *
+local attribute = token('attribute', P('#![')^1 *
                         (l.nonnewline - ']')^0 * P("]")^-1)
 
 M._rules = {
