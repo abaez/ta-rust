@@ -20,10 +20,12 @@ local block_comment = '/*' * (l.any - '*/')^0 * P('*/')^-1
 local comment = token(l.COMMENT, line_comment + block_comment)
 
 -- Strings.
-local sq_str = P('L')^-1 * l.delimited_range("'")
 local dq_str = P('L')^-1 * l.delimited_range('"')
 local raw_str =  '#"' * (l.any - '#')^0 * P('#')^-1
 local string = token(l.STRING, dq_str + raw_str)
+
+-- Character.
+local char = token('char', P("'") * l.word * P("'"))
 
 -- Numbers.
 local number = token(l.NUMBER, l.float + (l.dec_num + "_")^1 +
@@ -74,6 +76,7 @@ M._rules = {
   {'library', library},
   {'type', type},
   {'string', string},
+  {'char', char},
   {'comment', comment},
   {'number', number},
   {'attribute', attribute},
@@ -84,7 +87,8 @@ M._rules = {
 M._tokenstyles = {
   attribute = l.STYLE_PREPROCESSOR,
   library = l.STYLE_CLASS,
-  extension = l.STYLE_FUNCTION
+  extension = l.STYLE_FUNCTION,
+  char = l.STYLE_STRING
 }
 
 M._foldsymbols = {
