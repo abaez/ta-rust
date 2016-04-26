@@ -22,7 +22,7 @@ local comment = token(l.COMMENT, line_comment + block_comment)
 -- Strings.
 local dq_str = P('L')^-1 * l.delimited_range('"')
 local raw_str =  '#"' * (l.any - '#')^0 * P('#')^-1
-local string = token(l.STRING, dq_str + raw_str)
+local string = token(l.STRING, dq_str + raw_str + sq_str)
 
 -- Character.
 local char = token('char', P("'") * l.word * P("'"))
