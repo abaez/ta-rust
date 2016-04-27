@@ -25,7 +25,7 @@ local raw_str =  '#"' * (l.any - '#')^0 * P('#')^-1
 local string = token(l.STRING, dq_str + raw_str)
 
 -- Character.
-local char = token('char', P("'") * ('\\' * l.any)^-2 + l.word  * P("'"))
+local char = token('char', P("'") * (('\\' * l.any) + l.any)  * P("'"))
 
 -- Numbers.
 local number = token(l.NUMBER, l.float + (l.dec_num + "_")^1 +
