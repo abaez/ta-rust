@@ -52,6 +52,9 @@ local library = token('library', l.upper * (l.lower + l.dec_num)^1)
 -- syntax extensions
 local extension = token('extension', l.word^1 * S("!"))
 
+-- Lifetimes
+local lifetime = token('lifetime', "'" * l.alnum)
+
 -- Types.
 local type = token(l.TYPE, word_match{
   'bool', 'isize', 'usize', 'char', 'str',
@@ -77,6 +80,7 @@ M._rules = {
   {'type', type},
   {'string', string},
   {'char', char},
+  {'lifetime', lifetime},
   {'comment', comment},
   {'number', number},
   {'attribute', attribute},
@@ -88,7 +92,8 @@ M._tokenstyles = {
   attribute = l.STYLE_PREPROCESSOR,
   library = l.STYLE_CLASS,
   extension = l.STYLE_FUNCTION,
-  char = l.STYLE_STRING
+  char = l.STYLE_STRING,
+  lifetime = l.STYLE_TYPE
 }
 
 M._foldsymbols = {
