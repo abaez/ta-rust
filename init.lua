@@ -48,7 +48,6 @@ events.connect(events.LEXER_LOADED, function (lang)
   buffer.tab_width = 4
   buffer.use_tabs = false
   buffer.edge_column = 99
-  textadept.editing.STRIP_TRAILING_SPACES = true
 end)
 
 local function fmt()
