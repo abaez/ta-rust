@@ -69,8 +69,9 @@ local identifier = token(l.IDENTIFIER, l.word)
 local operator = token(l.OPERATOR, S('+-/*%<>!=`^~@&|?#~:;,.()[]{}'))
 
 -- Attributes.
-local attribute = token('attribute', P('#![')^1 *
+local attribute = token('attribute', (P('#![') + P('#[')) *
                         (l.nonnewline - ']')^0 * P("]")^-1)
+
 
 M._rules = {
   {'whitespace', ws},
@@ -82,8 +83,8 @@ M._rules = {
   {'char', char},
   {'lifetime', lifetime},
   {'comment', comment},
-  {'number', number},
   {'attribute', attribute},
+  {'number', number},
   {'operator', operator},
   {'identifier', identifier},
 }
