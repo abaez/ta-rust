@@ -17,7 +17,7 @@ textadept.editing.autocompleters.rust = _RACER and
 local _keys = require("rust.keys")
 local _snippets = require("rust.snippets")
 
-if io.get_project_root() then
+if raw.get_project_name() then
   api.add_apitag(raw.get_project_name())
 end
 

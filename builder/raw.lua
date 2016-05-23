@@ -10,8 +10,8 @@ local _CTAGS = _USERHOME .. "/modules/rust/ctags.rust"
 -- @function get_project_name
 -- @return project_name, project_full_path
 local function get_project_name()
-  local check = io.open("Cargo.toml") ~= nil and
-    (buffer.filename or ''):match('^(.+)(%/.+)]') or
+  local check = io.open("../Cargo.toml") ~= nil and
+    (buffer.filename or ''):match('^(.+)%/.+]') or
     io.get_project_root()
   return check and check:match('^.+%/(%w+)') or nil, check
 end

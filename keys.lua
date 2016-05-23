@@ -34,6 +34,13 @@ return {
       api.add_apitag(project_name, project_path)
     end
 
+    if io.open('../Cargo.toml') ~= nil then
+      textadept.run.compile_commands.rust = 'cargo build'
+      textadept.run.compile()
+      textadept.run.compile_commands.rust = 'rustc %f'
+      return
+    end
+
     return textadept.run.build()
   end,
 }
