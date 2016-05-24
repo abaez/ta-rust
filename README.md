@@ -56,12 +56,13 @@ A couple of things to know. The module currently allows you to have
 cargo project built api and tags. In other words, you have access to api
 references from any cargo built library/program you build through textadept.
 
-Any time you run `cargo build`, from the `cB` keys, you will see
-`.tag_{project_name}` and `.api_{project_name}` files generated for that
-specific project on the root directory of the project.
+Any time you run **cargo build**, from the `cB` keys or the `cR` keys, you
+will see `.tag_{project_name}` and `.api_{project_name}` files generated for
+that specific project on the root directory of the project defined by
+[`io.get_project_root()`][7].
 A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
 references. These api/tags will also be read whenever you open a rust file in
-a project containing the generated files.
+a project containing the generated files. And as an added bonus, you can run the project without arguments as **cargo run** with `cr` keys.
 
 If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 `s` key.
@@ -70,14 +71,14 @@ If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 If you have the [ctags][6] you will be also to
 navigate directly to the source of the api reference.
 
-The generated tag/api files are updated each time you run `cargo build`
-from the `cB` command on textadept. This allows you to have one heck of an easy
+The generated tag/api files are updated each time you run **cargo build**
+from the `cB` or `cR` command on textadept. This allows you to have one heck of an easy
 way to deal with api lookups on a project directly from textadept!
 
 #### rustfmt
 If you have [rustfmt][2] installed or in your
-path, then you can enable the init setting `_RUSTFMT` to true for your
-`_USERHOME/init.lua`, to have autocorrect for formatting of your rust code:
+path, then you can enable the init setting **_RUSTFMT** to true for your
+**_USERHOME/init.lua**, to have autocorrect for formatting of your rust code:
 
 ```
 -- init.lua
@@ -86,7 +87,7 @@ _RUSTFMT = true
 
 #### racer
 If you have [Racer][3] installed or in your path, then you can enable the init
-setting `_RACER` to true from your `_USERHOME/init.lua`, to have autocorrect
+setting **_RACER** to true from your **_USERHOME/init.lua**, to have autocorrect
 for formatting of your rust code:
 
 ```
@@ -98,6 +99,8 @@ _RACER = true
 
     Keys        Action
     cB          cargo build and api/tags generation or update
+    cR          same as `cB`
+    cr          cargo run without arguments
     cl+s        quick edit for snippets
     s\n         adds `;` to the end of the current line and inserts newline
     a\n         appends `///` to the next line. (good for documentation)
@@ -108,4 +111,5 @@ _RACER = true
 [4]: http://www.rust-lang.org
 [5]: http://foicica.com/textadept
 [6]: http://foicica.com/hg/ctags/
+[7]: http://foicica.com/textadept/api.html#io.get_project_root
 [db293940]: https://github.com/rust-lang/rust/commit/db2939409db26ab4904372c82492cd3488e4c44e
