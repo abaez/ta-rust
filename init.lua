@@ -29,8 +29,8 @@ textadept.editing.char_matches.rust = {
 }
 
 -- compiler
-textadept.run.compile_commands.rust = 'rustc %f'
-textadept.run.run_commands.rust = '%d%e'
+textadept.run.compile_commands.rust = 'cargo build'
+textadept.run.run_commands.rust = 'cargo run'
 
 -- build project
 textadept.run.build_commands["Cargo.toml"] = "cargo build"
