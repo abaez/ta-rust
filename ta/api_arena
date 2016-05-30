@@ -1,11 +1,3 @@
-AllTypes			trait AllTypes 
-AllTypes for T			impl<T: ?Sized> AllTypes for T {}
-Arena			impl<'a> Arena<'a> 
-Arena			impl<'longer_than_self> Arena<'longer_than_self> 
-Arena			pub struct Arena<'longer_than_self> 
-Chunk			impl Chunk 
-Chunk			struct Chunk 
-Drop for Arena			impl<'longer_than_self> Drop for Arena<'longer_than_self> 
 Drop for DropCounter			    impl<'a> Drop for DropCounter<'a> 
 Drop for SmallDroppable			    impl Drop for SmallDroppable 
 Drop for TypedArena			impl<T> Drop for TypedArena<T> 
@@ -17,7 +9,6 @@ Outer			        struct Outer<'a>
 Point			    struct Point 
 Send for TypedArena			unsafe impl<T: Send> Send for TypedArena<T> {}
 SmallDroppable			    struct SmallDroppable;
-TyDesc			struct TyDesc 
 TypedArena			impl<T> TypedArena<T> 
 TypedArena			pub struct TypedArena<T> 
 TypedArenaChunk			impl<T> TypedArenaChunk<T> 
@@ -25,41 +16,21 @@ TypedArenaChunk			struct TypedArenaChunk<T>
 Wrap			        impl<'a> Wrap<'a> 
 Wrap			        struct Wrap<'a>(TypedArena<EI<'a>>);
 alloc			    pub fn alloc(&self, object: T) -> &mut T 
-alloc			    pub fn alloc<T: 'longer_than_self, F>(&self, op: F) -> &mut T
-alloc_bytes			    pub fn alloc_bytes(&self, len: usize) -> &mut [u8] 
-alloc_copy			    fn alloc_copy<T, F>(&self, op: F) -> &mut T
-alloc_copy_inner			    fn alloc_copy_inner(&self, n_bytes: usize, align: usize) -> *const u8 
-alloc_grow			    fn alloc_grow(&self, head: &mut Chunk, used_cap: usize, n_bytes: usize) -> bool 
 alloc_inner			            fn alloc_inner<F: Fn() -> Inner>(&self, f: F) -> &Inner 
-alloc_noncopy			    fn alloc_noncopy<T, F>(&self, op: F) -> &mut T
-alloc_noncopy_inner			    fn alloc_noncopy_inner(&self, n_bytes: usize, align: usize) -> (*const u8, *const u8) 
 alloc_outer			            fn alloc_outer<F: Fn() -> Outer<'a>>(&self, f: F) -> &Outer 
-as_ptr			    unsafe fn as_ptr(&self) -> *const u8 
 bench_copy			    pub fn bench_copy(b: &mut Bencher) 
 bench_copy_nonarena			    pub fn bench_copy_nonarena(b: &mut Bencher) 
-bench_copy_old_arena			    pub fn bench_copy_old_arena(b: &mut Bencher) 
 bench_noncopy			    pub fn bench_noncopy(b: &mut Bencher) 
 bench_noncopy_nonarena			    pub fn bench_noncopy_nonarena(b: &mut Bencher) 
-bench_noncopy_old_arena			    pub fn bench_noncopy_old_arena(b: &mut Bencher) 
-bitpack_tydesc_ptr			fn bitpack_tydesc_ptr(p: *const TyDesc, is_done: bool) -> usize 
-capacity			    fn capacity(&self) -> usize 
 clear			    pub fn clear(&mut self) 
 clear_last_chunk			    fn clear_last_chunk(&self, last_chunk: &mut TypedArenaChunk<T>) 
 destroy			    unsafe fn destroy(&mut self, len: usize) 
-destroy			    unsafe fn destroy(&self) 
 drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self) 
-dummy			    fn dummy(&self) {}
 end			    fn end(&self) -> *mut T 
-get_tydesc			unsafe fn get_tydesc<T>() -> *const TyDesc 
 grow			    fn grow(&self) 
-new			    fn new(size: usize, is_copy: bool) -> Chunk 
-new			    pub fn new() -> Arena<'a> 
 new			    pub fn new() -> TypedArena<T> 
 new			    unsafe fn new(capacity: usize) -> TypedArenaChunk<T> 
-new_with_size			    pub fn new_with_size(initial_size: usize) -> Arena<'a> 
-round_up			fn round_up(base: usize, align: usize) -> usize 
 start			    fn start(&self) -> *mut T 
 tests			mod tests 
-un_bitpack_tydesc_ptr			fn un_bitpack_tydesc_ptr(p: usize) -> (*const TyDesc, bool) 
 with_capacity			    pub fn with_capacity(capacity: usize) -> TypedArena<T> 

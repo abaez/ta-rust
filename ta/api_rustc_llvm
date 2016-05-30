@@ -7,13 +7,9 @@ Archive_opaque			pub enum Archive_opaque {}
 AsmDialect			pub enum AsmDialect 
 AtomicBinOp			pub enum AtomicBinOp 
 AtomicOrdering			pub enum AtomicOrdering 
-AttrBuilder			impl AttrBuilder 
-AttrBuilder			pub struct AttrBuilder 
-AttrHelper			pub trait AttrHelper 
-AttrHelper for Attribute			impl AttrHelper for Attribute 
-AttrHelper for OtherAttribute			impl AttrHelper for OtherAttribute 
-AttrHelper for SpecialAttribute			impl AttrHelper for SpecialAttribute 
 AttributeSet			pub enum AttributeSet 
+Attributes			impl Attributes 
+Attributes			pub struct Attributes 
 BasicBlock_opaque			pub enum BasicBlock_opaque {}
 Builder_opaque			pub enum Builder_opaque {}
 CallConv			pub enum CallConv 
@@ -354,7 +350,7 @@ LLVMGetFirstGlobal			    pub fn LLVMGetFirstGlobal(M: ModuleRef) -> ValueRef;
 LLVMGetFirstInstruction			    pub fn LLVMGetFirstInstruction(BB: BasicBlockRef) -> ValueRef;
 LLVMGetFirstParam			    pub fn LLVMGetFirstParam(Fn: ValueRef) -> ValueRef;
 LLVMGetFirstUse			    pub fn LLVMGetFirstUse(Val: ValueRef) -> UseRef;
-LLVMGetFunctionAttr			    pub fn LLVMGetFunctionAttr(Fn: ValueRef) -> c_ulonglong;
+LLVMGetFunctionAttr			    pub fn LLVMGetFunctionAttr(Fn: ValueRef) -> c_uint;
 LLVMGetFunctionCallConv			    pub fn LLVMGetFunctionCallConv(Fn: ValueRef) -> c_uint;
 LLVMGetGC			    pub fn LLVMGetGC(Fn: ValueRef) -> *const c_char;
 LLVMGetGlobalParent			    pub fn LLVMGetGlobalParent(Global: ValueRef) -> ModuleRef;
@@ -473,8 +469,9 @@ LLVMPositionBuilderAtEnd			    pub fn LLVMPositionBuilderAtEnd(Builder: BuilderR
 LLVMPositionBuilderBefore			    pub fn LLVMPositionBuilderBefore(Builder: BuilderRef,
 LLVMPreferredAlignmentOfType			    pub fn LLVMPreferredAlignmentOfType(TD: TargetDataRef, Ty: TypeRef)
 LLVMRemoveAttribute			    pub fn LLVMRemoveAttribute(Arg: ValueRef, PA: c_uint);
-LLVMRemoveFunctionAttr			    pub fn LLVMRemoveFunctionAttr(Fn: ValueRef, val: c_ulonglong);
+LLVMRemoveFunctionAttr			    pub fn LLVMRemoveFunctionAttr(Fn: ValueRef, val: c_uint);
 LLVMRemoveFunctionAttrString			    pub fn LLVMRemoveFunctionAttrString(Fn: ValueRef, index: c_uint, Name: *const c_char);
+LLVMRemoveFunctionAttributes			    pub fn LLVMRemoveFunctionAttributes(Fn: ValueRef, index: c_uint, attr: uint64_t);
 LLVMRemoveInstrAttribute			    pub fn LLVMRemoveInstrAttribute(Instr: ValueRef,
 LLVMReplaceAllUsesWith			    pub fn LLVMReplaceAllUsesWith(OldVal: ValueRef, NewVal: ValueRef);
 LLVMRunFunctionPassManager			    pub fn LLVMRunFunctionPassManager(FPM: PassManagerRef, F: ValueRef)
@@ -520,16 +517,20 @@ LLVMRustLoadDynamicLibrary			    pub fn LLVMRustLoadDynamicLibrary(path: *const 
 LLVMRustMarkAllFunctionsNounwind			    pub fn LLVMRustMarkAllFunctionsNounwind(M: ModuleRef);
 LLVMRustOpenArchive			    pub fn LLVMRustOpenArchive(path: *const c_char) -> ArchiveRef;
 LLVMRustPassKind			    pub fn LLVMRustPassKind(Pass: PassRef) -> SupportedPassKind;
+LLVMRustPositionBuilderAtStart			    pub fn LLVMRustPositionBuilderAtStart(B: BuilderRef, BB: BasicBlockRef);
 LLVMRustPrintModule			    pub fn LLVMRustPrintModule(PM: PassManagerRef,
 LLVMRustPrintPassTimings			    pub fn LLVMRustPrintPassTimings();
 LLVMRustPrintPasses			    pub fn LLVMRustPrintPasses();
 LLVMRustRunFunctionPassManager			    pub fn LLVMRustRunFunctionPassManager(PM: PassManagerRef, M: ModuleRef);
 LLVMRustRunRestrictionPass			    pub fn LLVMRustRunRestrictionPass(M: ModuleRef,
+LLVMRustSetComdat			    pub fn LLVMRustSetComdat(M: ModuleRef, V: ValueRef, Name: *const c_char);
 LLVMRustSetDLLStorageClass			    pub fn LLVMRustSetDLLStorageClass(V: ValueRef,
 LLVMRustSetDataLayoutFromTargetMachine			    pub fn LLVMRustSetDataLayoutFromTargetMachine(M: ModuleRef,
+LLVMRustSetHasUnsafeAlgebra			    pub fn LLVMRustSetHasUnsafeAlgebra(Instr: ValueRef);
 LLVMRustSetLLVMOptions			    pub fn LLVMRustSetLLVMOptions(Argc: c_int, Argv: *const *const c_char);
 LLVMRustSetNormalizedTarget			    pub fn LLVMRustSetNormalizedTarget(M: ModuleRef, triple: *const c_char);
 LLVMRustSetPersonalityFn			    pub fn LLVMRustSetPersonalityFn(B: BuilderRef, Pers: ValueRef);
+LLVMRustUnsetComdat			    pub fn LLVMRustUnsetComdat(V: ValueRef);
 LLVMRustWriteArchive			    pub fn LLVMRustWriteArchive(Dst: *const c_char,
 LLVMRustWriteOutputFile			    pub fn LLVMRustWriteOutputFile(T: TargetMachineRef,
 LLVMSetAlignment			    pub fn LLVMSetAlignment(Global: ValueRef, Bytes: c_uint);
@@ -597,12 +598,12 @@ OptimizationDiagnostic			impl OptimizationDiagnostic
 OptimizationDiagnostic			pub struct OptimizationDiagnostic 
 OptimizationDiagnosticKind			impl OptimizationDiagnosticKind 
 OptimizationDiagnosticKind			pub enum OptimizationDiagnosticKind 
-OtherAttribute			pub enum OtherAttribute 
 PassManagerBuilder_opaque			pub enum PassManagerBuilder_opaque {}
 PassManager_opaque			pub enum PassManager_opaque {}
 Pass_opaque			pub enum Pass_opaque {}
 RealPredicate			pub enum RealPredicate 
 RelocMode			pub enum RelocMode 
+RemoveFunctionAttributes			pub fn RemoveFunctionAttributes(fn_: ValueRef, attr: Attribute) 
 RustArchiveMember_opaque			pub enum RustArchiveMember_opaque {}
 RustString_opaque			pub enum RustString_opaque {}
 SMDiagnostic_opaque			pub enum SMDiagnostic_opaque {}
@@ -613,8 +614,8 @@ SetFunctionAttribute			pub fn SetFunctionAttribute(fn_: ValueRef, attr: Attribut
 SetFunctionCallConv			pub fn SetFunctionCallConv(fn_: ValueRef, cc: CallConv) 
 SetInstructionCallConv			pub fn SetInstructionCallConv(instr: ValueRef, cc: CallConv) 
 SetLinkage			pub fn SetLinkage(global: ValueRef, link: Linkage) 
+SetUniqueComdat			pub fn SetUniqueComdat(llmod: ModuleRef, val: ValueRef) 
 SetUnnamedAddr			pub fn SetUnnamedAddr(global: ValueRef, unnamed: bool) 
-SpecialAttribute			pub enum SpecialAttribute 
 SupportedPassKind			pub enum SupportedPassKind 
 SynchronizationScope			pub enum SynchronizationScope 
 TargetData			pub struct TargetData 
@@ -623,17 +624,13 @@ TargetMachine_opaque			pub enum TargetMachine_opaque {}
 Twine_opaque			pub enum Twine_opaque {}
 TypeKind			pub enum TypeKind 
 Type_opaque			pub enum Type_opaque {}
+UnsetComdat			pub fn UnsetComdat(val: ValueRef) 
 Use_opaque			pub enum Use_opaque {}
 Value_opaque			pub enum Value_opaque {}
 Visibility			pub enum Visibility 
-apply_callsite			    fn apply_callsite(&self, idx: c_uint, callsite: ValueRef) 
-apply_callsite			    fn apply_callsite(&self, idx: c_uint, callsite: ValueRef);
-apply_callsite			    pub fn apply_callsite(&self, callsite: ValueRef) 
-apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef) 
-apply_llfn			    fn apply_llfn(&self, idx: c_uint, llfn: ValueRef);
-apply_llfn			    pub fn apply_llfn(&self, llfn: ValueRef) 
+apply_callsite			    pub fn apply_callsite(&self, idx: usize, callsite: ValueRef) 
+apply_llfn			    pub fn apply_llfn(&self, idx: usize, llfn: ValueRef) 
 archive_ro			pub mod archive_ro;
-arg			    pub fn arg<T: AttrHelper + 'static>(&mut self, idx: usize, a: T) -> &mut AttrBuilder 
 build_string			pub fn build_string<F>(f: F) -> Option<String> where F: FnOnce(RustStringRef)
 data			    pub fn data(&self) -> &'a [u8] 
 debug_loc_to_string			pub unsafe fn debug_loc_to_string(c: ContextRef, tr: DebugLocRef) -> String 
@@ -654,7 +651,6 @@ main			fn main()
 mk_section_iter			pub fn mk_section_iter(llof: ObjectFileRef) -> SectionIter 
 mk_target_data			pub fn mk_target_data(string_rep: &str) -> TargetData 
 name			    pub fn name(&self) -> Option<&'a str> 
-new			    pub fn new() -> AttrBuilder 
 new			    pub fn new(llmb: MemoryBufferRef) -> Option<ObjectFile> 
 new			    pub fn new(name: &str, vals: &[ValueRef]) -> OperandBundleDef 
 next			    fn next(&mut self) -> Option<Result<Child<'a>, String>> 
@@ -663,9 +659,12 @@ path2cstr			        fn path2cstr(p: &Path) -> CString
 raw			    pub fn raw(&self) -> ::ArchiveChildRef { self.ptr }
 raw			    pub fn raw(&self) -> ArchiveRef { self.ptr }
 raw			    pub fn raw(&self) -> OperandBundleDefRef 
-ret			    pub fn ret<T: AttrHelper + 'static>(&mut self, a: T) -> &mut AttrBuilder 
+set			    pub fn set(&mut self, attr: Attribute) -> &mut Self 
+set_dereferenceable			    pub fn set_dereferenceable(&mut self, bytes: u64) -> &mut Self 
 set_thread_local			pub fn set_thread_local(global: ValueRef, is_thread_local: bool) 
 twine_to_string			pub unsafe fn twine_to_string(tr: TwineRef) -> String 
 unpack			    pub unsafe fn unpack(di: DiagnosticInfoRef) -> Diagnostic 
 unpack			    unsafe fn unpack(di: DiagnosticInfoRef)
 unpack			    unsafe fn unpack(kind: OptimizationDiagnosticKind, di: DiagnosticInfoRef)
+unset			    pub fn unset(&mut self, attr: Attribute) -> &mut Self 
+unset_dereferenceable			    pub fn unset_dereferenceable(&mut self) -> &mut Self 

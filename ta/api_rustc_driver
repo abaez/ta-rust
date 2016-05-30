@@ -66,11 +66,11 @@ check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'t
 check_lub			    pub fn check_lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_lub: Ty<'tcx>) 
 check_not_sub			    pub fn check_not_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
 check_sub			    pub fn check_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
-collect_crate_metadata			pub fn collect_crate_metadata(session: &Session, _attrs: &[ast::Attribute]) -> Vec<String> 
 collect_crate_types			pub fn collect_crate_types(session: &Session, attrs: &[ast::Attribute]) -> Vec<config::CrateType> 
 commit_date_str			pub fn commit_date_str() -> Option<&'static str> 
 commit_hash_str			pub fn commit_hash_str() -> Option<&'static str> 
 compile_input			pub fn compile_input(sess: &Session,
+compute_crate_disambiguator			pub fn compute_crate_disambiguator(session: &Session) -> String 
 contravariant_region_ptr_err			fn contravariant_region_ptr_err() 
 contravariant_region_ptr_ok			fn contravariant_region_ptr_ok() 
 count_nodes			fn count_nodes(krate: &ast::Crate) -> usize 
@@ -102,14 +102,14 @@ fold_mac			    fn fold_mac(&mut self, mac: ast::Mac) -> ast::Mac
 fold_trait_item			    fn fold_trait_item(&mut self, i: ast::TraitItem) -> SmallVector<ast::TraitItem> 
 from_str			    fn from_str(s: &str) -> Result<UserIdentifiedItem, ()> 
 gather_flowgraph_variants			fn gather_flowgraph_variants(sess: &Session) -> Vec<borrowck_dot::Variant> 
-glb			    pub fn glb(&self) -> Glb<'a, 'tcx> 
+glb			    pub fn glb(&self, t1: &Ty<'tcx>, t2: &Ty<'tcx>) -> InferResult<'tcx, Ty<'tcx>> 
 glb_bound_bound			fn glb_bound_bound() 
 glb_bound_free			fn glb_bound_free() 
 glb_bound_free_infer			fn glb_bound_free_infer() 
 glb_bound_static			fn glb_bound_static() 
 glb_free_free_with_common_scope			fn glb_free_free_with_common_scope() 
 handle_explain			fn handle_explain(code: &str,
-handle_options			pub fn handle_options(mut args: Vec<String>) -> Option<getopts::Matches> 
+handle_options			pub fn handle_options(args: &[String]) -> Option<getopts::Matches> 
 has_avx			pub fn has_avx(sess: &Session) -> bool 
 has_avx2			pub fn has_avx2(sess: &Session) -> bool 
 has_neon			pub fn has_neon(sess: &Session) -> bool 
@@ -124,7 +124,7 @@ is_subtype			    pub fn is_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> bool
 late_callback			    fn late_callback(&mut self,
 list_metadata			    pub fn list_metadata(sess: &Session, matches: &getopts::Matches, input: &Input) -> Compilation 
 lookup_item			    pub fn lookup_item(&self, names: &[String]) -> ast::NodeId 
-lub			    pub fn lub(&self) -> Lub<'a, 'tcx> 
+lub			    pub fn lub(&self, t1: &Ty<'tcx>, t2: &Ty<'tcx>) -> InferResult<'tcx, Ty<'tcx>> 
 lub_bound_bound			fn lub_bound_bound() 
 lub_bound_bound_inverse_order			fn lub_bound_bound_inverse_order() 
 lub_bound_free			fn lub_bound_free() 
@@ -144,13 +144,14 @@ new			    fn new() -> ReplaceBodyWithLoop
 new_id			        fn new_id(&mut self, old_id: ast::NodeId) -> ast::NodeId 
 next			    fn next(&mut self) -> Option<ast::NodeId> 
 no_input			    fn no_input(&mut self,
-parse_crate_attrs			fn parse_crate_attrs(sess: &Session, input: &Input) -> Vec<ast::Attribute> 
+node_path			    fn node_path(&self, id: ast::NodeId) -> Option<String> 
+parse_crate_attrs			fn parse_crate_attrs<'a>(sess: &'a Session, input: &Input) -> PResult<'a, Vec<ast::Attribute>> 
 parse_pretty			    fn parse_pretty(&mut self,
 parse_pretty			pub fn parse_pretty(sess: &Session,
-phase_1_parse_input			pub fn phase_1_parse_input(sess: &Session, cfg: ast::CrateConfig, input: &Input) -> ast::Crate 
+phase_1_parse_input			pub fn phase_1_parse_input<'a>(sess: &'a Session,
 phase_2_configure_and_expand			pub fn phase_2_configure_and_expand(sess: &Session,
 phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: &'tcx Session,
-phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'tcx>(tcx: &ty::ctxt<'tcx>,
+phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'tcx>(tcx: &TyCtxt<'tcx>,
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
 phase_6_link_output			pub fn phase_6_link_output(sess: &Session,
 post			    fn post(&self, s: &mut pprust::State, node: pprust::AnnNode) -> io::Result<()> 
@@ -171,7 +172,7 @@ pretty			pub mod pretty;
 pretty_print_input			pub fn pretty_print_input(sess: Session,
 print_crate_info			    fn print_crate_info(sess: &Session,
 print_flag_list			fn print_flag_list<T>(cmdline_opt: &str,
-print_flowgraph			fn print_flowgraph<W: Write>(variants: Vec<borrowck_dot::Variant>,
+print_flowgraph			fn print_flowgraph<'tcx, W: Write>(variants: Vec<borrowck_dot::Variant>,
 re_early_bound			    pub fn re_early_bound(&self,
 re_free			    pub fn re_free(&self, nid: ast::NodeId, id: u32) -> ty::Region 
 re_late_bound_with_debruijn			    pub fn re_late_bound_with_debruijn(&self, id: u32, debruijn: ty::DebruijnIndex) -> ty::Region 
@@ -193,7 +194,7 @@ state_after_expand			    fn state_after_expand(input: &'a Input,
 state_after_llvm			    fn state_after_llvm(input: &'a Input,
 state_after_parse			    fn state_after_parse(input: &'a Input,
 state_after_write_deps			    fn state_after_write_deps(input: &'a Input,
-sub			    pub fn sub(&self) -> Sub<'a, 'tcx> 
+sub			    pub fn sub(&self, t1: &Ty<'tcx>, t2: &Ty<'tcx>) -> InferResult<'tcx, Ty<'tcx>> 
 sub_bound_free_true			fn sub_bound_free_true() 
 sub_free_bound_false			fn sub_free_bound_false() 
 sub_free_bound_false_infer			fn sub_free_bound_false_infer() 
@@ -212,7 +213,7 @@ t_rptr_late_bound_with_debruijn			    pub fn t_rptr_late_bound_with_debruijn(&se
 t_rptr_scope			    pub fn t_rptr_scope(&self, id: ast::NodeId) -> Ty<'tcx> 
 t_rptr_static			    pub fn t_rptr_static(&self) -> Ty<'tcx> 
 target_features			pub mod target_features;
-tcx			    pub fn tcx(&self) -> &ty::ctxt<'tcx> 
+tcx			    pub fn tcx(&self) -> &TyCtxt<'tcx> 
 test			pub mod test;
 to_one_node_id			    fn to_one_node_id(self, user_option: &str, sess: &Session, map: &hir_map::Map) -> ast::NodeId 
 unw			        fn unw(x: Option<&str>) -> &str 

@@ -5,6 +5,8 @@ Case_Ignorable			    pub fn Case_Ignorable(c: char) -> bool
 Cased			    pub fn Cased(c: char) -> bool 
 Cc			    pub fn Cc(c: char) -> bool 
 DecodeUtf16			pub struct DecodeUtf16<I>
+DecodeUtf16Error			impl DecodeUtf16Error 
+DecodeUtf16Error			pub struct DecodeUtf16Error 
 DoubleEndedIterator for SplitWhitespace			impl<'a> DoubleEndedIterator for SplitWhitespace<'a> 
 Iterator for CaseMappingIter			impl Iterator for CaseMappingIter 
 Iterator for SplitWhitespace			impl<'a> Iterator for SplitWhitespace<'a> 
@@ -13,6 +15,7 @@ Iterator for ToUppercase			impl Iterator for ToUppercase
 Iterator for Utf16Encoder			impl<I> Iterator for Utf16Encoder<I> where I: Iterator<Item=char> 
 Lowercase			    pub fn Lowercase(c: char) -> bool 
 N			    pub fn N(c: char) -> bool 
+Pattern_White_Space			    pub fn Pattern_White_Space(c: char) -> bool 
 SplitWhitespace			pub struct SplitWhitespace<'a> 
 ToLowercase			pub struct ToLowercase(CaseMappingIter);
 ToUppercase			pub struct ToUppercase(CaseMappingIter);
@@ -29,13 +32,15 @@ bsearch_range_table			fn bsearch_range_table(c: char, r: &'static [(char, char)]
 char			impl char 
 char			pub mod char;
 conversions			pub mod conversions 
-decode_utf16			pub fn decode_utf16<I: IntoIterator<Item = u16>>(iterable: I) -> DecodeUtf16<I::IntoIter> 
+decode_utf16			pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> 
 derived_property			pub mod derived_property 
 derived_property			pub mod derived_property 
-encode_utf16			    pub fn encode_utf16(self, dst: &mut [u16]) -> Option<usize> 
-encode_utf8			    pub fn encode_utf8(self, dst: &mut [u8]) -> Option<usize> 
+encode_utf16			    pub fn encode_utf16(self) -> EncodeUtf16 
+encode_utf8			    pub fn encode_utf8(self) -> EncodeUtf8 
 escape_default			    pub fn escape_default(self) -> EscapeDefault 
 escape_unicode			    pub fn escape_unicode(self) -> EscapeUnicode 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Display for DecodeUtf16Error			impl fmt::Display for DecodeUtf16Error 
 general_category			pub mod general_category 
 is_alphabetic			    pub fn is_alphabetic(self) -> bool 
 is_alphanumeric			    pub fn is_alphanumeric(self) -> bool 
@@ -58,11 +63,12 @@ len_utf16			    pub fn len_utf16(self) -> usize
 len_utf8			    pub fn len_utf8(self) -> usize 
 new			    fn new(chars: [char; 3]) -> CaseMappingIter 
 new			    pub fn new(chars: I) -> Utf16Encoder<I>
-next			    fn next(&mut self) -> Option<Result<char, u16>> 
+next			    fn next(&mut self) -> Option<Result<char, DecodeUtf16Error>> 
 next			    fn next(&mut self) -> Option<char> 
 next			    fn next(&mut self) -> Option<&'a str> 
 next			    fn next(&mut self) -> Option<u16> 
 next_back			    fn next_back(&mut self) -> Option<&'a str> 
+property			pub mod property 
 property			pub mod property 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
@@ -82,4 +88,5 @@ trim_left			    fn trim_left(&self) -> &str;
 trim_right			    fn trim_right(&self) -> &str 
 trim_right			    fn trim_right(&self) -> &str;
 u_str			mod u_str;
+unpaired_surrogate			    pub fn unpaired_surrogate(&self) -> u16 
 utf8_char_width			pub fn utf8_char_width(b: u8) -> usize 

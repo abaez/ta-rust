@@ -96,6 +96,7 @@ DoubleEndedIterator for Range			impl<'a, K, V> DoubleEndedIterator for Range<'a,
 DoubleEndedIterator for Range			impl<'a, T> DoubleEndedIterator for Range<'a, T> 
 DoubleEndedIterator for RangeMut			impl<'a, K, V> DoubleEndedIterator for RangeMut<'a, K, V> 
 DoubleEndedIterator for Values			impl<'a, K, V> DoubleEndedIterator for Values<'a, K, V> 
+DoubleEndedIterator for ValuesMut			impl<'a, K, V> DoubleEndedIterator for ValuesMut<'a, K, V> 
 Drain			pub struct Drain<'a, T: 'a> 
 Drain			pub struct Drain<'a> 
 Drain			pub struct Drain<'a, T: 'a> 
@@ -141,6 +142,7 @@ ExactSizeIterator for IterMut			impl<'a, A> ExactSizeIterator for IterMut<'a, A>
 ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> {}
 ExactSizeIterator for Keys			impl<'a, K, V> ExactSizeIterator for Keys<'a, K, V> 
 ExactSizeIterator for Values			impl<'a, K, V> ExactSizeIterator for Values<'a, K, V> 
+ExactSizeIterator for ValuesMut			impl<'a, K, V> ExactSizeIterator for ValuesMut<'a, K, V> 
 Extend for BTreeMap			impl<'a, K: Ord + Copy, V: Copy> Extend<(&'a K, &'a V)> for BTreeMap<K, V> 
 Extend for BTreeMap			impl<K: Ord, V> Extend<(K, V)> for BTreeMap<K, V> 
 Extend for BTreeSet			impl<'a, T: 'a + Ord + Copy> Extend<&'a T> for BTreeSet<T> 
@@ -215,19 +217,13 @@ InternalNode			impl<K, V> InternalNode<K, V>
 InternalNode			struct InternalNode<K, V> 
 Intersection			pub struct Intersection<'a, T: 'a> 
 Into			impl Into<Vec<u8>> for String 
-IntoCow			pub trait IntoCow<'a, B: ?Sized> where B: ToOwned 
-IntoCow			impl<'a> IntoCow<'a, str> for &'a str 
-IntoCow			impl<'a, T> IntoCow<'a, [T]> for &'a [T] where T: Clone 
-IntoCow for Cow			impl<'a, B: ?Sized> IntoCow<'a, B> for Cow<'a, B> where B: ToOwned 
-IntoCow for String			impl IntoCow<'static, str> for String 
-IntoCow for Vec			impl<'a, T: 'a> IntoCow<'a, [T]> for Vec<T> where T: Clone 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<K, V> 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
-IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T>
+IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T> where T: Ord 
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a BTreeMap<K, V> 
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a mut BTreeMap<K, V> 
 IntoIterator			impl<'a, T> IntoIterator for &'a BTreeSet<T> 
@@ -284,6 +280,7 @@ Iterator for RangeMut			impl<'a, K, V> Iterator for RangeMut<'a, K, V>
 Iterator for SymmetricDifference			impl<'a, T: Ord> Iterator for SymmetricDifference<'a, T> 
 Iterator for Union			impl<'a, T: Ord> Iterator for Union<'a, T> 
 Iterator for Values			impl<'a, K, V> Iterator for Values<'a, K, V> 
+Iterator for ValuesMut			impl<'a, K, V> Iterator for ValuesMut<'a, K, V> 
 KV			    pub enum KV { }
 Keys			pub struct Keys<'a, K: 'a, V: 'a> 
 Leaf			    pub enum Leaf { }
@@ -380,11 +377,13 @@ ToOwned for T			impl<T> ToOwned for T where T: Clone
 ToOwned for str			impl ToOwned for str 
 ToString			pub trait ToString 
 ToString for T			impl<T: fmt::Display + ?Sized> ToString for T 
+ToString for str			impl ToString for str 
 UnderflowResult			enum UnderflowResult<'a, K, V> 
 Union			pub struct Union<'a, T: 'a> 
 VacantEntry			impl<'a, K: Ord, V> VacantEntry<'a, K, V> 
 VacantEntry			pub struct VacantEntry<'a, K: 'a, V: 'a> 
 Values			pub struct Values<'a, K: 'a, V: 'a> 
+ValuesMut			pub struct ValuesMut<'a, K: 'a, V: 'a> 
 Vec			impl<T: Clone> Vec<T> 
 Vec			impl<T: PartialEq> Vec<T> 
 Vec			impl<T> Vec<T> 
@@ -585,7 +584,7 @@ eq			    fn eq(&self, other: &VecDeque<A>) -> bool
 escape_default			    pub fn escape_default(&self) -> String 
 escape_unicode			    pub fn escape_unicode(&self) -> String 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
-extend			    fn extend<I: IntoIterator<Item = T>>(&mut self, iterable: I) 
+extend			    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item=(&'a K, &'a V)>>(&mut self, iter: I) 
 extend			    fn extend<T: IntoIterator<Item=(K, V)>>(&mut self, iter: T) 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
@@ -594,12 +593,12 @@ extend			    fn extend<I: IntoIterator<Item = &'a E>>(&mut self, iter: I)
 extend			    fn extend<I: IntoIterator<Item = E>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
 extend			    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) 
-extend			    fn extend<I: IntoIterator<Item = &'a char>>(&mut self, iterable: I) 
-extend			    fn extend<I: IntoIterator<Item = &'a str>>(&mut self, iterable: I) 
-extend			    fn extend<I: IntoIterator<Item = String>>(&mut self, iterable: I) 
-extend			    fn extend<I: IntoIterator<Item = char>>(&mut self, iterable: I) 
+extend			    fn extend<I: IntoIterator<Item = &'a char>>(&mut self, iter: I) 
+extend			    fn extend<I: IntoIterator<Item = &'a str>>(&mut self, iter: I) 
+extend			    fn extend<I: IntoIterator<Item = String>>(&mut self, iter: I) 
+extend			    fn extend<I: IntoIterator<Item = char>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
-extend			    fn extend<I: IntoIterator<Item = T>>(&mut self, iterable: I) 
+extend			    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
 extend			    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) 
 extend_desugared			    fn extend_desugared<I: Iterator<Item = T>>(&mut self, mut iterator: I) 
@@ -643,7 +642,6 @@ format			pub fn format(args: Arguments) -> string::String
 from			    fn from(heap: BinaryHeap<T>) -> Vec<T> 
 from			    fn from(vec: Vec<T>) -> BinaryHeap<T> 
 from			    fn from(node: &'a mut Link<T>) -> Self 
-from			    fn from(_: &str) -> String 
 from			    fn from(s: &'a str) -> Cow<'a, str> 
 from			    fn from(s: &'a str) -> String 
 from			    fn from(s: String) -> Cow<'a, str> 
@@ -658,12 +656,12 @@ from_iter			    fn from_iter<T: IntoIterator<Item=(K, V)>>(iter: T) -> BTreeMap<
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> BTreeSet<T> 
 from_iter			    fn from_iter<I: IntoIterator<Item = E>>(iter: I) -> EnumSet<E> 
 from_iter			    fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> LinkedList<A> 
-from_iter			    fn from_iter<I: IntoIterator<Item = &'a str>>(iterable: I) -> String 
-from_iter			    fn from_iter<I: IntoIterator<Item = String>>(iterable: I) -> String 
-from_iter			    fn from_iter<I: IntoIterator<Item = char>>(iterable: I) -> String 
+from_iter			    fn from_iter<I: IntoIterator<Item = &'a str>>(iter: I) -> String 
+from_iter			    fn from_iter<I: IntoIterator<Item = String>>(iter: I) -> String 
+from_iter			    fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> String 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(it: I) -> Cow<'a, [T]> 
-from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iterable: I) -> Vec<T> 
-from_iter			    fn from_iter<T: IntoIterator<Item = A>>(iterable: T) -> VecDeque<A> 
+from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Vec<T> 
+from_iter			    fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> VecDeque<A> 
 from_leaf			    fn from_leaf(node: Box<LeafNode<K, V>>) -> Self 
 from_ptr			    unsafe fn from_ptr(ptr: NonZero<*const LeafNode<K, V>>) -> Self 
 from_raw_parts			    pub unsafe fn from_raw_parts(buf: *mut u8, length: usize, capacity: usize) -> String 
@@ -710,21 +708,29 @@ index			    fn index(&self, key: &Q) -> &V
 index			    fn index(&self, _index: ops::RangeFull) -> &str 
 index			    fn index(&self, index: ops::Range<usize>) -> &str 
 index			    fn index(&self, index: ops::RangeFrom<usize>) -> &str 
+index			    fn index(&self, index: ops::RangeInclusive<usize>) -> &str 
 index			    fn index(&self, index: ops::RangeTo<usize>) -> &str 
+index			    fn index(&self, index: ops::RangeToInclusive<usize>) -> &str 
 index			    fn index(&self, _index: ops::RangeFull) -> &[T] 
 index			    fn index(&self, index: ops::Range<usize>) -> &[T] 
 index			    fn index(&self, index: ops::RangeFrom<usize>) -> &[T] 
+index			    fn index(&self, index: ops::RangeInclusive<usize>) -> &[T] 
 index			    fn index(&self, index: ops::RangeTo<usize>) -> &[T] 
+index			    fn index(&self, index: ops::RangeToInclusive<usize>) -> &[T] 
 index			    fn index(&self, index: usize) -> &T 
 index			    fn index(&self, index: usize) -> &A 
 index_mut			    fn index_mut(&mut self, _index: ops::RangeFull) -> &mut str 
 index_mut			    fn index_mut(&mut self, index: ops::Range<usize>) -> &mut str 
 index_mut			    fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut str 
+index_mut			    fn index_mut(&mut self, index: ops::RangeInclusive<usize>) -> &mut str 
 index_mut			    fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut str 
+index_mut			    fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut str 
 index_mut			    fn index_mut(&mut self, _index: ops::RangeFull) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::Range<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut [T] 
+index_mut			    fn index_mut(&mut self, index: ops::RangeInclusive<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut [T] 
+index_mut			    fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut [T] 
 index_mut			    fn index_mut(&mut self, index: usize) -> &mut T 
 index_mut			    fn index_mut(&mut self, index: usize) -> &mut A 
 insert			    pub fn insert(&mut self, key: K, value: V) -> Option<V> 
@@ -748,11 +754,6 @@ into			    fn into(self) -> Vec<u8>
 into_boxed_slice			    pub fn into_boxed_slice(mut self) -> Box<[T]> 
 into_boxed_str			    pub fn into_boxed_str(self) -> Box<str> 
 into_bytes			    pub fn into_bytes(self) -> Vec<u8> 
-into_cow			    fn into_cow(self) -> Cow<'a, B> 
-into_cow			    fn into_cow(self) -> Cow<'a, B>;
-into_cow			    fn into_cow(self) -> Cow<'a, str> 
-into_cow			    fn into_cow(self) -> Cow<'static, str> 
-into_cow			    fn into_cow(self) -> Cow<'a, [T]> 
 into_iter			    fn into_iter(self) -> IntoIter<T> 
 into_iter			    fn into_iter(self) -> Iter<'a, T> 
 into_iter			    fn into_iter(self) -> IntoIter<K, V> 
@@ -820,6 +821,7 @@ iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T>
 join			    fn join(&self, sep: &T) -> Self::Output;
 join			    fn join(&self, sep: &T) -> Vec<T> 
 join			    fn join(&self, sep: &str) -> String 
+key			    pub fn key(&self) -> &K 
 keys			    pub fn keys<'a>(&'a self) -> Keys<'a, K, V> 
 keys			    pub fn keys(&self) -> &[K] 
 keys_mut			    pub fn keys_mut(&mut self) -> &mut [K] 
@@ -883,6 +885,7 @@ next			    fn next(&mut self) -> Option<&'a T>
 next			    fn next(&mut self) -> Option<T> 
 next			    fn next(&mut self) -> Option<&'a K> 
 next			    fn next(&mut self) -> Option<&'a V> 
+next			    fn next(&mut self) -> Option<&'a mut V> 
 next			    fn next(&mut self) -> Option<(&'a K, &'a V)> 
 next			    fn next(&mut self) -> Option<(&'a K, &'a mut V)> 
 next			    fn next(&mut self) -> Option<(K, V)> 
@@ -902,6 +905,7 @@ next_back			    fn next_back(&mut self) -> Option<&'a T>
 next_back			    fn next_back(&mut self) -> Option<T> 
 next_back			    fn next_back(&mut self) -> Option<&'a K> 
 next_back			    fn next_back(&mut self) -> Option<&'a V> 
+next_back			    fn next_back(&mut self) -> Option<&'a mut V> 
 next_back			    fn next_back(&mut self) -> Option<(&'a K, &'a V)> 
 next_back			    fn next_back(&mut self) -> Option<(&'a K, &'a mut V)> 
 next_back			    fn next_back(&mut self) -> Option<(K, V)> 
@@ -923,16 +927,24 @@ node			mod node;
 none			    fn none() -> Rawlink<T> 
 ops			impl ops::Index<ops::Range<usize>> for String 
 ops			impl ops::Index<ops::RangeFrom<usize>> for String 
+ops			impl ops::Index<ops::RangeInclusive<usize>> for String 
 ops			impl ops::Index<ops::RangeTo<usize>> for String 
+ops			impl ops::Index<ops::RangeToInclusive<usize>> for String 
 ops			impl ops::IndexMut<ops::Range<usize>> for String 
 ops			impl ops::IndexMut<ops::RangeFrom<usize>> for String 
+ops			impl ops::IndexMut<ops::RangeInclusive<usize>> for String 
 ops			impl ops::IndexMut<ops::RangeTo<usize>> for String 
+ops			impl ops::IndexMut<ops::RangeToInclusive<usize>> for String 
 ops			impl<T> ops::Index<ops::Range<usize>> for Vec<T> 
 ops			impl<T> ops::Index<ops::RangeFrom<usize>> for Vec<T> 
+ops			impl<T> ops::Index<ops::RangeInclusive<usize>> for Vec<T> 
 ops			impl<T> ops::Index<ops::RangeTo<usize>> for Vec<T> 
+ops			impl<T> ops::Index<ops::RangeToInclusive<usize>> for Vec<T> 
 ops			impl<T> ops::IndexMut<ops::Range<usize>> for Vec<T> 
 ops			impl<T> ops::IndexMut<ops::RangeFrom<usize>> for Vec<T> 
+ops			impl<T> ops::IndexMut<ops::RangeInclusive<usize>> for Vec<T> 
 ops			impl<T> ops::IndexMut<ops::RangeTo<usize>> for Vec<T> 
+ops			impl<T> ops::IndexMut<ops::RangeToInclusive<usize>> for Vec<T> 
 ops::Deref for String			impl ops::Deref for String 
 ops::Deref for Vec			impl<T> ops::Deref for Vec<T> 
 ops::DerefMut for String			impl ops::DerefMut for String 
@@ -971,7 +983,6 @@ push			    pub fn push(&mut self, key: K, val: V)
 push			    pub fn push(&mut self, key: K, val: V, edge: Root<K, V>) 
 push			    pub fn push(&mut self, ch: char) 
 push			    pub fn push(&mut self, value: T) 
-push_all			    pub fn push_all(&mut self, other: &[T]) 
 push_back			    pub fn push_back(&mut self, elt: T) 
 push_back			    pub fn push_back(&mut self, value: T) 
 push_back_node			    fn push_back_node(&mut self, new_tail: Box<Node<T>>) 
@@ -1139,6 +1150,7 @@ utf8_error			    pub fn utf8_error(&self) -> Utf8Error
 vals			    pub fn vals(&self) -> &[V] 
 vals_mut			    pub fn vals_mut(&mut self) -> &mut [V] 
 values			    pub fn values<'a>(&'a self) -> Values<'a, K, V> 
+values_mut			    pub fn values_mut<'a>(&'a mut self) -> ValuesMut<'a, K, V> 
 vec			pub mod vec;
 vec_deque			pub mod vec_deque;
 windows			    pub fn windows(&self, size: usize) -> Windows<T> 

@@ -3,7 +3,10 @@ Arch			pub enum Arch
 Default for TargetOptions			impl Default for TargetOptions 
 Digest			pub trait Digest 
 Digest for Sha256			impl Digest for Sha256 
+Drop for DynamicLibrary			impl Drop for DynamicLibrary 
 Drop for TempDir			impl Drop for TempDir 
+DynamicLibrary			impl DynamicLibrary 
+DynamicLibrary			pub struct DynamicLibrary 
 Engine256			impl Engine256 
 Engine256			struct Engine256 
 Engine256State			impl Engine256State 
@@ -12,17 +15,16 @@ FixedBuffer			trait FixedBuffer
 FixedBuffer for FixedBuffer64			impl FixedBuffer for FixedBuffer64 
 FixedBuffer64			impl FixedBuffer64 
 FixedBuffer64			struct FixedBuffer64 
+FreeLibrary			        fn FreeLibrary(handle: HMODULE) -> BOOL;
+GetModuleHandleExW			        fn GetModuleHandleExW(dwFlags: DWORD,
+GetProcAddress			        fn GetProcAddress(handle: HMODULE,
+LoadLibraryW			        fn LoadLibraryW(name: LPCWSTR) -> HMODULE;
 RPathConfig			pub struct RPathConfig<'a> 
-SawAbiComponent			    enum SawAbiComponent<'a> 
-SawExprComponent			    pub enum SawExprComponent<'a> 
-SawStmtComponent			    pub enum SawStmtComponent 
+SetThreadErrorMode			        fn SetThreadErrorMode(dwNewMode: DWORD,
 Sha256			impl Sha256 
 Sha256			pub struct Sha256 
 StandardPadding			trait StandardPadding 
 StandardPadding for T			impl <T: FixedBuffer> StandardPadding for T 
-StrictVersionHashVisitor			    pub struct StrictVersionHashVisitor<'a> 
-Svh			impl Svh 
-Svh			pub struct Svh 
 Target			impl Target 
 Target			pub struct Target 
 TargetOptions			pub struct TargetOptions 
@@ -31,27 +33,28 @@ TempDir			pub struct TempDir
 Test			    struct Test 
 ToBits			trait ToBits 
 ToBits for u64			impl ToBits for u64 
-Visitor for StrictVersionHashVisitor			    impl<'a> Visitor<'a> for StrictVersionHashVisitor<'a> 
 _new_in			    fn _new_in(tmpdir: &Path, prefix: &str) -> io::Result<TempDir> 
-abi			pub mod abi;
 add_bytes_to_bits			fn add_bytes_to_bits(bits: u64, bytes: u64) -> u64 
 adjust_abi			    pub fn adjust_abi(&self, abi: Abi) -> Abi 
 android_base			mod android_base;
 apple_base			mod apple_base;
 apple_ios_base			mod apple_ios_base;
-as_str			    pub fn as_str<'a>(&'a self) -> &'a str 
 bench			mod bench 
 bitrig_base			mod bitrig_base;
-calculate			    pub fn calculate(metadata: &Vec<String>, krate: &hir::Crate) -> Svh 
 ch			        fn ch(x: u32, y: u32, z: u32) -> u32 
+check_for_errors_in			    pub fn check_for_errors_in<T, F>(f: F) -> Result<T, String> where
 cleanup_dir			    fn cleanup_dir(&mut self) -> io::Result<()> 
+close			    pub unsafe fn close(handle: *mut u8) 
 close			    pub fn close(mut self) -> io::Result<()> 
+create_path			    pub fn create_path(path: &[PathBuf]) -> OsString 
 default			    fn default() -> TargetOptions 
+dl			mod dl 
 dragonfly_base			mod dragonfly_base;
 drop			    fn drop(&mut self) 
+drop			    fn drop(&mut self) 
+dynamic_lib			pub mod dynamic_lib;
+envvar			    pub fn envvar() -> &'static str 
 finish			    fn finish(&mut self) 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Display for Svh			impl fmt::Display for Svh 
 freebsd_base			mod freebsd_base;
 from_json			    pub fn from_json(obj: Json) -> Target 
 full_buffer			    fn full_buffer<'s>(&'s mut self) -> &'s [u8] 
@@ -62,7 +65,6 @@ get_rpath_relative_to_output			fn get_rpath_relative_to_output(config: &mut RPat
 get_rpaths			fn get_rpaths(config: &mut RPathConfig, libs: &[PathBuf]) -> Vec<String> 
 get_rpaths_relative_to_output			fn get_rpaths_relative_to_output(config: &mut RPathConfig,
 get_sdk_root			pub fn get_sdk_root(sdk_name: &str) -> String 
-hex			        fn hex(b: u64) -> char 
 input			    fn input(&mut self, d: &[u8]) 
 input			    fn input(&mut self, input: &[u8]) 
 input			    fn input(&mut self, input: &[u8]);
@@ -75,7 +77,6 @@ load_file			        fn load_file(path: &Path) -> Result<Target, String>
 load_specific			        fn load_specific(target: &str) -> Option<Target> 
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 maj			        fn maj(x: u32, y: u32, z: u32) -> u32 
-make			    pub fn make<'a>(st: &'a mut SipHasher, krate: &'a Crate) -> StrictVersionHashVisitor<'a> 
 maybe_jemalloc			fn maybe_jemalloc() -> String 
 minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
 mut_ref_slice			pub fn mut_ref_slice<T>(ptr: &mut T) -> &mut [T; 1] 
@@ -84,11 +85,14 @@ new			    fn new() -> FixedBuffer64
 new			    fn new(h: &[u32; 8]) -> Engine256 
 new			    fn new(h: &[u32; 8]) -> Engine256State 
 new			    pub fn new() -> Sha256 
-new			    pub fn new(hash: &str) -> Svh 
 new			    pub fn new(prefix: &str) -> io::Result<TempDir> 
 new_in			    pub fn new_in<P: AsRef<Path>>(tmpdir: P, prefix: &str)
 next			    fn next<'s>(&'s mut self, len: usize) -> &'s mut [u8] 
 next			    fn next<'s>(&'s mut self, len: usize) -> &'s mut [u8];
+open			    pub fn open(filename: Option<&OsStr>) -> Result<*mut u8, String> 
+open			    pub fn open(filename: Option<&Path>) -> Result<DynamicLibrary, String> 
+open_external			    unsafe fn open_external(filename: &OsStr) -> *mut u8 
+open_internal			    unsafe fn open_internal() -> *mut u8 
 openbsd_base			mod openbsd_base;
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
@@ -109,7 +113,9 @@ path_relative_from			fn path_relative_from(path: &Path, base: &Path) -> Option<P
 position			    fn position(&self) -> usize { self.buffer_idx }
 position			    fn position(&self) -> usize;
 pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String> 
+prepend_search_path			    pub fn prepend_search_path(path: &Path) 
 process_block			    fn process_block(&mut self, data: &[u8]) 
+ptr_result			    fn ptr_result<T>(ptr: *mut T) -> Result<*mut T, String> 
 read_u32_be			fn read_u32_be(input: &[u8]) -> u32 
 read_u32v_be			fn read_u32v_be(dst: &mut[u32], input: &[u8]) 
 ref_slice			pub fn ref_slice<T>(ptr: &T) -> &[T; 1] 
@@ -124,9 +130,9 @@ result_bytes			    fn result_bytes(&mut self) -> Vec<u8>
 result_str			    fn result_str(&mut self) -> String 
 rpath			pub mod rpath;
 rpaths_to_flags			fn rpaths_to_flags(rpaths: &[String]) -> Vec<String> 
-saw_expr			    fn saw_expr<'a>(node: &'a Expr_) -> SawExprComponent<'a> 
-saw_stmt			    fn saw_stmt(node: &Stmt_) -> SawStmtComponent 
 search			    pub fn search(target: &str) -> Result<Target, String> 
+search_path			    pub fn search_path() -> Vec<PathBuf> 
+separator			    fn separator() -> &'static str 
 sha2			pub mod sha2;
 sha256_10			    pub fn sha256_10(b: &mut Bencher) 
 sha256_1k			    pub fn sha256_1k(b: &mut Bencher) 
@@ -141,9 +147,10 @@ standard_padding			    fn standard_padding<F>(&mut self, rem: usize, func: F) wh
 standard_padding			    fn standard_padding<F>(&mut self, rem: usize, mut func: F) where F: FnMut(&[u8]) 
 sum0			        fn sum0(x: u32) -> u32 
 sum1			        fn sum1(x: u32) -> u32 
-svh			pub mod svh;
-svh_visitor			mod svh_visitor 
+symbol			    pub unsafe fn symbol(handle: *mut u8,
+symbol			    pub unsafe fn symbol<T>(&self, symbol: &str) -> Result<*mut T, String> 
 target			pub mod target;
+target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
 target			pub fn target() -> Target 
@@ -189,34 +196,10 @@ target_cpu			fn target_cpu(arch: Arch) -> String
 tempdir			pub mod tempdir;
 tests			mod tests 
 tests			mod tests 
+tests			mod tests 
 to_bits			    fn to_bits(self) -> (Self, Self);
 to_bits			    fn to_bits(self) -> (u64, u64) 
 to_string			    pub fn to_string(&self) -> &'static str 
-visit_arm			        fn visit_arm(&mut self, a: &'a Arm) 
-visit_block			        fn visit_block(&mut self, b: &'a Block) 
-visit_decl			        fn visit_decl(&mut self, d: &'a Decl) 
-visit_explicit_self			        fn visit_explicit_self(&mut self, es: &'a ExplicitSelf) 
-visit_expr			        fn visit_expr(&mut self, ex: &'a Expr) 
-visit_fn			        fn visit_fn(&mut self, fk: FnKind<'a>, fd: &'a FnDecl,
-visit_foreign_item			        fn visit_foreign_item(&mut self, i: &'a ForeignItem) 
-visit_generics			        fn visit_generics(&mut self, g: &'a Generics) 
-visit_impl_item			        fn visit_impl_item(&mut self, ii: &'a ImplItem) 
-visit_item			        fn visit_item(&mut self, i: &'a Item) 
-visit_lifetime			        fn visit_lifetime(&mut self, l: &'a Lifetime) 
-visit_lifetime_def			        fn visit_lifetime_def(&mut self, l: &'a LifetimeDef) 
-visit_local			        fn visit_local(&mut self, l: &'a Local) 
-visit_mod			        fn visit_mod(&mut self, m: &'a Mod, _s: Span, _n: NodeId) 
-visit_name			        fn visit_name(&mut self, _: Span, name: Name) 
-visit_nested_item			        fn visit_nested_item(&mut self, item: ItemId) 
-visit_pat			        fn visit_pat(&mut self, p: &'a Pat) 
-visit_path			        fn visit_path(&mut self, path: &'a Path, _: ast::NodeId) 
-visit_path_list_item			        fn visit_path_list_item(&mut self, prefix: &'a Path, item: &'a PathListItem) 
-visit_stmt			        fn visit_stmt(&mut self, s: &'a Stmt) 
-visit_struct_field			        fn visit_struct_field(&mut self, s: &'a StructField) 
-visit_trait_item			        fn visit_trait_item(&mut self, ti: &'a TraitItem) 
-visit_ty			        fn visit_ty(&mut self, t: &'a Ty) 
-visit_variant			        fn visit_variant(&mut self, v: &'a Variant, g: &'a Generics, item_id: NodeId) 
-visit_variant_data			        fn visit_variant_data(&mut self, s: &'a VariantData, name: Name,
 windows_base			mod windows_base;
 windows_msvc_base			mod windows_msvc_base;
 write_u32_be			fn write_u32_be(dst: &mut[u8], input: u32) 

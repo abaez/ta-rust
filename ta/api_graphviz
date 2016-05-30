@@ -1,7 +1,7 @@
 Edge			    struct Edge 
-GraphWalk			pub trait GraphWalk<'a, N: Clone, E: Clone> 
-GraphWalk for LabelledGraph			    impl<'a> GraphWalk<'a, Node, &'a Edge> for LabelledGraph 
-GraphWalk for LabelledGraphWithEscStrs			    impl<'a> GraphWalk<'a, Node, &'a Edge> for LabelledGraphWithEscStrs 
+GraphWalk			pub trait GraphWalk<'a> 
+GraphWalk for LabelledGraph			    impl<'a> GraphWalk<'a> for LabelledGraph 
+GraphWalk for LabelledGraphWithEscStrs			    impl<'a> GraphWalk<'a> for LabelledGraphWithEscStrs 
 Id			impl<'a> Id<'a> 
 Id			pub struct Id<'a> 
 IntoCow			impl<'a, T: Clone> IntoCow<'a, [T]> for &'a [T] 
@@ -15,9 +15,9 @@ LabelledGraph			    impl LabelledGraph
 LabelledGraph			    struct LabelledGraph 
 LabelledGraphWithEscStrs			    impl LabelledGraphWithEscStrs 
 LabelledGraphWithEscStrs			    struct LabelledGraphWithEscStrs 
-Labeller			pub trait Labeller<'a,N,E> 
-Labeller for LabelledGraph			    impl<'a> Labeller<'a, Node, &'a Edge> for LabelledGraph 
-Labeller for LabelledGraphWithEscStrs			    impl<'a> Labeller<'a, Node, &'a Edge> for LabelledGraphWithEscStrs 
+Labeller			pub trait Labeller<'a> 
+Labeller for LabelledGraph			    impl<'a> Labeller<'a> for LabelledGraph 
+Labeller for LabelledGraphWithEscStrs			    impl<'a> Labeller<'a> for LabelledGraphWithEscStrs 
 NodeLabels			    enum NodeLabels<L> 
 NodeLabels			    impl NodeLabels<&'static str> 
 RenderOption			pub enum RenderOption 
@@ -29,11 +29,11 @@ badly_formatted_id			    fn badly_formatted_id()
 default_options			pub fn default_options() -> Vec<RenderOption> 
 edge			    fn edge(from: usize, to: usize, label: &'static str, style: Style) -> Edge 
 edge_label			        fn edge_label(&'a self, e: &&'a Edge) -> LabelText<'a> 
-edge_label			    fn edge_label(&'a self, e: &E) -> LabelText<'a> 
+edge_label			    fn edge_label(&'a self, e: &Self::Edge) -> LabelText<'a> 
 edge_style			        fn edge_style(&'a self, e: &&'a Edge) -> Style 
-edge_style			    fn edge_style(&'a self, _e: &E) -> Style 
+edge_style			    fn edge_style(&'a self, _e: &Self::Edge) -> Style 
 edges			        fn edges(&'a self) -> Edges<'a, &'a Edge> 
-edges			    fn edges(&'a self) -> Edges<'a, E>;
+edges			    fn edges(&'a self) -> Edges<'a, Self::Edge>;
 empty_graph			    fn empty_graph() 
 escape_char			    fn escape_char<F>(c: char, mut f: F)
 escape_html			pub fn escape_html(s: &str) -> String 
@@ -58,18 +58,18 @@ name			    pub fn name(self) -> Cow<'a, str>
 new			        fn new(name: &'static str,
 new			    pub fn new<Name: IntoCow<'a, str>>(name: Name) -> Result<Id<'a>, ()> 
 node_id			        fn node_id(&'a self, n: &Node) -> Id<'a> 
-node_id			    fn node_id(&'a self, n: &N) -> Id<'a>;
+node_id			    fn node_id(&'a self, n: &Self::Node) -> Id<'a>;
 node_label			        fn node_label(&'a self, n: &Node) -> LabelText<'a> 
-node_label			    fn node_label(&'a self, n: &N) -> LabelText<'a> 
-node_shape			    fn node_shape(&'a self, _node: &N) -> Option<LabelText<'a>> 
+node_label			    fn node_label(&'a self, n: &Self::Node) -> LabelText<'a> 
+node_shape			    fn node_shape(&'a self, _node: &Self::Node) -> Option<LabelText<'a>> 
 node_style			        fn node_style(&'a self, n: &Node) -> Style 
-node_style			    fn node_style(&'a self, _n: &N) -> Style 
+node_style			    fn node_style(&'a self, _n: &Self::Node) -> Style 
 nodes			        fn nodes(&'a self) -> Nodes<'a, Node> 
-nodes			    fn nodes(&'a self) -> Nodes<'a, N>;
+nodes			    fn nodes(&'a self) -> Nodes<'a, Self::Node>;
 pre_escaped_content			    fn pre_escaped_content(self) -> Cow<'a, str> 
 prefix_line			    pub fn prefix_line(self, prefix: LabelText) -> LabelText<'static> 
-render			pub fn render<'a,
-render_opts			pub fn render_opts<'a,
+render			pub fn render<'a,N,E,G,W>(g: &'a G, w: &mut W) -> io::Result<()>
+render_opts			pub fn render_opts<'a, N, E, G, W>(g: &'a G,
 simple_id_construction			    fn simple_id_construction() 
 single_cyclic_node			    fn single_cyclic_node() 
 single_edge			    fn single_edge() 
@@ -77,10 +77,10 @@ single_edge_with_style			    fn single_edge_with_style()
 single_node			    fn single_node() 
 single_node_with_style			    fn single_node_with_style() 
 source			        fn source(&'a self, edge: &&'a Edge) -> Node 
-source			    fn source(&'a self, edge: &E) -> N;
+source			    fn source(&'a self, edge: &Self::Edge) -> Self::Node;
 suffix_line			    pub fn suffix_line(self, suffix: LabelText) -> LabelText<'static> 
 target			        fn target(&'a self, edge: &&'a Edge) -> Node 
-target			    fn target(&'a self, edge: &E) -> N;
+target			    fn target(&'a self, edge: &Self::Edge) -> Self::Node;
 tests			mod tests 
 to_dot_string			    pub fn to_dot_string(&self) -> String 
 to_opt_strs			        fn to_opt_strs(self) -> Vec<Option<&'static str>> 
