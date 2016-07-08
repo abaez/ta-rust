@@ -38,7 +38,8 @@ Clone the repository to your `~/.textadept/modules` directory:
 
 ```
 cd ~/.textadept/modules
-hg clone https://bitbucket.org/a_baez/ta-rust rust
+hg clone https://bitbucket.org/a_baez/ta-rust \
+  rust
 ```
 
 You are done! If you want to use the latest in development version of the lexer
