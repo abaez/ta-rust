@@ -27,7 +27,7 @@ numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.8.0 (rev: [cfcb716c])
+*   Rust >= v1.10.0 (rev: [cfcb716c])
 *   Textadept >= v8.4
 *   (optional) [racer][3]
 *   (optional) [textadept ctags][6]
@@ -113,4 +113,4 @@ _RACER = true
 [5]: http://foicica.com/textadept
 [6]: http://foicica.com/hg/ctags/
 [7]: http://foicica.com/textadept/api.html#io.get_project_root
-[cfcb716c]: Ahttps://github.com/rust-lang/rust/commit/cfcb716cf0961a7e3a4eceac828d94805cf8140b
+[cfcb716c]: https://github.com/rust-lang/rust/commit/cfcb716cf0961a7e3a4eceac828d94805cf8140b
