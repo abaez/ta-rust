@@ -166,6 +166,8 @@ From			impl<T: Ord> From<Vec<T>> for BinaryHeap<T>
 From			impl<T> From<BinaryHeap<T>> for Vec<T> 
 From			impl<'a, T> From<&'a mut Link<T>> for Rawlink<Node<T>> 
 From			impl<'a, T: Clone> From<Vec<T>> for Cow<'a, [T]> 
+From			impl<T> From<Vec<T>> for VecDeque<T> 
+From			impl<T> From<VecDeque<T>> for Vec<T> 
 From for Cow			impl<'a> From<&'a str> for Cow<'a, str> 
 From for Cow			impl<'a> From<String> for Cow<'a, str> 
 From for Cow			impl<'a, T: Clone> From<&'a [T]> for Cow<'a, [T]> 
@@ -289,6 +291,7 @@ LeafNode			struct LeafNode<K, V>
 LeafOrInternal			    pub enum LeafOrInternal { }
 LinkedList			impl<T> LinkedList<T> 
 LinkedList			pub struct LinkedList<T> 
+MergeIter			struct MergeIter<K, V, I: Iterator<Item=(K, V)>> 
 Mut			    pub struct Mut<'a>(PhantomData<&'a mut ()>);
 Node			impl<T> Node<T> 
 Node			struct Node<T> 
@@ -359,6 +362,12 @@ Send for IntoIter			unsafe impl<T: Send> Send for IntoIter<T> {}
 Send for Rawlink			unsafe impl<T: Send> Send for Rawlink<T> {}
 Send for Root			unsafe impl<K: Send, V: Send> Send for Root<K, V> { }
 SliceConcatExt			pub trait SliceConcatExt<T: ?Sized> 
+SpecExtend			impl<T: Ord> SpecExtend<BinaryHeap<T>> for BinaryHeap<T> 
+SpecExtend			trait SpecExtend<I: IntoIterator> 
+SpecExtend			impl<T> SpecExtend<LinkedList<T>> for LinkedList<T> 
+SpecExtend			impl<T> SpecExtend<Vec<T>> for Vec<T> 
+SpecExtend for LinkedList			impl<I: IntoIterator> SpecExtend<I> for LinkedList<I::Item> 
+SpecExtend for Vec			impl<I: IntoIterator> SpecExtend<I> for Vec<I::Item> 
 String			impl String 
 String			pub struct String 
 Sub			impl<'a, 'b, T: Ord + Clone> Sub<&'b BTreeSet<T>> for &'a BTreeSet<T> 
@@ -393,6 +402,9 @@ VecDeque			impl<T> VecDeque<T>
 VecDeque			pub struct VecDeque<T> 
 a			    fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> { x }
 add			    fn add(mut self, other: &str) -> String 
+append			    pub fn append(&mut self, other: &mut Self) 
+append			    pub fn append(&mut self, other: &mut Self) 
+append			    pub fn append(&mut self, other: &mut Self) 
 append			    pub fn append(&mut self, other: &mut LinkedList<T>) 
 append			    pub fn append(&mut self, other: &mut Self) 
 append			    pub fn append(&mut self, other: &mut Self) 
@@ -434,9 +446,11 @@ bench_pop_back_100			    fn bench_pop_back_100(b: &mut test::Bencher)
 bench_pop_front_100			    fn bench_pop_front_100(b: &mut test::Bencher) 
 bench_push_back_100			    fn bench_push_back_100(b: &mut test::Bencher) 
 bench_push_front_100			    fn bench_push_front_100(b: &mut test::Bencher) 
+better_to_rebuild			        fn better_to_rebuild(len1: usize, len2: usize) -> bool 
 binary_heap			pub mod binary_heap;
 binary_search			    pub fn binary_search(&self, x: &T) -> Result<usize, usize>
 binary_search_by			    pub fn binary_search_by<F>(&self, f: F) -> Result<usize, usize>
+binary_search_by_key			    pub fn binary_search_by_key<B, F>(&self, b: &B, f: F) -> Result<usize, usize>
 bit			fn bit<E: CLike>(e: &E) -> usize 
 bitand			    fn bitand(self, rhs: &BTreeSet<T>) -> BTreeSet<T> 
 bitand			    fn bitand(self, e: EnumSet<E>) -> EnumSet<E> 
@@ -456,6 +470,7 @@ buffer_as_mut_slice			    unsafe fn buffer_as_mut_slice(&mut self) -> &mut [T]
 buffer_as_slice			    unsafe fn buffer_as_slice(&self) -> &[T] 
 buffer_read			    unsafe fn buffer_read(&mut self, off: usize) -> T 
 buffer_write			    unsafe fn buffer_write(&mut self, off: usize, value: T) 
+bulk_steal_left			    pub fn bulk_steal_left(&mut self, n: usize) 
 bytes			    pub fn bytes(&self) -> Bytes 
 c			    fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> { x }
 can_merge			    pub fn can_merge(&self) -> bool 
@@ -529,7 +544,9 @@ connect			    fn connect(&self, sep: &str) -> String
 contains			    pub fn contains<Q: ?Sized>(&self, value: &Q) -> bool
 contains			    pub fn contains(&self, e: &E) -> bool 
 contains			    pub fn contains(&self, x: &T) -> bool
+contains			    pub fn contains(&self, x: &T) -> bool
 contains			    pub fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
+contains			    pub fn contains(&self, x: &T) -> bool
 contains_key			    pub fn contains_key<Q: ?Sized>(&self, key: &Q) -> bool where K: Borrow<Q>, Q: Ord 
 copy			    unsafe fn copy(&self, dst: usize, src: usize, len: usize) 
 copy_from_slice			    pub fn copy_from_slice(&mut self, src: &[T]) where T: Copy 
@@ -537,6 +554,7 @@ copy_nonoverlapping			    unsafe fn copy_nonoverlapping(&self, dst: usize, src: 
 correct_parent_link			    fn correct_parent_link(mut self) 
 count			    fn count(self) -> usize 
 count			fn count(tail: usize, head: usize, size: usize) -> usize 
+create_vec_and_test_convert			        fn create_vec_and_test_convert(cap: usize, offset: usize, len: usize) 
 deallocate_and_ascend			    pub unsafe fn deallocate_and_ascend(self) -> Option<
 dedup			    pub fn dedup(&mut self) 
 default			    fn default() -> BinaryHeap<T> 
@@ -601,6 +619,7 @@ extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I)
 extend			    fn extend<I: IntoIterator<Item = T>>(&mut self, iter: I) 
 extend			    fn extend<I: IntoIterator<Item = &'a T>>(&mut self, iter: I) 
 extend			    fn extend<T: IntoIterator<Item = A>>(&mut self, iter: T) 
+extend_desugared			    fn extend_desugared<I: IntoIterator<Item = T>>(&mut self, iter: I) 
 extend_desugared			    fn extend_desugared<I: Iterator<Item = T>>(&mut self, mut iterator: I) 
 extend_from_slice			    pub fn extend_from_slice(&mut self, other: &[T]) 
 extend_with_element			    fn extend_with_element(&mut self, n: usize, value: T) 
@@ -611,6 +630,7 @@ first			    pub fn first(&self) -> Option<&T>
 first_edge			    pub fn first_edge(self) -> Handle<Self, marker::Edge> 
 first_leaf_edge			fn first_leaf_edge<BorrowType, K, V>(
 first_mut			    pub fn first_mut(&mut self) -> Option<&mut T> 
+fix_right_edge			    fn fix_right_edge(&mut self) 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -649,6 +669,8 @@ from			    fn from(s: &'a [T]) -> Cow<'a, [T]>
 from			    fn from(s: &'a [T]) -> Vec<T> 
 from			    fn from(s: &'a str) -> Vec<u8> 
 from			    fn from(v: Vec<T>) -> Cow<'a, [T]> 
+from			    fn from(mut other: Vec<T>) -> Self 
+from			    fn from(other: VecDeque<T>) -> Self 
 from_elem			pub fn from_elem<T: Clone>(elem: T, n: usize) -> Vec<T> 
 from_internal			    fn from_internal(node: Box<InternalNode<K, V>>) -> Self 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> BinaryHeap<T> 
@@ -666,6 +688,7 @@ from_leaf			    fn from_leaf(node: Box<LeafNode<K, V>>) -> Self
 from_ptr			    unsafe fn from_ptr(ptr: NonZero<*const LeafNode<K, V>>) -> Self 
 from_raw_parts			    pub unsafe fn from_raw_parts(buf: *mut u8, length: usize, capacity: usize) -> String 
 from_raw_parts			    pub unsafe fn from_raw_parts(ptr: *mut T, length: usize, capacity: usize) -> Vec<T> 
+from_sorted_iter			    fn from_sorted_iter<I: Iterator<Item=(K, V)>>(&mut self, iter: I) 
 from_str			    fn from_str(s: &str) -> Result<String, ParseError> 
 from_str			    pub fn from_str(_: &str) -> String 
 from_usize			    fn from_usize(usize) -> Self;
@@ -704,6 +727,7 @@ hash			    fn hash<H: hash::Hasher>(&self, hasher: &mut H)
 hash			    fn hash<H: hash::Hasher>(&self, state: &mut H) 
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 hash::Hash for String			impl hash::Hash for String 
+height			    pub fn height(&self) -> usize 
 index			    fn index(&self, key: &Q) -> &V 
 index			    fn index(&self, _index: ops::RangeFull) -> &str 
 index			    fn index(&self, index: ops::Range<usize>) -> &str 
@@ -851,6 +875,7 @@ lines_any			    pub fn lines_any(&self) -> LinesAny
 link_no_prev			fn link_no_prev<T>(mut next: Box<Node<T>>) -> Link<T> 
 linked_list			pub mod linked_list;
 list_from			    fn list_from<T: Clone>(v: &[T]) -> LinkedList<T> 
+log2_fast			        fn log2_fast(x: usize) -> usize 
 macros			mod macros;
 make_place			    fn make_place(self) -> Self 
 map			pub mod map;
@@ -1002,6 +1027,7 @@ reborrow			    fn reborrow<'a>(&'a self) -> NodeRef<marker::Immut<'a>, K, V, Typ
 reborrow			    pub fn reborrow(&self)
 reborrow_mut			    pub unsafe fn reborrow_mut(&mut self)
 reborrow_mut			    unsafe fn reborrow_mut(&mut self) -> NodeRef<marker::Mut, K, V, Type> 
+rebuild			    fn rebuild(&mut self) 
 remove			    pub fn remove(self) -> V 
 remove			    pub fn remove<Q: ?Sized>(&mut self, key: &Q) -> Option<V> where K: Borrow<Q>, Q: Ord 
 remove			    pub fn remove(mut self)
@@ -1076,6 +1102,10 @@ some			    fn some(n: &mut T) -> Rawlink<T>
 sort			    pub fn sort(&mut self)
 sort_by			    pub fn sort_by<F>(&mut self, compare: F)
 sort_by_key			    pub fn sort_by_key<B, F>(&mut self, mut f: F)
+spec_extend			    fn spec_extend(&mut self, ref mut other: BinaryHeap<T>) 
+spec_extend			    fn spec_extend(&mut self, iter: I);
+spec_extend			    fn spec_extend(&mut self, ref mut other: LinkedList<T>) 
+spec_extend			    fn spec_extend(&mut self, ref mut other: Vec<T>) 
 split			    pub fn split(mut self)
 split			    pub fn split<F>(&self, pred: F) -> Split<T, F>
 split			    pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> 
@@ -1100,6 +1130,8 @@ start			    fn start(&self) -> Option<&T>
 starts_with			    pub fn starts_with(&self, needle: &[T]) -> bool
 starts_with			    pub fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 std			mod std 
+steal_left			    pub fn steal_left(&mut self) 
+steal_right			    pub fn steal_right(&mut self) 
 step			    unsafe fn step<T>(ptr: &mut *mut T) -> *mut T 
 str			pub mod str;
 str			impl str 
@@ -1150,7 +1182,7 @@ utf8_error			    pub fn utf8_error(&self) -> Utf8Error
 vals			    pub fn vals(&self) -> &[V] 
 vals_mut			    pub fn vals_mut(&mut self) -> &mut [V] 
 values			    pub fn values<'a>(&'a self) -> Values<'a, K, V> 
-values_mut			    pub fn values_mut<'a>(&'a mut self) -> ValuesMut<'a, K, V> 
+values_mut			    pub fn values_mut(&mut self) -> ValuesMut<K, V> 
 vec			pub mod vec;
 vec_deque			pub mod vec_deque;
 windows			    pub fn windows(&self, size: usize) -> Windows<T> 

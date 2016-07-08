@@ -1,9 +1,4 @@
-A			struct A;
-Bar			struct Bar {x: u8}
-C			struct C { a: Cell<usize> }
-CheckBlock			struct CheckBlock<'a> 
-CheckConstFn			struct CheckConstFn<'a> 
-CheckCrateVisitor			impl<'a, 'tcx> CheckCrateVisitor<'a, 'tcx> 
+CheckCrateVisitor			impl<'a, 'gcx> CheckCrateVisitor<'a, 'gcx> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'tcx: 'a> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'ast: 'a> 
 CheckItemRecursionVisitor			impl<'a, 'ast: 'a> CheckItemRecursionVisitor<'a, 'ast> 
@@ -12,44 +7,24 @@ CheckLoopVisitor			impl<'a> CheckLoopVisitor<'a>
 CheckLoopVisitor			struct CheckLoopVisitor<'a> 
 CheckNoAsm			struct CheckNoAsm<'a> 
 Context			enum Context 
-Deref for A			impl Deref for A 
-Drop for Foo			impl Drop for Foo 
-Foo			impl Foo 
-Foo			struct Foo { a: u8 }
-Foo			struct Foo 
-Foo			struct Foo(i32);
-Index for Foo			impl Index<u8> for Foo 
 Mode			enum Mode 
-NotThreadSafe			struct NotThreadSafe<T> 
 RvalueContext			struct RvalueContext<'a, 'tcx: 'a> 
-RvalueContextDelegate			struct RvalueContextDelegate<'a, 'tcx: 'a> 
-Sync for NotThreadSafe			unsafe impl<T> Sync for NotThreadSafe<T> {}
-Test			enum Test 
-Test			impl Test 
-Visitor for CheckBlock			impl<'a, 'v> Visitor<'v> for CheckBlock<'a> 
-Visitor for CheckConstFn			impl<'a, 'v> Visitor<'v> for CheckConstFn<'a> 
+RvalueContextDelegate			struct RvalueContextDelegate<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 Visitor for CheckCrateVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for CheckCrateVisitor<'a, 'tcx> 
 Visitor for CheckCrateVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckCrateVisitor<'a, 'ast> 
 Visitor for CheckItemRecursionVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckItemRecursionVisitor<'a, 'ast> 
 Visitor for CheckLoopVisitor			impl<'a, 'v> Visitor<'v> for CheckLoopVisitor<'a> 
 Visitor for CheckNoAsm			impl<'a, 'v> Visitor<'v> for CheckNoAsm<'a> 
 add_qualif			    fn add_qualif(&mut self, qualif: ConstQualif) 
-and			                                  struct and enum constructors",
-bar			    fn bar(&self) -> i32 { self.0 }
 borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 check_adjustments			fn check_adjustments<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr) 
-check_block			fn check_block(sess: &Session, b: &ast::Block, kind: &'static str) 
-check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) -> CompileResult 
-check_crate			pub fn check_crate(tcx: &TyCtxt) 
+check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate(sess: &Session, map: &Map) 
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
-check_crate			pub fn check_crate(tcx: &TyCtxt) 
+check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'ast>(sess: &Session,
 check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>,
-check_static_mut_type			    fn check_static_mut_type(&self, e: &hir::Expr) 
-check_static_type			    fn check_static_type(&self, e: &hir::Expr) 
-const_fn			pub mod const_fn;
 consts			pub mod consts;
 consume			    fn consume(&mut self,
 consume			    fn consume(&mut self,
@@ -57,18 +32,14 @@ consume_pat			    fn consume_pat(&mut self,
 consume_pat			    fn consume_pat(&mut self,
 decl_without_init			    fn decl_without_init(&mut self,
 decl_without_init			    fn decl_without_init(&mut self,
-deref			    fn deref(&self)-> &str { "foo" }
 diagnostics			pub mod diagnostics;
-drop			    fn drop(&mut self) {}
-euv::Delegate for CheckCrateVisitor			impl<'a, 'tcx> euv::Delegate<'tcx> for CheckCrateVisitor<'a, 'tcx> 
-euv::Delegate for RvalueContextDelegate			impl<'a, 'tcx> euv::Delegate<'tcx> for RvalueContextDelegate<'a, 'tcx> 
+euv::Delegate for CheckCrateVisitor			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for CheckCrateVisitor<'a, 'gcx> 
+euv::Delegate for RvalueContextDelegate			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for RvalueContextDelegate<'a, 'gcx, 'tcx> 
 fn_like			    fn fn_like(&mut self,
 global_expr			    fn global_expr(&mut self, mode: Mode, expr: &hir::Expr) -> ConstQualif 
 handle_const_fn_call			    fn handle_const_fn_call(&mut self,
-index			    fn index<'a>(&'a self, idx: u8) -> &'a u8 { &self.a }
 intravisit::Visitor for RvalueContext			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for RvalueContext<'a, 'tcx> 
 loops			pub mod loops;
-main			fn main() 
 matched_pat			    fn matched_pat(&mut self,
 matched_pat			    fn matched_pat(&mut self,
 msg			    fn msg(&self) -> &'static str 
@@ -82,22 +53,16 @@ require_loop			    fn require_loop(&self, name: &str, span: Span)
 rvalues			pub mod rvalues;
 some_func			fn some_func() 
 static_recursion			pub mod static_recursion;
-test			    fn test(&self) -> i32 
-visit_block			    fn visit_block(&mut self, block: &'v ast::Block) 
 visit_block			    fn visit_block(&mut self, block: &hir::Block) 
 visit_enum_def			    fn visit_enum_def(&mut self, enum_definition: &'ast hir::EnumDef,
-visit_expr			    fn visit_expr(&mut self, e: &'v ast::Expr) 
 visit_expr			    fn visit_expr(&mut self, ex: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &ast::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &'ast hir::Expr) 
 visit_fn			    fn visit_fn(&mut self,
 visit_fn			    fn visit_fn(&mut self,
-visit_fn			    fn visit_fn(&mut self,
 visit_impl_item			    fn visit_impl_item(&mut self, i: &'v hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'ast hir::ImplItem) 
-visit_item			    fn visit_item(&mut self, _i: &'v ast::Item) { bug!("should be handled in CheckConstFn") }
-visit_item			    fn visit_item(&mut self, i: &'v ast::Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, it: &'ast hir::Item) 
@@ -106,6 +71,6 @@ visit_trait_item			    fn visit_trait_item(&mut self, t: &'v hir::TraitItem)
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'ast hir::TraitItem) 
 visit_variant			    fn visit_variant(&mut self, variant: &'ast hir::Variant,
 with_context			    fn with_context<F>(&mut self, cx: Context, f: F) where
-with_euv			    fn with_euv<'b, F, R>(&'b mut self, item_id: Option<ast::NodeId>, f: F) -> R where
+with_euv			    fn with_euv<F, R>(&mut self, item_id: Option<ast::NodeId>, f: F) -> R where
 with_item_id_pushed			    fn with_item_id_pushed<F>(&mut self, id: ast::NodeId, f: F)
 with_mode			    fn with_mode<F, R>(&mut self, mode: Mode, f: F) -> R where

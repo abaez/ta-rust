@@ -8,12 +8,10 @@ BareIdentifierPatternResolution			enum BareIdentifierPatternResolution
 Baz			trait Baz : Foo + Foo2 
 Baz			trait Baz : Foo 
 BindingInfo			struct BindingInfo 
-BuildReducedGraphVisitor			struct BuildReducedGraphVisitor<'a, 'b: 'a, 'tcx: 'b> 
-CrateMap			pub struct CrateMap 
+BuildReducedGraphVisitor			struct BuildReducedGraphVisitor<'a, 'b: 'a> 
 Default for SingleImports			impl<'a> Default for SingleImports<'a> 
-Deref for UnusedImportCheckVisitor			impl<'a, 'b, 'tcx:'b> Deref for UnusedImportCheckVisitor<'a, 'b, 'tcx> 
-DerefMut for UnusedImportCheckVisitor			impl<'a, 'b, 'tcx:'b> DerefMut for UnusedImportCheckVisitor<'a, 'b, 'tcx> 
-FallbackChecks			enum FallbackChecks 
+Deref for UnusedImportCheckVisitor			impl<'a, 'b> Deref for UnusedImportCheckVisitor<'a, 'b> 
+DerefMut for UnusedImportCheckVisitor			impl<'a, 'b> DerefMut for UnusedImportCheckVisitor<'a, 'b> 
 FallbackSuggestion			enum FallbackSuggestion 
 Foo			    pub struct Foo;
 Foo			    struct Foo 
@@ -36,8 +34,8 @@ ImportDirective			impl<'a> ImportDirective<'a>
 ImportDirective			pub struct ImportDirective<'a> 
 ImportDirectiveSubclass			impl ImportDirectiveSubclass 
 ImportDirectiveSubclass			pub enum ImportDirectiveSubclass 
-ImportResolver			impl<'a, 'b:'a, 'tcx:'b> ImportResolver<'a, 'b, 'tcx> 
-ImportResolver			struct ImportResolver<'a, 'b: 'a, 'tcx: 'b> 
+ImportResolver			impl<'a, 'b:'a> ImportResolver<'a, 'b> 
+ImportResolver			struct ImportResolver<'a, 'b: 'a> 
 ImportResolvingError			struct ImportResolvingError<'a> 
 LexicalScopeBinding			enum LexicalScopeBinding<'a> 
 LexicalScopeBinding			impl<'a> LexicalScopeBinding<'a> 
@@ -53,6 +51,9 @@ NameBinding			pub struct NameBinding<'a>
 NameBindingKind			enum NameBindingKind<'a> 
 NameResolution			impl<'a> NameResolution<'a> 
 NameResolution			pub struct NameResolution<'a> 
+Named			trait Named 
+Named for ast			impl Named for ast::PathSegment 
+Named for hir			impl Named for hir::PathSegment 
 Namespace			pub enum Namespace 
 ParentLink			enum ParentLink<'a> 
 PatternBindingMode			enum PatternBindingMode 
@@ -62,9 +63,9 @@ PrivacyError			struct PrivacyError<'a>(Span, Name, &'a NameBinding<'a>);
 ResolutionError			enum ResolutionError<'a> 
 ResolveResult			impl<T> ResolveResult<T> 
 ResolveResult			pub enum ResolveResult<T> 
-Resolver			impl<'b, 'tcx:'b> Resolver<'b, 'tcx> 
-Resolver			impl<'a, 'tcx> Resolver<'a, 'tcx> 
-Resolver			pub struct Resolver<'a, 'tcx: 'a> 
+Resolver			impl<'b> Resolver<'b> 
+Resolver			impl<'a> Resolver<'a> 
+Resolver			pub struct Resolver<'a> 
 ResolverArenas			impl<'a> ResolverArenas<'a> 
 ResolverArenas			struct ResolverArenas<'a> 
 Rib			impl<'a> Rib<'a> 
@@ -81,23 +82,23 @@ Something			impl Something {} \/\/ ok!
 Something			struct Something;
 SuggestedCandidates			struct SuggestedCandidates 
 SuggestionType			enum SuggestionType 
-ToNameBinding			impl<'a> ToNameBinding<'a> for (Def, Span, DefModifiers) 
-ToNameBinding			impl<'a> ToNameBinding<'a> for (Module<'a>, Span) 
+ToNameBinding			impl<'a> ToNameBinding<'a> for (Def, Span, ty::Visibility) 
+ToNameBinding			impl<'a> ToNameBinding<'a> for (Module<'a>, Span, ty::Visibility) 
 ToNameBinding			trait ToNameBinding<'a> 
-TypeParameters			enum TypeParameters<'tcx, 'a> 
-UnresolvedNameContext			enum UnresolvedNameContext 
-UnusedImportCheckVisitor			impl<'a, 'b, 'tcx> UnusedImportCheckVisitor<'a, 'b, 'tcx> 
-UnusedImportCheckVisitor			struct UnusedImportCheckVisitor<'a, 'b: 'a, 'tcx: 'b> 
+TypeParameters			enum TypeParameters<'a, 'b> 
+UnresolvedNameContext			enum UnresolvedNameContext<'a> 
+UnusedImportCheckVisitor			impl<'a, 'b> UnusedImportCheckVisitor<'a, 'b> 
+UnusedImportCheckVisitor			struct UnusedImportCheckVisitor<'a, 'b: 'a> 
 UseLexicalScopeFlag			enum UseLexicalScopeFlag 
-Visitor for BuildReducedGraphVisitor			impl<'a, 'b, 'v, 'tcx> Visitor<'v> for BuildReducedGraphVisitor<'a, 'b, 'tcx> 
-Visitor for Resolver			impl<'a, 'v, 'tcx> Visitor<'v> for Resolver<'a, 'tcx> 
-Visitor for UnusedImportCheckVisitor			impl<'a, 'b, 'v, 'tcx> Visitor<'v> for UnusedImportCheckVisitor<'a, 'b, 'tcx> 
+Visitor for BuildReducedGraphVisitor			impl<'a, 'b, 'v> Visitor<'v> for BuildReducedGraphVisitor<'a, 'b> 
+Visitor for Resolver			impl<'a, 'v> Visitor<'v> for Resolver<'a> 
+Visitor for UnusedImportCheckVisitor			impl<'a, 'b, 'v> Visitor<'v> for UnusedImportCheckVisitor<'a, 'b> 
 a			    fn a() {}
 a			    fn a();
 abc			struct abc;
 add_directive			    fn add_directive(&mut self, directive: &'a ImportDirective<'a>) 
 add_import_directive			    pub fn add_import_directive(&self,
-add_trait_info			        fn add_trait_info(found_traits: &mut Vec<DefId>, trait_def_id: DefId, name: Name) 
+add_trait_info			        fn add_trait_info(found_traits: &mut Vec<TraitCandidate>,
 adjust_local_def			    fn adjust_local_def(&mut self, local_def: LocalDef, span: Span) -> Option<Def> 
 alloc_import_directive			    fn alloc_import_directive(&'a self, import_directive: ImportDirective<'a>)
 alloc_module			    fn alloc_module(&'a self, module: ModuleS<'a>) -> Module<'a> 
@@ -113,6 +114,7 @@ bar			    fn bar(&self, y: T)
 bar			    fn bar() -> <Self as Foo>::Bar; \/\/ ok!
 bar			    fn bar() -> Self::Bar; \/\/ like this
 bar			    fn bar() -> Self::Bar;
+bar			    fn bar() -> u32 
 bar			    fn bar() 
 bar			    fn bar(N); \/\/ error: type name `N` is not in scope
 bar			    fn bar(Self::N); \/\/ ok!
@@ -120,13 +122,14 @@ bar			    fn bar(self) {}
 bar			    fn bar(y: T) { \/\/ T is defined in the "outer" function
 bar			    fn bar<T: Copy>(y: T) 
 bar			    fn bar<T>(y: T) 
+bar			fn bar(FOO: u8) { \/\/ error: variable bindings cannot shadow constants
 bar			mod bar 
 baz			    pub mod baz {}
 baz			    pub struct baz;
 binding			    fn binding(&self) -> Option<&'a NameBinding<'a>> 
 binding_mode_map			    fn binding_mode_map(&mut self, pat: &Pat) -> BindingMap 
 block_needs_anonymous_module			    fn block_needs_anonymous_module(&mut self, block: &Block) -> bool 
-build_reduced_graph			    pub fn build_reduced_graph(&mut self, krate: &hir::Crate) 
+build_reduced_graph			    pub fn build_reduced_graph(&mut self, krate: &Crate) 
 build_reduced_graph			mod build_reduced_graph;
 build_reduced_graph_for_block			    fn build_reduced_graph_for_block(&mut self, block: &Block, parent: &mut Module<'b>) 
 build_reduced_graph_for_external_crate			    fn build_reduced_graph_for_external_crate(&mut self, root: Module<'b>) 
@@ -135,31 +138,28 @@ build_reduced_graph_for_foreign_item			    fn build_reduced_graph_for_foreign_it
 build_reduced_graph_for_item			    fn build_reduced_graph_for_item(&mut self, item: &Item, parent_ref: &mut Module<'b>) 
 build_reduced_graph_for_variant			    fn build_reduced_graph_for_variant(&mut self,
 check_consistent_bindings			    fn check_consistent_bindings(&mut self, arm: &Arm) 
-check_crate			pub fn check_crate(resolver: &mut Resolver, krate: &hir::Crate) 
+check_crate			pub fn check_crate(resolver: &mut Resolver, krate: &ast::Crate) 
 check_import			    fn check_import(&mut self, id: ast::NodeId, span: Span) 
-check_privacy			    fn check_privacy(&mut self,
+check_privacy			    fn check_privacy(&mut self, name: Name, binding: &'a NameBinding<'a>, span: Span) 
 check_trait_item			    fn check_trait_item<F>(&self, name: Name, span: Span, err: F)
 check_unused			mod check_unused;
 collect_mod			    fn collect_mod(names: &mut Vec<ast::Name>, module: Module) 
-create_from_module			    fn create_from_module(module: Module<'a>, span: Option<Span>) -> Self 
-create_resolver			fn create_resolver<'a, 'tcx>(session: &'a Session,
 def			    fn def(&self) -> Option<Def> 
-def			    fn def(self) -> Def 
 def_id			    fn def_id(&self) -> Option<DefId> 
 default			    fn default() -> Self 
 define			    fn define<T: ToNameBinding<'b>>(&self, parent: Module<'b>, name: Name, ns: Namespace, def: T) 
 define_in_glob_importers			    fn define_in_glob_importers(&self, name: Name, ns: Namespace, binding: &'a NameBinding<'a>) 
-defined_with			    fn defined_with(&self, modifiers: DefModifiers) -> bool 
-deref			    fn deref<'c>(&'c self) -> &'c Resolver<'b, 'tcx> 
-deref_mut			    fn deref_mut<'c>(&'c mut self) -> &'c mut Resolver<'b, 'tcx> 
+definitions			    fn definitions(&mut self) -> Option<&mut Definitions> 
+deref			    fn deref<'c>(&'c self) -> &'c Resolver<'b> 
+deref_mut			    fn deref_mut<'c>(&'c mut self) -> &'c mut Resolver<'b> 
 diagnostics			mod diagnostics;
 directive_failed			    fn directive_failed(&mut self) 
 do_something			        fn do_something();
 enforce_default_binding_mode			    fn enforce_default_binding_mode(&mut self,
 err_path_resolution			fn err_path_resolution() -> PathResolution 
-extract_path_and_node_id			        fn extract_path_and_node_id(t: &Ty,
+extract_node_id			        fn extract_node_id(t: &Ty) -> Option<NodeId> 
 f			fn f() 
-finalize_resolutions			    fn finalize_resolutions(&mut self, module: Module<'b>, report_unresolved_imports: bool) 
+finalize_resolutions_in			    fn finalize_resolutions_in(&mut self, module: Module<'b>, report_unresolved_imports: bool) 
 find_best_match			    fn find_best_match(&mut self, name: &str) -> SuggestionType 
 find_fallback_in_self_type			    fn find_fallback_in_self_type(&mut self, name: Name) -> FallbackSuggestion 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -168,6 +168,7 @@ foo			     pub fn foo() {}
 foo			    fn foo() 
 foo			    fn foo(self) 
 foo			    pub fn foo(&self, x: T) 
+foo			fn foo() 
 foo			fn foo() {}
 foo			fn foo(f: i32, f: i32) {} \/\/ error: identifier `f` is bound more than
 foo			fn foo(f: i32, g: i32) {} \/\/ ok!
@@ -181,58 +182,67 @@ foo			mod foo
 foo			pub mod foo 
 for_each_child			    fn for_each_child<F: FnMut(Name, Namespace, &'a NameBinding<'a>)>(&self, mut f: F) 
 from_def			    fn from_def(def: Def) -> Self 
-get_module			        fn get_module<'a, 'tcx>(this: &mut Resolver<'a, 'tcx>,
-get_nearest_normal_module_parent			    fn get_nearest_normal_module_parent(&mut self, module_: Module<'a>) -> Option<Module<'a>> 
-get_nearest_normal_module_parent_or_self			    fn get_nearest_normal_module_parent_or_self(&mut self, module_: Module<'a>) -> Module<'a> 
+get_nearest_normal_module_parent			    fn get_nearest_normal_module_parent(&self, module_: Module<'a>) -> Option<Module<'a>> 
+get_nearest_normal_module_parent_or_self			    fn get_nearest_normal_module_parent_or_self(&self, module_: Module<'a>) -> Module<'a> 
+get_resolution			    fn get_resolution(&mut self, id: NodeId) -> Option<PathResolution> 
 get_ribs			    fn get_ribs<'b>(&'b mut self, ns: Namespace) -> &'b mut Vec<Rib<'a>> 
-get_trait_name			    fn get_trait_name(&self, did: DefId) -> Name 
-get_traits_containing_item			    fn get_traits_containing_item(&mut self, name: Name) -> Vec<DefId> 
-import			    fn import(&self, binding: &'a NameBinding<'a>, privacy_error: Option<Box<PrivacyError<'a>>>)
+get_traits_containing_item			    fn get_traits_containing_item(&mut self, name: Name) -> Vec<TraitCandidate> 
+hir::lowering::Resolver for Resolver			impl<'a> hir::lowering::Resolver for Resolver<'a> 
+import			    fn import(&'a self, binding: &'a NameBinding<'a>, privacy_error: Option<Box<PrivacyError<'a>>>)
 import_directive_subclass_to_string			fn import_directive_subclass_to_string(subclass: &ImportDirectiveSubclass) -> String 
 import_path_to_string			fn import_path_to_string(names: &[Name], subclass: &ImportDirectiveSubclass) -> String 
 import_resolving_error			    fn import_resolving_error(&self, e: ImportResolvingError<'b>) 
 intern			    fn intern(&mut self, string: &str, primitive_type: PrimTy) 
-is_ancestor_of			    fn is_ancestor_of(&self, module: Module<'a>) -> bool 
+is_accessible			    fn is_accessible(&self, vis: ty::Visibility) -> bool 
+is_descendant_of			    fn is_descendant_of(&self, node: NodeId, ancestor: NodeId) -> bool 
 is_extern_crate			    fn is_extern_crate(&self) -> bool 
+is_glob			    pub fn is_glob(&self) -> bool 
+is_glob_import			    fn is_glob_import(&self) -> bool 
 is_import			    fn is_import(&self) -> bool 
-is_item			        fn is_item(statement: &hir::Stmt) -> bool 
+is_importable			    fn is_importable(&self) -> bool 
+is_item			        fn is_item(statement: &Stmt) -> bool 
 is_normal			    fn is_normal(&self) -> bool 
-is_public			    fn is_public(&self) -> bool 
-is_static_method			        fn is_static_method(this: &Resolver, did: DefId) -> bool 
+is_pseudo_public			    fn is_pseudo_public(&self) -> bool 
 is_trait			    fn is_trait(&self) -> bool 
-is_visible			    fn is_visible(&self, binding: &'a NameBinding<'a>, parent: Module<'a>) -> bool 
+is_variant			    fn is_variant(&self) -> bool 
 local_def			    fn local_def(self) -> LocalDef 
+local_modules			    fn local_modules(&'a self) -> ::std::cell::Ref<'a, Vec<Module<'a>>> 
 lookup_candidates			    fn lookup_candidates<FilterFn>(&mut self,
 main			fn main () 
 main			fn main() {}
 module			    fn module(&self) -> Option<Module<'a>> 
 module			    fn module(self) -> Option<Module<'a>> 
 module_to_string			fn module_to_string(module: Module) -> String 
+name			    fn name(&self) -> Name 
+name			    fn name(&self) -> Name;
 names_to_string			fn names_to_string(names: &[Name]) -> String 
 new			    fn new() -> PrimitiveTypeTable 
 new			    fn new(kind: RibKind<'a>) -> Rib<'a> 
 new			    fn new(parent_link: ParentLink<'a>,
 new			    fn new(session: &'a Session,
-new_extern_crate_module			    fn new_extern_crate_module(&self,
-new_module			    fn new_module(&self,
+new_extern_crate_module			    fn new_extern_crate_module(&self, parent_link: ParentLink<'a>, def: Def, local_node_id: NodeId)
+new_module			    fn new_module(&self, parent_link: ParentLink<'a>, def: Option<Def>, external: bool)
 path_names_to_string			fn path_names_to_string(path: &Path, depth: usize) -> String 
 populate_module_if_necessary			    pub fn populate_module_if_necessary(&mut self, module: Module<'b>) 
+pseudo_vis			    fn pseudo_vis(&self) -> ty::Visibility 
 record_candidate_traits_for_expr_if_necessary			    fn record_candidate_traits_for_expr_if_necessary(&mut self, expr: &Expr) 
 record_def			    fn record_def(&mut self, node_id: NodeId, resolution: PathResolution) 
-record_use			    fn record_use(&mut self, name: Name, ns: Namespace, binding: &'a NameBinding<'a>) 
+record_resolution			    fn record_resolution(&mut self, id: NodeId, def: Def) 
+record_use			    fn record_use(&mut self, name: Name, binding: &'a NameBinding<'a>) 
 report_conflict			    fn report_conflict(&self,
 report_conflicts			    fn report_conflicts<F: FnMut(&NameBinding, &NameBinding)>(&self, mut report: F) 
 report_privacy_errors			    fn report_privacy_errors(&self) 
 resolution			    fn resolution(&self, name: Name, ns: Namespace) -> &'a RefCell<NameResolution<'a>> 
 resolve_arm			    fn resolve_arm(&mut self, arm: &Arm) 
-resolve_bare_identifier_pattern			    fn resolve_bare_identifier_pattern(&mut self, ident: hir::Ident, span: Span)
+resolve_bare_identifier_pattern			    fn resolve_bare_identifier_pattern(&mut self, ident: ast::Ident, span: Span)
 resolve_block			    fn resolve_block(&mut self, block: &Block) 
-resolve_crate			    fn resolve_crate(&mut self, krate: &hir::Crate) 
-resolve_crate			pub fn resolve_crate<'a, 'tcx>(session: &'a Session,
-resolve_crate_relative_path			    fn resolve_crate_relative_path(&mut self,
-resolve_error			fn resolve_error<'b, 'a: 'b, 'tcx: 'a>(resolver: &'b Resolver<'a, 'tcx>,
-resolve_expr			    fn resolve_expr(&mut self, expr: &Expr) 
+resolve_crate			    fn resolve_crate(&mut self, krate: &Crate) 
+resolve_crate			pub fn resolve_crate<'a, 'b>(resolver: &'b mut Resolver<'a>, krate: &'b Crate) 
+resolve_crate_relative_path			    fn resolve_crate_relative_path<T>(&mut self, span: Span, segments: &[T], namespace: Namespace)
+resolve_error			fn resolve_error<'b, 'a: 'b, 'c>(resolver: &'b Resolver<'a>,
+resolve_expr			    fn resolve_expr(&mut self, expr: &Expr, parent: Option<&Expr>) 
 resolve_function			    fn resolve_function(&mut self, rib_kind: RibKind<'a>, declaration: &FnDecl, block: &Block) 
+resolve_generated_global_path			    fn resolve_generated_global_path(&mut self, path: &hir::Path, is_value: bool) -> Def 
 resolve_generics			    fn resolve_generics(&mut self, generics: &Generics) 
 resolve_glob_import			    fn resolve_glob_import(&mut self, target_module: Module<'b>, directive: &'b ImportDirective<'b>)
 resolve_ident_in_lexical_scope			    fn resolve_ident_in_lexical_scope(&mut self,
@@ -242,9 +252,9 @@ resolve_import			    fn resolve_import(&mut self, directive: &'b ImportDirective
 resolve_imports			mod resolve_imports;
 resolve_imports			    fn resolve_imports(&mut self) 
 resolve_imports			pub fn resolve_imports(resolver: &mut Resolver) 
-resolve_imports_for_module_subtree			    fn resolve_imports_for_module_subtree(&mut self,
 resolve_imports_in_current_module			    fn resolve_imports_in_current_module(&mut self, errors: &mut Vec<ImportResolvingError<'b>>) 
 resolve_item			    fn resolve_item(&mut self, item: &Item) 
+resolve_labeled_block			    fn resolve_labeled_block(&mut self, label: Option<ast::Ident>, id: NodeId, block: &Block) 
 resolve_local			    fn resolve_local(&mut self, local: &Local) 
 resolve_module_path			    fn resolve_module_path(&mut self,
 resolve_module_path_from_root			    fn resolve_module_path_from_root(&mut self,
@@ -256,9 +266,11 @@ resolve_name_in_module			    fn resolve_name_in_module(&mut self,
 resolve_path			    fn resolve_path(&mut self, id: NodeId, path: &Path, path_depth: usize, namespace: Namespace)
 resolve_pattern			    fn resolve_pattern(&mut self,
 resolve_possibly_assoc_item			    fn resolve_possibly_assoc_item(&mut self,
-resolve_struct_error			fn resolve_struct_error<'b, 'a: 'b, 'tcx: 'a>(resolver: &'b Resolver<'a, 'tcx>,
+resolve_struct_error			fn resolve_struct_error<'b, 'a: 'b, 'c>(resolver: &'b Resolver<'a>,
 resolve_trait_reference			    fn resolve_trait_reference(&mut self,
 resolve_type			    fn resolve_type(&mut self, ty: &Ty) 
+resolve_visibility			    fn resolve_visibility(&mut self, vis: &ast::Visibility) -> ty::Visibility 
+sanity_check_import			    fn sanity_check_import(&self, view_path: &ViewPath, id: NodeId) 
 search_label			    fn search_label(&self, name: Name) -> Option<Def> 
 search_parent_externals			        fn search_parent_externals(needle: Name, module: Module) -> Option<Module> 
 show_candidates			fn show_candidates(session: &mut DiagnosticBuilder,
@@ -273,6 +285,7 @@ try_define			    fn try_define<T>(&self, parent: Module<'b>, name: Name, ns: Nam
 try_define			    fn try_define(&mut self, binding: &'a NameBinding<'a>) -> Result<(), &'a NameBinding<'a>> 
 try_define_child			    pub fn try_define_child(&self, name: Name, ns: Namespace, binding: NameBinding<'a>)
 try_result			    fn try_result(&self, ns: Namespace, allow_private_imports: bool)
+ty::NodeIdTree for Resolver			impl<'a> ty::NodeIdTree for Resolver<'a> 
 update_resolution			    fn update_resolution<T, F>(&self, name: Name, ns: Namespace, update: F) -> T
 visit_arm			    fn visit_arm(&mut self, arm: &Arm) 
 visit_block			    fn visit_block(&mut self, block: &Block) 
@@ -280,15 +293,13 @@ visit_block			    fn visit_block(&mut self, block: &Block)
 visit_expr			    fn visit_expr(&mut self, expr: &Expr) 
 visit_fn			    fn visit_fn(&mut self,
 visit_foreign_item			    fn visit_foreign_item(&mut self, foreign_item: &ForeignItem) 
-visit_foreign_item			    fn visit_foreign_item(&mut self, foreign_item: &hir::ForeignItem) 
+visit_foreign_item			    fn visit_foreign_item(&mut self, foreign_item: &ForeignItem) 
 visit_generics			    fn visit_generics(&mut self, generics: &Generics) 
 visit_item			    fn visit_item(&mut self, item: &Item) 
-visit_item			    fn visit_item(&mut self, item: &hir::Item) 
+visit_item			    fn visit_item(&mut self, item: &ast::Item) 
 visit_item			    fn visit_item(&mut self, item: &Item) 
 visit_local			    fn visit_local(&mut self, local: &Local) 
-visit_nested_item			    fn visit_nested_item(&mut self, item: hir::ItemId) 
-visit_nested_item			    fn visit_nested_item(&mut self, item: hir::ItemId) 
-visit_poly_trait_ref			    fn visit_poly_trait_ref(&mut self, tref: &hir::PolyTraitRef, m: &hir::TraitBoundModifier) 
+visit_poly_trait_ref			    fn visit_poly_trait_ref(&mut self, tref: &ast::PolyTraitRef, m: &ast::TraitBoundModifier) 
 visit_ty			    fn visit_ty(&mut self, ty: &Ty) 
 visit_variant			    fn visit_variant(&mut self,
 with_constant_rib			    fn with_constant_rib<F>(&mut self, f: F)
@@ -296,6 +307,7 @@ with_current_self_type			    fn with_current_self_type<T, F>(&mut self, self_typ
 with_label_rib			    fn with_label_rib<F>(&mut self, f: F)
 with_no_errors			    fn with_no_errors<T, F>(&mut self, f: F) -> T
 with_optional_trait_ref			    fn with_optional_trait_ref<T, F>(&mut self, opt_trait_ref: Option<&TraitRef>, f: F) -> T
+with_resolver			pub fn with_resolver<'a, T, F>(session: &'a Session,
 with_scope			    fn with_scope<F>(&mut self, id: NodeId, f: F)
 with_self_rib			    fn with_self_rib<F>(&mut self, self_def: Def, f: F)
 with_type_parameter_rib			    fn with_type_parameter_rib<'b, F>(&'b mut self, type_parameters: TypeParameters<'a, 'b>, f: F)
