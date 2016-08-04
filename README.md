@@ -60,22 +60,37 @@ references from any cargo built library/program you build through textadept.
 Any time you run **cargo build**, from the `cB` keys or the `cR` keys, you
 will see `.tag_{project_name}` and `.api_{project_name}` files generated for
 that specific project on the root directory of the project defined by
-[`io.get_project_root()`][7].
-A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
-references. These api/tags will also be read whenever you open a rust file in
-a project containing the generated files. And as an added bonus, you can run
-the project without arguments as **cargo run** with `cr` keys.
+[`io.get_project_root()`][7]. A simple lexer refresh `f5` or `reset()` of
+textadept will enable the api/tag references.
 
-If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
+> **NOTE**: To use the `.tag_{project_name}` for auto referencing, you need to
+have [ctags][6] module for [textadept][5]. You read more below under *ctags*.
+
+These project generated api/tags will be read whenever you open a rust file in
+a project containing the generated files. So if you press the keys for show
+documentation `ch`, you'll get the prototypes and definition written for the
+project. Better yet, you'll be able to use these values as autocomplete
+throughout the project after the build. Hyper handy when you don't want to do
+a quick lookup and instead just want to know what is the type structure. If you
+do want the full lookup, that's also available
+
+If you want to edit snippets, you can by pressing `cl+s` keys. `cl` first then
 `s` key.
 
 #### ctags
-If you have the [ctags][6] you will be also to
+If you have the [ctags][6] you will also have the ability to
 navigate directly to the source of the api reference.
 
 The generated tag/api files are updated each time you run **cargo build**
 from the `cB` or `cR` command on textadept. This allows you to have one heck of
-an easy way to deal with api lookups on a project directly from textadept!
+an easy way to deal with api lookups on a project directly from textadept. As
+discussed above, the `.tag_{project_name}` would appear in the root of your
+project's directory. This allows you to navigate through the currently built
+code by using the keys defined on [ctags][6] page of the module.
+
+> **DISCLAIMER**: I have not used this ability in very long while and may end
+up scratching it or building my own. There's also a great chance [ctags][6]
+does not work anymore on textadept. :(
 
 #### rustfmt
 If you have [rustfmt][2] installed or in your
@@ -86,6 +101,10 @@ path, then you can enable the init setting **_RUSTFMT** to true for your
 -- init.lua
 _RUSTFMT = true
 ```
+
+Now every time you save a file, you will have the lovable ability of
+[rustfmt][2] autocorrecting your weird formatting. Yes I said it. Your
+formatting is weird!
 
 #### racer
 If you have [Racer][3] installed or in your path, then you can enable the init
@@ -102,7 +121,6 @@ _RACER = true
     Keys        Action
     cB          cargo build and api/tags generation or update
     cR          same as `cB`
-    cr          cargo run without arguments
     cl+s        quick edit for snippets
     s\n         adds `;` to the end of the current line and inserts newline
     a\n         appends `///` to the next line. (good for documentation)
