@@ -120,7 +120,7 @@ _RACER = true
 
     Keys        Action
     cB          cargo build and api/tags generation or update
-    cR          same as `cB`
+    cr          cargo run without arguments
     cl+s        quick edit for snippets
     s\n         adds `;` to the end of the current line and inserts newline
     a\n         appends `///` to the next line. (good for documentation)
