@@ -5,19 +5,19 @@
 A module/lexer for Rust.
 
 Currently, this module holds all keywords, types, and any other standard lexer
-definition described by the [Rust reference][1]
+definitions described by the [Rust reference][1]
 manual. It also encompasses the vast list of snippets I use when coding,
 ctags for semi auto-complete on user projects, api references with both self
-engineered endeavor and [Racer][3] integration, and lint support with
+engineered endeavor and [Racer][3] integration, and simple lint support with
 [rustfmt][2].
 
 #### Completed:
-*   lexer: All keywords, types, library types, syntax extensions, strings, and
-numbers lexer definitions.
-*   module: *.rs, massive list of snippets, and API reference to all crates.
+*   lexer: All keywords, primitive types, lifetime, library types, syntax
+extensions, strings, and numbers lexer definitions.
+*   module: *.rs, a humble list of snippets, and API reference to all **std** crates.
 *   build: using cargo to make a build of a project.
-*   lint: Basic lint support. (rustfmt ftw!)
-*   autocomplete: A custom autocomplete AND racer support!
+*   lint: Basic lint support using [rustfmt][2] ftw!
+*   autocomplete: A custom autocomplete AND [racer][3] support!
 
 
 #### To Do:
@@ -63,7 +63,8 @@ that specific project on the root directory of the project defined by
 [`io.get_project_root()`][7].
 A simple lexer refresh `f5` or `reset()` of textadept will enable the api/tag
 references. These api/tags will also be read whenever you open a rust file in
-a project containing the generated files. And as an added bonus, you can run the project without arguments as **cargo run** with `cr` keys.
+a project containing the generated files. And as an added bonus, you can run
+the project without arguments as **cargo run** with `cr` keys.
 
 If you want to edit snippets you can by pressing `cl+s` keys. `cl` first then
 `s` key.
@@ -73,8 +74,8 @@ If you have the [ctags][6] you will be also to
 navigate directly to the source of the api reference.
 
 The generated tag/api files are updated each time you run **cargo build**
-from the `cB` or `cR` command on textadept. This allows you to have one heck of an easy
-way to deal with api lookups on a project directly from textadept!
+from the `cB` or `cR` command on textadept. This allows you to have one heck of
+an easy way to deal with api lookups on a project directly from textadept!
 
 #### rustfmt
 If you have [rustfmt][2] installed or in your
