@@ -106,13 +106,14 @@ if you want to use [racer] instead of the in-built autocompleter.
 
 ### All Key binding
 
-  Keys        Action
-  cB          cargo build and api/tags generation or update
-  cr          cargo run without arguments
-  cl+s        quick edit for snippets
-  s\n         adds `;` to the end of the current line and inserts newline
-  a\n         appends `///` to the next line. (good for documentation)
-
+```
+Keys        Action
+cB          cargo build and api/tags generation or update
+cr          cargo run without arguments
+cl+s        quick edit for snippets
+s\n         adds `;` to the end of the current line and inserts newline
+a\n         appends `///` to the next line. (good for documentation)
+```
 
 [ta-rust]: ./README.md
 [ctags]: http://foicica.com/hg/ctags/
