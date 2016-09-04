@@ -73,7 +73,8 @@ to the goto reference of the Rust project by the keys defined above.
 
 ### Editing snippets
 If you want to edit snippets, you can by pressing `cl+s` keys. `cl` first then
-`s` key. After wards, you
+`s` key. After wards, you will be able to change all snippets (or add some) to
+your liking from following the similar formatting.
 
 ### Using rustfmt
 If you have [rustfmt] installed or in your path, then you can enable the init
