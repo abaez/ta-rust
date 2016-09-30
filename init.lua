@@ -24,9 +24,6 @@ end
 
 textadept.file_types.extensions.rs = 'rust'
 textadept.editing.comment_string.rust = '//'
-textadept.editing.char_matches.rust = {
-  [40] = ')', [91] = ']', [123] = '}', [34] = '"'
-}
 
 -- compiler
 textadept.run.compile_commands.rust = 'cargo build'
@@ -43,8 +40,12 @@ end
 keys.rust = _keys
 
 events.connect(events.LEXER_LOADED, function (lang)
-  if lang ~= 'rust' then return end
+  if lang ~= 'rust' then
+    textadept.editing.auto_pairs[39] = "'" -- re-enable single quote
+    return
+  end
 
+  textadept.editing.auto_pairs[39] = nil -- single quote
   buffer.tab_width = 4
   buffer.use_tabs = false
   buffer.edge_column = 99
