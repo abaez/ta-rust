@@ -5,8 +5,8 @@ local raw = require("rust.builder.raw")
 return {
    [not OSX and not CURSES and 'cl' or 'ml'] = {
     -- Open this module for editing: `Alt/⌘-L` `M`
-    s = { io.open_file,
-        (_USERHOME..'/modules/rust/snippets.lua') },
+    s =
+      function() io.open_file(_USERHOME..'/modules/rust/snippets.lua') end
   },
 
   ['s\n'] = function()
