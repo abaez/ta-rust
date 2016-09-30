@@ -33,6 +33,7 @@ TempDir			pub struct TempDir
 Test			    struct Test 
 ToBits			trait ToBits: Sized 
 ToBits for u64			impl ToBits for u64 
+ToJson for Target			impl ToJson for Target 
 _new_in			    fn _new_in(tmpdir: &Path, prefix: &str) -> io::Result<TempDir> 
 add_bytes_to_bits			fn add_bytes_to_bits(bits: u64, bytes: u64) -> u64 
 adjust_abi			    pub fn adjust_abi(&self, abi: Abi) -> Abi 
@@ -41,6 +42,7 @@ apple_base			mod apple_base;
 apple_ios_base			mod apple_ios_base;
 bench			mod bench 
 bitrig_base			mod bitrig_base;
+build_pre_link_args			fn build_pre_link_args(arch: Arch) -> Result<Vec<String>, String> 
 ch			        fn ch(x: u32, y: u32, z: u32) -> u32 
 check_for_errors_in			    pub fn check_for_errors_in<T, F>(f: F) -> Result<T, String> where
 cleanup_dir			    fn cleanup_dir(&mut self) -> io::Result<()> 
@@ -56,7 +58,7 @@ dynamic_lib			pub mod dynamic_lib;
 envvar			    pub fn envvar() -> &'static str 
 finish			    fn finish(&mut self) 
 freebsd_base			mod freebsd_base;
-from_json			    pub fn from_json(obj: Json) -> Target 
+from_json			    pub fn from_json(obj: Json) -> TargetResult 
 full_buffer			    fn full_buffer<'s>(&'s mut self) -> &'s [u8] 
 full_buffer			    fn full_buffer<'s>(&'s mut self) -> &'s [u8];
 get_install_prefix_rpath			fn get_install_prefix_rpath(config: &mut RPathConfig) -> String 
@@ -64,7 +66,8 @@ get_rpath_flags			pub fn get_rpath_flags(config: &mut RPathConfig) -> Vec<String
 get_rpath_relative_to_output			fn get_rpath_relative_to_output(config: &mut RPathConfig, lib: &Path) -> String 
 get_rpaths			fn get_rpaths(config: &mut RPathConfig, libs: &[PathBuf]) -> Vec<String> 
 get_rpaths_relative_to_output			fn get_rpaths_relative_to_output(config: &mut RPathConfig,
-get_sdk_root			pub fn get_sdk_root(sdk_name: &str) -> String 
+get_sdk_root			pub fn get_sdk_root(sdk_name: &str) -> Result<String, String> 
+get_targets			        pub fn get_targets() -> Box<Iterator<Item=String>> 
 input			    fn input(&mut self, d: &[u8]) 
 input			    fn input(&mut self, input: &[u8]) 
 input			    fn input(&mut self, input: &[u8]);
@@ -75,7 +78,7 @@ into_path			    pub fn into_path(mut self) -> PathBuf
 linux_base			mod linux_base;
 linux_musl_base			mod linux_musl_base;
 load_file			        fn load_file(path: &Path) -> Result<Target, String> 
-load_specific			        fn load_specific(target: &str) -> Option<Target> 
+load_specific			        fn load_specific(target: &str) -> TargetResult 
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 maj			        fn maj(x: u32, y: u32, z: u32) -> u32 
 maybe_jemalloc			fn maybe_jemalloc() -> String 
@@ -97,7 +100,7 @@ open_internal			    unsafe fn open_internal() -> *mut u8
 openbsd_base			mod openbsd_base;
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
-opts			pub fn opts(arch: Arch) -> TargetOptions 
+opts			pub fn opts(arch: Arch) -> Result<TargetOptions, String> 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
 opts			pub fn opts() -> TargetOptions 
@@ -114,7 +117,6 @@ path			    pub fn path(&self) -> &path::Path
 path_relative_from			fn path_relative_from(path: &Path, base: &Path) -> Option<PathBuf> 
 position			    fn position(&self) -> usize { self.buffer_idx }
 position			    fn position(&self) -> usize;
-pre_link_args			fn pre_link_args(arch: Arch) -> Vec<String> 
 prepend_search_path			    pub fn prepend_search_path(path: &Path) 
 process_block			    fn process_block(&mut self, data: &[u8]) 
 ptr_result			    fn ptr_result<T>(ptr: *mut T) -> Result<*mut T, String> 
@@ -152,49 +154,52 @@ sum1			        fn sum1(x: u32) -> u32
 symbol			    pub unsafe fn symbol(handle: *mut u8,
 symbol			    pub unsafe fn symbol<T>(&self, symbol: &str) -> Result<*mut T, String> 
 target			pub mod target;
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
-target			pub fn target() -> Target 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> Result<Target, String> 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
+target			pub fn target() -> TargetResult 
 target_cpu			fn target_cpu(arch: Arch) -> String 
 tempdir			pub mod tempdir;
 tests			mod tests 
@@ -202,6 +207,7 @@ tests			mod tests
 tests			mod tests 
 to_bits			    fn to_bits(self) -> (Self, Self);
 to_bits			    fn to_bits(self) -> (u64, u64) 
+to_json			    fn to_json(&self) -> Json 
 to_string			    pub fn to_string(&self) -> &'static str 
 windows_base			mod windows_base;
 windows_msvc_base			mod windows_msvc_base;

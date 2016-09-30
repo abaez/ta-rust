@@ -1,3 +1,8 @@
+AstValidator			impl<'a> AstValidator<'a> 
+AstValidator			struct AstValidator<'a> 
+Bar			impl Bar {}
+Bar			pub impl Bar {} \/\/ error: unnecessary visibility qualifier
+Bar			struct Bar;
 CheckCrateVisitor			impl<'a, 'gcx> CheckCrateVisitor<'a, 'gcx> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'tcx: 'a> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'ast: 'a> 
@@ -7,45 +12,62 @@ CheckLoopVisitor			impl<'a> CheckLoopVisitor<'a>
 CheckLoopVisitor			struct CheckLoopVisitor<'a> 
 CheckNoAsm			struct CheckNoAsm<'a> 
 Context			enum Context 
+Foo			trait Foo 
+Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
+Foo for Bar			pub impl Foo for Bar 
 Mode			enum Mode 
 RvalueContext			struct RvalueContext<'a, 'tcx: 'a> 
 RvalueContextDelegate			struct RvalueContextDelegate<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
+SomeStruct			struct SomeStruct 
+Visitor for AstValidator			impl<'a> Visitor for AstValidator<'a> 
 Visitor for CheckCrateVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for CheckCrateVisitor<'a, 'tcx> 
 Visitor for CheckCrateVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckCrateVisitor<'a, 'ast> 
 Visitor for CheckItemRecursionVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckItemRecursionVisitor<'a, 'ast> 
 Visitor for CheckLoopVisitor			impl<'a, 'v> Visitor<'v> for CheckLoopVisitor<'a> 
-Visitor for CheckNoAsm			impl<'a, 'v> Visitor<'v> for CheckNoAsm<'a> 
+Visitor for CheckNoAsm			impl<'a> Visitor for CheckNoAsm<'a> 
 add_qualif			    fn add_qualif(&mut self, qualif: ConstQualif) 
+ast_validation			pub mod ast_validation;
 borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 check_adjustments			fn check_adjustments<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr) 
+check_crate			pub fn check_crate(session: &Session, krate: &Crate) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate(sess: &Session, map: &Map) 
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'ast>(sess: &Session,
-check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>,
+check_decl_no_pat			    fn check_decl_no_pat<ReportFn: Fn(Span, bool)>(&self, decl: &FnDecl, report_err: ReportFn) 
+check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr, node_ty: Ty<'tcx>) 
+check_label			    fn check_label(&self, label: Ident, span: Span, id: NodeId) 
 consts			pub mod consts;
 consume			    fn consume(&mut self,
 consume			    fn consume(&mut self,
+consume_pat			    fn consume_pat(&mut self, _consume_pat: &hir::Pat, _cmt: mc::cmt, _mode: euv::ConsumeMode) {}
 consume_pat			    fn consume_pat(&mut self,
-consume_pat			    fn consume_pat(&mut self,
-decl_without_init			    fn decl_without_init(&mut self,
+decl_without_init			    fn decl_without_init(&mut self, _id: ast::NodeId, _span: Span) {}
 decl_without_init			    fn decl_without_init(&mut self,
 diagnostics			pub mod diagnostics;
+err_handler			    fn err_handler(&self) -> &errors::Handler 
 euv::Delegate for CheckCrateVisitor			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for CheckCrateVisitor<'a, 'gcx> 
 euv::Delegate for RvalueContextDelegate			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for RvalueContextDelegate<'a, 'gcx, 'tcx> 
 fn_like			    fn fn_like(&mut self,
+foo			    fn foo((a, b): (u32, u32)); \/\/ error: patterns aren't allowed in foreign
+foo			    fn foo();
+foo			    fn foo(a: (u32, u32)); \/\/ ok!
+foo			    fn foo(s: SomeStruct); \/\/ ok!
+foo			    pub fn foo() {} \/\/ error: unnecessary visibility qualifier
+foo			    pub fn foo() {}
 global_expr			    fn global_expr(&mut self, mode: Mode, expr: &hir::Expr) -> ConstQualif 
-handle_const_fn_call			    fn handle_const_fn_call(&mut self,
+handle_const_fn_call			    fn handle_const_fn_call(&mut self, _expr: &hir::Expr, def_id: DefId, ret_ty: Ty<'gcx>) -> bool 
 intravisit::Visitor for RvalueContext			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for RvalueContext<'a, 'tcx> 
+invalid_visibility			    fn invalid_visibility(&self, vis: &Visibility, span: Span, note: Option<&str>) 
 loops			pub mod loops;
+main			fn main() 
+matched_pat			    fn matched_pat(&mut self, _: &hir::Pat, _: mc::cmt, _: euv::MatchMode) {}
 matched_pat			    fn matched_pat(&mut self,
-matched_pat			    fn matched_pat(&mut self,
-msg			    fn msg(&self) -> &'static str 
 mutate			    fn mutate(&mut self,
 mutate			    fn mutate(&mut self,
-new			    fn new(v: &'a CheckCrateVisitor<'a, 'ast>, span: &'a Span)
+new			    fn new(v: &'a CheckCrateVisitor<'a, 'ast>,
 no_asm			pub mod no_asm;
 populate_enum_discriminants			    fn populate_enum_discriminants(&self, enum_definition: &'ast hir::EnumDef) 
 record_borrow			    fn record_borrow(&mut self, id: ast::NodeId, mutbl: hir::Mutability) 
@@ -54,23 +76,30 @@ rvalues			pub mod rvalues;
 some_func			fn some_func() 
 static_recursion			pub mod static_recursion;
 visit_block			    fn visit_block(&mut self, block: &hir::Block) 
-visit_enum_def			    fn visit_enum_def(&mut self, enum_definition: &'ast hir::EnumDef,
+visit_enum_def			    fn visit_enum_def(&mut self,
+visit_expr			    fn visit_expr(&mut self, expr: &Expr) 
 visit_expr			    fn visit_expr(&mut self, ex: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &hir::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &ast::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &'ast hir::Expr) 
 visit_fn			    fn visit_fn(&mut self,
 visit_fn			    fn visit_fn(&mut self,
+visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &ForeignItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, i: &'v hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'ast hir::ImplItem) 
+visit_item			    fn visit_item(&mut self, item: &Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, i: &hir::Item) 
 visit_item			    fn visit_item(&mut self, it: &'ast hir::Item) 
+visit_lifetime			    fn visit_lifetime(&mut self, lt: &Lifetime) 
 visit_pat			    fn visit_pat(&mut self, p: &hir::Pat) 
+visit_path			    fn visit_path(&mut self, path: &Path, id: NodeId) 
 visit_trait_item			    fn visit_trait_item(&mut self, t: &'v hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'ast hir::TraitItem) 
-visit_variant			    fn visit_variant(&mut self, variant: &'ast hir::Variant,
-with_context			    fn with_context<F>(&mut self, cx: Context, f: F) where
-with_euv			    fn with_euv<F, R>(&mut self, item_id: Option<ast::NodeId>, f: F) -> R where
+visit_ty			    fn visit_ty(&mut self, ty: &Ty) 
+visit_variant			    fn visit_variant(&mut self,
+visit_vis			    fn visit_vis(&mut self, vis: &Visibility) 
+with_context			    fn with_context<F>(&mut self, cx: Context, f: F)
+with_euv			    fn with_euv<F, R>(&mut self, item_id: Option<ast::NodeId>, f: F) -> R
 with_item_id_pushed			    fn with_item_id_pushed<F>(&mut self, id: ast::NodeId, f: F)
-with_mode			    fn with_mode<F, R>(&mut self, mode: Mode, f: F) -> R where
+with_mode			    fn with_mode<F, R>(&mut self, mode: Mode, f: F) -> R

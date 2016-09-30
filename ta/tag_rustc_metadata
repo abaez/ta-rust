@@ -2,6 +2,7 @@ ArchiveMetadata	_	0	i
 ArchiveMetadata	_	0	s
 CStore	_	0	i
 CStore	_	0	s
+CachedInlinedItem	_	0	s
 Context	_	0	i
 Context	_	0	s
 CrateDep	_	0	s
@@ -9,6 +10,9 @@ CrateFlavor	_	0	g
 CrateIndex	_	0	i
 CrateIndex	_	0	s
 CrateInfo	_	0	s
+CrateMetadata	_	0	i
+CrateMetadata	_	0	s
+CrateMetadata	_	0	i
 CrateMismatch	_	0	s
 CratePaths	_	0	i
 CratePaths	_	0	s
@@ -29,13 +33,12 @@ EncodeVisitor	_	0	s
 ExtensionCrate	_	0	s
 FakeExtCtxt	_	0	t
 FakeExtCtxt for parse	_	0	i
-FakeNodeIdAssigner	_	0	s
 Family	_	0	g
 Folder for NestedItemsDropper	_	0	i
+FoundAst	_	0	g
 HasVisibility	_	0	i
 HasVisibility	_	0	t
 HasVisibility for ty	_	0	i
-IdVisitingOperation	_	0	i
 ImplVisitor	_	0	s
 ImportedFileMap	_	0	s
 Index	_	0	i
@@ -52,7 +55,6 @@ MetadataBlob	_	0	i
 MetadataBlob	_	0	g
 MirDefIdAndSpanTranslator	_	0	s
 NestedItemsDropper	_	0	s
-NodeIdAssigner for FakeNodeIdAssigner	_	0	i
 PMDSource	_	0	g
 PMDSource	_	0	i
 SideTableEncodingIdVisitor	_	0	s
@@ -60,9 +62,9 @@ Stats	_	0	s
 StructFieldVisitor	_	0	s
 TyDecoder	_	0	i
 TyDecoder	_	0	s
+Visitor	_	0	i
 Visitor for EncodeVisitor	_	0	i
 Visitor for ImplVisitor	_	0	i
-Visitor for MacroLoader	_	0	i
 Visitor for StructFieldVisitor	_	0	i
 XRef	_	0	g
 add_extern_mod_stmt_cnum	_	0	f
@@ -98,12 +100,10 @@ convert_def_id	_	0	f
 copy_item_type	_	0	f
 copy_item_types	_	0	f
 crate_attrs	_	0	f
+crate_dependencies_in_rpo	_	0	f
 crate_disambiguator	_	0	f
 crate_hash	_	0	f
 crate_matches	_	0	f
-crate_metadata	_	0	i
-crate_metadata	_	0	s
-crate_metadata	_	0	i
 crate_name	_	0	f
 crate_rustc_version	_	0	f
 crate_struct_field_attrs	_	0	f
@@ -134,6 +134,7 @@ def_key	_	0	m
 def_path	_	0	f
 def_to_string	_	0	f
 def_to_u64	_	0	f
+defid_for_inlined_node	_	0	f
 deprecation	_	0	f
 diagnostics	_	0	m
 disambiguator	_	0	f
@@ -273,7 +274,6 @@ encode_predicates	_	0	f
 encode_predicates_in_current_doc	_	0	f
 encode_reachable	_	0	f
 encode_reexports	_	0	f
-encode_region	_	0	f
 encode_repr_attrs	_	0	f
 encode_rustc_version	_	0	f
 encode_side_tables_for_id	_	0	f
@@ -283,7 +283,6 @@ encode_struct_field_attrs	_	0	f
 encode_struct_field_family	_	0	f
 encode_struct_fields	_	0	f
 encode_substs	_	0	f
-encode_symbol	_	0	f
 encode_trait_ref	_	0	f
 encode_ty	_	0	f
 encode_type	_	0	f
@@ -298,6 +297,7 @@ encoder	_	0	i
 eq_int	_	0	f
 existing_match	_	0	f
 expect_variant_kind	_	0	f
+ext::base::MacroLoader for MacroLoader	_	0	i
 extern_crate	_	0	f
 extern_mod_stmt_cnum	_	0	f
 extract_crate_info	_	0	f
@@ -363,8 +363,6 @@ get_struct_field_attrs	_	0	f
 get_struct_field_names	_	0	f
 get_struct_variant	_	0	f
 get_super_predicates	_	0	f
-get_symbol	_	0	f
-get_symbol_from_buf	_	0	f
 get_trait_def	_	0	f
 get_trait_item_def_ids	_	0	f
 get_trait_name	_	0	f
@@ -406,6 +404,8 @@ is_defaulted_trait	_	0	f
 is_explicitly_linked	_	0	f
 is_extern_item	_	0	f
 is_extern_item	_	0	f
+is_foreign_item	_	0	f
+is_foreign_item	_	0	f
 is_impl	_	0	f
 is_impl	_	0	f
 is_item_mir_available	_	0	f
@@ -435,8 +435,6 @@ item_predicates	_	0	f
 item_require_parent_item	_	0	f
 item_sort	_	0	f
 item_super_predicates	_	0	f
-item_symbol	_	0	f
-item_symbol	_	0	f
 item_to_def_like	_	0	f
 item_trait_ref	_	0	f
 item_type	_	0	f
@@ -453,6 +451,7 @@ list_crate_deps	_	0	f
 list_crate_metadata	_	0	f
 list_file_metadata	_	0	f
 load	_	0	f
+load_crate	_	0	f
 load_index	_	0	f
 load_key_map	_	0	f
 load_library_crate	_	0	f
@@ -460,6 +459,7 @@ load_macros	_	0	f
 load_xrefs	_	0	f
 loader	_	0	m
 local_id	_	0	f
+local_node_for_inlined_defid	_	0	f
 lookup	_	0	f
 lookup_item	_	0	f
 lookup_item	_	0	f
@@ -472,6 +472,8 @@ maybe_get_item_ast	_	0	f
 maybe_get_item_ast	_	0	f
 maybe_get_item_mir	_	0	f
 maybe_get_item_mir	_	0	f
+maybe_get_item_name	_	0	f
+maybe_item_name	_	0	f
 maybe_load_library_crate	_	0	f
 meta_section_name	_	0	f
 metadata_encoding_version	_	0	f
@@ -497,16 +499,17 @@ new	_	0	f
 new	_	0	f
 new_def_id	_	0	f
 new_id	_	0	f
+new_id	_	0	f
 new_int_alist	_	0	f
 new_int_alist	_	0	f
 new_span	_	0	f
 next	_	0	f
 next_byte	_	0	f
 next_crate_num	_	0	f
-next_node_id	_	0	f
 note_crate_name	_	0	f
 opt_child	_	0	f
 opt_child	_	0	f
+opt_item_name	_	0	f
 opt_used_crate_source	_	0	f
 original_crate_name	_	0	f
 panic_strategy	_	0	f
@@ -550,13 +553,13 @@ parse_vec_per_param_space	_	0	f
 parse_vuint	_	0	f
 paths	_	0	f
 peek	_	0	f
-peek_node_id	_	0	f
 plugin_registrar_fn	_	0	f
 position	_	0	f
 process_crate	_	0	f
 process_foreign_mod	_	0	f
 process_item	_	0	f
 provided_trait_methods	_	0	f
+push_dependencies_in_postorder	_	0	f
 rbml_decoder_decoder_helpers	_	0	t
 rbml_decoder_decoder_helpers for reader	_	0	i
 rbml_decoder_helper	_	0	t
@@ -584,7 +587,6 @@ read_exported_macros	_	0	f
 read_extension_crate	_	0	f
 read_freevar_entry	_	0	f
 read_local_crates	_	0	f
-read_macro_defs	_	0	f
 read_meta_section_name	_	0	f
 read_method_callee	_	0	f
 read_method_callee	_	0	f
@@ -660,8 +662,8 @@ tr	_	0	t
 tr for Def	_	0	i
 tr for DefId	_	0	i
 tr for Option	_	0	i
-tr for codemap	_	0	i
 tr for hir	_	0	i
+tr for syntax_pos	_	0	i
 tr_def_id	_	0	f
 tr_id	_	0	f
 tr_span	_	0	f
@@ -684,14 +686,12 @@ used_crate_source	_	0	f
 used_crates	_	0	f
 used_libraries	_	0	f
 used_link_args	_	0	f
-validate	_	0	f
 variant_disr_val	_	0	f
 variant_kind	_	0	f
 verify_decompressed_encoding_version	_	0	f
 verify_no_symbol_conflicts	_	0	f
 visibility	_	0	f
 visible_parent_map	_	0	f
-visit	_	0	f
 visit::Visitor for LocalCrateReader	_	0	i
 visit_def_id	_	0	f
 visit_expr	_	0	f
@@ -700,10 +700,9 @@ visit_id	_	0	f
 visit_item	_	0	f
 visit_item	_	0	f
 visit_item	_	0	f
-visit_item	_	0	f
-visit_mac	_	0	f
 visit_span	_	0	f
 visit_struct_field	_	0	f
+visit_ty	_	0	f
 with_doc	_	0	f
 with_testing_context	_	0	f
 write_be_u32	_	0	f

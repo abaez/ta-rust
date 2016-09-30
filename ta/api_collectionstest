@@ -6,6 +6,8 @@ CLike for Foo			impl CLike for Foo
 Canary			    struct Canary 
 Clone for Canary			    impl Clone for Canary 
 Counter			struct Counter<'a, 'b> 
+DeterministicRng			impl DeterministicRng 
+DeterministicRng			struct DeterministicRng 
 Drop for BadElem			    impl Drop for BadElem 
 Drop for Canary			    impl Drop for Canary 
 Drop for DropCounter			impl<'a> Drop for DropCounter<'a> 
@@ -36,6 +38,8 @@ Taggypar			enum Taggypar<T>
 TwoVec			    struct TwoVec<T> 
 a_million_letter_a			    fn a_million_letter_a() -> String 
 a_million_letter_x			    fn a_million_letter_x() -> String 
+assert_covariance			fn assert_covariance() 
+assert_covariance			fn assert_covariance() 
 bench			mod bench 
 bench			mod bench 
 bench			mod bench 
@@ -158,7 +162,7 @@ check_symmetric_difference			    fn check_symmetric_difference(a: &[i32], b: &[i
 check_to_vec			fn check_to_vec(mut data: Vec<i32>) 
 check_union			    fn check_union(a: &[i32], b: &[i32], expected: &[i32]) 
 clone			        fn clone(&self) -> Self 
-cmp			        fn cmp(&self, _: &Self) -> Ordering { Ordering::Less }
+cmp			        fn cmp(&self, _: &Self) -> Ordering 
 cmp			        fn cmp(&self, other: &Self) -> Ordering 
 cmp_search_to_vec			    fn cmp_search_to_vec<'a, P: Pattern<'a>>(rev: bool, pat: P, haystack: &'a str,
 concat			    fn concat(b: &mut Bencher) 
@@ -175,6 +179,8 @@ do_bench_from_slice			fn do_bench_from_slice(b: &mut Bencher, src_len: usize)
 do_bench_push_all			fn do_bench_push_all(b: &mut Bencher, dst_len: usize, src_len: usize) 
 do_bench_push_all_move			fn do_bench_push_all_move(b: &mut Bencher, dst_len: usize, src_len: usize) 
 do_bench_with_capacity			fn do_bench_with_capacity(b: &mut Bencher, src_len: usize) 
+drain			    fn drain<'new>(d: Drain<'static, &'static str>) -> Drain<'new, &'new str> { d }
+drain			    fn drain<'new>(d: Drain<'static, &'static str>) -> Drain<'new, &'new str> { d }
 drop			        fn drop(&mut self) 
 drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self) 
@@ -183,7 +189,7 @@ ends_with_diff_one_element_at_beginning			    fn ends_with_diff_one_element_at_b
 ends_with_same_vector			    fn ends_with_same_vector(b: &mut Bencher) 
 ends_with_single_element			    fn ends_with_single_element(b: &mut Bencher) 
 enum_set			mod enum_set;
-eq			        fn eq(&self, _: &Self) -> bool { false }
+eq			        fn eq(&self, _: &Self) -> bool 
 eq			        fn eq(&self, other: &Self) -> bool 
 fmt			mod fmt;
 foo			    fn foo<'a, P>(p: P) where for<'b> &'b P: Pattern<'a> 
@@ -200,38 +206,45 @@ half_a_million_letter_a			    fn half_a_million_letter_a() -> String
 half_a_million_letter_x			    fn half_a_million_letter_x() -> String 
 hash			fn hash<T: Hash>(t: &T) -> u64 
 insert			fn insert() 
+insert_bad1			fn insert_bad1() 
+insert_bad2			fn insert_bad2() 
 into_cow			    fn into_cow(self) -> Cow<'a, B>;
 into_cow			    fn into_cow(self) -> Cow<'a, str> 
 into_iter			    fn into_iter<'new>(v: IntoIter<&'static str>) -> IntoIter<&'new str> { v }
-into_iter_key			    fn into_iter_key<'new>(v: IntoIter<&'static str, ()>) -> IntoIter<&'new str, ()> { v }
-into_iter_val			    fn into_iter_val<'new>(v: IntoIter<(), &'static str>) -> IntoIter<(), &'new str> { v }
-is_odd			fn is_odd(n: &usize) -> bool { *n % 2 == 1 }
+into_iter			    fn into_iter<'new>(i: IntoIter<&'static str>) -> IntoIter<&'new str> { i }
+into_iter_key			    fn into_iter_key<'new>(v: IntoIter<&'static str, ()>) -> IntoIter<&'new str, ()> 
+into_iter_val			    fn into_iter_val<'new>(v: IntoIter<(), &'static str>) -> IntoIter<(), &'new str> 
+is_odd			fn is_odd(n: &usize) -> bool 
 iter			    fn iter<'a, 'new>(v: Iter<'a, &'static str>) -> Iter<'a, &'new str> { v }
 iter_1000			    pub fn iter_1000(b: &mut Bencher) 
 iter_100000			    pub fn iter_100000(b: &mut Bencher) 
 iter_20			    pub fn iter_20(b: &mut Bencher) 
-iter_equal			    fn iter_equal<I: Iterator<Item=i32>>(it: I, slice: &[i32]) 
-iter_key			    fn iter_key<'a, 'new>(v: Iter<'a, &'static str, ()>) -> Iter<'a, &'new str, ()> { v }
-iter_val			    fn iter_val<'a, 'new>(v: Iter<'a, (), &'static str>) -> Iter<'a, (), &'new str> { v }
+iter_equal			    fn iter_equal<I: Iterator<Item = i32>>(it: I, slice: &[i32]) 
+iter_key			    fn iter_key<'a, 'new>(v: Iter<'a, &'static str, ()>) -> Iter<'a, &'new str, ()> 
+iter_val			    fn iter_val<'a, 'new>(v: Iter<'a, (), &'static str>) -> Iter<'a, (), &'new str> 
 iterator			    fn iterator(b: &mut Bencher) 
 join			    fn join(b: &mut Bencher) 
-keys			    fn keys<'a, 'new>(v: Keys<'a, &'static str, ()>) -> Keys<'a, &'new str, ()> { v }
+keys			    fn keys<'a, 'new>(v: Keys<'a, &'static str, ()>) -> Keys<'a, &'new str, ()> 
 linked_list			mod linked_list;
 list_from			fn list_from<T: Clone>(v: &[T]) -> LinkedList<T> 
 map			mod map;
-map_key			    fn map_key<'new>(v: BTreeMap<&'static str, ()>) -> BTreeMap<&'new str, ()> { v }
-map_val			    fn map_val<'new>(v: BTreeMap<(), &'static str>) -> BTreeMap<(), &'new str> { v }
+map_key			    fn map_key<'new>(v: BTreeMap<&'static str, ()>) -> BTreeMap<&'new str, ()> 
+map_val			    fn map_val<'new>(v: BTreeMap<(), &'static str>) -> BTreeMap<(), &'new str> 
 mut_iterator			    fn mut_iterator(b: &mut Bencher) 
-partial_cmp			        fn partial_cmp(&self, _: &Self) -> Option<Ordering> { Some(Ordering::Less) }
+new			    fn new() -> Self 
+next			    fn next(&mut self) -> u32 
+partial_cmp			        fn partial_cmp(&self, _: &Self) -> Option<Ordering> 
 partial_cmp			        fn partial_cmp(&self, other: &Self) -> Option<Ordering> 
 pattern			mod pattern 
 pred			        fn pred(c: char) -> bool { c == ' ' }
 push			    fn push(b: &mut Bencher) 
+rand_data			fn rand_data(len: usize) -> Vec<(u32, u32)> 
+rand_data			fn rand_data(len: usize) -> Vec<u32> 
 random_inserts			    fn random_inserts(b: &mut Bencher) 
 random_removes			    fn random_removes(b: &mut Bencher) 
 range			    fn range<'a, 'new>(v: Range<'a, &'static str>) -> Range<'a, &'new str> { v }
-range_key			    fn range_key<'a, 'new>(v: Range<'a, &'static str, ()>) -> Range<'a, &'new str, ()> { v }
-range_val			    fn range_val<'a, 'new>(v: Range<'a, (), &'static str>) -> Range<'a, (), &'new str> { v }
+range_key			    fn range_key<'a, 'new>(v: Range<'a, &'static str, ()>) -> Range<'a, &'new str, ()> 
+range_val			    fn range_val<'a, 'new>(v: Range<'a, (), &'static str>) -> Range<'a, (), &'new str> 
 remove			fn remove() 
 remove_bad			fn remove_bad() 
 s			fn s(x: &str) -> String { x.to_string() }
@@ -251,7 +264,7 @@ split_closure			    fn split_closure(b: &mut Bencher)
 split_extern_fn			    fn split_extern_fn(b: &mut Bencher) 
 split_slice			    fn split_slice(b: &mut Bencher) 
 split_unicode_ascii			    fn split_unicode_ascii(b: &mut Bencher) 
-square			fn square(n: usize) -> usize { n * n }
+square			fn square(n: usize) -> usize 
 starts_short_long			fn starts_short_long() 
 starts_with_diff_one_element_at_end			    fn starts_with_diff_one_element_at_end(b: &mut Bencher) 
 starts_with_in_unicode			fn starts_with_in_unicode() 
@@ -265,14 +278,13 @@ sum_len			    fn sum_len(v: &[&str]) -> usize
 t			    fn t(s: &str, sep: &str, u: &[&str]) 
 t			    fn t<S: Default + AsRef<str>>() 
 test			    fn test(map: &BTreeMap<u32, u32>, size: u32, min: Bound<&u32>, max: Bound<&u32>) 
-test			    fn test<T>(size: usize, mut iter: T) where T: Iterator<Item=(usize, usize)> 
 test			    fn test<T>(size: usize, mut iter: T)
 to_lowercase			fn to_lowercase() 
 to_uppercase			fn to_uppercase() 
 to_usize			        fn to_usize(&self) -> usize 
 to_usize			    fn to_usize(&self) -> usize 
 trim_ws			fn trim_ws() 
-vals			    fn vals<'a, 'new>(v: Values<'a, (), &'static str>) -> Values<'a, (), &'new str> { v }
+vals			    fn vals<'a, 'new>(v: Values<'a, (), &'static str>) -> Values<'a, (), &'new str> 
 vec			mod vec;
 vec_deque			mod vec_deque;
 vec_str_conversions			fn vec_str_conversions() 

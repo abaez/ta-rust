@@ -1,12 +1,9 @@
 Bar			    pub struct Bar(u32); \/\/ we set the Bar type public
 Bar			    pub struct Bar; \/\/ error: visibility has no effect inside functions
 Bar			    struct Bar(u32);
-Bar			impl Bar {}
 Bar			mod Bar 
-Bar			pub impl Bar {} \/\/ error: unnecessary visibility qualifier
 Bar			pub trait Bar : Foo {} \/\/ error: private trait in public interface
 Bar			pub trait Bar : Foo {} \/\/ ok!
-Bar			struct Bar;
 Bar2			pub struct Bar2<T: Foo>(pub T); \/\/ ok!
 Bar2			pub struct Bar2<T: Foo>(pub T); \/\/ same error
 EmbargoVisitor			impl<'a, 'tcx> EmbargoVisitor<'a, 'tcx> 
@@ -20,8 +17,6 @@ Foo			mod Foo
 Foo			pub enum Foo 
 Foo			pub trait Foo { \/\/ we set the Foo trait public
 Foo			trait Foo 
-Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
-Foo for Bar			pub impl Foo for Bar 
 ObsoleteCheckTypeForPrivatenessVisitor			struct ObsoleteCheckTypeForPrivatenessVisitor<'a, 'b: 'a, 'tcx: 'b> 
 ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx> ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
 ObsoleteVisiblePrivateTypesVisitor			struct ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx: 'a> 
@@ -31,8 +26,6 @@ PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> PrivateItemsInPublicInter
 PrivateItemsInPublicInterfacesVisitor			struct PrivateItemsInPublicInterfacesVisitor<'a, 'tcx: 'a> 
 ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
 ReachEverythingInTheInterfaceVisitor			struct ReachEverythingInTheInterfaceVisitor<'b, 'a: 'b, 'tcx: 'a> 
-SanePrivacyVisitor			impl<'a, 'tcx> SanePrivacyVisitor<'a, 'tcx> 
-SanePrivacyVisitor			struct SanePrivacyVisitor<'a, 'tcx: 'a> 
 SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
 SearchInterfaceForPrivateItemsVisitor			struct SearchInterfaceForPrivateItemsVisitor<'a, 'tcx: 'a> 
 Visitor for EmbargoVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for EmbargoVisitor<'a, 'tcx> 
@@ -41,7 +34,6 @@ Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> 
 Visitor for PrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivacyVisitor<'a, 'tcx> 
 Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 Visitor for ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a, 'v> Visitor<'v> for ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
-Visitor for SanePrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for SanePrivacyVisitor<'a, 'tcx> 
 Visitor for SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a, 'v> Visitor<'v> for SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
 bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
 bar			    pub fn bar() -> Bar { \/\/ ok!
@@ -49,13 +41,9 @@ bar			mod bar
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 check_field			    fn check_field(&mut self, span: Span, def: ty::AdtDef<'tcx>, field: ty::FieldDef<'tcx>) 
 check_method			    fn check_method(&mut self, span: Span, method_def_id: DefId) 
-check_sane_privacy			    fn check_sane_privacy(&self, item: &hir::Item) 
 check_ty_param_bound			    fn check_ty_param_bound(&mut self,
 diagnostics			pub mod diagnostics;
 dummy			    fn dummy(&self) { }
-foo			    fn foo();
-foo			    pub fn foo() {} \/\/ error: unnecessary visibility qualifier
-foo			    pub fn foo() {}
 foo			fn foo() 
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ ok!
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ same error

@@ -33,15 +33,14 @@ Trait			trait Trait
 Trait for Struct			impl Trait for Struct 
 X			    impl X 
 X			    struct X(RefCell<(u32, char)>);
-X			    struct X(RefCell<Result<u32, ()>>);
 X			    struct X(str); struct Y(Z + 'static);
 X			    struct X; struct Y(u32);
 Z			    trait Z {}
-accessor			        fn accessor(&self) -> Option<Ref<u32>> 
-accessor			        fn accessor(&self) -> Option<RefMut<u32>> 
 accessor			        fn accessor(&self) -> Ref<u32> 
 accessor			        fn accessor(&self) -> RefMut<u32> 
 add			    fn add(old: &mut isize, new: &usize) -> Option<f64> 
+add_zip			pub fn add_zip(xs: &[f32], ys: &mut [f32]) 
+align_of_16			fn align_of_16() 
 align_of_32			fn align_of_32() 
 align_of_64			fn align_of_64() 
 align_of_basic			fn align_of_basic() 
@@ -55,7 +54,7 @@ any_owning			fn any_owning()
 any_referenced			fn any_referenced() 
 any_unsized			fn any_unsized() 
 array			mod array;
-as_unsafe_cell			fn as_unsafe_cell() 
+as_ptr			fn as_ptr() 
 atomic			mod atomic;
 bench_0			fn bench_0(b: &mut test::Bencher) 
 bench_1e150			fn bench_1e150(b: &mut test::Bencher) 
@@ -104,6 +103,8 @@ bench_str_under_8_bytes			fn bench_str_under_8_bytes(b: &mut Bencher)
 bench_u32			fn bench_u32(b: &mut Bencher) 
 bench_u32_keyed			fn bench_u32_keyed(b: &mut Bencher) 
 bench_u64			fn bench_u64(b: &mut Bencher) 
+bench_zip_add			fn bench_zip_add(b: &mut Bencher) 
+bench_zip_copy			fn bench_zip_copy(b: &mut Bencher) 
 bignum			mod bignum;
 bool_			fn bool_() 
 bool_and			fn bool_and() 
@@ -122,6 +123,7 @@ check_exact_one			fn check_exact_one<F, T>(mut f: F, x: i64, e: isize, tstr: &st
 clone			mod clone;
 cmp			mod cmp;
 conv			    fn conv(sig: u64) -> u64 
+copy_zip			pub fn copy_zip(xs: &[u8], ys: &mut [u8]) 
 debug_list			mod debug_list 
 debug_map			mod debug_map 
 debug_set			mod debug_set 
@@ -176,8 +178,8 @@ hash			    fn hash<T: Hash>(t: &T) -> u64
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 hash			fn hash<T: Hash>(x: &T) -> u64 
 hash			mod hash;
-hash_bytes			fn hash_bytes(x: &[u8]) -> u64 
-hash_with_keys			fn hash_with_keys<T: Hash>(k1: u64, k2: u64, x: &T) -> u64 
+hash_bytes			fn hash_bytes<H: Hasher>(mut s: H, x: &[u8]) -> u64 
+hash_with			fn hash_with<H: Hasher, T: Hash>(mut st: H, x: &T) -> u64 
 human_f64_roundtrip			fn human_f64_roundtrip() 
 i16			mod i16;
 i32			mod i32;
@@ -190,6 +192,7 @@ int_and			fn int_and()
 int_macros			mod int_macros;
 int_or			fn int_or() 
 int_xor			fn int_xor() 
+integer_decode			fn integer_decode(f: f64) -> (u64, i16, i8) 
 integers_to_f64			fn integers_to_f64() 
 intrinsics			mod intrinsics;
 invalid_chars			fn invalid_chars() 
@@ -198,6 +201,9 @@ is_normalized			    fn is_normalized(sig: u64) -> bool
 iter			mod iter;
 iterate			fn iterate<F, G, V>(func: &str, k: usize, n: usize, mut f: F, mut g: G, mut v: V) -> (usize, usize)
 large			fn large() 
+ldexp			        fn ldexp(x: f64, n: i32) -> f64;
+ldexp_f32			fn ldexp_f32(a: f32, b: i32) -> f32 
+ldexp_f64			fn ldexp_f64(a: f64, b: i32) -> f64 
 ldexpi			    fn ldexpi(f: i64, exp: isize) -> Self { f as Self * (exp as Self).exp2() }
 ldexpi			    fn ldexpi(f: i64, exp: isize) -> Self;
 lonely_dot			fn lonely_dot() 
@@ -234,15 +240,14 @@ option			mod option;
 ordinary			fn ordinary() 
 parse			mod parse;
 prev_float_monotonic			fn prev_float_monotonic() 
+printf			        fn printf(_: *const u8, ...);
 ptr			mod ptr;
 r			    fn r(i: Rc<RefCell<isize>>) -> R 
 rawfp			mod rawfp;
 ref_and_refmut_have_sensible_show			fn ref_and_refmut_have_sensible_show() 
 ref_clone_updates_flag			fn ref_clone_updates_flag() 
-ref_filter_map_accessor			fn ref_filter_map_accessor() 
 ref_map_accessor			fn ref_map_accessor() 
 ref_map_does_not_update_flag			fn ref_map_does_not_update_flag() 
-ref_mut_filter_map_accessor			fn ref_mut_filter_map_accessor() 
 ref_mut_map_accessor			fn ref_mut_map_accessor() 
 refcell_default			fn refcell_default() 
 refcell_ref_coercion			fn refcell_ref_coercion() 
@@ -256,6 +261,7 @@ shortest_random_equivalence_test			fn shortest_random_equivalence_test()
 shortest_sanity_test			fn shortest_sanity_test() 
 shortest_sanity_test			fn shortest_sanity_test() 
 sip			mod sip;
+size_of_16			fn size_of_16() 
 size_of_32			fn size_of_32() 
 size_of_64			fn size_of_64() 
 size_of_basic			fn size_of_basic() 

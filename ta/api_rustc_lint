@@ -1,7 +1,7 @@
 BoxPointers			impl BoxPointers 
 BoxPointers			pub struct BoxPointers;
 Deprecated			impl Deprecated 
-Deprecated			pub struct Deprecated;
+Deprecated			pub struct Deprecated 
 DropWithReprExtern			pub struct DropWithReprExtern;
 EarlyLintPass for UnusedParens			impl EarlyLintPass for UnusedParens 
 FfiResult			enum FfiResult 
@@ -34,6 +34,7 @@ LateLintPass for UnusedImportBraces			impl LateLintPass for UnusedImportBraces
 LateLintPass for UnusedMut			impl LateLintPass for UnusedMut 
 LateLintPass for UnusedResults			impl LateLintPass for UnusedResults 
 LateLintPass for UnusedUnsafe			impl LateLintPass for UnusedUnsafe 
+LateLintPass for VariantSizeDifferences			impl LateLintPass for VariantSizeDifferences 
 LateLintPass for WhileTrue			impl LateLintPass for WhileTrue 
 LintPass for BoxPointers			impl LintPass for BoxPointers 
 LintPass for Deprecated			impl LintPass for Deprecated 
@@ -61,6 +62,7 @@ LintPass for UnusedMut			impl LintPass for UnusedMut
 LintPass for UnusedParens			impl LintPass for UnusedParens 
 LintPass for UnusedResults			impl LintPass for UnusedResults 
 LintPass for UnusedUnsafe			impl LintPass for UnusedUnsafe 
+LintPass for VariantSizeDifferences			impl LintPass for VariantSizeDifferences 
 LintPass for WhileTrue			impl LintPass for WhileTrue 
 MethodLateContext			pub enum MethodLateContext 
 MissingCopyImplementations			pub struct MissingCopyImplementations;
@@ -92,6 +94,7 @@ UnusedParens			impl UnusedParens
 UnusedParens			pub struct UnusedParens;
 UnusedResults			pub struct UnusedResults;
 UnusedUnsafe			pub struct UnusedUnsafe;
+VariantSizeDifferences			pub struct VariantSizeDifferences;
 WhileTrue			pub struct WhileTrue;
 bad_style			mod bad_style;
 builtin			mod builtin;
@@ -111,16 +114,21 @@ check_fn			    fn check_fn(&mut self, cx: &LateContext, fk: FnKind, _: &hir::FnD
 check_fn			    fn check_fn(&mut self, cx: &LateContext, fn_kind: FnKind, _: &hir::FnDecl,
 check_fn			    fn check_fn(&mut self, cx: &LateContext,
 check_foreign_fn			    fn check_foreign_fn(&mut self, id: ast::NodeId, decl: &hir::FnDecl) 
+check_foreign_item			    fn check_foreign_item(&mut self, _: &LateContext, item: &hir::ForeignItem) 
+check_foreign_item_post			    fn check_foreign_item_post(&mut self, cx: &LateContext, item: &hir::ForeignItem) 
 check_foreign_static			    fn check_foreign_static(&mut self, id: ast::NodeId, span: Span) 
 check_generics			    fn check_generics(&mut self, cx: &LateContext, it: &hir::Generics) 
 check_heap_type			    fn check_heap_type<'a, 'tcx>(&self, cx: &LateContext<'a, 'tcx>,
 check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, ii: &hir::ImplItem) 
+check_impl_item			    fn check_impl_item(&mut self, _: &LateContext, item: &hir::ImplItem) 
 check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, impl_item: &hir::ImplItem) 
+check_impl_item_post			    fn check_impl_item_post(&mut self, cx: &LateContext, item: &hir::ImplItem) 
 check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
 check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
 check_item			    fn check_item(&mut self, cx: &LateContext, item: &hir::Item) 
 check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
 check_item			    fn check_item(&mut self, cx: &LateContext, item: &hir::Item) 
+check_item_post			    fn check_item_post(&mut self, cx: &LateContext, item: &hir::Item) 
 check_lifetime_def			    fn check_lifetime_def(&mut self, cx: &LateContext, t: &hir::LifetimeDef) 
 check_limits			        fn check_limits<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 check_missing_docs_attrs			    fn check_missing_docs_attrs(&self,
@@ -138,7 +146,9 @@ check_struct_def_post			    fn check_struct_def_post(&mut self, _: &LateContext,
 check_struct_field			    fn check_struct_field(&mut self, cx: &LateContext, sf: &hir::StructField) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, ti: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
+check_trait_item			    fn check_trait_item(&mut self, _: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
+check_trait_item_post			    fn check_trait_item_post(&mut self, cx: &LateContext, item: &hir::TraitItem) 
 check_type_for_ffi			    fn check_type_for_ffi(&self,
 check_type_for_ffi_and_report_errors			    fn check_type_for_ffi_and_report_errors(&mut self, sp: Span, ty: Ty<'tcx>) 
 check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &LateContext, pats: &[P<hir::Pat>]) 
@@ -167,14 +177,18 @@ is_comparison			        fn is_comparison(binop: hir::BinOp) -> bool
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
 is_valid			        fn is_valid<T:cmp::PartialOrd>(binop: hir::BinOp, v: T,
+item_post			    fn item_post(&mut self, cx: &LateContext, item_id: ast::NodeId) 
 lint			    fn lint(&self, cx: &LateContext, _id: DefId, span: Span,
 marked			                              struct marked #[repr(C)]: {}", s));
 method_call_refers_to_method			        fn method_call_refers_to_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId, span: Span) -> MethodLateContext 
+new			    pub fn new() -> Deprecated 
 new			    pub fn new() -> MissingDebugImplementations 
 new			    pub fn new() -> MissingDoc 
 new			    pub fn new() -> TypeLimits 
 output			        fn output(cx: &LateContext, lint: &'static Lint, span: Span, note: Option<&str>) 
+parent_def			    fn parent_def(&self, cx: &LateContext) -> DefId 
+push_item			    fn push_item(&mut self, item_id: ast::NodeId) 
 register_builtins			pub fn register_builtins(store: &mut lint::LintStore, sess: Option<&Session>) 
 rev_binop			        fn rev_binop(binop: hir::BinOp) -> hir::BinOp 
 to_camel_case			        fn to_camel_case(s: &str) -> String 

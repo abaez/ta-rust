@@ -6,11 +6,11 @@ CompileState			impl<'a, 'b, 'ast, 'tcx> CompileState<'a, 'b, 'ast, 'tcx>
 CompileState			pub struct CompileState<'a, 'b, 'ast: 'a, 'tcx: 'b> where 'ast: 'tcx 
 CompilerCalls			pub trait CompilerCalls<'a> 
 CompilerCalls for RustcDefaultCalls			impl<'a> CompilerCalls<'a> for RustcDefaultCalls 
-CoreEmitter for ExpectErrorEmitter			impl CoreEmitter for ExpectErrorEmitter 
+Emitter for ExpectErrorEmitter			impl Emitter for ExpectErrorEmitter 
 Env			impl<'a, 'gcx, 'tcx> Env<'a, 'gcx, 'tcx> 
 Env			struct Env<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
+ExpansionResult			pub struct ExpansionResult<'a> 
 ExpectErrorEmitter			struct ExpectErrorEmitter 
-Folder for NodeIdAssigner			    impl<'a> Folder for NodeIdAssigner<'a> 
 FromStr for UserIdentifiedItem			impl FromStr for UserIdentifiedItem 
 HirPrinterSupport			trait HirPrinterSupport<'ast>: pprust_hir::PpAnn 
 HirPrinterSupport for IdentifiedAnnotation			impl<'ast> HirPrinterSupport<'ast> for IdentifiedAnnotation<'ast> 
@@ -20,7 +20,6 @@ HygieneAnnotation			struct HygieneAnnotation<'ast>
 IdentifiedAnnotation			struct IdentifiedAnnotation<'ast> 
 Iterator for NodesMatchingUII			impl<'a, 'ast> Iterator for NodesMatchingUII<'a, 'ast> 
 NoAnn			struct NoAnn<'ast> 
-NodeIdAssigner			    struct NodeIdAssigner<'a> 
 NodesMatchingUII			enum NodesMatchingUII<'a, 'ast: 'a> 
 PhaseController			impl<'a> PhaseController<'a> 
 PhaseController			pub struct PhaseController<'a> 
@@ -52,7 +51,6 @@ and_then			    pub fn and_then<F: FnOnce() -> Compilation>(self, next: F) -> Com
 anon_src			pub fn anon_src() -> String 
 assert_eq			    pub fn assert_eq(&self, a: Ty<'tcx>, b: Ty<'tcx>) 
 assert_subtype			    pub fn assert_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) 
-assign_node_ids			pub fn assign_node_ids(sess: &Session, krate: ast::Crate) -> ast::Crate 
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'ast>> 
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'ast>>;
 ast_map			    fn ast_map<'a>(&'a self) -> Option<&'a hir_map::Map<'tcx>> 
@@ -63,7 +61,7 @@ build_controller			    fn build_controller(&mut self,
 build_output_filenames			pub fn build_output_filenames(input: &Input,
 call_with_pp_support			    fn call_with_pp_support<'tcx, A, B, F>(&self,
 call_with_pp_support_hir			    fn call_with_pp_support_hir<'tcx, A, B, F>(&self,
-check_cfg			fn check_cfg(sopts: &config::Options,
+check_cfg			fn check_cfg(cfg: &ast::CrateConfig,
 check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'tcx>) 
 check_lub			    pub fn check_lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_lub: Ty<'tcx>) 
 check_not_sub			    pub fn check_not_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
@@ -81,11 +79,11 @@ create_simple_region_hierarchy			    pub fn create_simple_region_hierarchy(&self
 describe_codegen_flags			fn describe_codegen_flags() 
 describe_debug_flags			fn describe_debug_flags() 
 describe_lints			fn describe_lints(lint_store: &lint::LintStore, loaded_plugins: bool) 
-diagnostics_registry			pub fn diagnostics_registry() -> diagnostics::registry::Registry 
+diagnostics_registry			pub fn diagnostics_registry() -> errors::registry::Registry 
 driver			pub mod driver;
 dummy_type_trace			    pub fn dummy_type_trace(&self) -> infer::TypeTrace<'tcx> 
 early_callback			    fn early_callback(&mut self,
-emit_message			    fn emit_message(&mut self,
+emit			    fn emit(&mut self, db: &DiagnosticBuilder) 
 empty			    fn empty(input: &'a Input,
 errors			fn errors(msgs: &[&str]) -> (Box<Emitter + Send>, usize) 
 escape_dep_filename			fn escape_dep_filename(filename: &str) -> String 
@@ -114,11 +112,10 @@ handle_explain			fn handle_explain(code: &str,
 handle_options			pub fn handle_options(args: &[String]) -> Option<getopts::Matches> 
 is_subtype			    pub fn is_subtype(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> bool 
 keep_ast			fn keep_ast(sess: &Session) -> bool 
-keep_mtwt_tables			fn keep_mtwt_tables(sess: &Session) -> bool 
+keep_hygiene_data			fn keep_hygiene_data(sess: &Session) -> bool 
 late_callback			    fn late_callback(&mut self,
 list_metadata			    pub fn list_metadata(sess: &Session, matches: &getopts::Matches, input: &Input) -> Compilation 
 lookup_item			    pub fn lookup_item(&self, names: &[String]) -> ast::NodeId 
-lower_and_resolve			pub fn lower_and_resolve<'a>(sess: &Session,
 lub			    pub fn lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) -> InferResult<'tcx, Ty<'tcx>> 
 lub_bound_bound			fn lub_bound_bound() 
 lub_bound_bound_inverse_order			fn lub_bound_bound_inverse_order() 
@@ -135,7 +132,6 @@ monitor			pub fn monitor<F: FnOnce() + Send + 'static>(f: F)
 needs_analysis			    pub fn needs_analysis(&self) -> bool 
 needs_ast_map			    pub fn needs_ast_map(&self, opt_uii: &Option<UserIdentifiedItem>) -> bool 
 new			    fn new() -> ReplaceBodyWithLoop 
-new_id			        fn new_id(&mut self, old_id: ast::NodeId) -> ast::NodeId 
 next			    fn next(&mut self) -> Option<ast::NodeId> 
 no_input			    fn no_input(&mut self,
 node_path			    fn node_path(&self, id: ast::NodeId) -> Option<String> 
@@ -143,7 +139,7 @@ parse_crate_attrs			fn parse_crate_attrs<'a>(sess: &'a Session, input: &Input) -
 parse_pretty			fn parse_pretty(sess: &Session,
 parse_pretty			pub fn parse_pretty(sess: &Session,
 phase_1_parse_input			pub fn phase_1_parse_input<'a>(sess: &'a Session,
-phase_2_configure_and_expand			pub fn phase_2_configure_and_expand(sess: &Session,
+phase_2_configure_and_expand			pub fn phase_2_configure_and_expand<'a, F>(sess: &Session,
 phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: &'tcx Session,
 phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
@@ -175,6 +171,7 @@ re_late_bound_with_debruijn			    pub fn re_late_bound_with_debruijn(&self, id: 
 reconstructed_input			    fn reconstructed_input(&self) -> String 
 release_str			pub fn release_str() -> Option<&'static str> 
 remove_message			fn remove_message(e: &mut ExpectErrorEmitter, msg: &str, lvl: Level) 
+reset_thread_local_state			pub fn reset_thread_local_state() 
 run			pub fn run(args: Vec<String>) -> isize 
 run_compiler			pub fn run_compiler<'a>(args: &[String],
 run_compiler_with_file_loader			pub fn run_compiler_with_file_loader<'a, L>(args: &[String],
@@ -193,7 +190,7 @@ state_after_expand			    fn state_after_expand(input: &'a Input,
 state_after_hir_lowering			    fn state_after_hir_lowering(input: &'a Input,
 state_after_llvm			    fn state_after_llvm(input: &'a Input,
 state_after_parse			    fn state_after_parse(input: &'a Input,
-state_after_write_deps			    fn state_after_write_deps(input: &'a Input,
+state_when_compilation_done			    fn state_when_compilation_done(input: &'a Input,
 sub			    pub fn sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) -> InferResult<'tcx, Ty<'tcx>> 
 sub_bound_free_true			fn sub_bound_free_true() 
 sub_free_bound_false			fn sub_free_bound_false() 
@@ -222,5 +219,5 @@ version			pub fn version(binary: &str, matches: &getopts::Matches)
 walk_ty			fn walk_ty() 
 walk_ty_skip_subtree			fn walk_ty_skip_subtree() 
 write			        fn write(&mut self, data: &[u8]) -> io::Result<usize> 
-write_out_deps			fn write_out_deps(sess: &Session, outputs: &OutputFilenames, id: &str) 
+write_out_deps			fn write_out_deps(sess: &Session, outputs: &OutputFilenames, crate_name: &str) 
 write_output			fn write_output(out: Vec<u8>, ofile: Option<&Path>) 
