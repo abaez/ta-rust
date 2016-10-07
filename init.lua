@@ -5,17 +5,17 @@
 -- @license MIT (see LICENSE)
 -- @module init
 
-local completer = require("rust.autocomplete")
 local api = require("rust.builder.api")
 local tag = require("rust.builder.tag")
 local raw = require("rust.builder.raw")
+local completer = require("rust.autocomplete")
+local _keys = require("rust.keys")
+local _snippets = require("rust.snippets")
 
 textadept.editing.api_files.rust = completer.api_files
 textadept.editing.autocompleters.rust = _RACER and
   completer.auto.racer or completer.auto.ctags
 
-local _keys = require("rust.keys")
-local _snippets = require("rust.snippets")
 
 if raw.get_project_name() then
   api.add_apitag(raw.get_project_name())
