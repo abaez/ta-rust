@@ -2,8 +2,8 @@
 --- builds the api and tags files for all crates in rust.
 -- Completely self contained parser.
 -- See @{README.md} for details on usage.
--- @author [Alejandro Baez](https://twitter.com/a_baez)
--- @copyright 2015
+-- @author [Alejandro Baez](https://keybase.io/baez)
+-- @copyright 2015-2016
 -- @license MIT (see LICENSE)
 -- @module rustsrc
 

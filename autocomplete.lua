@@ -1,6 +1,6 @@
 --- autocomplete and api declaration.
--- @author [Alejandro Baez](https://twitter.com/a_baez)
--- @copyright 2015
+-- @author [Alejandro Baez](https://keybase.io/baez)
+-- @copyright 2014-2016
 -- @license MIT (see LICENSE)
 -- @module autocomplete
 

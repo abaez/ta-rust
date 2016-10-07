@@ -7,7 +7,7 @@
 local header = [[
 --- all crates as of v1.8.0
 -- @author Alejandro Baez <https://keybase.io/baez>
--- @copyright 2016
+-- @copyright 2014-2016
 -- @license MIT (see LICENSE)
 -- @module crates
 
