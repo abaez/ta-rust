@@ -242,16 +242,19 @@ Debug for OsString			impl Debug for OsString
 Debug for Slice			impl Debug for Slice 
 Debug for Slice			impl Debug for Slice 
 Debug for VacantEntry			impl<'a, K: 'a + Debug, V: 'a> Debug for VacantEntry<'a, K, V> 
+DebugHelper			        struct DebugHelper<'a>(&'a Path);
 Default			impl<'a> Default for &'a CStr 
 Default			impl<'a> Default for &'a OsStr 
 Default for CString			impl Default for CString 
 Default for Condvar			impl Default for Condvar 
+Default for DefaultHasher			impl Default for DefaultHasher 
 Default for HashMap			impl<K, V, S> Default for HashMap<K, V, S>
 Default for HashSet			impl<T, S> Default for HashSet<T, S>
 Default for Mutex			impl<T: ?Sized + Default> Default for Mutex<T> 
 Default for OsString			impl Default for OsString 
 Default for RandomState			impl Default for RandomState 
 Default for RwLock			impl<T: Default> Default for RwLock<T> 
+DefaultHasher			impl DefaultHasher 
 DefaultHasher			pub struct DefaultHasher(SipHasher13);
 DefaultResizePolicy			impl DefaultResizePolicy 
 DefaultResizePolicy			struct DefaultResizePolicy;
@@ -305,6 +308,7 @@ Drop for Answer			    impl<'a> Drop for Answer<'a>
 Drop for Args			impl Drop for Args 
 Drop for AsyncPipe			impl<'a> Drop for AsyncPipe<'a> 
 Drop for BufWriter			impl<W: Write> Drop for BufWriter<W> 
+Drop for CString			impl Drop for CString 
 Drop for Cleanup			impl Drop for Cleanup 
 Drop for Condvar			impl Drop for Condvar 
 Drop for Dir			impl Drop for Dir 
@@ -393,7 +397,7 @@ Error			impl Error + 'static
 Error			impl Error + Send + Sync 
 Error			impl Error + Send 
 Error			impl Error 
-Error			pub trait Error: Debug + Display + Reflect 
+Error			pub trait Error: Debug + Display 
 Error			impl Error 
 Error			pub struct Error 
 Error for A			    impl Error for A 
@@ -403,14 +407,15 @@ Error for Box			impl<T: Error> Error for Box<T>
 Error for IntoStringError			impl Error for IntoStringError 
 Error for JoinPathsError			impl Error for JoinPathsError 
 Error for NulError			impl Error for NulError 
-Error for PoisonError			impl<T: Reflect> Error for PoisonError<T> 
+Error for PoisonError			impl<T> Error for PoisonError<T> 
 Error for StringError			        impl Error for StringError 
 Error for StripPrefixError			impl Error for StripPrefixError 
 Error for SystemTimeError			impl Error for SystemTimeError 
-Error for TryLockError			impl<T: Reflect> Error for TryLockError<T> 
+Error for TryLockError			impl<T> Error for TryLockError<T> 
 Error for VarError			impl Error for VarError 
-Error for cell			impl<'a, T: ?Sized + Reflect> Error for cell::BorrowError<'a, T> 
-Error for cell			impl<'a, T: ?Sized + Reflect> Error for cell::BorrowMutError<'a, T> 
+Error for cell			impl Error for cell::BorrowError 
+Error for cell			impl Error for cell::BorrowMutError 
+Error for char			impl Error for char::CharTryFromError 
 Error for char			impl Error for char::DecodeUtf16Error 
 Error for fmt			impl Error for fmt::Error 
 Error for num			impl Error for num::ParseFloatError 
@@ -592,6 +597,23 @@ FullBucket			impl<'t, K, V> FullBucket<K, V, &'t mut RawTable<K, V>>
 FullBucket			impl<K, V, M> FullBucket<K, V, M> 
 FullBucket			impl<K, V, M> FullBucket<K, V, M>
 FullBucket			pub struct FullBucket<K, V, M> 
+FusedIterator for Components			impl<'a> FusedIterator for Components<'a> {}
+FusedIterator for Difference			impl<'a, T, S> FusedIterator for Difference<'a, T, S>
+FusedIterator for Drain			impl<'a, K, V> FusedIterator for Drain<'a, K, V> {}
+FusedIterator for Drain			impl<'a, K> FusedIterator for Drain<'a, K> {}
+FusedIterator for EscapeDefault			impl FusedIterator for EscapeDefault {}
+FusedIterator for Intersection			impl<'a, T, S> FusedIterator for Intersection<'a, T, S>
+FusedIterator for IntoIter			impl<K, V> FusedIterator for IntoIter<K, V> {}
+FusedIterator for IntoIter			impl<K> FusedIterator for IntoIter<K> {}
+FusedIterator for Iter			impl<'a, K, V> FusedIterator for Iter<'a, K, V> {}
+FusedIterator for Iter			impl<'a, K> FusedIterator for Iter<'a, K> {}
+FusedIterator for Iter			impl<'a> FusedIterator for Iter<'a> {}
+FusedIterator for IterMut			impl<'a, K, V> FusedIterator for IterMut<'a, K, V> {}
+FusedIterator for Keys			impl<'a, K, V> FusedIterator for Keys<'a, K, V> {}
+FusedIterator for SymmetricDifference			impl<'a, T, S> FusedIterator for SymmetricDifference<'a, T, S>
+FusedIterator for Union			impl<'a, T, S> FusedIterator for Union<'a, T, S>
+FusedIterator for Values			impl<'a, K, V> FusedIterator for Values<'a, K, V> {}
+FusedIterator for ValuesMut			impl<'a, K, V> FusedIterator for ValuesMut<'a, K, V> {}
 GUID			pub struct GUID 
 GapThenFull			impl<K, V, M> GapThenFull<K, V, M>
 GapThenFull			pub struct GapThenFull<K, V, M> 
@@ -838,6 +860,8 @@ MetadataExt			pub trait MetadataExt
 MetadataExt			pub trait MetadataExt 
 MetadataExt			pub trait MetadataExt 
 MetadataExt			pub trait MetadataExt 
+MetadataExt			pub trait MetadataExt 
+MetadataExt for Metadata			impl MetadataExt for Metadata 
 MetadataExt for Metadata			impl MetadataExt for Metadata 
 MetadataExt for Metadata			impl MetadataExt for Metadata 
 MetadataExt for Metadata			impl MetadataExt for Metadata 
@@ -1455,6 +1479,7 @@ _assert_sync_and_send			fn _assert_sync_and_send()
 _create			    fn _create(&self, path: &Path) -> io::Result<()> 
 _ends_with			    fn _ends_with(&self, child: &Path) -> bool 
 _from_bytes			    fn _from_bytes(vec: Vec<u8>) -> Option<OsString> 
+_get_next_image_info			            fn _get_next_image_info(team_id: i32, cookie: *mut i32,
 _is_sync_send			    fn _is_sync_send<T: Sync+Send>() {}
 _join			    fn _join(&self, path: &Path) -> PathBuf 
 _new			    fn _new(bytes: Vec<u8>) -> Result<CString, NulError> 
@@ -1599,6 +1624,8 @@ as_raw_handle			    fn as_raw_handle(&self) -> RawHandle
 as_raw_handle			    fn as_raw_handle(&self) -> RawHandle 
 as_raw_socket			    fn as_raw_socket(&self) -> RawSocket 
 as_raw_socket			    fn as_raw_socket(&self) -> RawSocket;
+as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat 
+as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat;
 as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat 
 as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat;
 as_raw_stat			    fn as_raw_stat(&self) -> &raw::stat 
@@ -1802,6 +1829,14 @@ check			        fn check(str_addr: &str, octets: &[u8; 16], unspec: bool, loopba
 check4			        fn check4(octets: &[u8; 4], unspec: bool, loopback: bool,
 check6			        fn check6(str_addr: &str, unspec: bool, loopback: bool,
 check_parse			        fn check_parse(unparsed: &str, parsed: &[&str]) -> bool 
+checked_add			    fn checked_add() 
+checked_add			    pub fn checked_add(self, rhs: Duration) -> Option<Duration> 
+checked_div			    fn checked_div() 
+checked_div			    pub fn checked_div(self, rhs: u32) -> Option<Duration> 
+checked_mul			    fn checked_mul() 
+checked_mul			    pub fn checked_mul(self, rhs: u32) -> Option<Duration> 
+checked_sub			    fn checked_sub() 
+checked_sub			    pub fn checked_sub(self, rhs: Duration) -> Option<Duration> 
 child_no			        fn child_no(x: u32) -> Box<Fn() + Send> 
 chmod_works			    fn chmod_works() 
 circular			    fn circular() 
@@ -2010,6 +2045,7 @@ decode_surrogate			fn decode_surrogate(second_byte: u8, third_byte: u8) -> u16
 decode_surrogate_pair			fn decode_surrogate_pair(lead: u16, trail: u16) -> char 
 decrement			    fn decrement(&mut self, token: SignalToken) -> StartResult 
 decrement			    fn decrement(&mut self, token: SignalToken) -> Result<(), SignalToken> 
+default			    fn default() -> DefaultHasher 
 default			    fn default() -> HashMap<K, V, S> 
 default			    fn default() -> RandomState 
 default			    fn default() -> HashSet<T, S> 
@@ -2024,7 +2060,9 @@ default_hook			fn default_hook(info: &PanicInfo)
 demangle			    fn demangle() 
 demangle			pub fn demangle(writer: &mut Write, s: &str) -> io::Result<()> 
 demangle_dollars			    fn demangle_dollars() 
+demangle_elements_beginning_with_underscore			    fn demangle_elements_beginning_with_underscore() 
 demangle_many_dollars			    fn demangle_many_dollars() 
+demangle_trait_impls			    fn demangle_trait_impls() 
 demangle_windows			    fn demangle_windows() 
 dequeue			    fn dequeue(&mut self) -> Option<SignalToken> 
 dequeue			    fn dequeue(&mut self) -> T 
@@ -2078,6 +2116,7 @@ dev			    fn dev(&self) -> u64 { self.st_dev() }
 dev			    fn dev(&self) -> u64;
 difference			    fn difference<'a, 'new>(v: Difference<'a, &'static str, RandomState>)
 difference			    pub fn difference<'a>(&'a self, other: &'a HashSet<T, S>) -> Difference<'a, T, S> 
+dir_entry_debug			    fn dir_entry_debug() 
 dir_entry_methods			    fn dir_entry_methods() 
 displacement			    pub fn displacement(&self) -> usize 
 display			    pub fn display(&self) -> Display 
@@ -2096,10 +2135,13 @@ downcast			    pub fn downcast<T: Error + 'static>(self: Box<Self>)
 downcast_mut			    pub fn downcast_mut<T: Error + 'static>(&mut self) -> Option<&mut T> 
 downcast_ref			    pub fn downcast_ref<T: Error + 'static>(&self) -> Option<&T> 
 downcasting			    fn downcasting() 
+drain			    fn drain<'new>(d: Drain<'static, &'static str, &'static str>)
 drain			    pub fn drain(&mut self) -> Drain<K, V> 
+drain			    fn drain<'new>(d: Drain<'static, &'static str>) -> Drain<'new, &'new str> { d }
 drain			    pub fn drain(&mut self) -> Drain<T> 
 drain			    pub fn drain(&mut self) -> Drain<K, V> 
 drop			        fn drop(&mut self) 
+drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			        fn drop(&mut self) 
@@ -2248,12 +2290,12 @@ error			    pub fn error(&self) -> &Error { &self.1 }
 error			mod error;
 error			pub mod error;
 error::Error for Error			impl error::Error for Error 
-error::Error for IntoInnerError			impl<W: Reflect + Send + fmt::Debug> error::Error for IntoInnerError<W> 
+error::Error for IntoInnerError			impl<W: Send + fmt::Debug> error::Error for IntoInnerError<W> 
 error::Error for RecvError			impl error::Error for RecvError 
-error::Error for SendError			impl<T: Send + Reflect> error::Error for SendError<T> 
+error::Error for SendError			impl<T: Send> error::Error for SendError<T> 
 error::Error for TestError			        impl error::Error for TestError 
 error::Error for TryRecvError			impl error::Error for TryRecvError 
-error::Error for TrySendError			impl<T: Send + Reflect> error::Error for TrySendError<T> 
+error::Error for TrySendError			impl<T: Send> error::Error for TrySendError<T> 
 error_cb			    extern fn error_cb(_data: *mut libc::c_void, _msg: *const libc::c_char,
 error_repeat			    fn error_repeat(byte: u8, limit: u64) -> ErrorRepeat 
 error_string			pub fn error_string(errno: i32) -> String 
@@ -2407,6 +2449,7 @@ fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, formatter: &mut fmt::Formatter) -> Result<(), fmt::Error> 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -2441,6 +2484,9 @@ fmt::Debug for CodePoint			impl fmt::Debug for CodePoint
 fmt::Debug for Command			impl fmt::Debug for Command 
 fmt::Debug for Command			impl fmt::Debug for Command 
 fmt::Debug for Command			impl fmt::Debug for Command 
+fmt::Debug for Components			impl<'a> fmt::Debug for Components<'a> 
+fmt::Debug for DebugHelper			        impl<'a> fmt::Debug for DebugHelper<'a> 
+fmt::Debug for DirEntry			impl fmt::Debug for DirEntry 
 fmt::Debug for Display			impl<'a> fmt::Debug for Display<'a> 
 fmt::Debug for File			impl fmt::Debug for File 
 fmt::Debug for File			impl fmt::Debug for File 
@@ -2451,6 +2497,7 @@ fmt::Debug for Instant			    impl fmt::Debug for Instant
 fmt::Debug for Instant			impl fmt::Debug for Instant 
 fmt::Debug for Ipv4Addr			impl fmt::Debug for Ipv4Addr 
 fmt::Debug for Ipv6Addr			impl fmt::Debug for Ipv6Addr 
+fmt::Debug for Iter			impl<'a> fmt::Debug for Iter<'a> 
 fmt::Debug for LineWriter			impl<W: Write> fmt::Debug for LineWriter<W> where W: fmt::Debug 
 fmt::Debug for Mutex			impl<T: ?Sized + fmt::Debug> fmt::Debug for Mutex<T> 
 fmt::Debug for Output			impl fmt::Debug for Output 
@@ -2677,6 +2724,7 @@ fs			pub mod fs;
 fs			pub mod fs;
 fs			pub mod fs;
 fs			pub mod fs;
+fs			pub mod fs;
 fsync			    pub fn fsync(&self) -> io::Result<()> 
 fsync			    pub fn fsync(&self) -> io::Result<()> 
 ftruncate			        fn ftruncate(fd: c_int, off: i32) -> c_int;
@@ -2742,8 +2790,6 @@ getpwduid_r			        unsafe fn getpwduid_r(me: libc::uid_t, passwd: &mut libc::
 getrandom			    fn getrandom(_buf: &mut [u8]) -> libc::c_long { -1 }
 getrandom			    fn getrandom(buf: &mut [u8]) -> libc::c_long 
 getrandom_fill_bytes			    fn getrandom_fill_bytes(v: &mut [u8]) 
-getrandom_next_u32			    fn getrandom_next_u32() -> u32 
-getrandom_next_u64			    fn getrandom_next_u64() -> u64 
 getsockname			    pub fn getsockname(socket: SOCKET,
 getsockopt			pub fn getsockopt<T: Copy>(sock: &Socket, opt: c_int,
 getsockopt			    pub fn getsockopt(s: SOCKET,
@@ -2810,6 +2856,7 @@ id			    pub fn id(&self) -> libc::pthread_t { self.id }
 id			    pub fn id(&self) -> u32 
 ilogb			        pub fn ilogb(n: c_double) -> c_int;
 ilogbf			        pub fn ilogbf(n: c_float) -> c_int;
+image_info			    struct image_info 
 imp			mod imp 
 imp			mod imp;
 imp			mod imp;
@@ -2840,12 +2887,16 @@ init			    pub unsafe fn init(argc: isize, argv: *const *const u8)
 init			pub unsafe fn init(argc: isize, argv: *const *const u8) { imp::init(argc, argv) }
 init			unsafe fn init() -> bool 
 init			    pub unsafe fn init(&mut self) { self.0.init() }
+init			    pub unsafe fn init(&mut self) { self.0.init() }
+init			    pub unsafe fn init(&mut self) 
+init			    pub unsafe fn init(&mut self) {}
 init			pub fn init() 
 init			    pub unsafe fn init(&mut self) 
 init			pub fn init() {}
 init			    pub unsafe fn init() 
 init			    pub unsafe fn init() -> Option<usize> { None }
 init			    pub unsafe fn init() -> Option<usize> 
+init			    pub unsafe fn init(&mut self) {}
 init			pub fn init() 
 init			    pub unsafe fn init(&mut self) 
 init			    pub unsafe fn init(&mut self) {}
@@ -2906,6 +2957,7 @@ into_handle			    pub fn into_handle(self) -> Handle { self.inner }
 into_handle			    pub fn into_handle(self) -> Handle { self.handle }
 into_handle			    pub fn into_handle(self) -> Handle { self.handle }
 into_id			    pub fn into_id(self) -> libc::pthread_t 
+into_inner			    fn into_inner(self) -> Box<[u8]> 
 into_inner			    fn into_inner(self) -> Buf 
 into_inner			    fn into_inner(self) -> fs_imp::File 
 into_inner			    pub fn into_inner(mut self) -> Result<W, IntoInnerError<BufWriter<W>>> 
@@ -2914,6 +2966,7 @@ into_inner			    pub fn into_inner(self) -> Result<W, IntoInnerError<LineWriter<
 into_inner			    pub fn into_inner(self) -> W { self.0 }
 into_inner			    pub fn into_inner(self) -> T { self.inner }
 into_inner			    pub fn into_inner(self) -> Option<Box<error::Error+Send+Sync>> 
+into_inner			    pub fn into_inner(self) -> T 
 into_inner			    fn into_inner(self) -> (*const c::sockaddr, c::socklen_t) 
 into_inner			    fn into_inner(self) -> net_imp::TcpListener { self.0 }
 into_inner			    fn into_inner(self) -> net_imp::TcpStream { self.0 }
@@ -3331,6 +3384,7 @@ net			pub mod net;
 netc			pub mod netc 
 new			        fn new(k: usize) -> Dropable 
 new			    fn new() -> DefaultResizePolicy 
+new			    pub fn new() -> DefaultHasher 
 new			    pub fn new() -> HashMap<K, V, RandomState> 
 new			    pub fn new() -> RandomState 
 new			    pub fn new() -> HashSet<T, RandomState> 
@@ -3477,10 +3531,12 @@ next_test_ip6			pub fn next_test_ip6() -> SocketAddr
 next_u32			    fn next_u32(&mut self) -> u32 
 next_u32			    fn next_u32(&mut self) -> u32 
 next_u32			        fn next_u32(&mut self) -> u32 
+next_u32			fn next_u32(mut fill_buf: &mut FnMut(&mut [u8])) -> u32 
 next_u32			    fn next_u32(&mut self) -> u32 
 next_u64			    fn next_u64(&mut self) -> u64 
 next_u64			    fn next_u64(&mut self) -> u64 
 next_u64			        fn next_u64(&mut self) -> u64 
+next_u64			fn next_u64(mut fill_buf: &mut FnMut(&mut [u8])) -> u64 
 next_u64			    fn next_u64(&mut self) -> u64 
 nextafter			        pub fn nextafter(x: c_double, y: c_double) -> c_double;
 nextafterf			        pub fn nextafterf(x: c_float, y: c_float) -> c_float;
@@ -3733,6 +3789,7 @@ put			    pub fn put(mut self, hash: SafeHash, key: K, value: V) -> FullBucket<K
 rand			mod rand;
 rand			pub mod rand;
 rand			pub mod rand;
+raw			pub mod raw;
 raw			pub mod raw;
 raw			pub mod raw;
 raw			pub mod raw;
@@ -4270,6 +4327,10 @@ st_atime			    fn st_atime(&self) -> i64
 st_atime			    fn st_atime(&self) -> i64;
 st_atime			    fn st_atime(&self) -> i64 
 st_atime			    fn st_atime(&self) -> i64;
+st_atime			    fn st_atime(&self) -> i64 
+st_atime			    fn st_atime(&self) -> i64;
+st_atime_nsec			    fn st_atime_nsec(&self) -> i64 
+st_atime_nsec			    fn st_atime_nsec(&self) -> i64;
 st_atime_nsec			    fn st_atime_nsec(&self) -> i64 
 st_atime_nsec			    fn st_atime_nsec(&self) -> i64;
 st_atime_nsec			    fn st_atime_nsec(&self) -> i64 
@@ -4342,6 +4403,8 @@ st_blksize			    fn st_blksize(&self) -> u64
 st_blksize			    fn st_blksize(&self) -> u64;
 st_blksize			    fn st_blksize(&self) -> u64 
 st_blksize			    fn st_blksize(&self) -> u64;
+st_blksize			    fn st_blksize(&self) -> u64 
+st_blksize			    fn st_blksize(&self) -> u64;
 st_blocks			    fn st_blocks(&self) -> u64 
 st_blocks			    fn st_blocks(&self) -> u64;
 st_blocks			    fn st_blocks(&self) -> u64 
@@ -4366,6 +4429,14 @@ st_blocks			    fn st_blocks(&self) -> u64
 st_blocks			    fn st_blocks(&self) -> u64;
 st_blocks			    fn st_blocks(&self) -> u64 
 st_blocks			    fn st_blocks(&self) -> u64;
+st_blocks			    fn st_blocks(&self) -> u64 
+st_blocks			    fn st_blocks(&self) -> u64;
+st_crtime			    fn st_crtime(&self) -> i64 
+st_crtime			    fn st_crtime(&self) -> i64;
+st_crtime_nsec			    fn st_crtime_nsec(&self) -> i64 
+st_crtime_nsec			    fn st_crtime_nsec(&self) -> i64;
+st_ctime			    fn st_ctime(&self) -> i64 
+st_ctime			    fn st_ctime(&self) -> i64;
 st_ctime			    fn st_ctime(&self) -> i64 
 st_ctime			    fn st_ctime(&self) -> i64;
 st_ctime			    fn st_ctime(&self) -> i64 
@@ -4414,6 +4485,10 @@ st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64
 st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64;
 st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64 
 st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64;
+st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64 
+st_ctime_nsec			    fn st_ctime_nsec(&self) -> i64;
+st_dev			    fn st_dev(&self) -> u64 
+st_dev			    fn st_dev(&self) -> u64;
 st_dev			    fn st_dev(&self) -> u64 
 st_dev			    fn st_dev(&self) -> u64;
 st_dev			    fn st_dev(&self) -> u64 
@@ -4490,6 +4565,10 @@ st_gid			    fn st_gid(&self) -> u32
 st_gid			    fn st_gid(&self) -> u32;
 st_gid			    fn st_gid(&self) -> u32 
 st_gid			    fn st_gid(&self) -> u32;
+st_gid			    fn st_gid(&self) -> u32 
+st_gid			    fn st_gid(&self) -> u32;
+st_ino			    fn st_ino(&self) -> u64 
+st_ino			    fn st_ino(&self) -> u64;
 st_ino			    fn st_ino(&self) -> u64 
 st_ino			    fn st_ino(&self) -> u64;
 st_ino			    fn st_ino(&self) -> u64 
@@ -4546,6 +4625,10 @@ st_mode			    fn st_mode(&self) -> u32
 st_mode			    fn st_mode(&self) -> u32;
 st_mode			    fn st_mode(&self) -> u32 
 st_mode			    fn st_mode(&self) -> u32;
+st_mode			    fn st_mode(&self) -> u32 
+st_mode			    fn st_mode(&self) -> u32;
+st_mtime			    fn st_mtime(&self) -> i64 
+st_mtime			    fn st_mtime(&self) -> i64;
 st_mtime			    fn st_mtime(&self) -> i64 
 st_mtime			    fn st_mtime(&self) -> i64;
 st_mtime			    fn st_mtime(&self) -> i64 
@@ -4594,6 +4677,10 @@ st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64
 st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64;
 st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64 
 st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64;
+st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64 
+st_mtime_nsec			    fn st_mtime_nsec(&self) -> i64;
+st_nlink			    fn st_nlink(&self) -> u64 
+st_nlink			    fn st_nlink(&self) -> u64;
 st_nlink			    fn st_nlink(&self) -> u64 
 st_nlink			    fn st_nlink(&self) -> u64;
 st_nlink			    fn st_nlink(&self) -> u64 
@@ -4644,6 +4731,8 @@ st_rdev			    fn st_rdev(&self) -> u64
 st_rdev			    fn st_rdev(&self) -> u64;
 st_rdev			    fn st_rdev(&self) -> u64 
 st_rdev			    fn st_rdev(&self) -> u64;
+st_rdev			    fn st_rdev(&self) -> u64 
+st_rdev			    fn st_rdev(&self) -> u64;
 st_size			    fn st_size(&self) -> u64 
 st_size			    fn st_size(&self) -> u64;
 st_size			    fn st_size(&self) -> u64 
@@ -4668,6 +4757,10 @@ st_size			    fn st_size(&self) -> u64
 st_size			    fn st_size(&self) -> u64;
 st_size			    fn st_size(&self) -> u64 
 st_size			    fn st_size(&self) -> u64;
+st_size			    fn st_size(&self) -> u64 
+st_size			    fn st_size(&self) -> u64;
+st_uid			    fn st_uid(&self) -> u32 
+st_uid			    fn st_uid(&self) -> u32;
 st_uid			    fn st_uid(&self) -> u32 
 st_uid			    fn st_uid(&self) -> u32;
 st_uid			    fn st_uid(&self) -> u32 
@@ -4707,6 +4800,7 @@ start_thread			pub unsafe fn start_thread(main: *mut libc::c_void)
 starts_with			    pub fn starts_with<P: AsRef<Path>>(&self, base: P) -> bool 
 stash			    pub fn stash(self) -> FullBucket<K, V, Self> 
 stat			    pub struct stat 
+stat			pub struct stat 
 stat			pub struct stat 
 stat			pub struct stat 
 stat			pub struct stat 

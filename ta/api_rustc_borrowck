@@ -27,8 +27,6 @@ BitwiseOperator for MoveDataFlowOperator			impl BitwiseOperator for MoveDataFlow
 BitwiseOperator for MovingOutStatements			impl<'a, 'tcx> BitwiseOperator for MovingOutStatements<'a, 'tcx> 
 BitwiseOperator for Subtract			impl BitwiseOperator for Subtract 
 BitwiseOperator for Union			impl BitwiseOperator for Union 
-BlockContext			impl<'b, 'tcx: 'b> BlockContext<'b, 'tcx> 
-BlockContext			struct BlockContext<'b, 'tcx: 'b> 
 BlockSets			impl<'a, E:Idx> BlockSets<'a, E> 
 BlockSets			pub struct BlockSets<'a, E: Idx> 
 BorrowStats			struct BorrowStats 
@@ -76,8 +74,6 @@ ElaborateDrops			pub struct ElaborateDrops;
 ElaborateDropsCtxt			impl<'b, 'tcx> ElaborateDropsCtxt<'b, 'tcx> 
 ElaborateDropsCtxt			struct ElaborateDropsCtxt<'a, 'tcx: 'a> 
 FancyNum			struct FancyNum 
-FillTo			trait FillTo 
-FillTo for Vec			impl<T:Clone> FillTo for Vec<T> 
 FlowedMoveData			impl<'a, 'tcx> FlowedMoveData<'a, 'tcx> 
 FlowedMoveData			pub struct FlowedMoveData<'a, 'tcx: 'a> 
 Foo			struct Foo 
@@ -92,14 +88,14 @@ Graph			struct Graph<'a, 'tcx, MWF:'a, P> where
 GroupedMoveErrors			pub struct GroupedMoveErrors<'tcx> 
 GuaranteeLifetimeContext			impl<'a, 'tcx> GuaranteeLifetimeContext<'a, 'tcx> 
 GuaranteeLifetimeContext			struct GuaranteeLifetimeContext<'a, 'tcx: 'a> 
+Hash for LoanPath			impl<'tcx> Hash for LoanPath<'tcx> 
 Idx			            impl Idx for 
 IdxSet			impl<T: Idx> IdxSet<T> 
 IdxSet			pub struct IdxSet<T: Idx> 
 IdxSetBuf			impl<T: Idx> IdxSetBuf<T> 
 IdxSetBuf			pub struct IdxSetBuf<T: Idx> 
-Index for LocMap			impl Index<Location> for LocMap 
-Index for MovePathData			impl<'tcx> Index<MovePathIndex> for MovePathData<'tcx> 
-Index for PathMap			impl Index<MovePathIndex> for PathMap 
+Index for LocationMap			impl<T> Index<Location> for LocationMap<T> 
+IndexMut for LocationMap			impl<T> IndexMut<Location> for LocationMap<T> 
 InitializationData			impl InitializationData 
 InitializationData			struct InitializationData 
 InteriorKind			pub enum InteriorKind 
@@ -112,13 +108,11 @@ LoanDataFlowOperator			pub struct LoanDataFlowOperator;
 LoanPath			impl<'a, 'tcx> LoanPath<'tcx> 
 LoanPath			impl<'tcx> LoanPath<'tcx> 
 LoanPath			pub struct LoanPath<'tcx> 
-LoanPathElem			pub enum LoanPathElem 
+LoanPathElem			pub enum LoanPathElem<'tcx> 
 LoanPathKind			pub enum LoanPathKind<'tcx> 
-LocMap			pub struct LocMap 
-Location			pub struct Location 
-Lookup			impl Lookup<MovePathIndex> 
-Lookup			struct Lookup<T>(LookupKind, T);
-LookupKind			enum LookupKind { Generate, Reuse }
+LocationMap			impl<T> LocationMap<T> where T: Default + Clone 
+LocationMap			pub struct LocationMap<T> 
+LookupResult			pub enum LookupResult 
 MaybeInitializedLvals			impl<'a, 'tcx: 'a> MaybeInitializedLvals<'a, 'tcx> 
 MaybeInitializedLvals			impl<'a, 'tcx> MaybeInitializedLvals<'a, 'tcx> 
 MaybeInitializedLvals			pub struct MaybeInitializedLvals<'a, 'tcx: 'a> 
@@ -139,6 +133,8 @@ MoveData			impl<'a, 'tcx> MoveData<'tcx>
 MoveData			pub struct MoveData<'tcx> 
 MoveData			impl<'a, 'tcx> MoveData<'tcx> 
 MoveData			pub struct MoveData<'tcx> 
+MoveDataBuilder			impl<'a, 'tcx> MoveDataBuilder<'a, 'tcx> 
+MoveDataBuilder			struct MoveDataBuilder<'a, 'tcx: 'a> 
 MoveDataFlowOperator			pub struct MoveDataFlowOperator;
 MoveDataParamEnv			pub struct MoveDataParamEnv<'tcx> 
 MoveError			impl<'tcx> MoveError<'tcx> 
@@ -151,11 +147,7 @@ MoveKind			pub enum MoveKind
 MoveOut			pub struct MoveOut 
 MovePath			pub struct MovePath<'tcx> 
 MovePath			pub struct MovePath<'tcx> 
-MovePathContent			pub enum MovePathContent<'tcx> 
-MovePathData			impl<'tcx> MovePathData<'tcx> 
-MovePathData			pub struct MovePathData<'tcx> 
-MovePathDataBuilder			impl<'tcx> MovePathDataBuilder<'tcx> 
-MovePathDataBuilder			struct MovePathDataBuilder<'tcx> 
+MovePathError			pub enum MovePathError 
 MovePathIndex			impl MovePathIndex 
 MovePathIndex			pub struct MovePathIndex(usize);
 MovePathLookup			impl<'tcx> MovePathLookup<'tcx> 
@@ -167,16 +159,12 @@ MyStruct			struct MyStruct { s: u32 }
 NonCopy			struct NonCopy;
 PartialEq for LoanPath			impl<'tcx> PartialEq for LoanPath<'tcx> 
 Pass for ElaborateDrops			impl Pass for ElaborateDrops {}
-PathMap			pub struct PathMap 
-PreMovePath			impl<'tcx> PreMovePath<'tcx> 
-PreMovePath			struct PreMovePath<'tcx> 
 PropagationContext			impl<'b, 'a: 'b, 'tcx: 'a, BD> PropagationContext<'b, 'a, 'tcx, BD>
 PropagationContext			struct PropagationContext<'b, 'a: 'b, 'tcx: 'a, O>
 RestrictionResult			pub enum RestrictionResult<'tcx> 
 RestrictionsContext			impl<'a, 'tcx> RestrictionsContext<'a, 'tcx> 
 RestrictionsContext			struct RestrictionsContext<'a, 'tcx: 'a> 
 StaticInitializerCtxt			struct StaticInitializerCtxt<'a, 'tcx: 'a> 
-StmtKind			enum StmtKind 
 Subtract			pub struct Subtract;
 TheDarkKnight			impl TheDarkKnight 
 TheDarkKnight			struct TheDarkKnight;
@@ -195,6 +183,7 @@ add			    pub fn add(&mut self, elem: &T) -> bool
 add_assign			    pub fn add_assign(&mut self, loc: Location, lv: Lvalue<'tcx>, rv: Rvalue<'tcx>) 
 add_assignment			    pub fn add_assignment(&mut self, path_index: MovePathIndex) 
 add_assignment			    pub fn add_assignment(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+add_assignment_helper			    fn add_assignment_helper(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 add_error			    pub fn add_error(&mut self, error: MoveError<'tcx>) 
 add_existing_base_paths			    fn add_existing_base_paths(&self, lp: &Rc<LoanPath<'tcx>>,
 add_fragment_sibling_core			fn add_fragment_sibling_core<'a, 'tcx>(this: &MoveData<'tcx>,
@@ -203,6 +192,7 @@ add_fragment_siblings_for_extension			fn add_fragment_siblings_for_extension<'a,
 add_gen_kills			    fn add_gen_kills(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 add_move			    pub fn add_move(&mut self, path_index: MovePathIndex) 
 add_move			    pub fn add_move(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+add_move_helper			    fn add_move_helper(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 add_statement			    pub fn add_statement(&mut self, loc: Location, stmt: StatementKind<'tcx>) 
 add_variant_match			    pub fn add_variant_match(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 analysis_ctxt			    fn analysis_ctxt(&self) -> &<Self::BD as BitDenotation>::Ctxt;
@@ -215,7 +205,7 @@ apply			    pub fn apply(self, mir: &mut Mir<'tcx>)
 apply_location			    fn apply_location<'a,'tcx>(&mut self,
 assigned_leaf_paths			    pub fn assigned_leaf_paths(&self) -> &[MovePathIndex] 
 bar			fn bar(x: &mut i32) {}
-bckerr_code			pub enum bckerr_code 
+bckerr_code			pub enum bckerr_code<'tcx> 
 bckerr_to_string			    pub fn bckerr_to_string(&self, err: &BckError<'tcx>) -> String 
 bit_lookup			fn bit_lookup(bit: usize) -> BitLookup 
 bit_str			fn bit_str(bit: Word) -> String 
@@ -252,7 +242,7 @@ check_if_path_is_moved			    fn check_if_path_is_moved(&self,
 check_loans			pub fn check_loans<'a, 'b, 'c, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_loans			pub mod check_loans;
 check_mutability			fn check_mutability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
-check_scope			    fn check_scope(&self, max_scope: ty::Region) -> R 
+check_scope			    fn check_scope(&self, max_scope: &'tcx ty::Region) -> R 
 chunked_present_left			        fn chunked_present_left<W:io::Write>(w: &mut W,
 cleaned			    fn cleaned(self) -> InteriorKind 
 clear_bit			    fn clear_bit(&mut self, idx: usize) -> bool 
@@ -343,15 +333,15 @@ euv::Delegate for GatherLoanCtxt			impl<'a, 'tcx> euv::Delegate<'tcx> for Gather
 existing_base_paths			    fn existing_base_paths(&self, lp: &Rc<LoanPath<'tcx>>)
 existing_move_path			    fn existing_move_path(&self, lp: &Rc<LoanPath<'tcx>>)
 extend			    fn extend(&self,
-fill_to			    fn fill_to(&mut self, idx: usize) where Self::T: Default 
-fill_to_with			    fn fill_to_with(&mut self, idx: usize, x: Self::T);
-fill_to_with			    fn fill_to_with(&mut self, idx: usize, x: T) 
-find			    pub fn find(&self, lval: &Lvalue<'tcx>) -> MovePathIndex 
+finalize			    fn finalize(self) -> MoveData<'tcx> 
+find			    pub fn find(&self, lval: &Lvalue<'tcx>) -> LookupResult 
 fixup_fragment_sets			pub fn fixup_fragment_sets<'a, 'tcx>(this: &MoveData<'tcx>, tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 fixup_fragment_sets			    fn fixup_fragment_sets(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 flow_state			    fn flow_state(&self) -> &DataflowState<Self::BD> { &self.flow_state.flow_state }
 flow_state			    fn flow_state(&self) -> &DataflowState<Self::BD>;
 fmt			    fn fmt(&self, _f: &mut fmt::Formatter) -> Result<(), fmt::Error> 
+fmt			                fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			            impl fmt::Debug for 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, w: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -362,7 +352,6 @@ fmt::Debug for InitializationData			impl fmt::Debug for InitializationData
 fmt::Debug for InteriorKind			impl<'tcx> fmt::Debug for InteriorKind 
 fmt::Debug for Loan			impl<'tcx> fmt::Debug for Loan<'tcx> 
 fmt::Debug for LoanPath			impl<'tcx> fmt::Debug for LoanPath<'tcx> 
-fmt::Debug for Location			impl fmt::Debug for Location 
 fmt::Debug for MoveOut			impl fmt::Debug for MoveOut 
 fmt::Debug for MovePath			impl<'tcx> fmt::Debug for MovePath<'tcx> 
 fmt::Display for LoanPath			impl<'tcx> fmt::Display for LoanPath<'tcx> 
@@ -382,12 +371,17 @@ gather_loans_in_fn			pub fn gather_loans_in_fn<'a, 'tcx>(bccx: &BorrowckCtxt<'a,
 gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer(bccx: &mut BorrowckCtxt,
 gather_match_variant			pub fn gather_match_variant<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			fn gather_move<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
+gather_move			    fn gather_move(&mut self, loc: Location, lval: &Lvalue<'tcx>) 
 gather_move_from_expr			pub fn gather_move_from_expr<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move_from_pat			pub fn gather_move_from_pat<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_moves			mod gather_moves;
-gather_moves			    pub fn gather_moves(mir: &Mir<'tcx>, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Self 
-gather_moves			fn gather_moves<'a, 'tcx>(mir: &Mir<'tcx>, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> MoveData<'tcx> 
+gather_moves			    pub fn gather_moves(mir: &Mir<'tcx>,
+gather_moves			fn gather_moves<'a, 'tcx>(mir: &Mir<'tcx>,
 gather_moves			mod gather_moves;
+gather_operand			    fn gather_operand(&mut self, loc: Location, operand: &Operand<'tcx>) 
+gather_rvalue			    fn gather_rvalue(&mut self, loc: Location, rvalue: &Rvalue<'tcx>) 
+gather_statement			    fn gather_statement(&mut self, loc: Location, stmt: &Statement<'tcx>) 
+gather_terminator			    fn gather_terminator(&mut self, loc: Location, term: &Terminator<'tcx>) 
 gen			    fn gen(&mut self, e: &E) 
 gen_set_for			    pub fn gen_set_for(&self, block_idx: usize) -> &IdxSet<E> 
 get			    fn get(&self) -> usize 
@@ -403,14 +397,13 @@ guarantee_lifetime			pub fn guarantee_lifetime<'a, 'tcx>(bccx: &BorrowckCtxt<'a,
 guarantee_valid			    fn guarantee_valid(&mut self,
 has_fork			    fn has_fork(&self, other: &LoanPath<'tcx>) -> bool 
 has_rustc_mir_with			fn has_rustc_mir_with(attrs: &[ast::Attribute], name: &str) -> Option<P<MetaItem>> 
+hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 helper			    fn helper<'a, 'tcx>(loan_path: &'a LoanPath<'tcx>) -> Option<&'a LoanPath<'tcx>> 
 helper			    fn helper<'tcx>(loan_path: &Rc<LoanPath<'tcx>>) -> Option<Rc<LoanPath<'tcx>>> 
 impls			mod impls;
 index			                fn index(self) -> usize 
-index			    fn index(&self) -> usize { (self.1).index() }
-index			    fn index(&self, i: MovePathIndex) -> &MovePath<'tcx> 
 index			    fn index(&self, index: Location) -> &Self::Output 
-index			    fn index(&self, index: MovePathIndex) -> &Self::Output 
+index_mut			    fn index_mut(&mut self, index: Location) -> &mut Self::Output 
 indexed_set			mod indexed_set;
 indexes			mod indexes 
 initial_value			    fn initial_value(&self) -> bool 
@@ -420,10 +413,9 @@ inside_closure			fn inside_closure(x: &mut i32)
 inside_closure			fn inside_closure(x: &mut i32) {}
 instrument_move_fragments			pub fn instrument_move_fragments<'a, 'tcx>(this: &MoveData<'tcx>,
 interpret_set			    pub fn interpret_set<'c, P>(&self,
-into_move_path			    fn into_move_path(self) -> MovePath<'tcx> 
 is_patched			    pub fn is_patched(&self, bb: BasicBlock) -> bool 
 is_rustc_peek			fn is_rustc_peek<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-is_subregion_of			    pub fn is_subregion_of(&self, r_sub: ty::Region, r_sup: ty::Region)
+is_subregion_of			    pub fn is_subregion_of(&self, r_sub: &'tcx ty::Region, r_sup: &'tcx ty::Region)
 is_terminal_path			    fn is_terminal_path<'a, 'tcx>(
 is_var_path			    fn is_var_path(&self, index: MovePathIndex) -> bool 
 join			    fn join(&self, a: usize, b: usize) -> usize { a & !b }
@@ -437,7 +429,6 @@ kill_moves			    fn kill_moves(&self,
 kill_scope			    pub fn kill_scope(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> region::CodeExtent 
 kill_set_for			    pub fn kill_set_for(&self, block_idx: usize) -> &IdxSet<E> 
 kind_of_move_of_path			    pub fn kind_of_move_of_path(&self,
-len			    pub fn len(&self) -> usize { self.move_paths.len() }
 lifetime			mod lifetime;
 lift			    fn lift(&self) -> Self::Abstract { AbstractOperand }
 lift			    fn lift(&self) -> Self::Abstract 
@@ -448,17 +439,8 @@ loan_path_repr			    fn loan_path_repr(&self, move_data: &MoveData) -> String
 loan_path_to_string			    pub fn loan_path_to_string(&self, loan_path: &LoanPath<'tcx>) -> String 
 loan_path_user_string			    fn loan_path_user_string(&self, move_data: &MoveData) -> String 
 loans_generated_by			    pub fn loans_generated_by(&self, node: ast::NodeId) -> Vec<usize> 
-lookup			    fn lookup(&mut self, lval: &Lvalue<'tcx>) -> Lookup<MovePathIndex> 
-lookup_arg			    fn lookup_arg(&mut self, arg_idx: Arg) -> Lookup<MovePathIndex> 
-lookup_or_generate			    fn lookup_or_generate<I: Idx>(vec: &mut IndexVec<I, Option<MovePathIndex>>,
-lookup_proj			    fn lookup_proj(&mut self,
-lookup_return_pointer			    fn lookup_return_pointer(&mut self) -> Lookup<MovePathIndex> 
 lookup_set_for			    fn lookup_set_for<'a>(&self, sets: &'a Bits<E>, block_idx: usize) -> &'a IdxSet<E> 
-lookup_static			    fn lookup_static(&mut self) -> Lookup<MovePathIndex> 
-lookup_temp			    fn lookup_temp(&mut self, temp_idx: Temp) -> Lookup<MovePathIndex> 
-lookup_var			    fn lookup_var(&mut self, var_idx: Var) -> Lookup<MovePathIndex> 
 lvalue_contents_drop_state_cannot_differ			fn lvalue_contents_drop_state_cannot_differ<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-lvalue_is_tracked			    fn lvalue_is_tracked(&self, lv: &Lvalue<'tcx>) -> bool
 main			fn main() 
 make_stat			    fn make_stat(bccx: &BorrowckCtxt, stat: usize) -> String 
 mark_loan_path_as_mutated			    pub fn mark_loan_path_as_mutated(&self, loan_path: &LoanPath) 
@@ -473,8 +455,9 @@ move_data			pub mod move_data;
 move_error			mod move_error;
 move_next_move			    fn move_next_move(&self, index: MoveIndex) -> MoveIndex 
 move_path			    pub fn move_path(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
-move_path_children_matching			fn move_path_children_matching<'tcx, F>(move_paths: &MovePathData<'tcx>,
-move_path_for			    fn move_path_for(&mut self, lval: &Lvalue<'tcx>) -> MovePathIndex 
+move_path_children_matching			fn move_path_children_matching<'tcx, F>(move_data: &MoveData<'tcx>,
+move_path_for			    fn move_path_for(&mut self, lval: &Lvalue<'tcx>)
+move_path_for_projection			    fn move_path_for_projection(&mut self,
 move_path_index			    pub fn move_path_index(&self, move_data: &MoveData) -> MovePathIndex 
 move_paths_for_fields			    fn move_paths_for_fields(&self,
 moved_leaf_paths			    pub fn moved_leaf_paths(&self) -> &[MovePathIndex] 
@@ -494,6 +477,7 @@ new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>, mir: &'a Mir<'tcx>) -> Self
 new			    fn new(bits: IdxSetBuf<E>) -> Self 
 new			    pub fn new(_tcx: TyCtxt<'a, 'tcx, 'tcx>,
 new			                fn new(idx: usize) -> Self 
+new			    fn new(mir: &'a Mir<'tcx>,
 new			    fn new(mir: &Mir) -> Self 
 new			    pub fn new(mir: &Mir<'tcx>) -> Self 
 new			    fn new(kind: LoanPathKind<'tcx>, ty: ty::Ty<'tcx>) -> LoanPath<'tcx> 
@@ -504,8 +488,8 @@ new_block			    fn new_block<'a>(&mut self,
 new_block			    pub fn new_block(&mut self, data: BasicBlockData<'tcx>) -> BasicBlock 
 new_empty			    pub fn new_empty(universe_size: usize) -> Self 
 new_filled			    pub fn new_filled(universe_size: usize) -> Self 
+new_move_path			    fn new_move_path(move_paths: &mut IndexVec<MovePathIndex, MovePath<'tcx>>,
 new_temp			    pub fn new_temp(&mut self, ty: Ty<'tcx>) -> Temp 
-next_index			    fn next_index(next: &mut MovePathIndex) -> MovePathIndex 
 node_id			    fn node_id(&self) -> NodeId { self.node_id }
 node_id			    fn node_id(&self) -> NodeId;
 node_id			    fn node_id(&self, n: &Node) -> dot::Id 
@@ -523,8 +507,7 @@ nothing_is_true			    fn nothing_is_true(self) {}
 on_all_children_bits			    fn on_all_children_bits<'a, 'tcx, F>(
 on_all_children_bits			fn on_all_children_bits<'a, 'tcx, F>(
 on_entry_set_for			    pub fn on_entry_set_for(&self, block_idx: usize) -> &IdxSet<E> 
-on_move_out_lval			    fn on_move_out_lval(&mut self,
-on_operand			    fn on_operand(&mut self, stmt_kind: StmtKind, operand: &Operand<'tcx>, source: Location) 
+on_lookup_result_bits			fn on_lookup_result_bits<'a, 'tcx, F>(
 open_drop			    fn open_drop<'a>(&mut self, c: &DropCtxt<'a, 'tcx>) -> BasicBlock 
 open_drop_for_adt			    fn open_drop_for_adt<'a>(&mut self, c: &DropCtxt<'a, 'tcx>,
 open_drop_for_box			    fn open_drop_for_box<'a>(&mut self, c: &DropCtxt<'a, 'tcx>, ty: Ty<'tcx>)
@@ -559,11 +542,12 @@ propagate_call_return			    fn propagate_call_return(&self,
 propagate_call_return			    fn propagate_call_return(&self,
 range			    pub fn range(&self, elems: &Range<T>) -> &Self 
 range_mut			    pub fn range_mut(&mut self, elems: &Range<T>) -> &mut Self 
+region_end_span			    fn region_end_span(&self, region: &'tcx ty::Region) -> Option<Span> 
 remove			    pub fn remove(&mut self, elem: &T) -> bool 
 report			    pub fn report(&self, err: BckError<'tcx>) 
 report_aliasability_violation			    pub fn report_aliasability_violation(&self,
 report_cannot_move_out_of			fn report_cannot_move_out_of<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
-report_error			    fn report_error(&self, code: bckerr_code) 
+report_error			    fn report_error(&self, code: bckerr_code<'tcx>) 
 report_error_if_loan_conflicts_with_restriction			    pub fn report_error_if_loan_conflicts_with_restriction(&self,
 report_error_if_loans_conflict			    pub fn report_error_if_loans_conflict(&self,
 report_illegal_mutation			    pub fn report_illegal_mutation(&self,
@@ -582,7 +566,7 @@ resume_block			    pub fn resume_block(&self) -> BasicBlock
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 sanity_check			mod sanity_check;
 sanity_check_via_rustc_peek			pub fn sanity_check_via_rustc_peek<'a, 'tcx, O>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-scope			    fn scope(&self, cmt: &mc::cmt) -> ty::Region 
+scope			    fn scope(&self, cmt: &mc::cmt<'tcx>) -> &'tcx ty::Region 
 self			impl self::indexes::MoveOutIndex 
 set_bit			    fn set_bit(&mut self, idx: usize) -> bool 
 set_bit			    fn set_bit(&mut self, idx: usize) -> bool;
@@ -604,7 +588,7 @@ start_block_effect			    fn start_block_effect(&self, ctxt: &Self::Ctxt, sets: &
 state			    fn state(&self, path: MovePathIndex) -> (bool, bool) 
 statement_effect			    fn statement_effect(&self,
 statement_effect			    fn statement_effect(&self,
-statement_scope_span			fn statement_scope_span(tcx: TyCtxt, region: ty::Region) -> Option<Span> 
+statement_scope_span			fn statement_scope_span(tcx: TyCtxt, region: &ty::Region) -> Option<Span> 
 struct_span_err			    pub fn struct_span_err<S: Into<MultiSpan>>(&self, s: S, m: &str)
 struct_span_err_with_code			    pub fn struct_span_err_with_code<S: Into<MultiSpan>>(&self,
 subtract			    pub fn subtract(&mut self, other: &IdxSet<T>) -> bool 

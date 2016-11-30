@@ -115,6 +115,7 @@ Drop for IntoIter			impl<K, V> Drop for IntoIter<K, V>
 Drop for IntoIter			impl<T> Drop for IntoIter<T> 
 Drop for LinkedList			impl<T> Drop for LinkedList<T> 
 Drop for PeekMut			impl<'a, T: Ord> Drop for PeekMut<'a, T> 
+Drop for SetLenOnDrop			impl<'a> Drop for SetLenOnDrop<'a> 
 Drop for Vec			impl<T> Drop for Vec<T> 
 Drop for VecDeque			impl<T> Drop for VecDeque<T> 
 Edge			    pub enum Edge { }
@@ -198,6 +199,36 @@ FromUtf16Error			pub struct FromUtf16Error(());
 FromUtf8Error			impl FromUtf8Error 
 FromUtf8Error			pub struct FromUtf8Error 
 FrontPlace			pub struct FrontPlace<'a, T: 'a> 
+FusedIterator for Difference			impl<'a, T: Ord> FusedIterator for Difference<'a, T> {}
+FusedIterator for Drain			impl<'a, T: 'a> FusedIterator for Drain<'a, T> {}
+FusedIterator for Drain			impl<'a> FusedIterator for Drain<'a> {}
+FusedIterator for Drain			impl<'a, T> FusedIterator for Drain<'a, T> {}
+FusedIterator for Drain			impl<'a, T: 'a> FusedIterator for Drain<'a, T> {}
+FusedIterator for EncodeUtf16			impl<'a> FusedIterator for EncodeUtf16<'a> {}
+FusedIterator for Intersection			impl<'a, T: Ord> FusedIterator for Intersection<'a, T> {}
+FusedIterator for IntoIter			impl<T> FusedIterator for IntoIter<T> {}
+FusedIterator for IntoIter			impl<K, V> FusedIterator for IntoIter<K, V> {}
+FusedIterator for IntoIter			impl<T> FusedIterator for IntoIter<T> {}
+FusedIterator for IntoIter			impl<T> FusedIterator for IntoIter<T> {}
+FusedIterator for IntoIter			impl<T> FusedIterator for IntoIter<T> {}
+FusedIterator for IntoIter			impl<T> FusedIterator for IntoIter<T> {}
+FusedIterator for Iter			impl<'a, T> FusedIterator for Iter<'a, T> {}
+FusedIterator for Iter			impl<'a, K, V> FusedIterator for Iter<'a, K, V> {}
+FusedIterator for Iter			impl<'a, T> FusedIterator for Iter<'a, T> {}
+FusedIterator for Iter			impl<E: CLike> FusedIterator for Iter<E> {}
+FusedIterator for Iter			impl<'a, T> FusedIterator for Iter<'a, T> {}
+FusedIterator for Iter			impl<'a, T> FusedIterator for Iter<'a, T> {}
+FusedIterator for IterMut			impl<'a, K, V> FusedIterator for IterMut<'a, K, V> {}
+FusedIterator for IterMut			impl<'a, T> FusedIterator for IterMut<'a, T> {}
+FusedIterator for IterMut			impl<'a, T> FusedIterator for IterMut<'a, T> {}
+FusedIterator for Keys			impl<'a, K, V> FusedIterator for Keys<'a, K, V> {}
+FusedIterator for Range			impl<'a, K, V> FusedIterator for Range<'a, K, V> {}
+FusedIterator for Range			impl<'a, T> FusedIterator for Range<'a, T> {}
+FusedIterator for RangeMut			impl<'a, K, V> FusedIterator for RangeMut<'a, K, V> {}
+FusedIterator for SymmetricDifference			impl<'a, T: Ord> FusedIterator for SymmetricDifference<'a, T> {}
+FusedIterator for Union			impl<'a, T: Ord> FusedIterator for Union<'a, T> {}
+FusedIterator for Values			impl<'a, K, V> FusedIterator for Values<'a, K, V> {}
+FusedIterator for ValuesMut			impl<'a, K, V> FusedIterator for ValuesMut<'a, K, V> {}
 Handle			impl<'a, K, V, NodeType> Handle<NodeRef<marker::Mut<'a>, K, V, NodeType>, marker::KV> 
 Handle			impl<'a, K, V> Handle<NodeRef<marker::Mut<'a>, K, V, marker::Internal>, marker::Edge> 
 Handle			impl<'a, K, V> Handle<NodeRef<marker::Mut<'a>, K, V, marker::Internal>, marker::KV> 
@@ -372,6 +403,8 @@ Send for Iter			unsafe impl<'a, T: Sync> Send for Iter<'a, T> {}
 Send for IterMut			unsafe impl<'a, T: Send> Send for IterMut<'a, T> {}
 Send for LinkedList			unsafe impl<T: Send> Send for LinkedList<T> {}
 Send for Root			unsafe impl<K: Send, V: Send> Send for Root<K, V> { }
+SetLenOnDrop			impl<'a> SetLenOnDrop<'a> 
+SetLenOnDrop			struct SetLenOnDrop<'a> 
 SliceConcatExt			pub trait SliceConcatExt<T: ?Sized> 
 SpecExtend			impl<T: Ord> SpecExtend<BinaryHeap<T>> for BinaryHeap<T> 
 SpecExtend			trait SpecExtend<I: IntoIterator> 
@@ -666,6 +699,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt::Debug for BinaryHeap			impl<T: fmt::Debug + Ord> fmt::Debug for BinaryHeap<T> 
 fmt::Debug for Cow			impl<'a, B: ?Sized> fmt::Debug for Cow<'a, B>
 fmt::Debug for EnumSet			impl<E: CLike + fmt::Debug> fmt::Debug for EnumSet<E> 
+fmt::Debug for IntoIter			impl<T: fmt::Debug> fmt::Debug for IntoIter<T> 
 fmt::Debug for LinkedList			impl<T: fmt::Debug> fmt::Debug for LinkedList<T> 
 fmt::Debug for ParseError			impl fmt::Debug for ParseError 
 fmt::Debug for String			impl fmt::Debug for String 
@@ -751,6 +785,7 @@ hash			    fn hash<H: hash::Hasher>(&self, state: &mut H)
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 hash::Hash for String			impl hash::Hash for String 
 height			    pub fn height(&self) -> usize 
+increment_len			    fn increment_len(&mut self, increment: usize) 
 index			    fn index(&self, key: &Q) -> &V 
 index			    fn index(&self, _index: ops::RangeFull) -> &str 
 index			    fn index(&self, index: ops::Range<usize>) -> &str 
@@ -920,8 +955,8 @@ ne			            fn ne(&self, other: &
 ne			            fn ne(&self, other: &
 ne			    fn ne(&self, other: &String) -> bool 
 ne			            fn ne(&self, other: &
-new			    fn new(data: &'a mut [T], pos: usize) -> Self 
 new			    pub fn new() -> BinaryHeap<T> 
+new			    unsafe fn new(data: &'a mut [T], pos: usize) -> Self 
 new			    pub fn new() -> BTreeMap<K, V> 
 new			    unsafe fn new() -> Self 
 new			    pub fn new() -> BTreeSet<T> 
@@ -930,6 +965,7 @@ new			    pub fn new() -> EnumSet<E>
 new			    fn new(element: T) -> Self 
 new			    pub fn new() -> Self 
 new			    pub fn new() -> String 
+new			    fn new(len: &'a mut usize) -> Self 
 new			    pub fn new() -> Vec<T> 
 new			    pub fn new() -> VecDeque<T> 
 new_edge			    pub fn new_edge(node: NodeRef<BorrowType, K, V, NodeType>, idx: usize) -> Self 
@@ -1074,6 +1110,7 @@ replace			    fn replace(&mut self, key: K) -> Option<K>
 replace			    fn replace(&mut self, key: Self::Key) -> Option<Self::Key>;
 replace			    pub fn replace(&mut self, value: T) -> Option<T> 
 replace			    pub fn replace<'a, P: Pattern<'a>>(&'a self, from: P, to: &str) -> String 
+replacen			    pub fn replacen<'a, P: Pattern<'a>>(&'a self, pat: P, to: &str, count: usize) -> String 
 reserve			    pub fn reserve(&mut self, additional: usize) 
 reserve			    pub fn reserve(&mut self, additional: usize) 
 reserve			    pub fn reserve(&mut self, additional: usize) 

@@ -17,7 +17,6 @@ ArchiveConfig			pub struct ArchiveConfig<'a>
 ArgKind			enum ArgKind 
 ArgType			impl ArgType 
 ArgType			pub struct ArgType 
-ArmData			struct ArmData<'p, 'blk, 'tcx: 'blk> 
 AsI64			pub trait AsI64 { fn as_i64(self) -> i64; }
 AsI64 for i32			impl AsI64 for i32 { fn as_i64(self) -> i64 { self as i64 }}
 AsI64 for i64			impl AsI64 for i64 { fn as_i64(self) -> i64 { self as i64 }}
@@ -28,6 +27,8 @@ AsU64 for u64			impl AsU64 for u64  { fn as_u64(self) -> u64 { self as u64 }}
 AsU64 for usize			impl AsU64 for usize { fn as_u64(self) -> u64 { self as u64 }}
 AssertModuleSource			impl<'a, 'tcx> AssertModuleSource<'a, 'tcx> 
 AssertModuleSource			struct AssertModuleSource<'a, 'tcx: 'a> 
+AssociatedTypeNormalizer			impl<'a, 'b, 'gcx> AssociatedTypeNormalizer<'a, 'b, 'gcx> 
+AssociatedTypeNormalizer			struct AssociatedTypeNormalizer<'a, 'b: 'a, 'gcx: 'b> 
 AtomicCmpXchg			pub fn AtomicCmpXchg(cx: Block, dst: ValueRef,
 AtomicFence			pub fn AtomicFence(cx: Block, order: AtomicOrdering, scope: SynchronizationScope) 
 AtomicLoad			pub fn AtomicLoad(cx: Block, pointer_val: ValueRef, order: AtomicOrdering) -> ValueRef 
@@ -38,7 +39,6 @@ Base			enum Base
 BasicBlock			impl BasicBlock 
 BasicBlock			pub struct BasicBlock(pub BasicBlockRef);
 BinOp			pub fn BinOp(cx: Block,
-BindingInfo			pub struct BindingInfo<'tcx> 
 BitCast			pub fn BitCast(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 BlockAndBuilder			impl<'blk, 'tcx> BlockAndBuilder<'blk, 'tcx> 
 BlockAndBuilder			pub struct BlockAndBuilder<'blk, 'tcx: 'blk> 
@@ -55,10 +55,8 @@ C_bool			pub fn C_bool(ccx: &CrateContext, val: bool) -> ValueRef
 C_bytes			pub fn C_bytes(cx: &CrateContext, bytes: &[u8]) -> ValueRef 
 C_bytes_in_context			pub fn C_bytes_in_context(llcx: ContextRef, bytes: &[u8]) -> ValueRef 
 C_cstr			pub fn C_cstr(cx: &CrateContext, s: InternedString, null_terminated: bool) -> ValueRef 
-C_floating			pub fn C_floating(s: &str, t: Type) -> ValueRef 
 C_floating_f64			pub fn C_floating_f64(f: f64, t: Type) -> ValueRef 
 C_i32			pub fn C_i32(ccx: &CrateContext, i: i32) -> ValueRef 
-C_int			pub fn C_int<I: AsI64>(ccx: &CrateContext, i: I) -> ValueRef 
 C_integral			pub fn C_integral(t: Type, u: u64, sign_extend: bool) -> ValueRef 
 C_named_struct			pub fn C_named_struct(t: Type, elts: &[ValueRef]) -> ValueRef 
 C_nil			pub fn C_nil(ccx: &CrateContext) -> ValueRef 
@@ -75,36 +73,21 @@ C_vector			pub fn C_vector(elts: &[ValueRef]) -> ValueRef
 CachedEarlyExit			pub struct CachedEarlyExit 
 CachedMir			pub enum CachedMir<'mir, 'tcx: 'mir> 
 Call			pub fn Call(cx: Block,
-CallArgs			pub enum CallArgs<'a, 'tcx> 
 Callee			impl<'tcx> Callee<'tcx> 
 Callee			pub struct Callee<'tcx> 
 CalleeData			pub enum CalleeData 
-Case			impl<'tcx> Case<'tcx> 
-Case			struct Case<'tcx> 
 Cast			pub fn Cast(cx: Block, op: Opcode, val: ValueRef, dest_ty: Type,
 CatchPad			pub fn CatchPad(cx: Block,
 CatchRet			pub fn CatchRet(cx: Block, pad: ValueRef, unwind: BasicBlockRef) -> ValueRef 
 CatchSwitch			pub fn CatchSwitch(cx: Block,
 ClassList			impl ClassList for [RegClass] 
 ClassList			trait ClassList 
-Cleanup			pub trait Cleanup<'tcx> 
-Cleanup for DropValue			impl<'tcx> Cleanup<'tcx> for DropValue<'tcx> 
-Cleanup for FreeValue			impl<'tcx> Cleanup<'tcx> for FreeValue<'tcx> 
-Cleanup for LifetimeEnd			impl<'tcx> Cleanup<'tcx> for LifetimeEnd 
-CleanupHelperMethods			trait CleanupHelperMethods<'blk, 'tcx> 
-CleanupHelperMethods for FunctionContext			impl<'blk, 'tcx> CleanupHelperMethods<'blk, 'tcx> for FunctionContext<'blk, 'tcx> 
 CleanupKind			pub enum CleanupKind 
-CleanupMethods			pub trait CleanupMethods<'blk, 'tcx> 
-CleanupMethods for FunctionContext			impl<'blk, 'tcx> CleanupMethods<'blk, 'tcx> for FunctionContext<'blk, 'tcx> 
 CleanupPad			pub fn CleanupPad(cx: Block,
 CleanupRet			pub fn CleanupRet(cx: Block,
-CleanupScope			impl<'blk, 'tcx> CleanupScope<'blk, 'tcx> 
-CleanupScope			pub struct CleanupScope<'blk, 'tcx: 'blk> 
-CleanupScopeKind			impl<'blk, 'tcx> CleanupScopeKind<'blk, 'tcx> 
-CleanupScopeKind			pub enum CleanupScopeKind<'blk, 'tcx: 'blk> 
+CleanupScope			impl<'tcx> CleanupScope<'tcx> 
+CleanupScope			pub struct CleanupScope<'tcx> 
 Clone for LandingPad			impl Clone for LandingPad 
-ClosureEnv			impl ClosureEnv 
-ClosureEnv			pub enum ClosureEnv 
 CodegenContext			impl<'a> CodegenContext<'a> 
 CodegenContext			struct CodegenContext<'a> 
 CodegenUnit			impl<'tcx> CodegenUnit<'tcx> 
@@ -112,12 +95,8 @@ CodegenUnit			pub struct CodegenUnit<'tcx>
 CondBr			pub fn CondBr(cx: Block,
 Const			impl<'tcx> Const<'tcx> 
 Const			pub struct Const<'tcx> 
-ConstEvalFailure			impl ConstEvalFailure 
-ConstEvalFailure			pub enum ConstEvalFailure 
 ConstLvalue			impl<'tcx> ConstLvalue<'tcx> 
 ConstLvalue			struct ConstLvalue<'tcx> 
-ConstantExpr			impl<'a> ConstantExpr<'a> 
-ConstantExpr			struct ConstantExpr<'a>(&'a hir::Expr);
 CrateContext			impl<'b, 'tcx> CrateContext<'b, 'tcx> 
 CrateContext			pub struct CrateContext<'a, 'tcx: 'a> 
 CrateContextIterator			pub struct CrateContextIterator<'a, 'tcx: 'a> 
@@ -129,24 +108,13 @@ CrateDebugContext			pub struct CrateDebugContext<'tcx>
 CrateTranslation			pub struct CrateTranslation 
 CustomScopeIndex			pub struct CustomScopeIndex 
 DIB			pub fn DIB(cx: &CrateContext) -> DIBuilderRef 
-Datum			impl<'tcx> Datum<'tcx, Lvalue> 
-Datum			impl<'tcx, K: KindOps + fmt::Debug> Datum<'tcx, K> 
-Datum			impl<'tcx> Datum<'tcx, Expr> 
-Datum			impl<'tcx> Datum<'tcx, Lvalue> 
-Datum			impl<'tcx> Datum<'tcx, Rvalue> 
-Datum			pub struct Datum<'tcx, K> 
-DatumBlock			impl<'blk, 'tcx, K: KindOps + fmt::Debug> DatumBlock<'blk, 'tcx, K> 
-DatumBlock			impl<'blk, 'tcx, K> DatumBlock<'blk, 'tcx, K> 
-DatumBlock			impl<'blk, 'tcx> DatumBlock<'blk, 'tcx, Expr> 
-DatumBlock			pub struct DatumBlock<'blk, 'tcx: 'blk, K> 
 DebugLoc			impl DebugLoc 
 DebugLoc			pub enum DebugLoc 
 DepTrackingMapConfig for MirCache			impl<'tcx> DepTrackingMapConfig for MirCache<'tcx> 
+DepTrackingMapConfig for ProjectionCache			impl<'gcx> DepTrackingMapConfig for ProjectionCache<'gcx> 
 DepTrackingMapConfig for TraitSelectionCache			impl<'tcx> DepTrackingMapConfig for TraitSelectionCache<'tcx> 
 Deref for BlockAndBuilder			impl<'blk, 'tcx> Deref for BlockAndBuilder<'blk, 'tcx> 
 Deref for CachedMir			impl<'mir, 'tcx: 'mir> Deref for CachedMir<'mir, 'tcx> 
-Dest			pub enum Dest<'a, 'tcx: 'a> 
-Dest			pub enum Dest 
 Diagnostic			struct Diagnostic 
 Disposition			enum Disposition { Reused, Translated }
 Disr			impl Disr 
@@ -154,21 +122,12 @@ Disr			pub struct Disr(pub u64);
 Drop for BuilderRef_res			impl Drop for BuilderRef_res 
 Drop for OwnedBuilder			impl<'blk, 'tcx> Drop for OwnedBuilder<'blk, 'tcx> 
 Drop for OwnedKey			impl Drop for OwnedKey 
-Drop for Rvalue			impl Drop for Rvalue 
 Drop for StatRecorder			impl<'a, 'tcx> Drop for StatRecorder<'a, 'tcx> 
 Drop for TypeOfDepthLock			impl<'a, 'tcx> Drop for TypeOfDepthLock<'a, 'tcx> 
 Drop for _InsnCtxt			impl Drop for _InsnCtxt 
-DropFlagHintsMap			impl<'tcx> DropFlagHintsMap<'tcx> 
-DropFlagHintsMap			pub struct DropFlagHintsMap<'tcx> 
-DropFlagInfo			impl DropFlagInfo 
-DropFlagInfo			pub enum DropFlagInfo 
 DropGlueKind			impl<'tcx> DropGlueKind<'tcx> 
 DropGlueKind			pub enum DropGlueKind<'tcx> 
-DropHint			impl DropHint<ValueRef> 
-DropHint			impl<K> DropHint<K> 
-DropHint			pub struct DropHint<K>(pub ast::NodeId, pub K);
-DropHintMethods			pub trait DropHintMethods 
-DropHintMethods for DropHintDatum			impl<'tcx> DropHintMethods for DropHintDatum<'tcx> 
+DropValue			impl<'tcx> DropValue<'tcx> 
 DropValue			pub struct DropValue<'tcx> 
 EarlyExitLabel			impl EarlyExitLabel 
 EarlyExitLabel			pub enum EarlyExitLabel 
@@ -178,11 +137,8 @@ EnumDiscriminantInfo			enum EnumDiscriminantInfo
 EnumMemberDescriptionFactory			impl<'tcx> EnumMemberDescriptionFactory<'tcx> 
 EnumMemberDescriptionFactory			struct EnumMemberDescriptionFactory<'tcx> 
 ExactSDiv			pub fn ExactSDiv(cx: Block,
-Expr			pub enum Expr 
-ExprKind			enum ExprKind 
 ExtractElement			pub fn ExtractElement(cx: Block, vec_val: ValueRef, index: ValueRef) -> ValueRef 
 ExtractValue			pub fn ExtractValue(cx: Block, agg_val: ValueRef, index: usize) -> ValueRef 
-ExtractedBlock			struct ExtractedBlock<'blk, 'tcx: 'blk> 
 FAdd			pub fn FAdd(cx: Block,
 FAddFast			pub fn FAddFast(cx: Block,
 FCmp			pub fn FCmp(cx: Block,
@@ -200,18 +156,14 @@ FRem			pub fn FRem(cx: Block,
 FRemFast			pub fn FRemFast(cx: Block,
 FSub			pub fn FSub(cx: Block,
 FSubFast			pub fn FSubFast(cx: Block,
-FailureHandler			enum FailureHandler 
-FailureHandler			impl FailureHandler 
 Field			pub struct Field<'tcx>(pub ast::Name, pub Ty<'tcx>);
-FindNestedReturn			impl FindNestedReturn 
-FindNestedReturn			struct FindNestedReturn 
 Flavor			pub enum Flavor 
 FnType			impl FnType 
 FnType			pub struct FnType 
 Free			pub fn Free(cx: Block, pointer_val: ValueRef) 
-FreeValue			pub struct FreeValue<'tcx> 
 From for Disr			impl From<::rustc::ty::Disr> for Disr 
 From for Disr			impl From<usize> for Disr 
+FunctionContext			impl<'blk, 'tcx> FunctionContext<'blk, 'tcx> 
 FunctionContext			impl<'blk, 'tcx> FunctionContext<'blk, 'tcx> 
 FunctionContext			impl<'a, 'tcx> FunctionContext<'a, 'tcx> 
 FunctionContext			pub struct FunctionContext<'a, 'tcx: 'a> 
@@ -220,8 +172,6 @@ FunctionDebugContext			pub enum FunctionDebugContext
 FunctionDebugContextData			pub struct FunctionDebugContextData 
 GEP			pub fn GEP(cx: Block, pointer: ValueRef, indices: &[ValueRef]) -> ValueRef 
 GEPi			pub fn GEPi(cx: Block, base: ValueRef, ixs: &[usize]) -> ValueRef 
-GetDtorType			pub trait GetDtorType<'tcx> { fn dtor_type(self) -> Ty<'tcx>; }
-GetDtorType for TyCtxt			impl<'a, 'tcx> GetDtorType<'tcx> for TyCtxt<'a, 'tcx, 'tcx> 
 GetNativeSystemInfo			    fn GetNativeSystemInfo(lpSystemInfo: *mut SYSTEM_INFO);
 GlobalString			pub fn GlobalString(cx: Block, _str: *const c_char) -> ValueRef 
 GlobalStringPtr			pub fn GlobalStringPtr(cx: Block, _str: *const c_char) -> ValueRef 
@@ -229,14 +179,10 @@ GnuLinker			impl<'a> GnuLinker<'a>
 GnuLinker			pub struct GnuLinker<'a> 
 HandlerFreeVars			struct HandlerFreeVars<'a> 
 Hash for TransItem			impl<'tcx> Hash for TransItem<'tcx> 
-Heap			pub enum Heap 
-HintEntry			struct HintEntry<'tcx> 
-HintKind			pub enum HintKind 
+Hasher for Sha256Hasher			impl<'a> Hasher for Sha256Hasher<'a> 
 ICmp			pub fn ICmp(cx: Block,
-ImplMethod			pub struct ImplMethod<'tcx> 
 InBoundsGEP			pub fn InBoundsGEP(cx: Block, pointer: ValueRef, indices: &[ValueRef]) -> ValueRef 
 IndirectBr			pub fn IndirectBr(cx: Block,
-InitAlloca			pub enum InitAlloca 
 InlineAsmCall			pub fn InlineAsmCall(cx: Block, asm: *const c_char, cons: *const c_char,
 InliningMap			impl<'tcx> InliningMap<'tcx> 
 InliningMap			pub struct InliningMap<'tcx> 
@@ -245,7 +191,6 @@ InsertValue			pub fn InsertValue(cx: Block, agg_val: ValueRef, elt_val: ValueRef
 Instance			impl<'a, 'tcx> Instance<'tcx> 
 Instance			impl<'tcx> Instance<'tcx> 
 Instance			pub struct Instance<'tcx> 
-IntBounds			struct IntBounds 
 IntCast			pub fn IntCast(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 IntToPtr			pub fn IntToPtr(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 InternalDebugLocation			impl InternalDebugLocation 
@@ -258,17 +203,12 @@ Iterator for CrateContextIterator			impl<'a, 'tcx> Iterator for CrateContextIter
 Iterator for CrateContextMaybeIterator			impl<'a, 'tcx> Iterator for CrateContextMaybeIterator<'a, 'tcx> 
 Iterator for Users			impl Iterator for Users 
 Iterator for ValueIter			impl Iterator for ValueIter 
-KindOps			pub trait KindOps 
-KindOps for Expr			impl KindOps for Expr 
-KindOps for Lvalue			impl KindOps for Lvalue 
-KindOps for Rvalue			impl KindOps for Rvalue 
 LShr			pub fn LShr(cx: Block,
 LandingPad			pub fn LandingPad(cx: Block, ty: Type, pers_fn: ValueRef,
 LandingPad			impl LandingPad 
 LandingPad			pub struct LandingPad 
 Lifetime			impl Lifetime 
 Lifetime			pub enum Lifetime { Start, End }
-LifetimeEnd			pub struct LifetimeEnd 
 Linker			pub trait Linker 
 Linker for GnuLinker			impl<'a> Linker for GnuLinker<'a> 
 Linker for MsvcLinker			impl<'a> Linker for MsvcLinker<'a> 
@@ -283,14 +223,8 @@ LocalCrateContext			impl<'tcx> LocalCrateContext<'tcx>
 LocalCrateContext			pub struct LocalCrateContext<'tcx> 
 LocalRef			enum LocalRef<'tcx> 
 LocalRef			impl<'tcx> LocalRef<'tcx> 
-Lvalue			impl Lvalue { \/\/ Constructors for various Lvalues.
-Lvalue			impl Lvalue 
-Lvalue			pub struct Lvalue 
 LvalueRef			impl<'tcx> LvalueRef<'tcx> 
 LvalueRef			pub struct LvalueRef<'tcx> 
-Match			struct Match<'a, 'p: 'a, 'blk: 'a, 'tcx: 'blk> 
-MatchInput			impl MatchInput 
-MatchInput			pub struct MatchInput { val: ValueRef, lval: Lvalue }
 MaybeSizedValue			impl MaybeSizedValue 
 MaybeSizedValue			pub struct MaybeSizedValue 
 MemberDescription			struct MemberDescription 
@@ -310,6 +244,8 @@ MirContext			pub struct MirContext<'bcx, 'tcx:'bcx>
 MirContext			impl<'bcx, 'tcx> MirContext<'bcx, 'tcx> 
 MirContext			impl<'bcx, 'tcx> MirContext<'bcx, 'tcx> 
 MirContext			impl<'bcx, 'tcx> MirContext<'bcx, 'tcx> 
+MirDebugScope			impl MirDebugScope 
+MirDebugScope			pub struct MirDebugScope 
 MirNeighborCollector			struct MirNeighborCollector<'a, 'tcx: 'a> 
 MirVisitor for MirNeighborCollector			impl<'a, 'tcx> MirVisitor<'tcx> for MirNeighborCollector<'a, 'tcx> 
 ModuleConfig			impl ModuleConfig 
@@ -328,24 +264,13 @@ NUWMul			pub fn NUWMul(cx: Block,
 NUWNeg			pub fn NUWNeg(cx: Block, v: ValueRef, debug_loc: DebugLoc) -> ValueRef 
 NUWSub			pub fn NUWSub(cx: Block,
 Neg			pub fn Neg(cx: Block, v: ValueRef, debug_loc: DebugLoc) -> ValueRef 
-NodeIdAndSpan			pub struct NodeIdAndSpan 
 Not			pub fn Not(cx: Block, v: ValueRef, debug_loc: DebugLoc) -> ValueRef 
 OperandRef			impl<'bcx, 'tcx> OperandRef<'tcx> 
 OperandRef			pub struct OperandRef<'tcx> 
 OperandValue			pub enum OperandValue 
-Opt			enum Opt<'a, 'tcx> 
-Opt			impl<'a, 'b, 'tcx> Opt<'a, 'tcx> 
-OptResult			pub enum OptResult<'blk, 'tcx: 'blk> 
 Or			pub fn Or(cx: Block,
 Ord for Disr			impl Ord for Disr 
-OverflowCodegen			enum OverflowCodegen 
 OverflowOp			enum OverflowOp 
-OverflowOp			impl OverflowOp 
-OverflowOp			enum OverflowOp 
-OverflowOpViaInputCheck			enum OverflowOpViaInputCheck { Shl, Shr, }
-OverflowOpViaInputCheck			impl OverflowOpViaInputCheck 
-OverflowOpViaIntrinsic			enum OverflowOpViaIntrinsic { Add, Sub, Mul, }
-OverflowOpViaIntrinsic			impl OverflowOpViaIntrinsic 
 OwnedBuilder			impl<'blk, 'tcx> OwnedBuilder<'blk, 'tcx> 
 OwnedBuilder			pub struct OwnedBuilder<'blk, 'tcx: 'blk> 
 OwnedKey			struct OwnedKey(HKEY);
@@ -356,9 +281,10 @@ Phi			pub fn Phi(cx: Block, ty: Type, vals: &[ValueRef],
 PointerCast			pub fn PointerCast(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 PostInliningPartitioning			struct PostInliningPartitioning<'tcx>(Vec<CodegenUnit<'tcx>>);
 PreInliningPartitioning			struct PreInliningPartitioning<'tcx> 
+ProjectionCache			pub struct ProjectionCache<'gcx> 
 PtrDiff			pub fn PtrDiff(cx: Block, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 PtrToInt			pub fn PtrToInt(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
-ReassignmentChecker			struct ReassignmentChecker 
+RPathConfig			pub struct RPathConfig<'a> 
 RecursiveTypeDescription			enum RecursiveTypeDescription<'tcx> 
 RecursiveTypeDescription			impl<'tcx> RecursiveTypeDescription<'tcx> 
 RegClass			enum RegClass 
@@ -368,7 +294,6 @@ RegOpenKeyExW			    fn RegOpenKeyExW(hKey: HKEY,
 RegQueryValueExW			    fn RegQueryValueExW(hKey: HKEY,
 RegistryKey			impl RegistryKey 
 RegistryKey			pub struct RegistryKey(Repr);
-Repr			pub enum Repr<'tcx> 
 Repr			enum Repr 
 Result			impl<'b, 'tcx> Result<'b, 'tcx> 
 Result			pub struct Result<'blk, 'tcx: 'blk> 
@@ -377,23 +302,19 @@ Ret			pub fn Ret(cx: Block, v: ValueRef, debug_loc: DebugLoc)
 RetVoid			pub fn RetVoid(cx: Block, debug_loc: DebugLoc) 
 ReturnDest			enum ReturnDest 
 RootCollector			struct RootCollector<'b, 'a: 'b, 'tcx: 'a + 'b> 
-Rvalue			impl Rvalue 
-Rvalue			pub struct Rvalue 
-RvalueMode			pub enum RvalueMode 
 SDiv			pub fn SDiv(cx: Block,
 SExt			pub fn SExt(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 SExtOrBitCast			pub fn SExtOrBitCast(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 SIToFP			pub fn SIToFP(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 SRem			pub fn SRem(cx: Block,
 SYSTEM_INFO			struct SYSTEM_INFO 
-ScopeId			pub enum ScopeId 
-ScopeStackEntry			struct ScopeStackEntry 
 Select			pub fn Select(cx: Block, if_: ValueRef, then: ValueRef, else_: ValueRef) -> ValueRef 
 Send for ModuleConfig			unsafe impl Send for ModuleConfig { }
 Send for ModuleTranslation			unsafe impl Send for ModuleTranslation { }
 Send for RegistryKey			unsafe impl Send for RegistryKey {}
 SetCleanup			pub fn SetCleanup(cx: Block, landing_pad: ValueRef) 
 SetPersonalityFn			pub fn SetPersonalityFn(cx: Block, f: ValueRef) 
+Sha256Hasher			struct Sha256Hasher<'a>(&'a mut Sha256);
 SharedCrateContext			impl<'b, 'tcx> SharedCrateContext<'b, 'tcx> 
 SharedCrateContext			pub struct SharedCrateContext<'a, 'tcx: 'a> 
 SharedEmitter			impl SharedEmitter 
@@ -404,8 +325,6 @@ StatRecorder			impl<'a, 'tcx> StatRecorder<'a, 'tcx>
 StatRecorder			pub struct StatRecorder<'a, 'tcx: 'a> 
 Stats			pub struct Stats 
 Store			pub fn Store(cx: Block, val: ValueRef, ptr: ValueRef) -> ValueRef 
-Struct			pub struct Struct<'tcx> 
-StructBaseInfo			pub struct StructBaseInfo<'a, 'tcx> 
 StructGEP			pub fn StructGEP(cx: Block, pointer: ValueRef, idx: usize) -> ValueRef 
 StructMemberDescriptionFactory			impl<'tcx> StructMemberDescriptionFactory<'tcx> 
 StructMemberDescriptionFactory			struct StructMemberDescriptionFactory<'tcx> 
@@ -419,26 +338,18 @@ SymbolNamesTest			struct SymbolNamesTest<'a, 'tcx:'a>
 SymbolPathBuffer			struct SymbolPathBuffer 
 Sync for ModuleTranslation			unsafe impl Sync for ModuleTranslation { }
 Sync for RegistryKey			unsafe impl Sync for RegistryKey {}
-ToDebugLoc			pub trait ToDebugLoc 
-ToDebugLoc for NodeIdAndSpan			impl ToDebugLoc for NodeIdAndSpan 
-ToDebugLoc for Option			impl ToDebugLoc for Option<NodeIdAndSpan> 
-ToDebugLoc for hir			impl ToDebugLoc for hir::Expr 
 TraitSelectionCache			pub struct TraitSelectionCache<'tcx> 
-TransBindingMode			impl TransBindingMode 
-TransBindingMode			pub enum TransBindingMode 
 TransItem			impl<'a, 'tcx> TransItem<'tcx> 
 TransItem			pub enum TransItem<'tcx> 
 TransItemCollectionMode			pub enum TransItemCollectionMode 
 Trap			pub fn Trap(cx: Block) 
-TrueConst			pub enum TrueConst 
 Trunc			pub fn Trunc(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 TruncOrBitCast			pub fn TruncOrBitCast(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 TupleMemberDescriptionFactory			impl<'tcx> TupleMemberDescriptionFactory<'tcx> 
 TupleMemberDescriptionFactory			struct TupleMemberDescriptionFactory<'tcx> 
 Type			impl Type 
 Type			pub struct Type 
-TypeContext			impl TypeContext 
-TypeContext			pub struct TypeContext 
+TypeFolder for AssociatedTypeNormalizer			impl<'a, 'b, 'gcx> TypeFolder<'gcx, 'gcx> for AssociatedTypeNormalizer<'a, 'b, 'gcx> 
 TypeMap			impl<'tcx> TypeMap<'tcx> 
 TypeMap			pub struct TypeMap<'tcx> 
 TypeMethods			trait TypeMethods 
@@ -449,6 +360,8 @@ TypeOfDepthLock			pub struct TypeOfDepthLock<'a, 'tcx: 'a>(&'a LocalCrateContext
 UDiv			pub fn UDiv(cx: Block,
 UIToFP			pub fn UIToFP(cx: Block, val: ValueRef, dest_ty: Type) -> ValueRef 
 URem			pub fn URem(cx: Block,
+UnionMemberDescriptionFactory			impl<'tcx> UnionMemberDescriptionFactory<'tcx> 
+UnionMemberDescriptionFactory			struct UnionMemberDescriptionFactory<'tcx> 
 UniqueTypeId			pub struct UniqueTypeId(ast::Name);
 Unreachable			pub fn Unreachable(cx: Block) 
 UnwindKind			pub enum UnwindKind 
@@ -465,9 +378,7 @@ VariantInfo			impl<'a, 'tcx> VariantInfo<'tcx>
 VariantInfo			pub struct VariantInfo<'tcx> 
 VariantMemberDescriptionFactory			impl<'tcx> VariantMemberDescriptionFactory<'tcx> 
 VariantMemberDescriptionFactory			struct VariantMemberDescriptionFactory<'tcx> 
-VecTypes			struct VecTypes<'tcx> 
 VectorSplat			pub fn VectorSplat(cx: Block, num_elts: usize, elt_val: ValueRef) -> ValueRef 
-Visitor for FindNestedReturn			impl<'v> Visitor<'v> for FindNestedReturn 
 Visitor for LocalAnalyzer			impl<'mir, 'bcx, 'tcx> Visitor<'tcx> for LocalAnalyzer<'mir, 'bcx, 'tcx> 
 Visitor for SymbolNamesTest			impl<'a, 'tcx> Visitor<'tcx> for SymbolNamesTest<'a, 'tcx> 
 VolatileLoad			pub fn VolatileLoad(cx: Block, pointer_val: ValueRef) -> ValueRef 
@@ -480,14 +391,11 @@ _InsnCtxt			pub struct _InsnCtxt
 _Undef			pub fn _Undef(val: ValueRef) -> ValueRef 
 _UndefReturn			pub fn _UndefReturn(cx: Block, fn_: ValueRef) -> ValueRef 
 __HKEY__			pub enum __HKEY__ {}
-_match			mod _match;
 abi			mod abi;
 add			    pub fn add(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 add_archive			    fn add_archive<F>(&mut self, archive: &Path, skip: F)
 add_cached_early_exit			    fn add_cached_early_exit(&mut self,
 add_clause			    pub fn add_clause(&self, landing_pad: ValueRef, clause: ValueRef) 
-add_clean			    pub fn add_clean<'a>(self,
-add_clean_if_rvalue			    pub fn add_clean_if_rvalue<'blk>(self,
 add_comment			pub fn add_comment(cx: Block, text: &str) 
 add_comment			    pub fn add_comment(&self, text: &str) 
 add_dynamic_crate			    fn add_dynamic_crate(cmd: &mut Linker, sess: &Session, cratepath: &Path) 
@@ -499,7 +407,6 @@ add_native_library			    pub fn add_native_library(&mut self, name: &str)
 add_object			    fn add_object(&mut self, path: &Path) { self.cmd.arg(path); }
 add_object			    fn add_object(&mut self, path: &Path);
 add_rlib			    pub fn add_rlib(&mut self, rlib: &Path, name: &str, lto: bool)
-add_rvalue_clean			fn add_rvalue_clean<'a, 'tcx>(mode: RvalueMode,
 add_span_comment			pub fn add_span_comment(cx: Block, sp: Span, text: &str) 
 add_span_comment			    pub fn add_span_comment(&self, sp: Span, text: &str) 
 add_static_crate			    fn add_static_crate(cmd: &mut Linker,
@@ -508,12 +415,12 @@ add_upstream_rust_crates			fn add_upstream_rust_crates(cmd: &mut Linker,
 addr_of			pub fn addr_of(ccx: &CrateContext,
 addr_of_mut			pub fn addr_of_mut(ccx: &CrateContext,
 adjust_for_abi			    pub fn adjust_for_abi<'a, 'tcx>(&mut self,
-adjustment_required			fn adjustment_required<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 adt			mod adt;
-adt_reprs			    pub fn adt_reprs<'a>(&'a self) -> &'a RefCell<FnvHashMap<Ty<'tcx>, Rc<adt::Repr<'tcx>>>> 
 aggregate_ret			    pub fn aggregate_ret(&self, ret_vals: &[ValueRef]) 
 align			fn align(off: usize, ty: Type) -> usize 
 align			fn align(off: usize, ty: Type, align_fn: TyAlignFn) -> usize 
+align			fn align(off: usize, ty: Type) -> usize 
+align			fn align(off: usize, ty: Type) -> usize 
 align			fn align(off: usize, ty: Type) -> usize 
 align			fn align(off: usize, ty: Type) -> usize 
 align			fn align(off: usize, ty: Type) -> usize 
@@ -524,27 +431,20 @@ align_up_to			fn align_up_to(off: usize, a: usize) -> usize
 align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
 align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
 align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
+align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
+align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
 all_mem			    fn all_mem(cls: &mut [RegClass]) 
 alloc_ty			pub fn alloc_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-alloc_ty_init			pub fn alloc_ty_init<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 alloca			pub fn alloca(cx: Block, ty: Type, name: &str) -> ValueRef 
 alloca			    pub fn alloca(&self, ty: Type, name: &str) -> ValueRef 
 alloca			    pub fn alloca<'bcx>(bcx: &BlockAndBuilder<'bcx, 'tcx>,
-alloca_dropped			pub fn alloca_dropped<'blk, 'tcx>(cx: Block<'blk, 'tcx>, ty: Ty<'tcx>, name: &str) -> ValueRef 
-alloca_if_copy			    fn alloca_if_copy(&self) -> Option<ValueRef> 
 analyze			mod analyze;
 and			    pub fn and(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
-any_irrefutable_adt_pat			fn any_irrefutable_adt_pat(tcx: TyCtxt, m: &[Match], col: usize) -> bool 
-any_region_pat			fn any_region_pat(m: &[Match], col: usize) -> bool 
-any_uniq_pat			fn any_uniq_pat(m: &[Match], col: usize) -> bool 
 apply			    pub fn apply(self, fcx: &FunctionContext) 
-apply_adjustments			fn apply_adjustments<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 apply_attrs_callsite			    pub fn apply_attrs_callsite(&self, callsite: ValueRef) 
 apply_attrs_llfn			    pub fn apply_attrs_llfn(&self, llfn: ValueRef) 
-apply_param_substs			pub fn apply_param_substs<'a, 'tcx, T>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+apply_param_substs			pub fn apply_param_substs<'a, 'tcx, T>(scx: &SharedCrateContext<'a, 'tcx>,
 apply_to_bcx			    pub fn apply_to_bcx(self, bcx: &BlockAndBuilder) 
-appropriate_rvalue_mode			    pub fn appropriate_rvalue_mode<'a>(&self, ccx: &CrateContext<'a, 'tcx>)
-appropriate_rvalue_mode			pub fn appropriate_rvalue_mode<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 arch			mod arch;
 archive			    pub mod archive;
 archive_config			fn archive_config<'a>(sess: &'a Session,
@@ -554,14 +454,12 @@ args			    fn args(&mut self, args: &[String]) { self.cmd.args(args); }
 args			    fn args(&mut self, args: &[String]);
 array			    pub fn array(ty: &Type, len: u64) -> Type 
 array_length			    pub fn array_length(&self) -> usize 
-as_inner			    pub fn as_inner(&self) -> &ConstEvalErr 
 as_lvalue			    fn as_lvalue(&self) -> ConstLvalue<'tcx> 
 as_store_inst			    pub fn as_store_inst(self) -> Option<Value> 
 as_value			    pub fn as_value(self) -> Value 
 ashr			    pub fn ashr(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 asm			mod asm;
-assert_discr_in_range			fn assert_discr_in_range(ity: IntType, min: Disr, max: Disr, discr: Disr) 
-assert_lvalue			    pub fn assert_lvalue(self) -> Datum<'tcx, Lvalue> 
+assert_discr_in_range			fn assert_discr_in_range(min: Disr, max: Disr, discr: Disr) 
 assert_module_sources			pub fn assert_module_sources<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 assert_module_sources			mod assert_module_sources;
 associate_type			    pub fn associate_type(&self, s: &str, t: &Type) 
@@ -572,7 +470,6 @@ atomic_load			    pub fn atomic_load(&self, ptr: ValueRef, order: AtomicOrdering
 atomic_rmw			    pub fn atomic_rmw(&self, op: AtomicRmwBinOp,
 atomic_store			    pub fn atomic_store(&self, val: ValueRef, ptr: ValueRef, order: AtomicOrdering) 
 attributes			mod attributes;
-auto_ref			fn auto_ref<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 avoid_invoke			pub fn avoid_invoke(bcx: Block) -> bool 
 back			pub mod back 
 base			mod base;
@@ -582,34 +479,26 @@ bcx			    fn bcx(&self, bb: mir::BasicBlock) -> BlockAndBuilder<'bcx, 'tcx>
 bin_op_to_fcmp_predicate			pub fn bin_op_to_fcmp_predicate(op: hir::BinOp_) -> llvm::RealPredicate 
 bin_op_to_icmp_predicate			pub fn bin_op_to_icmp_predicate(op: hir::BinOp_,
 bin_subdir			    fn bin_subdir(arch: &str) -> Vec<(&'static str, &'static str)> 
-bind_args			    fn bind_args(&'blk self,
-bind_irrefutable_pat			pub fn bind_irrefutable_pat<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-bind_subslice_pat			fn bind_subslice_pat(bcx: Block,
 binop			    pub fn binop(&self, op: Opcode, lhs: ValueRef, rhs: ValueRef)
 bitand			    fn bitand(self, other: Self) -> Self 
 bitcast			    pub fn bitcast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 block			mod block;
 block_name			    fn block_name(&self, prefix: &str) -> String 
 bool			    pub fn bool(ccx: &CrateContext) -> Type 
-borrow			    fn borrow(&mut self, _: ast::NodeId, _: Span, _: mc::cmt, _: ty::Region,
-bounds_usable			fn bounds_usable(cx: &CrateContext, ity: IntType, bounds: &IntBounds) -> bool 
 br			    pub fn br(&self, dest: BasicBlockRef) 
 branch			    fn branch(&self, from_bcx: Block, to_llbb: BasicBlockRef) 
 build			    pub fn build(&mut self) 
 build			    pub fn build(&'blk self) -> BlockAndBuilder<'blk, 'tcx> 
 build			mod build;
 build			    pub fn build<'a, I>(scx: &SharedCrateContext<'a, 'tcx>,
-build_cfg			fn build_cfg<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 build_const_struct			fn build_const_struct<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
+build_const_union			fn build_const_union<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 build_dylib			    fn build_dylib(&mut self, out_filename: &Path) 
 build_dylib			    fn build_dylib(&mut self, out_filename: &Path);
-build_intrinsic_call			    fn build_intrinsic_call<'blk, 'tcx>(&self, bcx: Block<'blk, 'tcx>,
-build_link_meta			pub fn build_link_meta<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-build_nonzero_check			fn build_nonzero_check<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
+build_link_meta			pub fn build_link_meta(incremental_hashes_map: &IncrementalHashesMap,
 build_return_block			    pub fn build_return_block(&self, ret_cx: Block<'blk, 'tcx>,
 build_unchecked_lshift			pub fn build_unchecked_lshift<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 build_unchecked_rshift		hift<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-build_with_input_check			    fn build_with_input_check<'blk, 'tcx>(&self,
 build_with_llvm			    fn build_with_llvm(&mut self, kind: ArchiveKind) -> io::Result<()> 
 build_work_item			fn build_work_item(sess: &Session,
 builder			    pub fn builder<'a>(&'a self) -> Builder<'a, 'tcx> 
@@ -620,8 +509,10 @@ cabi_aarch64			mod cabi_aarch64;
 cabi_arm			mod cabi_arm;
 cabi_asmjs			mod cabi_asmjs;
 cabi_mips			mod cabi_mips;
+cabi_mips64			mod cabi_mips64;
 cabi_powerpc			mod cabi_powerpc;
 cabi_powerpc64			mod cabi_powerpc64;
+cabi_s390x			mod cabi_s390x;
 cabi_x86			mod cabi_x86;
 cabi_x86_64			mod cabi_x86_64;
 cabi_x86_win64			mod cabi_x86_win64;
@@ -637,7 +528,6 @@ callee			mod callee;
 can_have_local_instance			fn can_have_local_instance<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 can_result_in_trans_item			        fn can_result_in_trans_item<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 cast			    pub fn cast(&self, op: Opcode, val: ValueRef, dest_ty: Type) -> ValueRef 
-cast_is_noop			pub fn cast_is_noop<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 cast_shift_const_rhs			pub fn cast_shift_const_rhs(op: hir::BinOp_, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 cast_shift_expr_rhs			pub fn cast_shift_expr_rhs(cx: Block, op: hir::BinOp_, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 cast_shift_rhs			fn cast_shift_rhs<F, G>(op: hir::BinOp_,
@@ -646,29 +536,31 @@ catch_ret			    pub fn catch_ret(&self, pad: ValueRef, unwind: BasicBlockRef) ->
 catch_switch			    pub fn catch_switch(&self,
 ccx			    pub fn ccx(&self) -> &'blk CrateContext<'blk, 'tcx> 
 char			    pub fn char(ccx: &CrateContext) -> Type 
-characteristic_def_id_of_trans_item			fn characteristic_def_id_of_trans_item<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+characteristic_def_id_of_trans_item			fn characteristic_def_id_of_trans_item<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 check_array			    fn check_array(ty: Type) -> Option<(Type, u64)> 
 check_array			    fn check_array(ty: Type) -> Option<(Type, u64)> 
 check_attr			    fn check_attr(&self, attr: &ast::Attribute) 
-check_binary_expr_validity			fn check_binary_expr_validity(cx: &CrateContext, e: &hir::Expr, t: Ty,
-check_call			fn check_call(typ: &str, llfn: ValueRef, args: &[ValueRef]) 
+check_call			    fn check_call<'b>(&self,
 check_config			    fn check_config(&self, attr: &ast::Attribute) -> bool 
-check_drop_flag_for_sanity			    pub fn check_drop_flag_for_sanity(&self) -> bool 
 check_not_terminated			pub fn check_not_terminated(cx: Block) 
 check_overflow			    pub fn check_overflow(&self) -> bool 
 check_recursion_limit			fn check_recursion_limit<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_store			    fn check_store<'b>(&self,
 check_struct			    fn check_struct(ty: Type) -> Option<(Type, u64)> 
 check_struct			    fn check_struct(ty: Type) -> Option<(Type, u64)> 
-check_unary_expr_validity			fn check_unary_expr_validity(cx: &CrateContext, e: &hir::Expr, t: Ty,
 classify			    fn classify(ty: Type,
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType) 
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType, align_fn: TyAlignFn) 
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType) 
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType, offset: &mut usize) 
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType, offset: &mut usize) 
+classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType, offset: &mut usize) 
+classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType) 
 classify_arg_ty			fn classify_arg_ty(ccx: &CrateContext, arg: &mut ArgType) 
 classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
 classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType, align_fn: TyAlignFn) 
+classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
+classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
 classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
 classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
 classify_ret_ty			fn classify_ret_ty(ccx: &CrateContext, ret: &mut ArgType) 
@@ -682,18 +574,16 @@ cleanup_llvm			pub fn cleanup_llvm(trans: &CrateTranslation)
 cleanup_pad			    pub fn cleanup_pad(&self,
 cleanup_ret			    pub fn cleanup_ret(&self, cleanup: ValueRef,
 cleanuppad			    pub fn cleanuppad(&self) -> Option<ValueRef> 
-clear_cached_exits			    fn clear_cached_exits(&mut self) 
 clone			    fn clone(&self) -> LandingPad 
 closure			mod closure;
 closure_bare_wrapper_cache			    pub fn closure_bare_wrapper_cache<'a>(&'a self) -> &'a RefCell<FnvHashMap<ValueRef, ValueRef>> 
 closure_vals			    pub fn closure_vals<'a>(&'a self) -> &'a RefCell<FnvHashMap<Instance<'tcx>, ValueRef>> 
 cmp			    fn cmp(&self, other: &Disr) -> ::std::cmp::Ordering 
-codegen_strategy			    fn codegen_strategy(&self) -> OverflowCodegen 
 codegen_unit			    pub fn codegen_unit(&self) -> &CodegenUnit<'tcx> 
 coerce_to_int			fn coerce_to_int(ccx: &CrateContext, size: usize) -> Vec<Type> 
 coerce_to_int			fn coerce_to_int(ccx: &CrateContext, size: usize) -> Vec<Type> 
+coerce_to_int			fn coerce_to_int(ccx: &CrateContext, size: usize) -> Vec<Type> 
 coerce_to_long			fn coerce_to_long(ccx: &CrateContext, size: usize) -> Vec<Type> 
-coerce_unsized			fn coerce_unsized<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 coerce_unsized_into			pub fn coerce_unsized_into<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 collect_and_partition_translation_items			fn collect_and_partition_translation_items<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>)
 collect_const_item_neighbours			fn collect_const_item_neighbours<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
@@ -706,11 +596,6 @@ common			mod common;
 compare_fat_ptrs			pub fn compare_fat_ptrs<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 compare_scalar_types			pub fn compare_scalar_types<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 compare_simd_types			pub fn compare_simd_types<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-compare_str			    fn compare_str<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-compare_values			fn compare_values<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
-compile_guard			fn compile_guard<'a, 'p, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-compile_submatch			fn compile_submatch<'a, 'p, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-compile_submatch_continue			fn compile_submatch_continue<'a, 'p, 'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 compile_unit_metadata			pub fn compile_unit_metadata(scc: &SharedCrateContext,
 composite_type_metadata			fn composite_type_metadata(cx: &CrateContext,
 compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
@@ -722,31 +607,25 @@ compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType)
 compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
 compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
 compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
+compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
+compute_abi_info			pub fn compute_abi_info(ccx: &CrateContext, fty: &mut FnType) 
 compute_codegen_unit_name			fn compute_codegen_unit_name<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 compute_debuginfo_type_name			pub fn compute_debuginfo_type_name<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-compute_struct_field_offsets			fn compute_struct_field_offsets<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
+compute_fields			fn compute_fields<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>,
 compute_symbol_name			    pub fn compute_symbol_name(&self,
 compute_symbol_name_hash			    pub fn compute_symbol_name_hash(&self, tcx: TyCtxt, symbol_map: &SymbolMap) -> u64 
 cond_br			    pub fn cond_br(&self, cond: ValueRef, then_llbb: BasicBlockRef, else_llbb: BasicBlockRef) 
 const_array			    fn const_array(&self, array_ty: Ty<'tcx>, fields: &[ValueRef])
 const_cstr_cache			    pub fn const_cstr_cache<'a>(&'a self) -> &'a RefCell<FnvHashMap<InternedString, ValueRef>> 
-const_deref			fn const_deref<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-const_err			pub fn const_err<T>(cx: &CrateContext,
-const_expr			pub fn const_expr<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-const_expr_unadjusted			fn const_expr_unadjusted<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-const_fn_call			fn const_fn_call<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-const_get_discrim			pub fn const_get_discrim(r: &Repr, val: ValueRef) -> Disr 
 const_get_elt			pub fn const_get_elt(v: ValueRef, us: &[c_uint])
-const_get_field			pub fn const_get_field(r: &Repr, val: ValueRef, _discr: Disr,
+const_get_field			pub fn const_get_field<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>,
 const_globals			    pub fn const_globals<'a>(&'a self) -> &'a RefCell<FnvHashMap<ValueRef, ValueRef>> 
-const_lit			pub fn const_lit(cx: &CrateContext, e: &hir::Expr, lit: &ast::Lit)
 const_lvalue			    fn const_lvalue(&self, lvalue: &mir::Lvalue<'tcx>, span: Span)
 const_operand			    fn const_operand(&self, operand: &mir::Operand<'tcx>, span: Span)
 const_rvalue			    fn const_rvalue(&self, rvalue: &mir::Rvalue<'tcx>,
 const_scalar_binop			pub fn const_scalar_binop(op: mir::BinOp,
 const_scalar_checked_binop			pub fn const_scalar_checked_binop<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 const_struct_field			fn const_struct_field(val: ValueRef, ix: usize) -> ValueRef 
-const_to_int			pub fn const_to_int(v: ValueRef) -> i64 
 const_to_opt_int			pub fn const_to_opt_int(v: ValueRef) -> Option<i64> 
 const_to_opt_uint			pub fn const_to_opt_uint(v: ValueRef) -> Option<u64> 
 const_to_uint			pub fn const_to_uint(v: ValueRef) -> u64 
@@ -754,13 +633,9 @@ const_unsized			    pub fn const_unsized<'a>(&'a self) -> &'a RefCell<FnvHashMap
 const_values			    pub fn const_values<'a>(&'a self) -> &'a RefCell<FnvHashMap<(ast::NodeId, &'tcx Substs<'tcx>),
 constant			mod constant;
 consts			mod consts;
-consume			    fn consume(&mut self, _: ast::NodeId, _: Span, _: mc::cmt, _: euv::ConsumeMode) {}
-consume_pat			    fn consume_pat(&mut self, _: &hir::Pat, _: mc::cmt, _: euv::ConsumeMode) {}
 contains_item			    pub fn contains_item(&self, item: &TransItem<'tcx>) -> bool 
 contains_null			fn contains_null(s: &str) -> bool 
 context			mod context;
-controlflow			mod controlflow;
-copy_fat_ptr			pub fn copy_fat_ptr(bcx: Block, src_ptr: ValueRef, dst_ptr: ValueRef) 
 copy_intrinsic			fn copy_intrinsic<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 core_lifetime_emit			fn core_lifetime_emit<'blk, 'tcx, F>(ccx: &'blk CrateContext<'blk, 'tcx>,
 count_insn			    pub fn count_insn(&self, category: &str) 
@@ -768,40 +643,29 @@ count_llvm_insn			    pub fn count_llvm_insn(&self)
 count_zeros_intrinsic			fn count_zeros_intrinsic(bcx: Block,
 create_DIArray			pub fn create_DIArray(builder: DIBuilderRef, arr: &[DIDescriptor]) -> DIArray 
 create_and_register_recursive_type_forward_declaration			fn create_and_register_recursive_type_forward_declaration<'a, 'tcx>(
-create_argument_metadata			pub fn create_argument_metadata(bcx: Block, arg: &hir::Arg) 
-create_bindings_map			fn create_bindings_map<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, pat: &hir::Pat,
-create_captured_var_metadata			pub fn create_captured_var_metadata<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 create_context_and_module			unsafe fn create_context_and_module(sess: &Session, mod_name: &str) -> (ContextRef, ModuleRef) 
-create_dummy_locals			    fn create_dummy_locals<'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 create_entry_fn			    fn create_entry_fn(ccx: &CrateContext,
-create_fn_trans_item			fn create_fn_trans_item<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+create_fn_trans_item			fn create_fn_trans_item<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 create_function_debug_context			pub fn create_function_debug_context<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 create_global_var_metadata			pub fn create_global_var_metadata(cx: &CrateContext,
 create_imps			fn create_imps(cx: &CrateContextList) 
-create_local_var_metadata			pub fn create_local_var_metadata(bcx: Block, local: &hir::Local) 
-create_match_binding_metadata			pub fn create_match_binding_metadata<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 create_member_descriptions			    fn create_member_descriptions<'a>(&self, cx: &CrateContext<'a, 'tcx>)
-create_mir_scopes			pub fn create_mir_scopes(fcx: &FunctionContext) -> IndexVec<VisibilityScope, DIScope> 
-create_scope_map			pub fn create_scope_map(cx: &CrateContext,
+create_mir_scopes			pub fn create_mir_scopes(fcx: &FunctionContext) -> IndexVec<VisibilityScope, MirDebugScope> 
 create_scope_map			mod create_scope_map;
 create_struct_stub			fn create_struct_stub(cx: &CrateContext,
 create_target_machine			pub fn create_target_machine(sess: &Session) -> TargetMachineRef 
-create_trans_items_for_default_impls			fn create_trans_items_for_default_impls<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+create_trans_items_for_default_impls			fn create_trans_items_for_default_impls<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 create_trans_items_for_vtable_methods			fn create_trans_items_for_vtable_methods<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
+create_union_stub			fn create_union_stub(cx: &CrateContext,
 custom_coerce_unsize_info			pub fn custom_coerce_unsize_info<'scx, 'tcx>(scx: &SharedCrateContext<'scx, 'tcx>,
-datum			mod datum;
 dbg_cx			    pub fn dbg_cx<'a>(&'a self) -> &'a Option<debuginfo::CrateDebugContext<'tcx>> 
 debug_context			pub fn debug_context<'a, 'tcx>(cx: &'a CrateContext<'a, 'tcx>)
-debug_dump			fn debug_dump<'a, 'b, 'tcx, I>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-debug_loc			    fn debug_loc(&self) -> DebugLoc 
-debug_loc			    fn debug_loc(&self) -> DebugLoc 
-debug_loc			    fn debug_loc(&self) -> DebugLoc;
-debug_loc			    pub fn debug_loc(&self, source_info: mir::SourceInfo) -> DebugLoc 
+debug_dump			fn debug_dump<'a, 'b, 'tcx, I>(scx: &SharedCrateContext<'a, 'tcx>,
+debug_loc			    pub fn debug_loc(&mut self, source_info: mir::SourceInfo) -> DebugLoc 
 debuginfo			    fn debuginfo(&mut self) 
 debuginfo			    fn debuginfo(&mut self);
 debuginfo			mod debuginfo;
 debuginfo_disabled_message			    fn debuginfo_disabled_message() -> &'static str 
-decl_without_init			    fn decl_without_init(&mut self, _: ast::NodeId, _: Span) {}
 declare			mod declare;
 declare_cfn			pub fn declare_cfn(ccx: &CrateContext, name: &str, fn_type: Type) -> ValueRef 
 declare_fn			pub fn declare_fn<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, name: &str,
@@ -810,9 +674,8 @@ declare_intrinsic			fn declare_intrinsic(ccx: &CrateContext, key: &str) -> Optio
 declare_local			pub fn declare_local<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 declare_raw_fn			fn declare_raw_fn(ccx: &CrateContext, name: &str, callconv: llvm::CallConv, ty: Type) -> ValueRef 
 def			    pub fn def<'a>(ccx: &CrateContext<'a, 'tcx>,
-def_id_to_string			pub fn def_id_to_string<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId) -> String 
 def_id_to_string			pub fn def_id_to_string(tcx: TyCtxt, def_id: DefId) -> String 
-def_ty			fn def_ty<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+def_ty			fn def_ty<'a, 'tcx>(shared: &SharedCrateContext<'a, 'tcx>,
 default_output_for_target			pub fn default_output_for_target(sess: &Session) -> config::CrateType 
 defid_for_inlined_node			    pub fn defid_for_inlined_node<'a>(&'a self, node_id: ast::NodeId) -> Option<DefId> 
 define			    pub fn define(&self, ccx: &CrateContext<'a, 'tcx>) 
@@ -822,11 +685,8 @@ define_internal_fn			pub fn define_internal_fn<'a, 'tcx>(ccx: &CrateContext<'a, 
 delete			    pub fn delete(self) 
 deref			    fn deref(&self) -> &Self::Target 
 deref			    fn deref(&self) -> &mir::Mir<'tcx> 
-deref_multiple			fn deref_multiple<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-deref_once			fn deref_once<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 describe_enum_variant			fn describe_enum_variant<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 diagnostics			pub mod diagnostics;
-direct			    fn direct(t: Type) -> TypeContext 
 direct_fn_type			    pub fn direct_fn_type<'a>(&self, ccx: &CrateContext<'a, 'tcx>,
 discover_masters			    fn discover_masters<'tcx>(result: &mut IndexVec<mir::BasicBlock, CleanupKind>,
 disposition			    fn disposition(&self, mtrans: &ModuleTranslation) -> Disposition 
@@ -838,28 +698,20 @@ drop			    fn drop(&mut self)
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
-drop			    fn drop(&mut self) { }
-drop_done_fill_mem			pub fn drop_done_fill_mem<'blk, 'tcx>(cx: Block<'blk, 'tcx>, llptr: ValueRef, t: Ty<'tcx>) 
 drop_glues			    pub fn drop_glues<'a>(&'a self)
-drop_non_lifetime_clean			    pub fn drop_non_lifetime_clean(&mut self) 
+drop_structural_ty			fn drop_structural_ty<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 drop_ty			pub fn drop_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 drop_ty_core			pub fn drop_ty_core<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 drop_ty_immediate			pub fn drop_ty_immediate<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-dropflag_hint			    pub fn dropflag_hint<'blk, 'tcx>(&self, bcx: Block<'blk, 'tcx>)
-dtor_active			fn dtor_active(flag: u8) -> bool 
-dtor_to_init_u8			fn dtor_to_init_u8(dtor: bool) -> u8 
-dtor_type			    fn dtor_type(self) -> Ty<'tcx> { self.types.u8 }
 dummy_ccx			    fn dummy_ccx<'a>(shared: &'a SharedCrateContext<'a, 'tcx>,
 dump			    fn dump(&mut self, handler: &Handler) 
 dump_incremental_data			fn dump_incremental_data(trans: &CrateTranslation) 
 each_linked_rlib			pub fn each_linked_rlib(sess: &Session,
-early_exit_block			    fn early_exit_block(&self,
 eh_personality			    pub fn eh_personality(&self) -> ValueRef 
 eh_personality			    pub fn eh_personality<'a>(&'a self) -> &'a Cell<Option<ValueRef>> 
 eh_unwind_resume			    pub fn eh_unwind_resume(&self) -> Callee<'tcx> 
 eh_unwind_resume			    pub fn eh_unwind_resume<'a>(&'a self) -> &'a Cell<Option<ValueRef>> 
 element_type			    pub fn element_type(&self) -> Type 
-elements_required			fn elements_required(bcx: Block, content_expr: &hir::Expr) -> usize 
 emit			    fn emit(&mut self, db: &DiagnosticBuilder) 
 emit_uwtable			pub fn emit_uwtable(val: ValueRef, emit: bool) 
 empty			    pub fn empty(name: InternedString) -> Self 
@@ -867,23 +719,12 @@ empty_function_debug_context			pub fn empty_function_debug_context<'a, 'tcx>(cx:
 empty_phi			    pub fn empty_phi(&self, ty: Type) -> ValueRef 
 empty_struct			    pub fn empty_struct(ccx: &CrateContext) -> Type 
 empty_substs_for_def_id			    pub fn empty_substs_for_def_id(&self, item_def_id: DefId) -> &'tcx Substs<'tcx> 
-empty_substs_for_scheme			    pub fn empty_substs_for_scheme(&self, scheme: &ty::TypeScheme<'tcx>)
-ensure_array_fits_in_address_space			fn ensure_array_fits_in_address_space<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-ensure_enum_fits_in_address_space			fn ensure_enum_fits_in_address_space<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-ensure_struct_fits_in_address_space			fn ensure_struct_fits_in_address_space<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-enter_default			fn enter_default<'a, 'p, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-enter_match			fn enter_match<'a, 'b, 'p, 'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
-enter_opt			fn enter_opt<'a, 'p, 'blk, 'tcx>(
 enter_type_of			    pub fn enter_type_of(&self, ty: Ty<'tcx>) -> TypeOfDepthLock<'b, 'tcx> 
-eq			    fn eq(&self, other: &Opt<'a, 'tcx>, tcx: TyCtxt<'b, 'tcx, 'tcx>) -> bool 
-eq			    fn eq<'b, 'tcx>(self, other: ConstantExpr<'a>, tcx: TyCtxt<'b, 'tcx, 'tcx>) -> bool 
 eq			    fn eq(&self, val: &UnwindKind) -> bool 
 erase_from_parent			    pub fn erase_from_parent(self) 
 escape_string			            fn escape_string(s: &[u8]) -> String 
-euv::Delegate for ReassignmentChecker			impl<'tcx> euv::Delegate<'tcx> for ReassignmentChecker 
 exactsdiv			    pub fn exactsdiv(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 execute_work_item			fn execute_work_item(cgcx: &CodegenContext,
-expand_nested_bindings			fn expand_nested_bindings<'a, 'p, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 explicit_linkage			    pub fn explicit_linkage(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Option<llvm::Linkage> 
 export_map			    pub fn export_map<'a>(&'a self) -> &'a ExportMap 
 export_symbols			    fn export_symbols(&mut self, tmpdir: &Path, crate_type: CrateType) 
@@ -891,24 +732,17 @@ export_symbols			    fn export_symbols(&mut self, tmpdir: &Path, crate_type: Cra
 export_symbols			    fn export_symbols(&mut self,
 exported_name_from_type_and_prefix			pub fn exported_name_from_type_and_prefix<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 exported_symbols			fn exported_symbols(scx: &SharedCrateContext,
-expr			mod expr;
-expr_info			pub fn expr_info(expr: &hir::Expr) -> NodeIdAndSpan 
-expr_kind			fn expr_kind<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, expr: &hir::Expr) -> ExprKind 
-expr_ty			pub fn expr_ty<'blk, 'tcx>(bcx: &BlockS<'blk, 'tcx>, ex: &hir::Expr) -> Ty<'tcx> 
-expr_ty_adjusted			pub fn expr_ty_adjusted<'blk, 'tcx>(bcx: &BlockS<'blk, 'tcx>, ex: &hir::Expr) -> Ty<'tcx> 
 extend_integer_width_to			    pub fn extend_integer_width_to(&mut self, bits: u64) 
+extend_scope_to_file			pub fn extend_scope_to_file(ccx: &CrateContext,
 extern_const_values			    pub fn extern_const_values<'a>(&'a self) -> &'a RefCell<DefIdMap<ValueRef>> 
 extract_bytecode_format_version			fn extract_bytecode_format_version(bc: &[u8]) -> u32 
 extract_compressed_bytecode_size_v1			fn extract_compressed_bytecode_size_v1(bc: &[u8]) -> u64 
 extract_element			    pub fn extract_element(&self, vec: ValueRef, idx: ValueRef) -> ValueRef 
 extract_value			    pub fn extract_value(&self, agg_val: ValueRef, idx: usize) -> ValueRef 
-extract_variant_args			fn extract_variant_args<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-extract_vec_elems			fn extract_vec_elems<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 f32			    pub fn f32(ccx: &CrateContext) -> Type 
 f64			    pub fn f64(ccx: &CrateContext) -> Type 
 fadd			    pub fn fadd(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fadd_fast			    pub fn fadd_fast(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
-fail_if_zero_or_overflows			pub fn fail_if_zero_or_overflows<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 fallback_path			    fn fallback_path(scc: &SharedCrateContext) -> CString 
 fat_ptr_base_ty			pub fn fat_ptr_base_ty<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, ty: Ty<'tcx>) -> Type 
 fcmp			    pub fn fcmp(&self, op: RealPredicate, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
@@ -916,19 +750,16 @@ fcx			    pub fn fcx(&self) -> &'blk FunctionContext<'blk, 'tcx>
 fdiv			    pub fn fdiv(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fdiv_fast			    pub fn fdiv_fast(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 field			    fn field(&self, attr: &ast::Attribute, name: &str) -> InternedString 
-field_index			    pub fn field_index(&self, name: ast::Name) -> usize 
 field_ty			pub fn field_ty<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 field_types			    pub fn field_types(&self) -> Vec<Type> 
 file_metadata			pub fn file_metadata(cx: &CrateContext, path: &str, full_path: &Option<String>) -> DIFile 
 file_metadata_			fn file_metadata_(cx: &CrateContext, key: &str, file_name: &str, work_dir: &str) -> DIFile 
 filename_for_input			pub fn filename_for_input(sess: &Session,
 fill_nested			    fn fill_nested(ccx: &CrateContext, def_id: DefId, extra: &str, output: &mut String) 
-fill_scope_map_for_function			pub fn fill_scope_map_for_function<'a, 'tcx>(fcx: &FunctionContext<'a, 'tcx>,
 filter_reachable_ids			pub fn filter_reachable_ids(tcx: TyCtxt, reachable: NodeSet) -> NodeSet 
 finalize			    fn finalize<'a>(&self, cx: &CrateContext<'a, 'tcx>) -> MetadataCreationResult 
 finalize			pub fn finalize(cx: &CrateContext) 
 find_crate_name			pub fn find_crate_name(sess: Option<&Session>,
-find_discr_field_candidate			fn find_discr_field_candidate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 find_drop_glue_neighbors			fn find_drop_glue_neighbors<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 find_library			pub fn find_library(name: &str, search_paths: &[PathBuf], sess: &Session)
 find_metadata_for_type			    fn find_metadata_for_type(&self, type_: Ty<'tcx>) -> Option<DIType> 
@@ -936,14 +767,13 @@ find_metadata_for_unique_id			    fn find_metadata_for_unique_id(&self, unique_t
 find_msvc_11			    fn find_msvc_11(arch: &str) -> Option<(Command, PathBuf)> 
 find_msvc_12			    fn find_msvc_12(arch: &str) -> Option<(Command, PathBuf)> 
 find_msvc_latest			    fn find_msvc_latest(arch: &str, ver: &str) -> Option<(Command, PathBuf)> 
-find_ptr			    fn find_ptr<'a>(&self, cx: &CrateContext<'a, 'tcx>) -> Option<DiscrField> 
 find_type			    pub fn find_type(&self, s: &str) -> Option<Type> 
 find_vtable_types_for_unsizing			fn find_vtable_types_for_unsizing<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
-finish			    pub fn finish(&'blk self, last_bcx: Block<'blk, 'tcx>,
+finish			    fn finish(&self) -> u64 
+finish			    pub fn finish(&'blk self, ret_cx: Block<'blk, 'tcx>,
 finish_type_of			pub fn finish_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 fixed_vec_metadata			fn fixed_vec_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 fixup			    fn fixup(ty: Type, cls: &mut [RegClass]) 
-float_cast			    fn float_cast(bcx: Block,
 float_from_ty			    pub fn float_from_ty(ccx: &CrateContext, t: ast::FloatTy) -> Type 
 float_type_width			fn float_type_width<'tcx>(sty: &ty::TypeVariants<'tcx>)
 float_width			    pub fn float_width(&self) -> usize 
@@ -952,16 +782,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Debug for CleanupScopeKind			impl<'blk, 'tcx: 'blk> fmt::Debug for CleanupScopeKind<'blk, 'tcx> 
 fmt::Debug for Const			impl<'tcx> fmt::Debug for Const<'tcx> 
-fmt::Debug for Datum			impl<'tcx, K: fmt::Debug> fmt::Debug for Datum<'tcx, K> 
-fmt::Debug for Dest			impl fmt::Debug for Dest 
-fmt::Debug for Match			impl<'a, 'p, 'blk, 'tcx> fmt::Debug for Match<'a, 'p, 'blk, 'tcx> 
-fmt::Debug for MatchInput			impl fmt::Debug for MatchInput 
 fmt::Debug for OperandRef			impl<'tcx> fmt::Debug for OperandRef<'tcx> 
 fmt::Debug for Type			impl fmt::Debug for Type 
 fmt::Debug for Value			impl fmt::Debug for Value 
@@ -969,9 +790,9 @@ fmt::Display for Instance			impl<'tcx> fmt::Display for Instance<'tcx>
 fmul			    pub fn fmul(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fmul_fast			    pub fn fmul_fast(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fn_pointer_shims			    pub fn fn_pointer_shims(&self) -> &RefCell<FnvHashMap<Ty<'tcx>, ValueRef>> 
-fn_should_be_ignored			pub fn fn_should_be_ignored(fcx: &FunctionContext) -> bool 
 fneg			    pub fn fneg(&self, v: ValueRef) -> ValueRef 
-fold_variants			pub fn fold_variants<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
+fold			    fn fold<T:TypeFoldable<'gcx>>(&mut self, value: &T) -> T 
+fold_ty			    fn fold_ty(&mut self, ty: Ty<'gcx>) -> Ty<'gcx> 
 follow_inlining			    fn follow_inlining<'tcx>(trans_item: TransItem<'tcx>,
 fpcast			    pub fn fpcast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 fpext			    pub fn fpext(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
@@ -990,9 +811,10 @@ from_constval			    pub fn from_constval<'a>(ccx: &CrateContext<'a, 'tcx>,
 from_def_id_and_substs			        fn from_def_id_and_substs<'a, 'tcx>(type_map: &mut TypeMap<'tcx>,
 from_fn_attrs			pub fn from_fn_attrs(ccx: &CrateContext, attrs: &[ast::Attribute], llfn: ValueRef) 
 from_immediate			pub fn from_immediate(bcx: Block, val: ValueRef) -> ValueRef 
+from_integer			    pub fn from_integer(cx: &CrateContext, i: layout::Integer) -> Type 
+from_primitive			    pub fn from_primitive(ccx: &CrateContext, p: layout::Primitive) -> Type 
 from_ref			    pub fn from_ref(r: TypeRef) -> Type 
 from_ty			    pub fn from_ty(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-from_val			    fn from_val(val: ValueRef) -> MatchInput 
 fsub			    pub fn fsub(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fsub_fast			    pub fn fsub_fast(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 fulfill_obligation			pub fn fulfill_obligation<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
@@ -1006,7 +828,6 @@ gen_fn			fn gen_fn<'a, 'tcx>(fcx: &FunctionContext<'a, 'tcx>,
 general_ty_align			fn general_ty_align(ty: Type) -> usize 
 generic_simd_intrinsic			fn generic_simd_intrinsic<'blk, 'tcx, 'a>
 generic_type_of			fn generic_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-gensym_name			pub fn gensym_name(name: &str) -> ast::Name 
 gep			    pub fn gep(&self, ptr: ValueRef, indices: &[ValueRef]) -> ValueRef 
 gepi			    pub fn gepi(&self, base: ValueRef, ixs: &[usize]) -> ValueRef 
 get			    pub fn get(&self) -> BasicBlockRef 
@@ -1014,14 +835,7 @@ get			    pub fn get(&self, trans_item: TransItem<'tcx>) -> Option<&str>
 get			    pub fn get(&self) -> UseRef 
 get			    pub fn get(&self) -> ValueRef 
 get_ar_prog			pub fn get_ar_prog(sess: &Session) -> String 
-get_base_and_len			pub fn get_base_and_len<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-get_branches			fn get_branches<'a, 'p, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-get_cases			fn get_cases<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-get_cleanup_debug_loc_for_ast_node			pub fn get_cleanup_debug_loc_for_ast_node<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-get_const_expr			pub fn get_const_expr<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-get_const_expr_as_global			pub fn get_const_expr_as_global<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-get_const_val			fn get_const_val<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-get_containing_scope_and_span			    fn get_containing_scope_and_span<'ccx, 'tcx>(cx: &CrateContext<'ccx, 'tcx>,
+get_containing_scope			    fn get_containing_scope<'ccx, 'tcx>(cx: &CrateContext<'ccx, 'tcx>,
 get_dataptr			pub fn get_dataptr(bcx: Block, fat_ptr: ValueRef) -> ValueRef 
 get_dataptr			pub fn get_dataptr(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
 get_declared_value			pub fn get_declared_value(ccx: &CrateContext, name: &str) -> Option<ValueRef> 
@@ -1030,23 +844,18 @@ get_dominating_store			    pub fn get_dominating_store(self, bcx: Block) -> Opti
 get_drop_glue			pub fn get_drop_glue<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>) -> ValueRef 
 get_drop_glue_core			fn get_drop_glue_core<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 get_drop_glue_type			pub fn get_drop_glue_type<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-get_element			    pub fn get_element<'blk, F>(&self, bcx: Block<'blk, 'tcx>, ty: Ty<'tcx>,
 get_enum_discriminant_name			    fn get_enum_discriminant_name(cx: &CrateContext,
 get_fat_ptr			    fn get_fat_ptr(&self) -> (ValueRef, ValueRef) 
 get_first_use			    pub fn get_first_use(self) -> Option<Use> 
-get_fixed_base_and_len			pub fn get_fixed_base_and_len(bcx: Block,
 get_fn			fn get_fn<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 get_function_signature			    fn get_function_signature<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-get_impl_method			pub fn get_impl_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+get_install_prefix_rpath			fn get_install_prefix_rpath(config: &mut RPathConfig) -> String 
 get_intrinsic			    pub fn get_intrinsic(&self, key: &str) -> ValueRef 
-get_landing_pad			    fn get_landing_pad(&'blk self) -> BasicBlockRef 
-get_landing_pad			    fn get_landing_pad(&'blk self) -> BasicBlockRef;
+get_landing_pad			    pub fn get_landing_pad(&'blk self) -> BasicBlockRef 
 get_linker			pub fn get_linker(sess: &Session) -> (String, Command, Option<PathBuf>) 
 get_linker			    fn get_linker(path: &Path, arch: &str) -> Option<(Command, PathBuf)> 
-get_llreturn			    pub fn get_llreturn(&self) -> BasicBlockRef 
 get_llvm_opt_level			fn get_llvm_opt_level(optimize: config::OptLevel) -> llvm::CodeGenOptLevel 
 get_llvm_opt_size			fn get_llvm_opt_size(optimize: config::OptLevel) -> llvm::CodeGenOptSize 
-get_local_instance			pub fn get_local_instance(ccx: &CrateContext, fn_id: DefId)
 get_meta			pub fn get_meta(bcx: Block, fat_ptr: ValueRef) -> ValueRef 
 get_meta			pub fn get_meta(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
 get_mir			    pub fn get_mir(&self, def_id: DefId) -> Option<CachedMir<'b, 'tcx>> 
@@ -1056,7 +865,6 @@ get_operand			    pub fn get_operand(self, i: usize) -> Option<Value>
 get_or_compute			    pub fn get_or_compute<'map, 'scx>(&'map self,
 get_or_create_closure_declaration			fn get_or_create_closure_declaration<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 get_or_create_landing_pad			    fn get_or_create_landing_pad(&'blk self) -> BasicBlockRef 
-get_or_create_landing_pad			    fn get_or_create_landing_pad(&'blk self) -> BasicBlockRef;
 get_or_insert_gdb_debug_scripts_section_global			pub fn get_or_insert_gdb_debug_scripts_section_global(ccx: &CrateContext)
 get_overflow_intrinsic			fn get_overflow_intrinsic(oop: OverflowOp, bcx: &BlockAndBuilder, ty: Ty) -> ValueRef 
 get_pair			    fn get_pair(&self) -> (ValueRef, ValueRef) 
@@ -1065,7 +873,10 @@ get_parent			    pub fn get_parent(self) -> Option<BasicBlock>
 get_personality_slot			    fn get_personality_slot(&mut self, bcx: &BlockAndBuilder<'bcx, 'tcx>) -> ValueRef 
 get_ref			    fn get_ref<'a>(&'a self,
 get_reloc_model			pub fn get_reloc_model(sess: &Session) -> llvm::RelocMode 
-get_ret_slot			    pub fn get_ret_slot(&self, bcx: Block<'a, 'tcx>, name: &str) -> ValueRef 
+get_rpath_flags			pub fn get_rpath_flags(config: &mut RPathConfig) -> Vec<String> 
+get_rpath_relative_to_output			fn get_rpath_relative_to_output(config: &mut RPathConfig, lib: &Path) -> String 
+get_rpaths			fn get_rpaths(config: &mut RPathConfig, libs: &[PathBuf]) -> Vec<String> 
+get_rpaths_relative_to_output			fn get_rpaths_relative_to_output(config: &mut RPathConfig,
 get_rust_try_fn			fn get_rust_try_fn<'a, 'tcx>(fcx: &FunctionContext<'a, 'tcx>,
 get_sdk10_dir			    fn get_sdk10_dir() -> Option<PathBuf> 
 get_sdk81_dir			    fn get_sdk81_dir() -> Option<PathBuf> 
@@ -1075,33 +886,25 @@ get_simple_intrinsic			fn get_simple_intrinsic(ccx: &CrateContext, name: &str) -
 get_single_predecessor			    pub fn get_single_predecessor(self) -> Option<BasicBlock> 
 get_single_user			    pub fn get_single_user(self) -> Option<Value> 
 get_span			        fn get_span<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-get_static			pub fn get_static<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, def_id: DefId)
+get_static			pub fn get_static(ccx: &CrateContext, def_id: DefId) -> ValueRef 
 get_symbol_hash			fn get_symbol_hash<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 get_template_parameters			    fn get_template_parameters<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
+get_type_parameter_names			    fn get_type_parameter_names<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 get_ucrt_dir			    fn get_ucrt_dir() -> Option<PathBuf> 
 get_unique_type_id_as_string			    fn get_unique_type_id_as_string(&self, unique_type_id: UniqueTypeId) -> Rc<String> 
 get_unique_type_id_of_enum_variant			    fn get_unique_type_id_of_enum_variant<'a>(&mut self,
 get_unique_type_id_of_type			    fn get_unique_type_id_of_type<'a>(&mut self, cx: &CrateContext<'a, 'tcx>,
 get_user			    pub fn get_user(self) -> Value 
 get_vc_dir			    fn get_vc_dir(ver: &str) -> Option<PathBuf> 
-get_vec_base_and_len			    pub fn get_vec_base_and_len<'blk>(&self, bcx: Block<'blk, 'tcx>)
 get_virtual_method			pub fn get_virtual_method<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 get_vtable			pub fn get_vtable<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-get_vtable_methods			pub fn get_vtable_methods<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 global_string			    pub fn global_string(&self, _str: *const c_char) -> ValueRef 
 global_string_ptr			    pub fn global_string_ptr(&self, _str: *const c_char) -> ValueRef 
 glue			mod glue;
 gnu			    pub fn gnu() -> LandingPad 
-handle_fail			    fn handle_fail(&self, bcx: Block) 
-has_dropflag_hint			    fn has_dropflag_hint<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-has_hint			    pub fn has_hint(&self, id: ast::NodeId) -> bool { self.node_map.contains_key(&id) }
 has_meta			    pub fn has_meta(&self) -> bool 
-has_nested_bindings			fn has_nested_bindings(m: &[Match], col: usize) -> bool 
-has_nested_returns			fn has_nested_returns(tcx: TyCtxt, cfg: &cfg::CFG, blk_id: ast::NodeId) -> bool 
 has_no_uses			    pub fn has_no_uses(self) -> bool 
 hash			    fn hash<H: Hasher>(&self, s: &mut H) 
-hint_datum			    pub fn hint_datum(&self, id: ast::NodeId) -> Option<cleanup::DropHintDatum<'tcx>> 
-hint_datum			    pub fn hint_datum<'blk, 'tcx>(&self, bcx: Block<'blk, 'tcx>)
 hint_dynamic			    fn hint_dynamic(&mut self) 
 hint_dynamic			    fn hint_dynamic(&mut self) {}
 hint_dynamic			    fn hint_dynamic(&mut self);
@@ -1120,8 +923,6 @@ i8p			    pub fn i8p(ccx: &CrateContext) -> Type
 icmp			    pub fn icmp(&self, op: IntPredicate, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 ignore			    pub fn ignore(&mut self) 
 immediate			    pub fn immediate(self) -> ValueRef 
-immediate_rvalue			pub fn immediate_rvalue<'tcx>(val: ValueRef, ty: Ty<'tcx>) -> Datum<'tcx, Rvalue> 
-immediate_rvalue_bcx			pub fn immediate_rvalue_bcx<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 immediate_type_of			pub fn immediate_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>) -> Type 
 impl_method_cache			    pub fn impl_method_cache<'a>(&'a self)
 implement_drop_glue			pub fn implement_drop_glue<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
@@ -1132,32 +933,23 @@ include_path			    fn include_path(&mut self, path: &Path)
 include_path			    fn include_path(&mut self, path: &Path);
 incomplete_type_of			pub fn incomplete_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 indirect_br			    pub fn indirect_br(&self, addr: ValueRef, num_dests: usize) 
-init			    pub fn init(&'blk self, skip_retptr: bool, fn_did: Option<DefId>)
+init			    pub fn init(&'blk self, skip_retptr: bool) -> Block<'blk, 'tcx> 
 init_cpad			    pub fn init_cpad(&mut self, bb: mir::BasicBlock) 
 init_insn_ctxt			pub fn init_insn_ctxt() 
-init_local			pub fn init_local<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, local: &hir::Local) -> Block<'blk, 'tcx> 
 init_zero_mem			pub fn init_zero_mem<'blk, 'tcx>(cx: Block<'blk, 'tcx>, llptr: ValueRef, t: Ty<'tcx>) 
 inline			pub fn inline(val: ValueRef, inline: InlineAttr) 
-inline			mod inline;
 inline_asm_call			    pub fn inline_asm_call(&self, asm: *const c_char, cons: *const c_char,
-inlined_variant_def			pub fn inlined_variant_def<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-insert			    pub fn insert(&mut self, id: ast::NodeId, datum: cleanup::DropHintDatum<'tcx>) 
 insert_element			    pub fn insert_element(&self, vec: ValueRef, elt: ValueRef, idx: ValueRef) -> ValueRef 
-insert_lllocals			fn insert_lllocals<'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 insert_reference_to_gdb_debug_scripts_section_global			pub fn insert_reference_to_gdb_debug_scripts_section_global(ccx: &CrateContext) 
 insert_value			    pub fn insert_value(&self, agg_val: ValueRef, elt: ValueRef,
 instances			    pub fn instances<'a>(&'a self) -> &'a RefCell<FnvHashMap<Instance<'tcx>, ValueRef>> 
-instantiate_inline			fn instantiate_inline(ccx: &CrateContext, fn_id: DefId) -> Option<DefId> 
 int			    pub fn int(ccx: &CrateContext) -> Type 
-int_cast			    fn int_cast(bcx: Block,
 int_from_ty			    pub fn int_from_ty(ccx: &CrateContext, t: ast::IntTy) -> Type 
 int_type			    pub fn int_type(&self) -> Type 
 int_type_width_signed			fn int_type_width_signed<'tcx>(sty: &ty::TypeVariants<'tcx>, ccx: &CrateContext)
 int_width			    pub fn int_width(&self) -> u64 
 intcast			    pub fn intcast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
-internal_name_from_type_and_suffix			pub fn internal_name_from_type_and_suffix<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 internalize_symbols			fn internalize_symbols<'a, 'tcx>(sess: &Session,
-into_inner			    fn into_inner(self) -> ConstEvalErr 
 intrinsic			mod intrinsic;
 intrinsics			    fn intrinsics<'a>(&'a self) -> &'a RefCell<FnvHashMap<&'static str, ValueRef>> 
 inttoptr			    pub fn inttoptr(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
@@ -1169,26 +961,16 @@ is_a_terminator_inst			        fn is_a_terminator_inst(user: &Value) -> bool { u
 is_a_terminator_inst			    pub fn is_a_terminator_inst(self) -> bool 
 is_aggregate			    pub fn is_aggregate(&self) -> bool 
 is_any_library			fn is_any_library(sess: &Session) -> bool 
-is_ast_with_id			    fn is_ast_with_id(&self, id: ast::NodeId) -> bool 
-is_by_ref			    fn is_by_ref(&self) -> bool 
-is_by_ref			    fn is_by_ref(&self) -> bool;
 is_const_integral			fn is_const_integral(v: ValueRef) -> bool 
-is_discr_reassigned			fn is_discr_reassigned(bcx: Block, discr: &hir::Expr, body: &hir::Expr) -> bool 
-is_discr_signed			pub fn is_discr_signed<'tcx>(r: &Repr<'tcx>) -> bool 
+is_discr_signed			pub fn is_discr_signed<'tcx>(l: &layout::Layout) -> bool 
 is_drop_in_place_intrinsic			        fn is_drop_in_place_intrinsic<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-is_fallible			    fn is_fallible(&self) -> bool 
 is_from_extern_crate			    pub fn is_from_extern_crate(&self) -> bool 
 is_generic_fn			    pub fn is_generic_fn(&self) -> bool 
 is_homogenous_aggregate_ty			fn is_homogenous_aggregate_ty(ty: Type) -> Option<(Type, u64)> 
 is_homogenous_aggregate_ty			fn is_homogenous_aggregate_ty(ty: Type) -> Option<(Type, u64)> 
 is_ignore			    pub fn is_ignore(&self) -> bool 
 is_indirect			    pub fn is_indirect(&self) -> bool 
-is_infallible			    fn is_infallible(&self) -> bool 
-is_instantiated_only_on_demand			    pub fn is_instantiated_only_on_demand(&self) -> bool 
-is_lifetime_end			    fn is_lifetime_end(&self) -> bool 
-is_lifetime_end			    fn is_lifetime_end(&self) -> bool;
-is_loop_with_id			    fn is_loop_with_id(&self, id: ast::NodeId) -> bool 
-is_named_tuple_constructor			    fn is_named_tuple_constructor(tcx: TyCtxt, def_id: DefId) -> bool 
+is_instantiated_only_on_demand			    pub fn is_instantiated_only_on_demand(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> bool 
 is_node_local_to_unit			pub fn is_node_local_to_unit(cx: &CrateContext, node_id: ast::NodeId) -> bool
 is_not_null			    pub fn is_not_null(&self, val: ValueRef) -> ValueRef 
 is_null			    pub fn is_null(&self, val: ValueRef) -> ValueRef 
@@ -1202,22 +984,22 @@ is_reg_ty			fn is_reg_ty(ty: Type) -> bool
 is_reg_ty			fn is_reg_ty(ty: Type) -> bool 
 is_reg_ty			fn is_reg_ty(ty: Type) -> bool 
 is_reg_ty			fn is_reg_ty(ty: Type) -> bool 
+is_reg_ty			fn is_reg_ty(ty: Type) -> bool 
+is_reg_ty			fn is_reg_ty(ty: Type) -> bool 
 is_reg_ty			    fn is_reg_ty(&self) -> bool 
 is_reg_ty			    fn is_reg_ty(&self) -> bool;
 is_relevant_child			fn is_relevant_child(c: &Child) -> bool 
 is_ret_bysret			    fn is_ret_bysret(&self) -> bool 
 is_ret_bysret			    fn is_ret_bysret(&self) -> bool;
+is_single_fp_element			        fn is_single_fp_element(tys: &[Type]) -> bool 
 is_sse			    fn is_sse(&self) -> bool 
-is_temp			    fn is_temp(&self) -> bool 
 is_undef			pub fn is_undef(val: ValueRef) -> bool 
 is_unreachable			    pub fn is_unreachable(&self) -> bool 
+is_valid			    pub fn is_valid(&self) -> bool 
 is_valid_custom_scope			    fn is_valid_custom_scope(&self, custom_scope: CustomScopeIndex) -> bool 
-is_valid_custom_scope			    fn is_valid_custom_scope(&self, custom_scope: CustomScopeIndex) -> bool;
 is_valid_to_pop_custom_scope			    fn is_valid_to_pop_custom_scope(&self, custom_scope: CustomScopeIndex) -> bool 
-is_valid_to_pop_custom_scope			    fn is_valid_to_pop_custom_scope(&self, custom_scope: CustomScopeIndex) -> bool;
 is_versioned_bytecode_format			fn is_versioned_bytecode_format(bc: &[u8]) -> bool 
 is_writeable			fn is_writeable(p: &Path) -> bool 
-is_zerolen			    fn is_zerolen<'a>(&self, cx: &CrateContext<'a, 'tcx>, scapegoat: Ty<'tcx>) -> bool 
 item_namespace			pub fn item_namespace(ccx: &CrateContext, def_id: DefId) -> DIScope 
 items			    pub fn items(&self) -> &FnvHashMap<TransItem<'tcx>, llvm::Linkage> 
 items_in_deterministic_order			    pub fn items_in_deterministic_order(&self,
@@ -1225,18 +1007,13 @@ iter_all			    pub fn iter_all<'b>(&'b self) -> CrateContextIterator<'b, 'tcx>
 iter_functions			fn iter_functions(llmod: llvm::ModuleRef) -> ValueIter 
 iter_globals			fn iter_globals(llmod: llvm::ModuleRef) -> ValueIter 
 iter_need_trans			    pub fn iter_need_trans<'b>(&'b self) -> CrateContextIterator<'b, 'tcx> 
-iter_structural_ty			pub fn iter_structural_ty<'blk, 'tcx, F>(cx: Block<'blk, 'tcx>,
-iter_variant			    fn iter_variant<'blk, 'tcx, F>(cx: Block<'blk, 'tcx>,
-iter_vec_loop			fn iter_vec_loop<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
-iter_vec_raw			pub fn iter_vec_raw<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
+iter_variant			    fn iter_variant<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 ix			    pub fn ix(ccx: &CrateContext, num_bits: u64) -> Type 
-join_blocks			    pub fn join_blocks(&'a self,
 kind			    pub fn kind(&self) -> TypeKind 
-kind_for_closure			pub fn kind_for_closure(ccx: &CrateContext, closure_id: DefId) -> ty::ClosureKind 
 landing_pad			    pub fn landing_pad(&self, ty: Type, pers_fn: ValueRef,
 landing_pad_to			    fn landing_pad_to(&mut self, target_bb: mir::BasicBlock) -> Block<'bcx, 'tcx>
 langcall			pub fn langcall(tcx: TyCtxt,
-lazy_binop_ty			enum lazy_binop_ty 
+layout_of			    pub fn layout_of(&self, ty: Ty<'tcx>) -> &'tcx ty::layout::Layout 
 len			    pub fn len<'a>(&self, ccx: &CrateContext<'a, 'tcx>) -> ValueRef 
 len			    pub fn len<'a>(&self, ccx: &CrateContext<'a, 'tcx>) -> ValueRef 
 lib_subdir			    fn lib_subdir(arch: &str) -> Option<&'static str> 
@@ -1271,7 +1048,6 @@ link_whole_staticlib			    fn link_whole_staticlib(&mut self, lib: &str, _search
 link_whole_staticlib			    fn link_whole_staticlib(&mut self, lib: &str, search_path: &[PathBuf]) 
 link_whole_staticlib			    fn link_whole_staticlib(&mut self, lib: &str, search_path: &[PathBuf]);
 linker			    pub mod linker;
-ll_inttype			pub fn ll_inttype(cx: &CrateContext, ity: IntType) -> Type 
 llalign_of_min			pub fn llalign_of_min(cx: &CrateContext, ty: Type) -> llalign 
 llalign_of_pref			pub fn llalign_of_pref(cx: &CrateContext, ty: Type) -> llalign 
 llbb			    pub fn llbb(&self) -> BasicBlockRef 
@@ -1282,10 +1058,7 @@ llmod			    pub fn llmod(&self) -> ModuleRef
 llreg_ty			fn llreg_ty(ccx: &CrateContext, cls: &[RegClass]) -> Type 
 llsize_of			pub fn llsize_of(cx: &CrateContext, ty: Type) -> ValueRef 
 llsize_of_alloc			pub fn llsize_of_alloc(cx: &CrateContext, ty: Type) -> llsize 
-llsize_of_real			pub fn llsize_of_real(cx: &CrateContext, ty: Type) -> llsize 
-llsize_of_store			pub fn llsize_of_store(cx: &CrateContext, ty: Type) -> llsize 
 llsizingtypes			    pub fn llsizingtypes<'a>(&'a self) -> &'a RefCell<FnvHashMap<Ty<'tcx>, Type>> 
-llty_and_min_for_signed_ty			pub fn llty_and_min_for_signed_ty<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 lltypes			    pub fn lltypes<'a>(&'a self) -> &'a RefCell<FnvHashMap<Ty<'tcx>, Type>> 
 llvec_len			    fn llvec_len(cls: &[RegClass]) -> usize 
 llvm_archive_kind			    fn llvm_archive_kind(&self) -> Result<ArchiveKind, &str> 
@@ -1294,13 +1067,9 @@ llvm_linkage_by_name			pub fn llvm_linkage_by_name(name: &str) -> Option<Linkage
 llvm_type			    pub fn llvm_type(&self, ccx: &CrateContext) -> Type 
 llvm_type_name			fn llvm_type_name<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 load			    pub fn load(&self, ptr: ValueRef) -> ValueRef 
-load			    pub fn load<'blk,'tcx>(self, bcx: Block<'blk, 'tcx>, arg_scope: ScopeId) 
-load_closure_environment			fn load_closure_environment<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-load_const			pub fn load_const(cx: &CrateContext, v: ValueRef, t: Ty) -> ValueRef 
-load_discr			fn load_discr(bcx: Block, ity: IntType, ptr: ValueRef, min: Disr, max: Disr,
+load_discr			fn load_discr(bcx: Block, ity: layout::Integer, ptr: ValueRef, min: u64, max: u64,
 load_fat_ptr			pub fn load_fat_ptr<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 load_fat_ptr			pub fn load_fat_ptr(b: &Builder, fat_ptr: ValueRef) -> (ValueRef, ValueRef) 
-load_if_immediate			pub fn load_if_immediate<'blk, 'tcx>(cx: Block<'blk, 'tcx>, v: ValueRef, t: Ty<'tcx>) -> ValueRef 
 load_nonnull			    pub fn load_nonnull(&self, ptr: ValueRef) -> ValueRef 
 load_range_assert			    pub fn load_range_assert(&self, ptr: ValueRef, lo: u64,
 load_ty			pub fn load_ty<'blk, 'tcx>(cx: Block<'blk, 'tcx>, ptr: ValueRef, t: Ty<'tcx>) -> ValueRef 
@@ -1308,33 +1077,28 @@ load_ty_builder			pub fn load_ty_builder<'a, 'tcx>(b: &Builder<'a, 'tcx>, ptr: V
 local			    pub fn local(&self) -> &'b LocalCrateContext<'tcx> 
 local_node_for_inlined_defid			    pub fn local_node_for_inlined_defid<'a>(&'a self, def_id: DefId) -> Option<ast::NodeId> 
 local_node_id			        fn local_node_id(tcx: TyCtxt, trans_item: TransItem) -> Option<NodeId> 
+local_prefix_bytes			            fn local_prefix_bytes(variant: &ty::layout::Struct) -> u64 
+log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 lpad			    pub fn lpad(&self) -> Option<&'blk LandingPad> 
 lshr			    pub fn lshr(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 lto			    pub mod lto;
 lvalue			mod lvalue;
 lvalue_locals			pub fn lvalue_locals<'bcx, 'tcx>(bcx: Block<'bcx,'tcx>,
-lvalue_scratch_datum			pub fn lvalue_scratch_datum<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
 machine			mod machine;
 macros			mod macros;
-make_drop_glue			fn make_drop_glue<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, v0: ValueRef, g: DropGlueKind<'tcx>)
+main			fn main() 
+make_drop_glue			fn make_drop_glue<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 make_indirect			    pub fn make_indirect(&mut self, ccx: &CrateContext) 
 make_mir_scope			fn make_mir_scope(ccx: &CrateContext,
 make_return_dest			    fn make_return_dest(&mut self, bcx: &BlockAndBuilder<'bcx, 'tcx>,
 malloc_raw_dyn			pub fn malloc_raw_dyn<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-mangle			pub fn mangle<PI: Iterator<Item=InternedString>>(path: PI, hash: Option<&str>) -> String 
+mangle			fn mangle<PI: Iterator<Item=InternedString>>(path: PI, hash: &str) -> String 
 mangled_name_of_item			pub fn mangled_name_of_item(ccx: &CrateContext, def_id: DefId, extra: &str) -> String 
 map_block			    pub fn map_block<F>(self, f: F) -> Self
 map_ty			    pub fn map_ty<F>(&self, mut f: F) -> DropGlueKind<'tcx> where F: FnMut(Ty<'tcx>) -> Ty<'tcx>
 mark_as_lvalue			    fn mark_as_lvalue(&mut self, local: mir::Local) 
 mark_assigned			    fn mark_assigned(&mut self, local: mir::Local) 
-match_datum			fn match_datum<'tcx>(val: MatchInput, left_ty: Ty<'tcx>) -> Datum<'tcx, Lvalue> 
-match_input			    pub fn match_input(&self) -> MatchInput 
-match_kind			    fn match_kind<R, F, G>(self, if_lvalue: F, if_rvalue: G) -> R where
-matched_pat			    fn matched_pat(&mut self, _: &hir::Pat, _: mc::cmt, _: euv::MatchMode) {}
-may_need_drop_flag			    fn may_need_drop_flag(t: Type, needs_drop_flag: bool) -> TypeContext 
 maybe_create_entry_wrapper			pub fn maybe_create_entry_wrapper(ccx: &CrateContext) 
-maybe_inline_instance			pub fn maybe_inline_instance<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-maybe_instantiate_inline			pub fn maybe_instantiate_inline(ccx: &CrateContext, fn_id: DefId) -> DefId 
 maybe_iter			    pub fn maybe_iter(&self, iter_all: bool) -> CrateContextMaybeIterator<'b, 'tcx> 
 memcpy_ty			pub fn memcpy_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, dst: ValueRef, src: ValueRef, t: Ty<'tcx>) 
 memfill			fn memfill<'a, 'tcx>(b: &Builder<'a, 'tcx>, llptr: ValueRef, ty: Ty<'tcx>, byte: u8) 
@@ -1349,39 +1113,30 @@ metadata_symbol_name			    pub fn metadata_symbol_name(&self) -> String
 meth			mod meth;
 method			    pub fn method<'blk>(bcx: Block<'blk, 'tcx>,
 method_call			    pub fn method_call<'blk>(bcx: Block<'blk, 'tcx>,
+minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
 mir			    pub fn mir(&self) -> CachedMir<'a, 'tcx> 
 mir			    pub fn mir(&self) -> CachedMir<'blk, 'tcx> 
 mir			mod mir;
 mir_map			    pub fn mir_map(&self) -> &MirMap<'tcx> 
-mk_binding_alloca			fn mk_binding_alloca<'blk, 'tcx, A, F>(bcx: Block<'blk, 'tcx>,
-mk_cenum			fn mk_cenum<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-mk_struct			fn mk_struct<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 modify_as_needed			            fn modify_as_needed<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 mono			    pub fn mono<'a>(scx: &SharedCrateContext<'a, 'tcx>, def_id: DefId) -> Instance<'tcx> 
-monomorphic_fn			pub fn monomorphic_fn<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 monomorphize			    pub fn monomorphize<T>(&self, value: &T) -> T
 monomorphize			mod monomorphize;
 monomorphize			    fn monomorphize<T>(&self, value: &T) -> T
-monomorphize_type			pub fn monomorphize_type<'blk, 'tcx>(bcx: &BlockS<'blk, 'tcx>, t: Ty<'tcx>) -> Ty<'tcx> 
 monomorphized_lvalue_ty			    pub fn monomorphized_lvalue_ty(&self, lvalue: &mir::Lvalue<'tcx>) -> Ty<'tcx> 
-monomorphizing			    pub fn monomorphizing<'a>(&'a self) -> &'a RefCell<DefIdMap<usize>> 
 msvc			    pub fn msvc(cleanuppad: ValueRef) -> LandingPad 
 msvc			    pub mod msvc;
 mul			    pub fn mul(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
-must_unwind			    fn must_unwind(&self) -> bool 
-must_unwind			    fn must_unwind(&self) -> bool;
-must_zero			    pub fn must_zero(&self) -> bool 
-mutate			    fn mutate(&mut self, _: ast::NodeId, _: Span, cmt: mc::cmt, _: euv::MutateMode) 
 naked			pub fn naked(val: ValueRef, is_naked: bool) 
 name			    pub fn name(&self, name: ast::Name) -> String 
 name			    pub fn name(&self) -> &str 
 named_struct			    pub fn named_struct(ccx: &CrateContext, name: &str) -> Type 
 namespace			mod namespace;
 need_invoke			pub fn need_invoke(bcx: Block) -> bool 
-needs_drop_flag			    pub fn needs_drop_flag(&self) -> bool { self.needs_drop_flag }
 needs_gdb_debug_scripts_section			pub fn needs_gdb_debug_scripts_section(ccx: &CrateContext) -> bool 
 needs_invoke			    fn needs_invoke(&self) -> bool 
-needs_invoke			    fn needs_invoke(&self) -> bool;
+needs_invoke			    pub fn needs_invoke(&self) -> bool 
+needs_local_copy			    pub fn needs_local_copy(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> bool 
 needs_unwind_cleanup_cache			    pub fn needs_unwind_cleanup_cache(&self) -> &RefCell<FnvHashMap<Ty<'tcx>, bool>> 
 neg			    pub fn neg(&self, v: ValueRef) -> ValueRef 
 new			    fn new(original_ty: Type, ty: Type) -> ArgType 
@@ -1390,24 +1145,17 @@ new			    pub fn new(config: ArchiveConfig<'a>) -> ArchiveBuilder<'a>
 new			    pub fn new(scx: &SharedCrateContext<'a, 'tcx>,
 new			    fn new() -> SharedEmitter 
 new			    fn new(tm: TargetMachineRef, passes: Vec<String>) -> ModuleConfig 
-new			    fn new() -> FindNestedReturn 
 new			    pub fn new(ccx: &'a CrateContext<'a, 'tcx>, name: String) -> StatRecorder<'a, 'tcx> 
 new			    pub fn new(ccx: &'blk CrateContext<'blk, 'tcx>,
 new			    pub fn new(ccx: &'a CrateContext<'a, 'tcx>) -> Builder<'a, 'tcx> 
-new			    fn new(kind: CleanupScopeKind<'blk, 'tcx>,
-new			    pub fn new(id: ast::NodeId, k: K) -> DropHint<K> { DropHint(id, k) }
+new			    fn new(debug_loc: DebugLoc) -> CleanupScope<'tcx> 
 new			    fn new() -> InliningMap<'tcx> 
-new			    pub fn new() -> DropFlagHintsMap<'tcx> { DropFlagHintsMap { node_map: NodeMap() } }
 new			    pub fn new(bcx: Block<'b, 'tcx>, val: ValueRef) -> Result<'b, 'tcx> 
 new			    pub fn new(bcx: Block<'blk, 'tcx>, owned_builder: OwnedBuilder<'blk, 'tcx>) -> Self 
 new			    pub fn new(llbb: BasicBlockRef,
 new			    fn new<'a>(shared: &SharedCrateContext<'a, 'tcx>,
 new			    pub fn new(shared_ccx: &'a SharedCrateContext<'a, 'tcx>,
 new			    pub fn new(tcx: TyCtxt<'b, 'tcx, 'tcx>,
-new			    pub fn new(bcx: Block<'blk, 'tcx>, datum: Datum<'tcx, K>)
-new			    pub fn new(m: RvalueMode) -> Rvalue 
-new			    pub fn new(val: ValueRef, ty: Ty<'tcx>, kind: K) -> Datum<'tcx, K> 
-new			    pub fn new<'blk, 'tcx>(source: &'static str) -> Lvalue 
 new			    fn new(metadata: DIType, already_stored_in_typemap: bool) -> MetadataCreationResult 
 new			    pub fn new() -> TypeMap<'tcx> 
 new			    pub fn new(llmod: ModuleRef) -> CrateDebugContext<'tcx> 
@@ -1415,39 +1163,31 @@ new			    pub fn new(scope: DIScope, line: usize, col: usize) -> InternalDebugLo
 new			    fn new(mir: &'mir mir::Mir<'tcx>,
 new			    fn new(ccx: &'a CrateContext<'a, 'tcx>,
 new			    pub fn new(llval: ValueRef, ty: Ty<'tcx>) -> Const<'tcx> 
+new			    fn new(shared: &'a SharedCrateContext<'b, 'gcx>) -> Self 
 new			    pub fn new(def_id: DefId, substs: &'tcx Substs<'tcx>)
 new			    pub fn new(name: InternedString,
 new			    pub fn new() -> TypeNames 
 new_block			    pub fn new_block(&'a self,
-new_dropflag_hint			    pub fn new_dropflag_hint(source: &'static str) -> Lvalue 
-new_id_block			    pub fn new_id_block(&'a self,
 new_operand			    fn new_operand<'bcx>(ccx: &CrateContext<'bcx, 'tcx>,
 new_sized			    pub fn new_sized(llval: ValueRef, lvalue_ty: LvalueTy<'tcx>) -> LvalueRef<'tcx> 
-new_temp_block			    pub fn new_temp_block(&'a self,
 new_with_ccx			    pub fn new_with_ccx(ccx: &'blk CrateContext<'blk, 'tcx>) -> Self 
-new_with_hint			    pub fn new_with_hint<'blk, 'tcx>(source: &'static str,
 new_with_session			    fn new_with_session(sess: &'a Session, reachable: &'a [String]) -> CodegenContext<'a> 
 next			    fn next(&mut self) -> Option<ValueRef> 
 next			    fn next(&mut self) -> Option<(CrateContext<'a, 'tcx>, bool)> 
 next			    fn next(&mut self) -> Option<CrateContext<'a, 'tcx>> 
 next			    fn next(&mut self) -> Option<Value> 
-nil			    fn nil<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, ty: Ty<'tcx>)
 nil			    pub fn nil(ccx: &CrateContext) -> Type 
 no_default_libraries			    fn no_default_libraries(&mut self) 
 no_default_libraries			    fn no_default_libraries(&mut self);
 no_whole_archives			    fn no_whole_archives(&mut self) 
 no_whole_archives			    fn no_whole_archives(&mut self);
 node_id_to_string			    pub fn node_id_to_string(&self, id: ast::NodeId) -> String 
-node_id_type			pub fn node_id_type<'blk, 'tcx>(bcx: &BlockS<'blk, 'tcx>, id: ast::NodeId) -> Ty<'tcx> 
 noname			pub fn noname() -> *const c_char 
-normal_exit_block			    fn normal_exit_block(&'blk self,
-normalize_and_test_predicates			pub fn normalize_and_test_predicates<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 not			    pub fn not(&self, v: ValueRef) -> ValueRef 
 nswadd			    pub fn nswadd(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 nswmul			    pub fn nswmul(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 nswneg			    pub fn nswneg(&self, v: ValueRef) -> ValueRef 
 nswsub			    pub fn nswsub(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
-num_args			pub fn num_args(r: &Repr, discr: Disr) -> usize 
 numbered_codegen_unit_name			fn numbered_codegen_unit_name(crate_name: &str, index: usize) -> InternedString 
 nuwadd			    pub fn nuwadd(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 nuwmul			    pub fn nuwmul(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
@@ -1455,7 +1195,6 @@ nuwneg			    pub fn nuwneg(&self, v: ValueRef) -> ValueRef
 nuwsub			    pub fn nuwsub(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 obj_size_bound			    pub fn obj_size_bound(&self) -> u64 
 object_filenames			fn object_filenames(trans: &CrateTranslation,
-of_node			    pub fn of_node(tcx: TyCtxt<'a, 'tcx, 'tcx>, ty: Ty<'tcx>, id: ast::NodeId) -> Self 
 one			            fn one<T>(x: Vec<T>) -> T 
 opaque_vec			    pub fn opaque_vec(ccx: &CrateContext) -> Type 
 opaque_vec_type			    pub fn opaque_vec_type(&self) -> Type 
@@ -1472,70 +1211,59 @@ pack_if_pair			    pub fn pack_if_pair(mut self, bcx: &BlockAndBuilder<'bcx, 'tc
 padding			fn padding(ccx: &CrateContext, size: u64) -> ValueRef 
 padding_ty			fn padding_ty(ccx: &CrateContext, align: usize, offset: usize) -> Option<Type> 
 padding_ty			fn padding_ty(ccx: &CrateContext, align: usize, offset: usize) -> Option<Type> 
+padding_ty			fn padding_ty(ccx: &CrateContext, align: usize, offset: usize) -> Option<Type> 
 partial_cmp			    fn partial_cmp(&self, other: &Disr) -> Option<::std::cmp::Ordering> 
-partition			pub fn partition<'a, 'tcx, I>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+partition			pub fn partition<'a, 'tcx, I>(scx: &SharedCrateContext<'a, 'tcx>,
 partitioning			mod partitioning;
-pat_score			    fn pat_score(def_map: &RefCell<DefMap>, pat: &hir::Pat) -> usize 
+path_relative_from			fn path_relative_from(path: &Path, base: &Path) -> Option<PathBuf> 
 phi			    pub fn phi(&self, ty: Type, vals: &[ValueRef], bbs: &[BasicBlockRef]) -> ValueRef 
-pick_column_to_specialize			fn pick_column_to_specialize(def_map: &RefCell<DefMap>, m: &[Match]) -> Option<usize> 
 place_inlined_translation_items			fn place_inlined_translation_items<'tcx>(initial_partitioning: PreInliningPartitioning<'tcx>,
-place_root_translation_items			fn place_root_translation_items<'a, 'tcx, I>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+place_root_translation_items			fn place_root_translation_items<'a, 'tcx, I>(scx: &SharedCrateContext<'a, 'tcx>,
 platform			mod platform 
 pointer_type_metadata			fn pointer_type_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 pointercast			    pub fn pointercast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
-pop_and_trans_ast_cleanup_scope			    fn pop_and_trans_ast_cleanup_scope(&self,
-pop_and_trans_custom_cleanup_scope			    fn pop_and_trans_custom_cleanup_scope(&self,
-pop_custom_cleanup_scope			    fn pop_custom_cleanup_scope(&self,
-pop_loop_cleanup_scope			    fn pop_loop_cleanup_scope(&self,
-pop_scope			    fn pop_scope(&self) -> CleanupScope<'blk, 'tcx> 
-pop_scope			    fn pop_scope(&self) -> CleanupScope<'blk, 'tcx>;
+pop_and_trans_custom_cleanup_scope			    pub fn pop_and_trans_custom_cleanup_scope(&self,
+pop_custom_cleanup_scope			    pub fn pop_custom_cleanup_scope(&self,
+pop_scope			    fn pop_scope(&self) -> CleanupScope<'tcx> 
 position_at_end			    pub fn position_at_end(&self, llbb: BasicBlockRef) 
 position_at_start			    pub fn position_at_start(&self, llbb: BasicBlockRef) 
 position_before			    pub fn position_before(&self, insn: ValueRef) 
 position_independent_executable			    fn position_independent_executable(&mut self) { self.cmd.arg("-pie"); }
 position_independent_executable			    fn position_independent_executable(&mut self) 
 position_independent_executable			    fn position_independent_executable(&mut self);
-post_store			    fn post_store<'blk, 'tcx>(&self,
 pred_iter			    pub fn pred_iter(self) -> Preds 
 predefine			    pub fn predefine(&self,
 predefine_drop_glue			    fn predefine_drop_glue(ccx: &CrateContext<'a, 'tcx>,
 predefine_fn			    fn predefine_fn(ccx: &CrateContext<'a, 'tcx>,
 predefine_static			    fn predefine_static(ccx: &CrateContext<'a, 'tcx>,
-prefix			    pub fn prefix(&self) -> Type { self.prefix }
 prepare_enum_metadata			fn prepare_enum_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 prepare_index			    fn prepare_index(&mut self,
 prepare_struct_metadata			fn prepare_struct_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 prepare_tuple_metadata			fn prepare_tuple_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
+prepare_union_metadata			fn prepare_union_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 previous_work_product			    pub fn previous_work_product(&self) -> Option<&WorkProduct> 
 process_attrs			    fn process_attrs(&mut self,
+project_cache			    pub fn project_cache(&self) -> &RefCell<DepTrackingMap<ProjectionCache<'tcx>>> 
 propagate			    fn propagate<'tcx>(result: &mut IndexVec<mir::BasicBlock, CleanupKind>,
-ptr			    pub fn ptr(datum: Datum<'tcx, Rvalue>) -> Callee<'tcx> 
+ptr			    pub fn ptr(llfn: ValueRef, ty: Ty<'tcx>) -> Callee<'tcx> 
 ptr_to			    pub fn ptr_to(&self) -> Type 
 ptrcast			pub fn ptrcast(val: ValueRef, ty: Type) -> ValueRef 
 ptrdiff			    pub fn ptrdiff(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 ptrtoint			    pub fn ptrtoint(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 push			    fn push(&mut self, text: &str) 
 push			    fn push(n: &mut String, s: &str) 
-push_ast_cleanup_scope			    fn push_ast_cleanup_scope(&self, debug_loc: NodeIdAndSpan) 
-push_ast_cleanup_scope			    fn push_ast_cleanup_scope(&self, id: NodeIdAndSpan);
 push_ctxt			pub fn push_ctxt(s: &'static str) -> _InsnCtxt 
-push_custom_cleanup_scope			    fn push_custom_cleanup_scope(&self) -> CustomScopeIndex 
-push_custom_cleanup_scope			    fn push_custom_cleanup_scope(&self) -> CustomScopeIndex;
-push_custom_cleanup_scope_with_debug_loc			    fn push_custom_cleanup_scope_with_debug_loc(&self,
+push_custom_cleanup_scope			    pub fn push_custom_cleanup_scope(&self) -> CustomScopeIndex 
 push_debuginfo_type_name			pub fn push_debuginfo_type_name<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 push_instance_as_string			fn push_instance_as_string<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 push_item_name			    fn push_item_name(cx: &CrateContext,
 push_item_name			fn push_item_name(tcx: TyCtxt,
-push_loop_cleanup_scope			    fn push_loop_cleanup_scope(&self,
-push_scope			    fn push_scope(&self, scope: CleanupScope<'blk, 'tcx>) 
-push_scope			    fn push_scope(&self, scope: CleanupScope<'blk, 'tcx>);
+push_scope			    fn push_scope(&self, scope: CleanupScope<'tcx>) 
 push_type_params			    fn push_type_params<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 push_type_params			fn push_type_params<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 push_unique_type_name			pub fn push_unique_type_name<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 query_str			    pub fn query_str(&self, name: &str) -> io::Result<OsString> 
-range_to_inttype			fn range_to_inttype(cx: &CrateContext, hint: Hint, bounds: &IntBounds) -> IntType 
 raw			    fn raw(&self) -> HKEY 
-raw_block			pub fn raw_block<'blk, 'tcx>(fcx: &'blk FunctionContext<'blk, 'tcx>,
 raw_builder			    pub fn raw_builder<'a>(&'a self) -> BuilderRef 
 reachable			    pub fn reachable<'a>(&'a self) -> &'a NodeSet 
 record_inlining_canditates			    fn record_inlining_canditates<I>(&mut self,
@@ -1543,25 +1271,21 @@ record_inlining_canditates			fn record_inlining_canditates<'a, 'tcx>(tcx: TyCtxt
 register_type_with_metadata			    fn register_type_with_metadata<'a>(&mut self,
 register_unique_id_with_metadata			    fn register_unique_id_with_metadata(&mut self,
 registry			mod registry;
-reify			    pub fn reify<'a>(self, ccx: &CrateContext<'a, 'tcx>)
+reify			    pub fn reify<'a>(self, ccx: &CrateContext<'a, 'tcx>) -> ValueRef 
 remove			pub fn remove(sess: &Session, path: &Path) 
 remove_file			    pub fn remove_file(&mut self, file: &str) 
 report_overbig_object			    pub fn report_overbig_object(&self, obj: Ty<'tcx>) -> ! 
 report_symbol_names			pub fn report_symbol_names(scx: &SharedCrateContext) 
-represent_node			pub fn represent_node<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-represent_type			pub fn represent_type<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-represent_type_uncached			fn represent_type_uncached<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-requests_inline			    pub fn requests_inline(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> bool 
 require_alloc_fn			fn require_alloc_fn<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, info_ty: Ty<'tcx>, it: LangItem) -> DefId 
 resume			    pub fn resume(&self, exn: ValueRef) -> ValueRef 
 ret			    pub fn ret(&self, v: ValueRef) 
 ret_void			    pub fn ret_void(&self) 
-return_exit_block			    fn return_exit_block(&'blk self) -> BasicBlockRef 
-return_exit_block			    fn return_exit_block(&'blk self) -> BasicBlockRef;
 return_type			    pub fn return_type(&self) -> Type 
 root_mode			    fn root_mode(&self) -> &RootMode 
 rotate			    pub fn rotate(&'b self) -> CrateContext<'b, 'tcx> 
 roundup			fn roundup(x: u64, a: u32) -> u64 { let a = a as u64; ((x + (a - 1)) \/ a) * a }
+rpath			    pub mod rpath;
+rpaths_to_flags			fn rpaths_to_flags(rpaths: &[String]) -> Vec<String> 
 run			pub fn run(sess: &session::Session, llmod: ModuleRef,
 run_assembler			pub fn run_assembler(sess: &Session, outputs: &OutputFilenames) 
 run_passes			pub fn run_passes(sess: &Session,
@@ -1570,20 +1294,13 @@ run_work_singlethreaded			fn run_work_singlethreaded(sess: &Session,
 rust_try_fn			    pub fn rust_try_fn<'a>(&'a self) -> &'a Cell<Option<ValueRef>> 
 rvalue			mod rvalue;
 rvalue_creates_operand			pub fn rvalue_creates_operand<'bcx, 'tcx>(_mir: &mir::Mir<'tcx>,
-rvalue_scratch_datum			pub fn rvalue_scratch_datum<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 sanitize			pub fn sanitize(s: &str) -> String 
-schedule_clean			    fn schedule_clean(&self,
-schedule_clean_in_ast_scope			    fn schedule_clean_in_ast_scope(&self,
-schedule_clean_in_custom_scope			    fn schedule_clean_in_custom_scope(&self,
-schedule_drop_adt_contents			    fn schedule_drop_adt_contents(&self,
-schedule_drop_and_fill_mem			    fn schedule_drop_and_fill_mem(&self,
-schedule_drop_immediate			    fn schedule_drop_immediate(&self,
-schedule_drop_mem			    fn schedule_drop_mem(&self,
-schedule_free_value			    fn schedule_free_value(&self,
-schedule_lifetime_end			    fn schedule_lifetime_end(&self,
-scope_metadata			pub fn scope_metadata(fcx: &FunctionContext,
+schedule_clean			    fn schedule_clean(&self, custom_scope: CustomScopeIndex, cleanup: DropValue<'tcx>) 
+schedule_drop_adt_contents			    pub fn schedule_drop_adt_contents(&self,
+schedule_drop_immediate			    pub fn schedule_drop_immediate(&self,
+schedule_drop_mem			    pub fn schedule_drop_mem(&self,
+scope_metadata_for_loc			    fn scope_metadata_for_loc(&self, scope_id: mir::VisibilityScope, pos: BytePos)
 scopes_len			    fn scopes_len(&self) -> usize 
-scopes_len			    fn scopes_len(&self) -> usize;
 sdiv			    pub fn sdiv(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 select			    pub fn select(&self, cond: ValueRef, then_val: ValueRef, else_val: ValueRef) -> ValueRef 
 sess			    pub fn sess(&self) -> &'blk Session { self.fcx.ccx.sess() }
@@ -1601,11 +1318,8 @@ set_optimize_for_size			pub fn set_optimize_for_size(val: ValueRef, optimize: bo
 set_personality_fn			    pub fn set_personality_fn(&self, personality: ValueRef) 
 set_source_location			pub fn set_source_location(fcx: &FunctionContext,
 set_struct_body			    pub fn set_struct_body(&mut self, els: &[Type], packed: bool) 
-set_value_name			pub fn set_value_name(val: ValueRef, name: &str) 
 sext			    pub fn sext(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 sext_or_bitcast			    pub fn sext_or_bitcast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
-shallow_copy			    pub fn shallow_copy<'blk>(&self,
-shallow_copy_raw			    fn shallow_copy_raw<'blk>(&self,
 shared			    pub fn shared(&self) -> &'a SharedCrateContext<'a, 'tcx> 
 shared			    pub fn shared(&self) -> &'b SharedCrateContext<'b, 'tcx> 
 shift_mask_rhs			fn shift_mask_rhs<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
@@ -1614,14 +1328,13 @@ shl			    pub fn shl(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef
 should_be_ignored_message			    fn should_be_ignored_message() -> &'static str 
 shuffle_vector			    pub fn shuffle_vector(&self, v1: ValueRef, v2: ValueRef, mask: ValueRef) -> ValueRef 
 simd_add			    fn simd_add<T>(a: T, b: T) -> T;
-single_codegen_unit			fn single_codegen_unit<'a, 'tcx, I>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 sitofp			    pub fn sitofp(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 size_and_align_of			pub fn size_and_align_of(cx: &CrateContext, llvm_type: Type) -> (u64, u64) 
 size_and_align_of_dst			pub fn size_and_align_of_dst<'blk, 'tcx>(bcx: &BlockAndBuilder<'blk, 'tcx>,
 sized			    pub fn sized(value: ValueRef) -> MaybeSizedValue 
-sizing_type_context_of			pub fn sizing_type_context_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 sizing_type_of			pub fn sizing_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 sizing_type_of			pub fn sizing_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>) -> Type 
+slice_for_each			pub fn slice_for_each<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
 slice_layout_is_correct			    fn slice_layout_is_correct<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 source_loc			mod source_loc;
 span_invalid_monomorphization_error			fn span_invalid_monomorphization_error(a: &Session, b: Span, c: &str) 
@@ -1640,23 +1353,20 @@ store			    pub fn store(&self, val: ValueRef, ptr: ValueRef) -> ValueRef
 store			    fn store(&mut self, dest: &mir::Lvalue<'tcx>, value: Const<'tcx>, span: Span) 
 store_fat_ptr			pub fn store_fat_ptr<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 store_fn_arg			    pub fn store_fn_arg(&self, bcx: &BlockAndBuilder, idx: &mut usize, dst: ValueRef) 
-store_local			pub fn store_local<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 store_operand			    pub fn store_operand(&mut self,
 store_operand_direct			    pub fn store_operand_direct(&mut self,
 store_return			    fn store_return(&mut self,
-store_to			    pub fn store_to<'blk>(self,
-store_to_dest			    pub fn store_to_dest(self,
-store_to_dest			    pub fn store_to_dest<'blk>(self,
 store_ty			pub fn store_ty<'blk, 'tcx>(cx: Block<'blk, 'tcx>, v: ValueRef, dst: ValueRef, t: Ty<'tcx>) 
 string_to_io_error			fn string_to_io_error(s: String) -> io::Error 
 struct_			    pub fn struct_(ccx: &CrateContext, els: &[Type], packed: bool) -> Type 
 struct_field_ptr			fn struct_field_ptr<'blk, 'tcx>(bcx: &BlockAndBuilder<'blk, 'tcx>,
 struct_gep			    pub fn struct_gep(&self, ptr: ValueRef, idx: usize) -> ValueRef 
-struct_llfields			fn struct_llfields<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, st: &Struct<'tcx>,
+struct_llfields			fn struct_llfields<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, fields: &Vec<Ty<'tcx>>,
 struct_ty			fn struct_ty(ccx: &CrateContext, ty: Type) -> Type 
 struct_ty			fn struct_ty(ccx: &CrateContext, ty: Type) -> Type 
 struct_ty			fn struct_ty(ccx: &CrateContext, ty: Type) -> Type 
-struct_wrapped_nullable_bitdiscr			fn struct_wrapped_nullable_bitdiscr(bcx: Block, nndiscr: Disr, discrfield: &DiscrField,
+struct_ty			fn struct_ty(ccx: &CrateContext, ty: Type) -> Type 
+struct_wrapped_nullable_bitdiscr			fn struct_wrapped_nullable_bitdiscr(bcx: Block, nndiscr: u64, discrfield: &layout::FieldPath,
 sub			    pub fn sub(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 subroutine_type_metadata			fn subroutine_type_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 switch			    pub fn switch(&self, v: ValueRef, else_llbb: BasicBlockRef, num_cases: usize) -> ValueRef 
@@ -1673,159 +1383,84 @@ target_feature			fn target_feature(sess: &Session) -> String
 target_sets_discr_via_memset			fn target_sets_discr_via_memset<'blk, 'tcx>(bcx: Block<'blk, 'tcx>) -> bool 
 tcx			    pub fn tcx(&self) -> TyCtxt<'blk, 'tcx, 'tcx> 
 tcx			    pub fn tcx<'a>(&'a self) -> TyCtxt<'a, 'tcx, 'tcx> 
+tcx			    fn tcx<'c>(&'c self) -> TyCtxt<'c, 'gcx, 'gcx> 
 td			    pub fn td(&self) -> llvm::TargetDataRef 
-temporary_scope			pub fn temporary_scope(tcx: TyCtxt,
 terminate			pub fn terminate(cx: Block, _: &str) 
+tests			mod tests 
 tn			    pub fn tn<'a>(&'a self) -> &'a TypeNames 
-to_appropriate_datum			    pub fn to_appropriate_datum<'blk>(self, bcx: Block<'blk, 'tcx>)
 to_const			    fn to_const(&self, span: Span) -> Const<'tcx> 
-to_const_int			pub fn to_const_int(value: ValueRef, t: Ty, tcx: TyCtxt) -> Option<ConstInt> 
-to_datum			    fn to_datum<'tcx>(self, ty: Ty<'tcx>) -> Datum<'tcx, Lvalue> 
+to_const_int			fn to_const_int(value: ValueRef, t: Ty, tcx: TyCtxt) -> Option<ConstInt> 
 to_dep_node			    fn to_dep_node(key: &DefId) -> DepNode<DefId> 
+to_dep_node			    fn to_dep_node(key: &Self::Key) -> DepNode<DefId> 
 to_dep_node			    fn to_dep_node(key: &ty::PolyTraitRef<'tcx>) -> DepNode<DefId> 
-to_expr_datum			    pub fn to_expr_datum(self) -> Datum<'tcx, Expr> 
-to_expr_datumblock			    pub fn to_expr_datumblock(self) -> DatumBlock<'blk, 'tcx, Expr> 
-to_expr_kind			    fn to_expr_kind(self) -> Expr 
-to_expr_kind			    fn to_expr_kind(self) -> Expr;
 to_immediate			pub fn to_immediate(bcx: Block, val: ValueRef, ty: Ty) -> ValueRef 
-to_intrinsic			    fn to_intrinsic<'blk, 'tcx>(&self, bcx: Block<'blk, 'tcx>, lhs_ty: Ty) -> ValueRef 
-to_intrinsic_name			    fn to_intrinsic_name(&self, tcx: TyCtxt, ty: Ty) -> &'static str 
 to_linker			    pub fn to_linker(&'a self,
-to_llbool			    pub fn to_llbool(self) -> Result<'blk, 'tcx> 
-to_llbool			    pub fn to_llbool<'blk>(self, bcx: Block<'blk, 'tcx>) -> ValueRef 
-to_llref			    pub fn to_llref(self) -> ValueRef 
-to_llscalarish			    pub fn to_llscalarish<'blk>(self, bcx: Block<'blk, 'tcx>) -> ValueRef 
-to_lvalue_datum			    pub fn to_lvalue_datum<'blk>(self,
-to_lvalue_datum_in_scope			    pub fn to_lvalue_datum_in_scope<'blk>(self,
 to_operand			    pub fn to_operand<'a>(&self, ccx: &CrateContext<'a, 'tcx>) -> OperandRef<'tcx> 
 to_raw_string			    pub fn to_raw_string(&self) -> String 
 to_ref			    pub fn to_ref(&self) -> TypeRef 
-to_ref_datum			    pub fn to_ref_datum<'blk>(self, bcx: Block<'blk, 'tcx>)
 to_ref_slice			    pub fn to_ref_slice(slice: &[Type]) -> &[TypeRef] 
-to_rvalue_datum			    pub fn to_rvalue_datum<'blk>(self,
 to_str			    pub fn to_str(&self) -> String 
 to_string			    pub fn to_string(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> String 
 to_string_internal			        fn to_string_internal<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-to_value			    fn to_value(&self) -> DropHintValue { DropHint(self.0, self.1.val) }
-to_value			    fn to_value(&self) -> Self::ValueKind;
-top_ast_scope			    fn top_ast_scope(&self) -> Option<ast::NodeId> 
-top_ast_scope			    fn top_ast_scope(&self) -> Option<ast::NodeId>;
-top_loop_scope			    fn top_loop_scope(&self) -> ast::NodeId 
-top_loop_scope			    fn top_loop_scope(&self) -> ast::NodeId;
-top_nonempty_cleanup_scope			    fn top_nonempty_cleanup_scope(&self) -> Option<usize> 
-top_nonempty_cleanup_scope			    fn top_nonempty_cleanup_scope(&self) -> Option<usize>;
-top_scope			    fn top_scope<R, F>(&self, f: F) -> R where F: FnOnce(&CleanupScope<'blk, 'tcx>) -> R 
-top_scope			    fn top_scope<R, F>(&self, f: F) -> R where F: FnOnce(&CleanupScope<'blk, 'tcx>) -> R;
+top_scope			    fn top_scope<R, F>(&self, f: F) -> R where F: FnOnce(&CleanupScope<'tcx>) -> R 
 trait_cache			    pub fn trait_cache(&self) -> &RefCell<DepTrackingMap<TraitSelectionCache<'tcx>>> 
 trait_method			    pub fn trait_method<'a>(ccx: &CrateContext<'a, 'tcx>,
 trait_pointer_metadata			fn trait_pointer_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-trans			    fn trans<'blk>(&self, mut bcx: Block<'blk, 'tcx>) -> OptResult<'blk, 'tcx> 
 trans			    fn trans<'blk>(&self,
-trans			pub fn trans<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans			    fn trans(&mut self) -> Result<Const<'tcx>, ConstEvalFailure> 
-trans_addr_of			fn trans_addr_of<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_adt			pub fn trans_adt<'a, 'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
-trans_arg_datum			fn trans_arg_datum<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_args			pub fn trans_args<'a, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_args_under_call_abi			fn trans_args_under_call_abi<'blk, 'tcx>(
+trans			    fn trans(&mut self) -> Result<Const<'tcx>, ConstEvalErr> 
 trans_argument			    fn trans_argument(&mut self,
 trans_arguments_untupled			    fn trans_arguments_untupled(&mut self,
-trans_assign_op			fn trans_assign_op<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_binary			fn trans_binary<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_block			pub fn trans_block<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_block			    pub fn trans_block(&mut self, bb: mir::BasicBlock) 
-trans_break			pub fn trans_break<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_break_cont			pub fn trans_break_cont<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_call_inner			fn trans_call_inner<'a, 'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
-trans_case			pub fn trans_case<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, r: &Repr, discr: Disr)
+trans_call_inner			fn trans_call_inner<'a, 'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
+trans_case			pub fn trans_case<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, t: Ty<'tcx>, value: Disr)
 trans_cleanups_to_exit_scope			    fn trans_cleanups_to_exit_scope(&'blk self,
 trans_closure			pub fn trans_closure<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 trans_closure_body_via_mir			pub fn trans_closure_body_via_mir<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-trans_closure_expr			pub fn trans_closure_expr<'a, 'tcx>(dest: Dest<'a, 'tcx>,
 trans_closure_method			pub fn trans_closure_method<'a, 'tcx>(ccx: &'a CrateContext<'a, 'tcx>,
-trans_const			pub fn trans_const<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, r: &Repr<'tcx>, discr: Disr,
+trans_const			pub fn trans_const<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>, discr: Disr,
 trans_constant			    pub fn trans_constant(&mut self,
 trans_consume			    pub fn trans_consume(&mut self,
-trans_cont			pub fn trans_cont<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_crate			pub fn trans_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 trans_ctor_shim			pub fn trans_ctor_shim<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
-trans_datum_unadjusted			fn trans_datum_unadjusted<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
+trans_custom_dtor			fn trans_custom_dtor<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_def			    fn trans_def(ccx: &'a CrateContext<'a, 'tcx>,
-trans_def_dps_unadjusted			fn trans_def_dps_unadjusted<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_drop_flag_ptr			pub fn trans_drop_flag_ptr<'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 trans_exchange_free			pub fn trans_exchange_free<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 trans_exchange_free_dyn			pub fn trans_exchange_free_dyn<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_exchange_free_ty			pub fn trans_exchange_free_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_fail			pub fn trans_fail<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_fail_bounds_check			pub fn trans_fail_bounds_check<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_field			fn trans_field<'blk, 'tcx, F>(bcx: Block<'blk, 'tcx>,
-trans_field_ptr			pub fn trans_field_ptr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, r: &Repr<'tcx>,
+trans_field_ptr			pub fn trans_field_ptr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, t: Ty<'tcx>,
 trans_field_ptr_builder			pub fn trans_field_ptr_builder<'blk, 'tcx>(bcx: &BlockAndBuilder<'blk, 'tcx>,
-trans_fixed_vstore			pub fn trans_fixed_vstore<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_fn_once_adapter_shim			fn trans_fn_once_adapter_shim<'a, 'tcx>(
-trans_fn_pointer_shim			pub fn trans_fn_pointer_shim<'a, 'tcx>(
-trans_get_discr			pub fn trans_get_discr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, r: &Repr<'tcx>,
+trans_fn_pointer_shim			fn trans_fn_pointer_shim<'a, 'tcx>(
+trans_get_discr			pub fn trans_get_discr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, t: Ty<'tcx>,
 trans_gnu_try			fn trans_gnu_try<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_if			pub fn trans_if<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_imm_cast			fn trans_imm_cast<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_immediate_lit			fn trans_immediate_lit<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_index			fn trans_index<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_inline_asm			pub fn trans_inline_asm<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_instance			pub fn trans_instance<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, instance: Instance<'tcx>) 
-trans_into			pub fn trans_into<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_intrinsic_call			pub fn trans_intrinsic_call<'a, 'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 trans_item			mod trans_item;
-trans_lazy_binop			fn trans_lazy_binop<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_lit_str			pub fn trans_lit_str<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_load			    pub fn trans_load(&mut self,
-trans_loop			pub fn trans_loop<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_lvalue			    pub fn trans_lvalue(&mut self,
-trans_match			pub fn trans_match<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_match_inner			fn trans_match_inner<'blk, 'tcx>(scope_cx: Block<'blk, 'tcx>,
 trans_mir			pub fn trans_mir<'blk, 'tcx: 'blk>(fcx: &'blk FunctionContext<'blk, 'tcx>) 
 trans_msvc_try			fn trans_msvc_try<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_named_tuple_constructor			pub fn trans_named_tuple_constructor<'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 trans_object_shim			pub fn trans_object_shim<'a, 'tcx>(ccx: &'a CrateContext<'a, 'tcx>,
 trans_operand			    pub fn trans_operand(&mut self,
-trans_rec_field			fn trans_rec_field<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_rec_tup_field			fn trans_rec_tup_field<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_ret			pub fn trans_ret<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_reuse_previous_work_products			fn trans_reuse_previous_work_products(tcx: TyCtxt,
 trans_rvalue			    pub fn trans_rvalue(&mut self,
-trans_rvalue_dps_unadjusted			fn trans_rvalue_dps_unadjusted<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_rvalue_operand			    pub fn trans_rvalue_operand(&mut self,
-trans_rvalue_stmt_unadjusted			fn trans_rvalue_stmt_unadjusted<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_scalar_binop			fn trans_scalar_binop<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_scalar_binop			    pub fn trans_scalar_binop(&mut self,
 trans_scalar_checked_binop			    pub fn trans_scalar_checked_binop(&mut self,
 trans_scope_cleanups			    fn trans_scope_cleanups(&self, \/\/ cannot borrow self, will recurse
-trans_scope_cleanups			    fn trans_scope_cleanups(&self,
-trans_set_discr			pub fn trans_set_discr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, r: &Repr<'tcx>,
-trans_slice_vec			pub fn trans_slice_vec<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
+trans_set_discr			pub fn trans_set_discr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, t: Ty<'tcx>,
 trans_statement			    pub fn trans_statement(&mut self,
 trans_static			pub fn trans_static(ccx: &CrateContext,
 trans_static_initializer			pub fn trans_static_initializer(ccx: &CrateContext, def_id: DefId)
-trans_stmt			pub fn trans_stmt<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
-trans_stmt_semi			pub fn trans_stmt_semi<'blk, 'tcx>(cx: Block<'blk, 'tcx>, e: &hir::Expr)
 trans_storage_liveness			    fn trans_storage_liveness(&self,
-trans_struct			fn trans_struct<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_struct_drop			fn trans_struct_drop<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_struct_drop_flag			fn trans_struct_drop_flag<'blk, 'tcx>(mut bcx: Block<'blk, 'tcx>,
 trans_switch			pub fn trans_switch<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_to_lvalue			pub fn trans_to_lvalue<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_transmute			    fn trans_transmute(&mut self, bcx: &BlockAndBuilder<'bcx, 'tcx>,
-trans_unadjusted			fn trans_unadjusted<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_unary			fn trans_unary<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-trans_uniq_expr			fn trans_uniq_expr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_unwind_resume			pub fn trans_unwind_resume(bcx: Block, lpval: ValueRef) 
-trans_var			pub fn trans_var<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, def: Def)
-trans_while			pub fn trans_while<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-translating_closure_body_via_mir_will_fail			fn translating_closure_body_via_mir_will_fail(ccx: &CrateContext,
 translation_items			    pub fn translation_items(&self) -> &RefCell<FnvHashSet<TransItem<'tcx>>> 
 trap			    pub fn trap(&self) 
 trunc			    pub fn trunc(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 trunc_or_bitcast			    pub fn trunc_or_bitcast(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
-truncated_hash_result			    fn truncated_hash_result(symbol_hasher: &mut Sha256) -> String 
 try_intrinsic			fn try_intrinsic<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 tvec			mod tvec;
 ty			    pub fn ty(&self) -> Ty<'tcx> 
@@ -1833,10 +1468,13 @@ ty_align			fn ty_align(ty: Type) -> usize
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
+ty_align			fn ty_align(ty: Type) -> usize 
+ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			    fn ty_align(ty: Type) -> usize 
-ty_of_inttype			pub fn ty_of_inttype<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, ity: IntType) -> Ty<'tcx> 
 ty_size			fn ty_size(ty: Type) -> usize 
 ty_size			fn ty_size(ty: Type, align_fn: TyAlignFn) -> usize 
+ty_size			fn ty_size(ty: Type) -> usize 
+ty_size			fn ty_size(ty: Type) -> usize 
 ty_size			fn ty_size(ty: Type) -> usize 
 ty_size			fn ty_size(ty: Type) -> usize 
 ty_size			fn ty_size(ty: Type) -> usize 
@@ -1853,7 +1491,7 @@ type_metadata			pub fn type_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 type_names			mod type_names;
 type_needs_drop			    pub fn type_needs_drop(&self, ty: Ty<'tcx>) -> bool 
 type_needs_drop			pub fn type_needs_drop<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-type_of			pub fn type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, r: &Repr<'tcx>) -> Type 
+type_of			pub fn type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>) -> Type 
 type_of			mod type_of;
 type_of			pub fn type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, ty: Ty<'tcx>) -> Type 
 type_pair_fields			pub fn type_pair_fields<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>, ty: Ty<'tcx>)
@@ -1863,7 +1501,7 @@ uint_from_ty			    pub fn uint_from_ty(ccx: &CrateContext, t: ast::UintTy) -> Ty
 uitofp			    pub fn uitofp(&self, val: ValueRef, dest_ty: Type) -> ValueRef 
 unadjusted			    pub fn unadjusted<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 unify			    fn unify(cls: &mut [RegClass],
-union_size_and_align			fn union_size_and_align(sts: &[Struct]) -> (machine::llsize, machine::llalign) 
+union_fill			fn union_fill(cx: &CrateContext, size: u64, align: u64) -> Type 
 unknown_file_metadata			pub fn unknown_file_metadata(cx: &CrateContext) -> DIFile 
 unlib			    fn unlib<'a>(config: &config::Config, stem: &'a str) -> &'a str 
 unpack_if_pair			    pub fn unpack_if_pair(mut self, bcx: &BlockAndBuilder<'bcx, 'tcx>)
@@ -1882,20 +1520,15 @@ utils			mod utils;
 va_arg			    pub fn va_arg(&self, list: ValueRef, ty: Type) -> ValueRef 
 val_ty			pub fn val_ty(v: ValueRef) -> Type 
 validate_substs			pub fn validate_substs(substs: &Substs) 
-value			    pub fn value(&self) -> ValueRef { self.1 }
 value			mod value;
-var_scope			pub fn var_scope(tcx: TyCtxt,
 variadic_func			    pub fn variadic_func(args: &[Type], ret: &Type) -> Type 
 vc_lib_subdir			    fn vc_lib_subdir(arch: &str) -> Option<&'static str> 
 vec			    pub fn vec(ccx: &CrateContext, ty: &Type) -> Type 
 vec_slice_metadata			fn vec_slice_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
-vec_types			fn vec_types<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, unit_ty: Ty<'tcx>)
-vec_types_from_expr			fn vec_types_from_expr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, vec_expr: &hir::Expr)
 vector			    pub fn vector(ty: &Type, len: u64) -> Type 
 vector_length			    pub fn vector_length(&self) -> usize 
 vector_splat			    pub fn vector_splat(&self, num_elts: usize, elt: ValueRef) -> ValueRef 
 visit_assign			    fn visit_assign(&mut self,
-visit_expr			    fn visit_expr(&mut self, e: &hir::Expr) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'tcx hir::ImplItem) 
 visit_item			    fn visit_item(&mut self, item: &'v hir::Item) 
@@ -1903,8 +1536,8 @@ visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item)
 visit_lvalue			    fn visit_lvalue(&mut self,
 visit_lvalue			    fn visit_lvalue(&mut self,
 visit_mir_and_promoted			fn visit_mir_and_promoted<'tcx, V: MirVisitor<'tcx>>(mut visitor: V, mir: &mir::Mir<'tcx>) 
-visit_operand			    fn visit_operand(&mut self, operand: &mir::Operand<'tcx>) 
-visit_rvalue			    fn visit_rvalue(&mut self, rvalue: &mir::Rvalue<'tcx>) 
+visit_operand			    fn visit_operand(&mut self, operand: &mir::Operand<'tcx>, location: Location) 
+visit_rvalue			    fn visit_rvalue(&mut self, rvalue: &mir::Rvalue<'tcx>, location: Location) 
 visit_terminator_kind			    fn visit_terminator_kind(&mut self,
 visit_terminator_kind			    fn visit_terminator_kind(&mut self,
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'tcx hir::TraitItem) 
@@ -1913,10 +1546,6 @@ volatile_load			    pub fn volatile_load(&self, ptr: ValueRef) -> ValueRef
 volatile_store			    pub fn volatile_store(&self, val: ValueRef, ptr: ValueRef) -> ValueRef 
 vtable_ptr			    pub fn vtable_ptr(ccx: &CrateContext) -> Type 
 vtables			    pub fn vtables<'a>(&'a self) -> &'a RefCell<FnvHashMap<ty::PolyTraitRef<'tcx>, ValueRef>> 
-walk_block			fn walk_block(cx: &CrateContext,
-walk_decl			fn walk_decl(cx: &CrateContext,
-walk_expr			fn walk_expr(cx: &CrateContext,
-walk_pattern			fn walk_pattern(cx: &CrateContext,
 wants_msvc_seh			pub fn wants_msvc_seh(sess: &Session) -> bool 
 whole_archives			    fn whole_archives(&mut self) 
 whole_archives			    fn whole_archives(&mut self);
@@ -1927,15 +1556,12 @@ with_inlining_candidates			    pub fn with_inlining_candidates<F>(&self, source:
 with_insn_ctxt			pub fn with_insn_ctxt<F>(blk: F)
 with_llvm_pmb			pub unsafe fn with_llvm_pmb(llmod: ModuleRef,
 with_lvalue_ref			    pub fn with_lvalue_ref<F, U>(&mut self, bcx: &BlockAndBuilder<'bcx, 'tcx>,
-with_new_scope			fn with_new_scope<F>(cx: &CrateContext,
-with_overflow_check			fn with_overflow_check<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, oop: OverflowOp, info: NodeIdAndSpan,
 with_overflow_intrinsic			fn with_overflow_intrinsic<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-with_source_location_override			pub fn with_source_location_override<F, R>(fcx: &FunctionContext,
 work_product_dep_node			    pub fn work_product_dep_node(&self) -> DepNode<DefId> 
 work_product_id			    pub fn work_product_id(&self) -> Arc<WorkProductId> 
 wrapping_add			    pub fn wrapping_add(self, other: Self) -> Self 
+write			    fn write(&mut self, msg: &[u8]) 
 write			    pub mod write;
-write_content			fn write_content<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 write_metadata			fn write_metadata(cx: &SharedCrateContext,
 write_output_file			pub fn write_output_file(
 write_rlib_bytecode_object_v1			fn write_rlib_bytecode_object_v1(writer: &mut Write,
