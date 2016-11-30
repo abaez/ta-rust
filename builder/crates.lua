@@ -1,6 +1,6 @@
---- all crates as of v1.8.0
+--- all crates as of v1.13.0
 -- @author Alejandro Baez <https://keybase.io/baez>
--- @copyright 2015-2016
+-- @copyright 2014-2016
 -- @license MIT (see LICENSE)
 -- @module crates
 
@@ -12,6 +12,7 @@ return {
   "backtrace",
   "collections",
   "collectionstest",
+  "compiler_builtins",
   "core",
   "coretest",
   "flate",
@@ -20,17 +21,23 @@ return {
   "graphviz",
   "libc",
   "log",
+  "panic_abort",
+  "panic_unwind",
+  "proc_macro",
   "rand",
-  "rbml",
   "rustc",
   "rustc_back",
   "rustc_bitflags",
   "rustc_borrowck",
+  "rustc_const_eval",
+  "rustc_const_math",
   "rustc_data_structures",
   "rustc_driver",
-  "rustc_front",
+  "rustc_errors",
+  "rustc_incremental",
   "rustc_lint",
   "rustc_llvm",
+  "rustc_macro",
   "rustc_metadata",
   "rustc_mir",
   "rustc_passes",
@@ -38,6 +45,7 @@ return {
   "rustc_plugin",
   "rustc_privacy",
   "rustc_resolve",
+  "rustc_save_analysis",
   "rustc_trans",
   "rustc_typeck",
   "rustc_unicode",
@@ -46,6 +54,8 @@ return {
   "std",
   "syntax",
   "syntax_ext",
+  "syntax_pos",
   "term",
   "test",
+  "unwind",
 }
