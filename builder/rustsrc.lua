@@ -100,7 +100,9 @@ end
 -- @table actions
 actions = {
   ["-c"] = function(path)
-    return build(path)
+    build(path)
+    print("crates.lua is now updated.\nPlease run again without -c")
+    os.exit()
   end,
 
   ["-h"] = function()

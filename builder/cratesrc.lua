@@ -76,11 +76,12 @@ local B = {
 
 --- the main operator when calling the module.
 function main(src)
-  local home = os.getenv("HOME")
   src = src or "/data/Code/src/rust"
-  crate = home ~= nil and
-    B:new("ls " .. src .. "/src | grep lib") or
-      error("Couldn't access environment for rust src")
+  crate = io.open(src) ~= nil and
+      B:new("ls " .. src .. "/src | grep lib") or
+      error(
+        ("Couldn't enter location: %s.\nCheck -h for help\n"):format(src))
+
   crate:write("crates.lua")
 
   print('done')
