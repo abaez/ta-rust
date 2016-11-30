@@ -11,6 +11,8 @@
 -- see {crates} for more info
 local crates = require("crates")
 
+local build = require("cratesrc").new
+
 local HELP = [[
 usage: rustsrc.lua [rust src location]
 
@@ -97,8 +99,8 @@ end
 -- see HELP for documentation of each function.
 -- @table actions
 actions = {
-  ["-c"] = function()
-    return require("cratesrc")()
+  ["-c"] = function(path)
+    return build(path)
   end,
 
   ["-h"] = function()
@@ -120,7 +122,7 @@ if arg[1] ~= nil then
 
   for i=1,#arg do
     if arg[i] == "-c" then
-      actions[arg[i]]()
+      actions[arg[i]](tmp.path or nil)
     elseif arg[i] == "-h" then
       actions[arg[i]]()
     elseif arg[i] == "-p" then

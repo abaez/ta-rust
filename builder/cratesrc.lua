@@ -41,8 +41,7 @@ local priv = {
   end
 }
 
---- the build operation table
--- @table B
+--- the build operation table -- @table B
 local B = {
 
   --- constructs the build structure.
@@ -76,17 +75,18 @@ local B = {
 }
 
 --- the main operator when calling the module.
-function main()
+function main(src)
   local home = os.getenv("HOME")
+  src = src or "/data/Code/src/rust"
   crate = home ~= nil and
-    B:new("ls " .. "/data/Code/src/rust" .. "/src | grep lib") or
+    B:new("ls " .. src .. "/src | grep lib") or
       error("Couldn't access environment for rust src")
   crate:write("crates.lua")
 
   print('done')
 end
 
-local M = {}
-setmetatable(M, {__call = main})
 
-return M
+return {
+  new = main
+}
