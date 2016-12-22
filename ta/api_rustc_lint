@@ -2,6 +2,9 @@ BoxPointers			impl BoxPointers
 BoxPointers			pub struct BoxPointers;
 Deprecated			impl Deprecated 
 Deprecated			pub struct Deprecated 
+DeprecatedAttr			impl DeprecatedAttr 
+DeprecatedAttr			pub struct DeprecatedAttr 
+EarlyLintPass for DeprecatedAttr			impl EarlyLintPass for DeprecatedAttr 
 EarlyLintPass for UnusedParens			impl EarlyLintPass for UnusedParens 
 FfiResult			enum FfiResult 
 ImproperCTypes			pub struct ImproperCTypes;
@@ -37,6 +40,7 @@ LateLintPass for VariantSizeDifferences			impl LateLintPass for VariantSizeDiffe
 LateLintPass for WhileTrue			impl LateLintPass for WhileTrue 
 LintPass for BoxPointers			impl LintPass for BoxPointers 
 LintPass for Deprecated			impl LintPass for Deprecated 
+LintPass for DeprecatedAttr			impl LintPass for DeprecatedAttr 
 LintPass for ImproperCTypes			impl LintPass for ImproperCTypes 
 LintPass for InvalidNoMangleItems			impl LintPass for InvalidNoMangleItems 
 LintPass for MissingCopyImplementations			impl LintPass for MissingCopyImplementations 
@@ -99,6 +103,7 @@ WhileTrue			pub struct WhileTrue;
 bad_style			mod bad_style;
 builtin			mod builtin;
 check_attribute			    fn check_attribute(&mut self, ctx: &LateContext, attr: &ast::Attribute) 
+check_attribute			    fn check_attribute(&mut self, cx: &EarlyContext, attr: &ast::Attribute) 
 check_attribute			    fn check_attribute(&mut self, cx: &LateContext, attr: &ast::Attribute) 
 check_case			    fn check_case(&self, cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
 check_crate			    fn check_crate(&mut self, cx: &LateContext, cr: &hir::Crate) 
@@ -108,16 +113,15 @@ check_expr			    fn check_expr(&mut self, cx: &LateContext, expr: &hir::Expr)
 check_expr			    fn check_expr(&mut self, cx: &LateContext, e: &hir::Expr) 
 check_expr			    fn check_expr(&mut self, cx: &EarlyContext, e: &ast::Expr) 
 check_expr			    fn check_expr(&mut self, cx: &LateContext, e: &hir::Expr) 
-check_fn			    fn check_fn(&mut self, cx: &LateContext,
-check_fn			    fn check_fn(&mut self, cx: &LateContext, fk: FnKind, _: &hir::FnDecl,
-check_fn			    fn check_fn(&mut self, cx: &LateContext, fn_kind: FnKind, _: &hir::FnDecl,
-check_fn			    fn check_fn(&mut self, cx: &LateContext,
+check_fn			    fn check_fn(&mut self,
+check_fn			    fn check_fn(&mut self,
+check_fn			    fn check_fn(&mut self,
 check_foreign_fn			    fn check_foreign_fn(&mut self, id: ast::NodeId, decl: &hir::FnDecl) 
 check_foreign_item			    fn check_foreign_item(&mut self, _: &LateContext, item: &hir::ForeignItem) 
 check_foreign_item_post			    fn check_foreign_item_post(&mut self, cx: &LateContext, item: &hir::ForeignItem) 
 check_foreign_static			    fn check_foreign_static(&mut self, id: ast::NodeId, span: Span) 
 check_generics			    fn check_generics(&mut self, cx: &LateContext, it: &hir::Generics) 
-check_heap_type			    fn check_heap_type<'a, 'tcx>(&self, cx: &LateContext<'a, 'tcx>,
+check_heap_type			    fn check_heap_type<'a, 'tcx>(&self, cx: &LateContext<'a, 'tcx>, span: Span, ty: Ty<'tcx>) 
 check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, ii: &hir::ImplItem) 
 check_impl_item			    fn check_impl_item(&mut self, _: &LateContext, item: &hir::ImplItem) 
 check_impl_item			    fn check_impl_item(&mut self, cx: &LateContext, impl_item: &hir::ImplItem) 
@@ -140,19 +144,19 @@ check_path_list_item			    fn check_path_list_item(&mut self, cx: &LateContext, 
 check_snake_case			    fn check_snake_case(&self, cx: &LateContext, sort: &str, name: &str, span: Option<Span>) 
 check_stmt			    fn check_stmt(&mut self, cx: &EarlyContext, s: &ast::Stmt) 
 check_stmt			    fn check_stmt(&mut self, cx: &LateContext, s: &hir::Stmt) 
-check_struct_def			    fn check_struct_def(&mut self, cx: &LateContext, s: &hir::VariantData,
-check_struct_def			    fn check_struct_def(&mut self, _: &LateContext, _: &hir::VariantData,
-check_struct_def_post			    fn check_struct_def_post(&mut self, _: &LateContext, _: &hir::VariantData,
+check_struct_def			    fn check_struct_def(&mut self,
+check_struct_def			    fn check_struct_def(&mut self,
+check_struct_def_post			    fn check_struct_def_post(&mut self,
 check_struct_field			    fn check_struct_field(&mut self, cx: &LateContext, sf: &hir::StructField) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, ti: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, _: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
 check_trait_item_post			    fn check_trait_item_post(&mut self, cx: &LateContext, item: &hir::TraitItem) 
-check_type_for_ffi			    fn check_type_for_ffi(&self,
+check_type_for_ffi			    fn check_type_for_ffi(&self, cache: &mut FnvHashSet<Ty<'tcx>>, ty: Ty<'tcx>) -> FfiResult 
 check_type_for_ffi_and_report_errors			    fn check_type_for_ffi_and_report_errors(&mut self, sp: Span, ty: Ty<'tcx>) 
 check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &LateContext, pats: &[P<hir::Pat>]) 
-check_unused_parens_core			    fn check_unused_parens_core(&self, cx: &EarlyContext, value: &ast::Expr, msg: &str,
+check_unused_parens_core			    fn check_unused_parens_core(&self,
 check_upper_case			    fn check_upper_case(cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
 check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
 check_variant_post			    fn check_variant_post(&mut self, _: &LateContext, _: &hir::Variant, _: &hir::Generics) 
@@ -161,7 +165,7 @@ def_id_is_transmute			        fn def_id_is_transmute(cx: &LateContext, def_id: D
 doc_hidden			    fn doc_hidden(&self) -> bool 
 enter_lint_attrs			    fn enter_lint_attrs(&mut self, _: &LateContext, attrs: &[ast::Attribute]) 
 exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &LateContext, _: &[ast::Attribute]) 
-expr_refers_to_this_fn			        fn expr_refers_to_this_fn(tcx: TyCtxt,
+expr_refers_to_this_fn			        fn expr_refers_to_this_fn(tcx: TyCtxt, fn_id: ast::NodeId, id: ast::NodeId) -> bool 
 expr_refers_to_this_method			        fn expr_refers_to_this_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 float_ty_range			        fn float_ty_range(float_ty: ast::FloatTy) -> (f64, f64) 
 forbid_unsigned_negation			        fn forbid_unsigned_negation(cx: &LateContext, span: Span) 
@@ -169,20 +173,20 @@ get_lints			    fn get_lints(&self) -> LintArray
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
-get_transmute_from_to			        fn get_transmute_from_to<'a, 'tcx>(cx: &LateContext<'a, 'tcx>, expr: &hir::Expr)
+get_transmute_from_to			        fn get_transmute_from_to<'a, 'tcx>
 int_ty_bits			        fn int_ty_bits(int_ty: ast::IntTy, target_int_ty: ast::IntTy) -> u64 
 int_ty_range			        fn int_ty_range(int_ty: ast::IntTy) -> (i64, i64) 
 is_camel_case			        fn is_camel_case(name: ast::Name) -> bool 
 is_comparison			        fn is_comparison(binop: hir::BinOp) -> bool 
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
-is_valid			        fn is_valid<T:cmp::PartialOrd>(binop: hir::BinOp, v: T,
+is_valid			        fn is_valid<T: cmp::PartialOrd>(binop: hir::BinOp, v: T, min: T, max: T) -> bool 
 item_post			    fn item_post(&mut self, cx: &LateContext, item_id: ast::NodeId) 
-lint			    fn lint(&self, cx: &LateContext, _id: DefId, span: Span,
-marked			                              struct marked #[repr(C)]: {}", s));
+lint			    fn lint(&self,
 method_call_refers_to_method			        fn method_call_refers_to_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId, span: Span) -> MethodLateContext 
 new			    pub fn new() -> Deprecated 
+new			    pub fn new() -> DeprecatedAttr 
 new			    pub fn new() -> MissingDebugImplementations 
 new			    pub fn new() -> MissingDoc 
 new			    pub fn new() -> TypeLimits 

@@ -1,8 +1,10 @@
+::std::fmt::Display for Fingerprint			impl ::std::fmt::Display for Fingerprint 
 CacheEntry			struct CacheEntry 
 CachingCodemapView			impl<'tcx> CachingCodemapView<'tcx> 
 CachingCodemapView			pub struct CachingCodemapView<'tcx> 
 CrateInfo			pub struct CrateInfo 
 Debug for DefIdDirectory			impl Debug for DefIdDirectory 
+Decodable for Fingerprint			impl Decodable for Fingerprint 
 DefHash			pub enum DefHash 
 DefIdDirectory			impl DefIdDirectory 
 DefIdDirectory			pub struct DefIdDirectory 
@@ -15,11 +17,17 @@ DirtyCleanMetadataVisitor			impl<'a, 'tcx, 'm> DirtyCleanMetadataVisitor<'a, 'tc
 DirtyCleanMetadataVisitor			pub struct DirtyCleanMetadataVisitor<'a, 'tcx:'a, 'm> 
 DirtyCleanVisitor			impl<'a, 'tcx> DirtyCleanVisitor<'a, 'tcx> 
 DirtyCleanVisitor			pub struct DirtyCleanVisitor<'a, 'tcx:'a> 
+Encodable for Fingerprint			impl Encodable for Fingerprint 
+Fingerprint			impl Fingerprint 
+Fingerprint			pub struct Fingerprint(pub [u8; FINGERPRINT_LENGTH]);
 GraphvizDepGraph			pub struct GraphvizDepGraph<'q>(FnvHashSet<&'q DepNode<DefId>>,
 HashContext			impl<'a, 'tcx> HashContext<'a, 'tcx> 
 HashContext			pub struct HashContext<'a, 'tcx: 'a> 
 HashItemsVisitor			impl<'a, 'tcx> HashItemsVisitor<'a, 'tcx> 
 HashItemsVisitor			struct HashItemsVisitor<'a, 'tcx: 'a> 
+Hasher for IchHasher			impl Hasher for IchHasher 
+IchHasher			impl IchHasher 
+IchHasher			pub struct IchHasher 
 IfThisChanged			impl<'a, 'tcx> IfThisChanged<'a, 'tcx> 
 IfThisChanged			struct IfThisChanged<'a, 'tcx:'a> 
 IncrementalHashesMap			impl IncrementalHashesMap 
@@ -30,7 +38,11 @@ RetracedDefIdDirectory			impl RetracedDefIdDirectory
 RetracedDefIdDirectory			pub struct RetracedDefIdDirectory 
 SawAbiComponent			enum SawAbiComponent<'a> 
 SawExprComponent			enum SawExprComponent<'a> 
+SawItemComponent			enum SawItemComponent 
+SawPatComponent			enum SawPatComponent 
 SawSpanExpnKind			enum SawSpanExpnKind 
+SawTraitOrImplItemComponent			enum SawTraitOrImplItemComponent 
+SawTyComponent			enum SawTyComponent 
 SerializedDepGraph			pub struct SerializedDepGraph 
 SerializedHash			pub struct SerializedHash 
 SerializedMetadataHash			pub struct SerializedMetadataHash 
@@ -52,6 +64,7 @@ assert_dirty			    fn assert_dirty(&self, item: &hir::Item, dep_node: DepNode<De
 assert_no_characters_lost			fn assert_no_characters_lost(s: &str) 
 assert_state			    fn assert_state(&self, should_be_clean: bool, def_id: DefId, span: Span) 
 byte_pos_to_line_and_col			    pub fn byte_pos_to_line_and_col(&mut self,
+bytes_hashed			    pub fn bytes_hashed(&self) -> u64 
 caching_codemap_view			mod caching_codemap_view;
 calculate_def_id			    fn calculate_def_id<W>(&mut self, def_id: DefId, mut walk_op: W)
 calculate_node_id			    fn calculate_node_id<W>(&mut self, id: ast::NodeId, walk_op: W)
@@ -69,6 +82,7 @@ crate_path			fn crate_path(sess: &Session,
 crate_path_tcx			fn crate_path_tcx(tcx: TyCtxt, cnum: CrateNum) -> PathBuf 
 create_dir			fn create_dir(sess: &Session, path: &Path, dir_tag: &str) -> Result<(),()> 
 data			mod data;
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Fingerprint, D::Error> 
 decode_dep_graph			pub fn decode_dep_graph<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 def_id			    pub fn def_id(&self, index: DefPathIndex) -> Option<DefId> 
 def_path_hash			mod def_path_hash;
@@ -87,6 +101,7 @@ dot::GraphWalk for GraphvizDepGraph			impl<'a, 'tcx, 'q> dot::GraphWalk<'a> for 
 dot::Labeller for GraphvizDepGraph			impl<'a, 'tcx, 'q> dot::Labeller<'a> for GraphvizDepGraph<'q> 
 dump_graph			fn dump_graph(tcx: TyCtxt) 
 edges			    fn edges(&self) -> dot::Edges<(&'q DepNode<DefId>, &'q DepNode<DefId>)> 
+encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode_base_36			fn encode_base_36(mut n: u64) -> String 
 encode_dep_graph			pub fn encode_dep_graph(preds: &Predecessors,
 encode_metadata_hashes			pub fn encode_metadata_hashes(tcx: TyCtxt,
@@ -101,13 +116,18 @@ find_metadata_hashes_for			pub fn find_metadata_hashes_for(tcx: TyCtxt, cnum: Cr
 find_metadata_hashes_iter			fn find_metadata_hashes_iter<'a, I>(target_svh: &str, iter: I) -> Option<OsString>
 find_source_directory			fn find_source_directory(crate_dir: &Path,
 find_source_directory_in_iter			fn find_source_directory_in_iter<I>(iter: I,
+fingerprint			mod fingerprint;
+finish			    fn finish(&self) -> u64 
+finish			    pub fn finish(self) -> Fingerprint 
+fmt			    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> Result<(), ::std::fmt::Error> 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> 
+from_smaller_hash			    pub fn from_smaller_hash(hash: u64) -> Fingerprint 
 fs			mod fs;
 garbage_collect_session_directories			pub fn garbage_collect_session_directories(sess: &Session) -> io::Result<()> 
 generate_session_dir_path			fn generate_session_dir_path(crate_dir: &Path) -> PathBuf 
 graph_id			    fn graph_id(&self) -> dot::Id 
 hash			    pub fn hash(&mut self, def_id: DefId) -> u64 
-hash			    pub fn hash(&mut self, dep_node: &DepNode<DefId>) -> Option<u64> 
+hash			    pub fn hash(&mut self, dep_node: &DepNode<DefId>) -> Option<Fingerprint> 
 hash			mod hash;
 hash_attributes			    pub fn hash_attributes(&mut self, attributes: &[ast::Attribute]) 
 hash_def			    fn hash_def(&mut self, def: Def) 
@@ -117,18 +137,21 @@ hash_meta_item			    fn hash_meta_item(&mut self, meta_item: &ast::MetaItem)
 hash_partial_def			    fn hash_partial_def(&mut self, def: &PathResolution) 
 hash_resolve			    fn hash_resolve(&mut self, id: ast::NodeId) 
 hash_span			    fn hash_span(&mut self, span: Span) 
+hasher			pub mod hasher;
+ich			pub mod ich;
 in_incr_comp_dir			pub fn in_incr_comp_dir(incr_comp_session_dir: &Path, file_name: &str) -> PathBuf 
 in_incr_comp_dir_sess			pub fn in_incr_comp_dir_sess(sess: &Session, file_name: &str) -> PathBuf 
-index			    fn index(&self, index: &'a DepNode<DefId>) -> &u64 
+index			    fn index(&self, index: &'a DepNode<DefId>) -> &Fingerprint 
 indices_sorted_by			    fn indices_sorted_by<T, K, F>(&mut self, items: &[T], get_key: F) -> Vec<usize>
-insert			    pub fn insert(&mut self, k: DepNode<DefId>, v: u64) -> Option<u64> 
+insert			    pub fn insert(&mut self, k: DepNode<DefId>, v: Fingerprint) -> Option<Fingerprint> 
 is_finalized			fn is_finalized(directory_name: &str) -> bool 
 is_hashable			    pub fn is_hashable(dep_node: &DepNode<DefId>) -> bool 
 is_old_enough_to_be_collected			fn is_old_enough_to_be_collected(timestamp: SystemTime) -> bool 
 is_session_directory			fn is_session_directory(directory_name: &str) -> bool 
 is_session_directory_lock_file			fn is_session_directory_lock_file(file_name: &str) -> bool 
-iter			    pub fn iter<'a>(&'a self) -> ::std::collections::hash_map::Iter<'a, DepNode<DefId>, u64> 
+iter			    pub fn iter<'a>(&'a self)
 krate_still_valid			    pub fn krate_still_valid(&self,
+len			    pub fn len(&self) -> usize 
 load			mod load;
 load_data			    fn load_data(&mut self, cnum: CrateNum) 
 load_data			fn load_data(sess: &Session, path: &Path) -> Option<Vec<u8>> 
@@ -139,16 +162,19 @@ load_prev_metadata_hashes			fn load_prev_metadata_hashes(tcx: TyCtxt,
 lock_directory			fn lock_directory(sess: &Session,
 lock_file_path			pub fn lock_file_path(session_dir: &Path) -> PathBuf 
 lookup_def_path			    pub fn lookup_def_path(&self, id: DefPathIndex) -> &DefPath 
+make_key			        fn make_key(name: &str, disambiguator: &str) -> String 
 map			    pub fn map(&mut self, node: &DepNode<DefId>) -> DepNode<DefPathIndex> 
 map			    pub fn map(&self, node: &DepNode<DefPathIndex>) -> Option<DepNode<DefId>> 
 max_current_crate			    fn max_current_crate(&self, tcx: TyCtxt) -> CrateNum 
-metadata_hash			    fn metadata_hash(&mut self, def_id: DefId) -> u64 
+maybe_enable_overflow_checks			    fn maybe_enable_overflow_checks(&mut self, item_attrs: &[ast::Attribute]) 
+metadata_hash			    fn metadata_hash(&mut self, def_id: DefId) -> Fingerprint 
 metadata_hash_export_path			pub fn metadata_hash_export_path(sess: &Session) -> PathBuf 
 metadata_hash_import_path			pub fn metadata_hash_import_path(import_session_dir: &Path) -> PathBuf 
 new			    pub fn new<'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> CachingCodemapView<'tcx> 
 new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Self 
+new			    pub fn new() -> IchHasher 
 new			    pub fn new() -> IncrementalHashesMap 
-new			    pub fn new(st: &'a mut DefaultHasher,
+new			    pub fn new(st: &'a mut IchHasher,
 new			    pub fn new(krates: Vec<CrateInfo>) -> DefIdDirectory 
 new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> DefIdDirectoryBuilder<'a, 'tcx> 
 new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>,
@@ -173,14 +199,21 @@ save_dep_graph			pub fn save_dep_graph<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 save_in			fn save_in<F>(sess: &Session, path_buf: PathBuf, encode: F)
 save_trans_partition			pub fn save_trans_partition(sess: &Session,
 save_work_products			pub fn save_work_products(sess: &Session) 
-saw_expr			fn saw_expr<'a>(node: &'a Expr_) -> SawExprComponent<'a> 
+saw_expr			fn saw_expr<'a>(node: &'a Expr_,
+saw_impl_item			fn saw_impl_item(ii: &ImplItemKind) -> SawTraitOrImplItemComponent 
+saw_item			fn saw_item(node: &Item_) -> SawItemComponent 
+saw_pat			fn saw_pat(node: &PatKind) -> SawPatComponent 
+saw_trait_item			fn saw_trait_item(ti: &TraitItem_) -> SawTraitOrImplItemComponent 
+saw_ty			fn saw_ty(node: &Ty_) -> SawTyComponent 
 source			    fn source(&self, edge: &(&'q DepNode<DefId>, &'q DepNode<DefId>)) -> &'q DepNode<DefId> 
 string_to_timestamp			fn string_to_timestamp(s: &str) -> Result<SystemTime, ()> 
+svh_to_fingerprint			fn svh_to_fingerprint(svh: Svh) -> Fingerprint 
 svh_visitor			mod svh_visitor;
 target			    fn target(&self, edge: &(&'q DepNode<DefId>, &'q DepNode<DefId>)) -> &'q DepNode<DefId> 
 tcx			    pub fn tcx(&self) -> TyCtxt<'a, 'tcx, 'tcx> 
 test			    fn test(n: u64) 
 timestamp_to_string			fn timestamp_to_string(timestamp: SystemTime) -> String 
+to_smaller_hash			    pub fn to_smaller_hash(&self) -> u64 
 visit::Visitor for HashItemsVisitor			impl<'a, 'tcx> visit::Visitor<'tcx> for HashItemsVisitor<'a, 'tcx> 
 visit::Visitor for StrictVersionHashVisitor			impl<'a, 'hash, 'tcx> visit::Visitor<'tcx> for StrictVersionHashVisitor<'a, 'hash, 'tcx> 
 visit_arm			    fn visit_arm(&mut self, a: &'tcx Arm) 
@@ -223,4 +256,11 @@ walk_between			fn walk_between<'q>(query: &'q DepGraphQuery<DefId>,
 walk_nodes			fn walk_nodes<'q>(query: &'q DepGraphQuery<DefId>,
 work_product			mod work_product;
 work_products_path			pub fn work_products_path(sess: &Session) -> PathBuf 
+write			    fn write(&mut self, bytes: &[u8]) 
 write_file_header			pub fn write_file_header<W: io::Write>(stream: &mut W) -> io::Result<()> 
+write_u16			    fn write_u16(&mut self, i: u16) 
+write_u32			    fn write_u32(&mut self, i: u32) 
+write_u64			    fn write_u64(&mut self, i: u64) 
+write_uleb128			    fn write_uleb128(&mut self, value: u64) 
+write_usize			    fn write_usize(&mut self, i: usize) 
+zero			    pub fn zero() -> Fingerprint 

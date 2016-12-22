@@ -71,7 +71,6 @@ C_uint			pub fn C_uint<I: AsU64>(ccx: &CrateContext, i: I) -> ValueRef
 C_undef			pub fn C_undef(t: Type) -> ValueRef 
 C_vector			pub fn C_vector(elts: &[ValueRef]) -> ValueRef 
 CachedEarlyExit			pub struct CachedEarlyExit 
-CachedMir			pub enum CachedMir<'mir, 'tcx: 'mir> 
 Call			pub fn Call(cx: Block,
 Callee			impl<'tcx> Callee<'tcx> 
 Callee			pub struct Callee<'tcx> 
@@ -110,11 +109,9 @@ CustomScopeIndex			pub struct CustomScopeIndex
 DIB			pub fn DIB(cx: &CrateContext) -> DIBuilderRef 
 DebugLoc			impl DebugLoc 
 DebugLoc			pub enum DebugLoc 
-DepTrackingMapConfig for MirCache			impl<'tcx> DepTrackingMapConfig for MirCache<'tcx> 
 DepTrackingMapConfig for ProjectionCache			impl<'gcx> DepTrackingMapConfig for ProjectionCache<'gcx> 
 DepTrackingMapConfig for TraitSelectionCache			impl<'tcx> DepTrackingMapConfig for TraitSelectionCache<'tcx> 
 Deref for BlockAndBuilder			impl<'blk, 'tcx> Deref for BlockAndBuilder<'blk, 'tcx> 
-Deref for CachedMir			impl<'mir, 'tcx: 'mir> Deref for CachedMir<'mir, 'tcx> 
 Diagnostic			struct Diagnostic 
 Disposition			enum Disposition { Reused, Translated }
 Disr			impl Disr 
@@ -178,8 +175,6 @@ GlobalStringPtr			pub fn GlobalStringPtr(cx: Block, _str: *const c_char) -> Valu
 GnuLinker			impl<'a> GnuLinker<'a> 
 GnuLinker			pub struct GnuLinker<'a> 
 HandlerFreeVars			struct HandlerFreeVars<'a> 
-Hash for TransItem			impl<'tcx> Hash for TransItem<'tcx> 
-Hasher for Sha256Hasher			impl<'a> Hasher for Sha256Hasher<'a> 
 ICmp			pub fn ICmp(cx: Block,
 InBoundsGEP			pub fn InBoundsGEP(cx: Block, pointer: ValueRef, indices: &[ValueRef]) -> ValueRef 
 IndirectBr			pub fn IndirectBr(cx: Block,
@@ -233,7 +228,7 @@ MemberDescriptionFactory			impl<'tcx> MemberDescriptionFactory<'tcx>
 MemberOffset			enum MemberOffset 
 MetadataCreationResult			impl MetadataCreationResult 
 MetadataCreationResult			struct MetadataCreationResult 
-MirCache			struct MirCache<'tcx> 
+MetadataKind			    enum MetadataKind 
 MirConstContext			impl<'a, 'tcx> MirConstContext<'a, 'tcx> 
 MirConstContext			struct MirConstContext<'a, 'tcx: 'a> 
 MirContext			impl<'bcx, 'tcx> MirContext<'bcx, 'tcx> 
@@ -314,7 +309,6 @@ Send for ModuleTranslation			unsafe impl Send for ModuleTranslation { }
 Send for RegistryKey			unsafe impl Send for RegistryKey {}
 SetCleanup			pub fn SetCleanup(cx: Block, landing_pad: ValueRef) 
 SetPersonalityFn			pub fn SetPersonalityFn(cx: Block, f: ValueRef) 
-Sha256Hasher			struct Sha256Hasher<'a>(&'a mut Sha256);
 SharedCrateContext			impl<'b, 'tcx> SharedCrateContext<'b, 'tcx> 
 SharedCrateContext			pub struct SharedCrateContext<'a, 'tcx: 'a> 
 SharedEmitter			impl SharedEmitter 
@@ -417,22 +411,12 @@ addr_of_mut			pub fn addr_of_mut(ccx: &CrateContext,
 adjust_for_abi			    pub fn adjust_for_abi<'a, 'tcx>(&mut self,
 adt			mod adt;
 aggregate_ret			    pub fn aggregate_ret(&self, ret_vals: &[ValueRef]) 
-align			fn align(off: usize, ty: Type) -> usize 
+align			fn align(off: usize, ty: Type, pointer: usize) -> usize 
 align			fn align(off: usize, ty: Type, align_fn: TyAlignFn) -> usize 
-align			fn align(off: usize, ty: Type) -> usize 
-align			fn align(off: usize, ty: Type) -> usize 
-align			fn align(off: usize, ty: Type) -> usize 
-align			fn align(off: usize, ty: Type) -> usize 
 align			fn align(off: usize, ty: Type) -> usize 
 align			    fn align(off: usize, ty: Type) -> usize 
 align_of			pub fn align_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>, t: Ty<'tcx>)
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
-align_up_to			fn align_up_to(off: usize, a: usize) -> usize 
+align_up_to			pub fn align_up_to(off: usize, a: usize) -> usize 
 all_mem			    fn all_mem(cls: &mut [RegClass]) 
 alloc_ty			pub fn alloc_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 alloca			pub fn alloca(cx: Block, ty: Type, name: &str) -> ValueRef 
@@ -520,6 +504,7 @@ cached_early_exit			    fn cached_early_exit(&self,
 call			    pub fn call(self, b: &Builder, ptr: ValueRef) 
 call			    pub fn call(&self, llfn: ValueRef, args: &[ValueRef],
 call			    pub fn call<'a, 'blk>(self, bcx: Block<'blk, 'tcx>,
+call_assume			pub fn call_assume<'a, 'tcx>(b: &Builder<'a, 'tcx>, val: ValueRef) 
 call_lifetime_end			pub fn call_lifetime_end(bcx: Block, ptr: ValueRef) 
 call_lifetime_start			pub fn call_lifetime_start(bcx: Block, ptr: ValueRef) 
 call_memcpy			pub fn call_memcpy<'bcx, 'tcx>(b: &Builder<'bcx, 'tcx>,
@@ -593,8 +578,6 @@ collect_roots			fn collect_roots<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
 collector			mod collector;
 command_path			fn command_path(sess: &Session, extra: Option<PathBuf>) -> OsString 
 common			mod common;
-compare_fat_ptrs			pub fn compare_fat_ptrs<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
-compare_scalar_types			pub fn compare_scalar_types<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 compare_simd_types			pub fn compare_simd_types<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 compile_unit_metadata			pub fn compile_unit_metadata(scc: &SharedCrateContext,
 composite_type_metadata			fn composite_type_metadata(cx: &CrateContext,
@@ -684,7 +667,6 @@ define_global			pub fn define_global(ccx: &CrateContext, name: &str, ty: Type) -
 define_internal_fn			pub fn define_internal_fn<'a, 'tcx>(ccx: &CrateContext<'a, 'tcx>,
 delete			    pub fn delete(self) 
 deref			    fn deref(&self) -> &Self::Target 
-deref			    fn deref(&self) -> &mir::Mir<'tcx> 
 describe_enum_variant			fn describe_enum_variant<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 diagnostics			pub mod diagnostics;
 direct_fn_type			    pub fn direct_fn_type<'a>(&self, ccx: &CrateContext<'a, 'tcx>,
@@ -769,7 +751,6 @@ find_msvc_12			    fn find_msvc_12(arch: &str) -> Option<(Command, PathBuf)>
 find_msvc_latest			    fn find_msvc_latest(arch: &str, ver: &str) -> Option<(Command, PathBuf)> 
 find_type			    pub fn find_type(&self, s: &str) -> Option<Type> 
 find_vtable_types_for_unsizing			fn find_vtable_types_for_unsizing<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx>,
-finish			    fn finish(&self) -> u64 
 finish			    pub fn finish(&'blk self, ret_cx: Block<'blk, 'tcx>,
 finish_type_of			pub fn finish_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 fixed_vec_metadata			fn fixed_vec_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
@@ -808,7 +789,6 @@ frem_fast			    pub fn frem_fast(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRe
 from			    fn from(i: ::rustc::ty::Disr) -> Disr 
 from			    fn from(i: usize) -> Disr 
 from_constval			    pub fn from_constval<'a>(ccx: &CrateContext<'a, 'tcx>,
-from_def_id_and_substs			        fn from_def_id_and_substs<'a, 'tcx>(type_map: &mut TypeMap<'tcx>,
 from_fn_attrs			pub fn from_fn_attrs(ccx: &CrateContext, attrs: &[ast::Attribute], llfn: ValueRef) 
 from_immediate			pub fn from_immediate(bcx: Block, val: ValueRef) -> ValueRef 
 from_integer			    pub fn from_integer(cx: &CrateContext, i: layout::Integer) -> Type 
@@ -826,6 +806,7 @@ gc_sections			    fn gc_sections(&mut self, keep_metadata: bool);
 gdb			pub mod gdb;
 gen_fn			fn gen_fn<'a, 'tcx>(fcx: &FunctionContext<'a, 'tcx>,
 general_ty_align			fn general_ty_align(ty: Type) -> usize 
+generate_local_symbol_name			    pub fn generate_local_symbol_name(&self, prefix: &str) -> String 
 generic_simd_intrinsic			fn generic_simd_intrinsic<'blk, 'tcx, 'a>
 generic_type_of			fn generic_type_of<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 gep			    pub fn gep(&self, ptr: ValueRef, indices: &[ValueRef]) -> ValueRef 
@@ -837,7 +818,7 @@ get			    pub fn get(&self) -> ValueRef
 get_ar_prog			pub fn get_ar_prog(sess: &Session) -> String 
 get_containing_scope			    fn get_containing_scope<'ccx, 'tcx>(cx: &CrateContext<'ccx, 'tcx>,
 get_dataptr			pub fn get_dataptr(bcx: Block, fat_ptr: ValueRef) -> ValueRef 
-get_dataptr			pub fn get_dataptr(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
+get_dataptr_builder			pub fn get_dataptr_builder(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
 get_declared_value			pub fn get_declared_value(ccx: &CrateContext, name: &str) -> Option<ValueRef> 
 get_defined_value			pub fn get_defined_value(ccx: &CrateContext, name: &str) -> Option<ValueRef> 
 get_dominating_store			    pub fn get_dominating_store(self, bcx: Block) -> Option<Value> 
@@ -857,8 +838,7 @@ get_linker			    fn get_linker(path: &Path, arch: &str) -> Option<(Command, Path
 get_llvm_opt_level			fn get_llvm_opt_level(optimize: config::OptLevel) -> llvm::CodeGenOptLevel 
 get_llvm_opt_size			fn get_llvm_opt_size(optimize: config::OptLevel) -> llvm::CodeGenOptSize 
 get_meta			pub fn get_meta(bcx: Block, fat_ptr: ValueRef) -> ValueRef 
-get_meta			pub fn get_meta(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
-get_mir			    pub fn get_mir(&self, def_id: DefId) -> Option<CachedMir<'b, 'tcx>> 
+get_meta_builder			pub fn get_meta_builder(b: &Builder, fat_ptr: ValueRef) -> ValueRef 
 get_namespace_and_span_for_item			pub fn get_namespace_and_span_for_item(cx: &CrateContext, def_id: DefId)
 get_next_use			    pub fn get_next_use(self) -> Option<Use> 
 get_operand			    pub fn get_operand(self, i: usize) -> Option<Value> 
@@ -891,7 +871,7 @@ get_symbol_hash			fn get_symbol_hash<'a, 'tcx>(scx: &SharedCrateContext<'a, 'tcx
 get_template_parameters			    fn get_template_parameters<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 get_type_parameter_names			    fn get_type_parameter_names<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 get_ucrt_dir			    fn get_ucrt_dir() -> Option<PathBuf> 
-get_unique_type_id_as_string			    fn get_unique_type_id_as_string(&self, unique_type_id: UniqueTypeId) -> Rc<String> 
+get_unique_type_id_as_string			    fn get_unique_type_id_as_string(&self, unique_type_id: UniqueTypeId) -> Rc<str> 
 get_unique_type_id_of_enum_variant			    fn get_unique_type_id_of_enum_variant<'a>(&mut self,
 get_unique_type_id_of_type			    fn get_unique_type_id_of_type<'a>(&mut self, cx: &CrateContext<'a, 'tcx>,
 get_user			    pub fn get_user(self) -> Value 
@@ -904,7 +884,6 @@ glue			mod glue;
 gnu			    pub fn gnu() -> LandingPad 
 has_meta			    pub fn has_meta(&self) -> bool 
 has_no_uses			    pub fn has_no_uses(self) -> bool 
-hash			    fn hash<H: Hasher>(&self, s: &mut H) 
 hint_dynamic			    fn hint_dynamic(&mut self) 
 hint_dynamic			    fn hint_dynamic(&mut self) {}
 hint_dynamic			    fn hint_dynamic(&mut self);
@@ -1069,7 +1048,7 @@ llvm_type_name			fn llvm_type_name<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
 load			    pub fn load(&self, ptr: ValueRef) -> ValueRef 
 load_discr			fn load_discr(bcx: Block, ity: layout::Integer, ptr: ValueRef, min: u64, max: u64,
 load_fat_ptr			pub fn load_fat_ptr<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
-load_fat_ptr			pub fn load_fat_ptr(b: &Builder, fat_ptr: ValueRef) -> (ValueRef, ValueRef) 
+load_fat_ptr_builder			pub fn load_fat_ptr_builder<'a, 'tcx>(
 load_nonnull			    pub fn load_nonnull(&self, ptr: ValueRef) -> ValueRef 
 load_range_assert			    pub fn load_range_assert(&self, ptr: ValueRef, lo: u64,
 load_ty			pub fn load_ty<'blk, 'tcx>(cx: Block<'blk, 'tcx>, ptr: ValueRef, t: Ty<'tcx>) -> ValueRef 
@@ -1077,7 +1056,6 @@ load_ty_builder			pub fn load_ty_builder<'a, 'tcx>(b: &Builder<'a, 'tcx>, ptr: V
 local			    pub fn local(&self) -> &'b LocalCrateContext<'tcx> 
 local_node_for_inlined_defid			    pub fn local_node_for_inlined_defid<'a>(&'a self, def_id: DefId) -> Option<ast::NodeId> 
 local_node_id			        fn local_node_id(tcx: TyCtxt, trans_item: TransItem) -> Option<NodeId> 
-local_prefix_bytes			            fn local_prefix_bytes(variant: &ty::layout::Struct) -> u64 
 log_rpaths			    fn log_rpaths(desc: &str, rpaths: &[String]) 
 lpad			    pub fn lpad(&self) -> Option<&'blk LandingPad> 
 lshr			    pub fn lshr(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
@@ -1114,10 +1092,8 @@ meth			mod meth;
 method			    pub fn method<'blk>(bcx: Block<'blk, 'tcx>,
 method_call			    pub fn method_call<'blk>(bcx: Block<'blk, 'tcx>,
 minimize_rpaths			fn minimize_rpaths(rpaths: &[String]) -> Vec<String> 
-mir			    pub fn mir(&self) -> CachedMir<'a, 'tcx> 
-mir			    pub fn mir(&self) -> CachedMir<'blk, 'tcx> 
+mir			    pub fn mir(&self) -> Ref<'tcx, Mir<'tcx>> 
 mir			mod mir;
-mir_map			    pub fn mir_map(&self) -> &MirMap<'tcx> 
 modify_as_needed			            fn modify_as_needed<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 mono			    pub fn mono<'a>(scx: &SharedCrateContext<'a, 'tcx>, def_id: DefId) -> Instance<'tcx> 
 monomorphize			    pub fn monomorphize<T>(&self, value: &T) -> T
@@ -1369,10 +1345,10 @@ struct_ty			fn struct_ty(ccx: &CrateContext, ty: Type) -> Type
 struct_wrapped_nullable_bitdiscr			fn struct_wrapped_nullable_bitdiscr(bcx: Block, nndiscr: u64, discrfield: &layout::FieldPath,
 sub			    pub fn sub(&self, lhs: ValueRef, rhs: ValueRef) -> ValueRef 
 subroutine_type_metadata			fn subroutine_type_metadata<'a, 'tcx>(cx: &CrateContext<'a, 'tcx>,
+subsystem			    fn subsystem(&mut self, subsystem: &str) 
+subsystem			    fn subsystem(&mut self, subsystem: &str);
 switch			    pub fn switch(&self, v: ValueRef, else_llbb: BasicBlockRef, num_cases: usize) -> ValueRef 
 symbol_for_def_id			fn symbol_for_def_id<'a, 'tcx>(def_id: DefId,
-symbol_hasher			    pub fn symbol_hasher(&self) -> &RefCell<Sha256> 
-symbol_hasher			    pub fn symbol_hasher<'a>(&'a self) -> &'a RefCell<Sha256> 
 symbol_map			    pub fn symbol_map(&self) -> &SymbolMap<'tcx> 
 symbol_map			mod symbol_map;
 symbol_name			    pub fn symbol_name(self, scx: &SharedCrateContext<'a, 'tcx>) -> String 
@@ -1390,7 +1366,6 @@ tests			mod tests
 tn			    pub fn tn<'a>(&'a self) -> &'a TypeNames 
 to_const			    fn to_const(&self, span: Span) -> Const<'tcx> 
 to_const_int			fn to_const_int(value: ValueRef, t: Ty, tcx: TyCtxt) -> Option<ConstInt> 
-to_dep_node			    fn to_dep_node(key: &DefId) -> DepNode<DefId> 
 to_dep_node			    fn to_dep_node(key: &Self::Key) -> DepNode<DefId> 
 to_dep_node			    fn to_dep_node(key: &ty::PolyTraitRef<'tcx>) -> DepNode<DefId> 
 to_immediate			pub fn to_immediate(bcx: Block, val: ValueRef, ty: Ty) -> ValueRef 
@@ -1427,6 +1402,7 @@ trans_def			    fn trans_def(ccx: &'a CrateContext<'a, 'tcx>,
 trans_exchange_free			pub fn trans_exchange_free<'blk, 'tcx>(cx: Block<'blk, 'tcx>,
 trans_exchange_free_dyn			pub fn trans_exchange_free_dyn<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 trans_exchange_free_ty			pub fn trans_exchange_free_ty<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
+trans_fat_ptr_binop			    pub fn trans_fat_ptr_binop(&mut self,
 trans_field_ptr			pub fn trans_field_ptr<'blk, 'tcx>(bcx: Block<'blk, 'tcx>, t: Ty<'tcx>,
 trans_field_ptr_builder			pub fn trans_field_ptr_builder<'blk, 'tcx>(bcx: &BlockAndBuilder<'blk, 'tcx>,
 trans_fn_once_adapter_shim			fn trans_fn_once_adapter_shim<'a, 'tcx>(
@@ -1464,13 +1440,13 @@ trunc_or_bitcast			    pub fn trunc_or_bitcast(&self, val: ValueRef, dest_ty: Ty
 try_intrinsic			fn try_intrinsic<'blk, 'tcx>(bcx: Block<'blk, 'tcx>,
 tvec			mod tvec;
 ty			    pub fn ty(&self) -> Ty<'tcx> 
-ty_align			fn ty_align(ty: Type) -> usize 
-ty_align			fn ty_align(ty: Type) -> usize 
+ty_align			pub fn ty_align(ty: Type, pointer: usize) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			fn ty_align(ty: Type) -> usize 
 ty_align			    fn ty_align(ty: Type) -> usize 
+ty_size			pub fn ty_size(ty: Type, pointer: usize) -> usize 
 ty_size			fn ty_size(ty: Type) -> usize 
 ty_size			fn ty_size(ty: Type, align_fn: TyAlignFn) -> usize 
 ty_size			fn ty_size(ty: Type) -> usize 
@@ -1560,7 +1536,6 @@ with_overflow_intrinsic			fn with_overflow_intrinsic<'blk, 'tcx>(bcx: Block<'blk
 work_product_dep_node			    pub fn work_product_dep_node(&self) -> DepNode<DefId> 
 work_product_id			    pub fn work_product_id(&self) -> Arc<WorkProductId> 
 wrapping_add			    pub fn wrapping_add(self, other: Self) -> Self 
-write			    fn write(&mut self, msg: &[u8]) 
 write			    pub mod write;
 write_metadata			fn write_metadata(cx: &SharedCrateContext,
 write_output_file			pub fn write_output_file(

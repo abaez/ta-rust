@@ -9,14 +9,11 @@ Bar2			struct Bar2; \/\/ ok!
 Baz			trait Baz : Foo + Foo2 
 Baz			trait Baz : Foo 
 BindingInfo			struct BindingInfo 
-BuildReducedGraphVisitor			struct BuildReducedGraphVisitor<'a, 'b: 'a> 
+BuildReducedGraphVisitor			impl<'a, 'b> BuildReducedGraphVisitor<'a, 'b> 
+BuildReducedGraphVisitor			pub struct BuildReducedGraphVisitor<'a, 'b: 'a> 
 Default for SingleImports			impl<'a> Default for SingleImports<'a> 
 Deref for UnusedImportCheckVisitor			impl<'a, 'b> Deref for UnusedImportCheckVisitor<'a, 'b> 
 DerefMut for UnusedImportCheckVisitor			impl<'a, 'b> DerefMut for UnusedImportCheckVisitor<'a, 'b> 
-Determinacy			pub enum Determinacy 
-ExpansionData			pub struct ExpansionData 
-ExpansionVisitor			impl<'a, 'b> ExpansionVisitor<'a, 'b> 
-ExpansionVisitor			struct ExpansionVisitor<'b, 'a: 'b> 
 FallbackSuggestion			enum FallbackSuggestion 
 Foo			    pub struct Foo;
 Foo			    struct Foo 
@@ -40,12 +37,17 @@ ImportDirectiveSubclass			impl<'a> ImportDirectiveSubclass<'a>
 ImportDirectiveSubclass			pub enum ImportDirectiveSubclass<'a> 
 ImportResolver			impl<'a, 'b:'a> ImportResolver<'a, 'b> 
 ImportResolver			struct ImportResolver<'a, 'b: 'a> 
+InvocationData			impl<'a> InvocationData<'a> 
+InvocationData			pub struct InvocationData<'a> 
+LegacyBinding			pub struct LegacyBinding<'a> 
+LegacyMacroImports			struct LegacyMacroImports 
+LegacyScope			impl<'a> LegacyScope<'a> 
+LegacyScope			pub enum LegacyScope<'a> 
 LexicalScopeBinding			enum LexicalScopeBinding<'a> 
 LexicalScopeBinding			impl<'a> LexicalScopeBinding<'a> 
 LocalDef			impl LocalDef 
 LocalDef			struct LocalDef 
 MakeGlobMap			pub enum MakeGlobMap 
-ModuleData			struct ModuleData 
 ModuleKind			enum ModuleKind 
 ModulePrefixResult			enum ModulePrefixResult<'a> 
 ModuleS			impl<'a> ModuleS<'a> 
@@ -86,6 +88,7 @@ SomeTrait for Foo			impl SomeTrait for Foo {} \/\/ error: trait `SomeTrait` is n
 Something			impl Something {} \/\/ error: type name `Something` is not in scope
 Something			impl Something {} \/\/ ok!
 Something			struct Something;
+State			enum State 
 SuggestedCandidates			struct SuggestedCandidates 
 SuggestionType			enum SuggestionType 
 ToNameBinding			impl<'a> ToNameBinding<'a> for (Def, Span, ty::Visibility) 
@@ -98,7 +101,6 @@ UnusedImportCheckVisitor			impl<'a, 'b> UnusedImportCheckVisitor<'a, 'b>
 UnusedImportCheckVisitor			struct UnusedImportCheckVisitor<'a, 'b: 'a> 
 UseLexicalScopeFlag			enum UseLexicalScopeFlag 
 Visitor for BuildReducedGraphVisitor			impl<'a, 'b> Visitor for BuildReducedGraphVisitor<'a, 'b> 
-Visitor for ExpansionVisitor			impl<'a, 'b> Visitor for ExpansionVisitor<'a, 'b>  
 Visitor for Resolver			impl<'a> Visitor for Resolver<'a> 
 Visitor for UnusedImportCheckVisitor			impl<'a, 'b> Visitor for UnusedImportCheckVisitor<'a, 'b> 
 a			    fn a() {}
@@ -106,13 +108,15 @@ a			    fn a();
 abc			struct abc;
 add_directive			    fn add_directive(&mut self, directive: &'a ImportDirective<'a>) 
 add_expansions_at_stmt			    fn add_expansions_at_stmt(&mut self, id: ast::NodeId, macros: Vec<Mark>) 
-add_ext			    fn add_ext(&mut self, scope: Mark, ident: ast::Ident, ext: Rc<SyntaxExtension>) 
+add_ext			    fn add_ext(&mut self, ident: ast::Ident, ext: Rc<SyntaxExtension>) 
 add_import_directive			    pub fn add_import_directive(&mut self,
-add_macro			    fn add_macro(&mut self, scope: Mark, mut def: ast::MacroDef) 
+add_macro			    fn add_macro(&mut self, scope: Mark, mut def: ast::MacroDef, export: bool) 
 add_to_glob_map			    fn add_to_glob_map(&mut self, id: NodeId, name: Name) 
 add_trait_info			        fn add_trait_info(found_traits: &mut Vec<TraitCandidate>,
 adjust_local_def			    fn adjust_local_def(&mut self, local_def: LocalDef, span: Span) -> Option<Def> 
 alloc_import_directive			    fn alloc_import_directive(&'a self, import_directive: ImportDirective<'a>)
+alloc_invocation_data			    fn alloc_invocation_data(&'a self, expansion_data: InvocationData<'a>)
+alloc_legacy_binding			    fn alloc_legacy_binding(&'a self, binding: LegacyBinding<'a>) -> &'a LegacyBinding<'a> 
 alloc_module			    fn alloc_module(&'a self, module: ModuleS<'a>) -> Module<'a> 
 alloc_name_binding			    fn alloc_name_binding(&'a self, name_binding: NameBinding<'a>) -> &'a NameBinding<'a> 
 alloc_name_resolution			    fn alloc_name_resolution(&'a self) -> &'a RefCell<NameResolution<'a>> 
@@ -141,19 +145,19 @@ baz			    pub struct baz;
 binding			    fn binding(&self) -> Option<&'a NameBinding<'a>> 
 binding_mode_map			    fn binding_mode_map(&mut self, pat: &Pat) -> BindingMap 
 block_needs_anonymous_module			    fn block_needs_anonymous_module(&mut self, block: &Block) -> bool 
-build_reduced_graph			    pub fn build_reduced_graph(&mut self, krate: &Crate) 
 build_reduced_graph			mod build_reduced_graph;
 build_reduced_graph_for_block			    fn build_reduced_graph_for_block(&mut self, block: &Block) 
 build_reduced_graph_for_external_crate_def			    fn build_reduced_graph_for_external_crate_def(&mut self, parent: Module<'b>,
 build_reduced_graph_for_foreign_item			    fn build_reduced_graph_for_foreign_item(&mut self, foreign_item: &ForeignItem) 
-build_reduced_graph_for_item			    fn build_reduced_graph_for_item(&mut self, item: &Item) 
+build_reduced_graph_for_item			    fn build_reduced_graph_for_item(&mut self, item: &Item, expansion: Mark) 
 build_reduced_graph_for_variant			    fn build_reduced_graph_for_variant(&mut self,
 check_consistent_bindings			    fn check_consistent_bindings(&mut self, arm: &Arm) 
 check_crate			pub fn check_crate(resolver: &mut Resolver, krate: &ast::Crate) 
 check_import			    fn check_import(&mut self, id: ast::NodeId, span: Span) 
 check_trait_item			    fn check_trait_item<F>(&self, name: Name, span: Span, err: F)
 check_unused			mod check_unused;
-collect_mod			    fn collect_mod(names: &mut Vec<ast::Name>, module: Module) 
+collect_def_ids			    fn collect_def_ids(&mut self, invocation: &'a InvocationData<'a>, expansion: &Expansion) 
+collect_mod			    fn collect_mod(names: &mut Vec<Ident>, module: Module) 
 collections			    pub trait collections 
 contains_macro_use			    fn contains_macro_use(&mut self, attrs: &[ast::Attribute]) -> bool 
 def			    fn def(&self) -> Def 
@@ -200,15 +204,19 @@ foo			pub mod foo
 for_each_child			    fn for_each_child<F: FnMut(Name, Namespace, &'a NameBinding<'a>)>(&self, mut f: F) 
 fresh_binding			    fn fresh_binding(&mut self,
 from_def			    fn from_def(def: Def) -> Self 
+get_module_scope			    fn get_module_scope(&mut self, id: ast::NodeId) -> Mark 
 get_resolution			    fn get_resolution(&mut self, id: NodeId) -> Option<PathResolution> 
 get_ribs			    fn get_ribs<'b>(&'b mut self, ns: Namespace) -> &'b mut Vec<Rib<'a>> 
 get_traits_containing_item			    fn get_traits_containing_item(&mut self, name: Name) -> Vec<TraitCandidate> 
 hir::lowering::Resolver for Resolver			impl<'a> hir::lowering::Resolver for Resolver<'a> 
+ident			    fn ident(&self) -> Ident 
+ident			    fn ident(&self) -> Ident;
 import			    fn import(&mut self, binding: &'a NameBinding<'a>, directive: &'a ImportDirective<'a>)
 import_directive_subclass_to_string			fn import_directive_subclass_to_string(subclass: &ImportDirectiveSubclass) -> String 
 import_dummy_binding			    fn import_dummy_binding(&mut self, directive: &'b ImportDirective<'b>) 
-import_path_to_string			fn import_path_to_string(names: &[Name], subclass: &ImportDirectiveSubclass) -> String 
-insert_custom_derive			    fn insert_custom_derive(&mut self, name: &str, ext: Rc<MultiItemModifier>, sp: Span) 
+import_extern_crate_macros			    fn import_extern_crate_macros(&mut self,
+import_path_to_string			fn import_path_to_string(names: &[Ident], subclass: &ImportDirectiveSubclass) -> String 
+insert_field_names			    fn insert_field_names(&mut self, def_id: DefId, field_names: Vec<Name>) 
 intern			    fn intern(&mut self, string: &str, primitive_type: PrimTy) 
 is_accessible			    fn is_accessible(&self, vis: ty::Visibility) -> bool 
 is_accessible_from			    fn is_accessible_from(&self, vis: ty::Visibility, module: Module<'a>) -> bool 
@@ -219,23 +227,22 @@ is_glob			    pub fn is_glob(&self) -> bool
 is_glob_import			    fn is_glob_import(&self) -> bool 
 is_import			    fn is_import(&self) -> bool 
 is_importable			    fn is_importable(&self) -> bool 
+is_local			    fn is_local(&self) -> bool 
 is_normal			    fn is_normal(&self) -> bool 
 is_refutable			    fn is_refutable(self) -> bool 
 is_trait			    fn is_trait(&self) -> bool 
 is_variant			    fn is_variant(&self) -> bool 
 item			    fn item(self) -> Option<&'a NameBinding<'a>> 
+legacy_macro_imports			    fn legacy_macro_imports(&mut self, attrs: &[ast::Attribute]) -> LegacyMacroImports 
 local_def			    fn local_def(self) -> LocalDef 
 local_modules			    fn local_modules(&'a self) -> ::std::cell::Ref<'a, Vec<Module<'a>>> 
 lookup_candidates			    fn lookup_candidates<FilterFn>(&mut self,
 macros			mod macros;
-main			fn main () 
 main			fn main() 
 main			fn main() {}
 module			    fn module(&self) -> Result<Module<'a>, bool \/* true if an error has already been reported *\/> 
 module_to_string			fn module_to_string(module: Module) -> String 
-name			    fn name(&self) -> Name 
-name			    fn name(&self) -> Name;
-names_to_string			fn names_to_string(names: &[Name]) -> String 
+names_to_string			fn names_to_string(names: &[Ident]) -> String 
 new			    fn new() -> PrimitiveTypeTable 
 new			    fn new(kind: RibKind<'a>) -> Rib<'a> 
 new			    fn new(parent: Option<Module<'a>>, kind: ModuleKind) -> Self 
@@ -244,19 +251,21 @@ new_module			    fn new_module(&self, parent: Module<'a>, kind: ModuleKind, loca
 next_node_id			    fn next_node_id(&mut self) -> ast::NodeId 
 path_names_to_string			fn path_names_to_string(path: &Path, depth: usize) -> String 
 populate_module_if_necessary			    pub fn populate_module_if_necessary(&mut self, module: Module<'b>) 
+print_on_failure			fn print_on_failure(state: &State) 
 pseudo_vis			    fn pseudo_vis(&self) -> ty::Visibility 
 record_candidate_traits_for_expr_if_necessary			    fn record_candidate_traits_for_expr_if_necessary(&mut self, expr: &Expr) 
 record_def			    fn record_def(&mut self, node_id: NodeId, resolution: PathResolution) 
 record_resolution			    fn record_resolution(&mut self, id: NodeId, def: Def) 
 record_use			    fn record_use(&mut self, name: Name, ns: Namespace, binding: &'a NameBinding<'a>, span: Span)
 report_conflict			    fn report_conflict(&self,
-report_errors			    fn report_errors(&self) 
+report_errors			    fn report_errors(&mut self) 
+report_shadowing_errors			    fn report_shadowing_errors(&mut self) 
 resolution			    fn resolution(&self, module: Module<'a>, name: Name, ns: Namespace)
 resolve_arm			    fn resolve_arm(&mut self, arm: &Arm) 
 resolve_block			    fn resolve_block(&mut self, block: &Block) 
 resolve_crate			    pub fn resolve_crate(&mut self, krate: &Crate) 
 resolve_crate_relative_path			    fn resolve_crate_relative_path<T>(&mut self, span: Span, segments: &[T], namespace: Namespace)
-resolve_derive_mode			    fn resolve_derive_mode(&mut self, ident: ast::Ident) -> Option<Rc<MultiItemModifier>> 
+resolve_crate_var			    fn resolve_crate_var(&mut self, mut crate_var_ctxt: SyntaxContext) -> Module<'a> 
 resolve_error			fn resolve_error<'b, 'a: 'b, 'c>(resolver: &'b Resolver<'a>,
 resolve_expr			    fn resolve_expr(&mut self, expr: &Expr, parent: Option<&Expr>) 
 resolve_function			    fn resolve_function(&mut self,
@@ -269,13 +278,14 @@ resolve_import			    fn resolve_import(&mut self, directive: &'b ImportDirective
 resolve_imports			mod resolve_imports;
 resolve_imports			    fn resolve_imports(&mut self) 
 resolve_imports			    pub fn resolve_imports(&mut self) 
-resolve_invoc			    fn resolve_invoc(&mut self, scope: Mark, invoc: &Invocation) -> Option<Rc<SyntaxExtension>> 
 resolve_item			    fn resolve_item(&mut self, item: &Item) 
 resolve_labeled_block			    fn resolve_labeled_block(&mut self, label: Option<SpannedIdent>, id: NodeId, block: &Block) 
 resolve_local			    fn resolve_local(&mut self, local: &Local) 
+resolve_macro			    fn resolve_macro(&mut self, scope: Mark, path: &ast::Path, force: bool)
+resolve_macro_name			    pub fn resolve_macro_name(&mut self, mut scope: LegacyScope<'a>, name: ast::Name)
 resolve_module_path			    fn resolve_module_path(&mut self,
 resolve_module_path_from_root			    fn resolve_module_path_from_root(&mut self,
-resolve_module_prefix			    fn resolve_module_prefix(&mut self, module_path: &[Name], span: Option<Span>)
+resolve_module_prefix			    fn resolve_module_prefix(&mut self, module_path: &[Ident], span: Option<Span>)
 resolve_module_relative_path			    fn resolve_module_relative_path(&mut self,
 resolve_name_in_module			    pub fn resolve_name_in_module(&mut self,
 resolve_path			    fn resolve_path(&mut self, id: NodeId, path: &Path, path_depth: usize, namespace: Namespace)
@@ -283,12 +293,15 @@ resolve_pattern			    fn resolve_pattern(&mut self,
 resolve_pattern_path			    fn resolve_pattern_path<ExpectedFn>(&mut self,
 resolve_possibly_assoc_item			    fn resolve_possibly_assoc_item(&mut self,
 resolve_struct_error			fn resolve_struct_error<'b, 'a: 'b, 'c>(resolver: &'b Resolver<'a>,
+resolve_struct_path			    fn resolve_struct_path(&mut self, node_id: NodeId, path: &Path) 
 resolve_trait_reference			    fn resolve_trait_reference(&mut self,
 resolve_type			    fn resolve_type(&mut self, ty: &Ty) 
 resolve_visibility			    fn resolve_visibility(&mut self, vis: &ast::Visibility) -> ty::Visibility 
-search_label			    fn search_label(&self, mut ident: ast::Ident) -> Option<Def> 
+root			    pub fn root(graph_root: Module<'a>) -> Self 
+search_label			    fn search_label(&self, mut ident: Ident) -> Option<Def> 
 search_parent_externals			        fn search_parent_externals<'a>(this: &mut Resolver<'a>, needle: Name, module: Module<'a>)
 show_candidates			fn show_candidates(session: &mut DiagnosticBuilder,
+simplify_expansion			    fn simplify_expansion(mut invoc: &'a InvocationData<'a>) -> Self 
 single			    pub fn single(target: Name, source: Name) -> Self 
 something			mod something 
 something_that_does_exist			enum something_that_does_exist 
@@ -306,19 +319,18 @@ update_resolution			    fn update_resolution<T, F>(&mut self, module: Module<'a>
 visit_arm			    fn visit_arm(&mut self, arm: &Arm) 
 visit_block			    fn visit_block(&mut self, block: &Block) 
 visit_block			    fn visit_block(&mut self, block: &Block) 
-visit_block			    fn visit_block(&mut self, block: &ast::Block) 
 visit_expansion			    fn visit_expansion(&mut self, mark: Mark, expansion: &Expansion) 
 visit_expr			    fn visit_expr(&mut self, expr: &Expr) 
 visit_fn			    fn visit_fn(&mut self,
 visit_foreign_item			    fn visit_foreign_item(&mut self, foreign_item: &ForeignItem) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, foreign_item: &ForeignItem) 
-visit_invoc			    fn visit_invoc(&mut self, id: ast::NodeId) 
+visit_invoc			    fn visit_invoc(&mut self, id: ast::NodeId) -> &'b InvocationData<'b> 
 visit_item			    fn visit_item(&mut self, item: &Item) 
 visit_item			    fn visit_item(&mut self, item: &ast::Item) 
 visit_item			    fn visit_item(&mut self, item: &Item) 
-visit_item			    fn visit_item(&mut self, item: &ast::Item) 
 visit_local			    fn visit_local(&mut self, local: &Local) 
 visit_poly_trait_ref			    fn visit_poly_trait_ref(&mut self, tref: &ast::PolyTraitRef, m: &ast::TraitBoundModifier) 
+visit_stmt			    fn visit_stmt(&mut self, stmt: &ast::Stmt) 
 visit_trait_item			    fn visit_trait_item(&mut self, item: &TraitItem) 
 visit_ty			    fn visit_ty(&mut self, ty: &Ty) 
 visit_variant			    fn visit_variant(&mut self,

@@ -72,6 +72,7 @@ Clean for hir			impl Clean<TyParamBound> for hir::TyParamBound
 Clean for hir			impl Clean<Type> for hir::TraitRef 
 Clean for hir			impl Clean<Type> for hir::Ty 
 Clean for hir			impl Clean<TypeBinding> for hir::TypeBinding 
+Clean for hir			impl Clean<VariantKind> for hir::VariantData 
 Clean for hir			impl Clean<ViewListIdent> for hir::PathListItem 
 Clean for hir			impl Clean<WherePredicate> for hir::WherePredicate 
 Clean for syntax_pos			impl Clean<Span> for syntax_pos::Span 
@@ -178,13 +179,14 @@ LibEmbargoVisitor			impl<'a, 'b, 'tcx> LibEmbargoVisitor<'a, 'b, 'tcx>
 LibEmbargoVisitor			pub struct LibEmbargoVisitor<'a, 'b: 'a, 'tcx: 'b> 
 Lifetime			impl Lifetime 
 Lifetime			pub struct Lifetime(String);
+LoadStringError			pub enum LoadStringError 
 Macro			pub struct Macro 
 Macro			pub struct Macro 
 Markdown			pub struct Markdown<'a>(pub &'a str);
 MarkdownWithToc			pub struct MarkdownWithToc<'a>(pub &'a str);
 MaybeTyped			pub enum MaybeTyped<'a, 'tcx: 'a> 
 Method			pub struct Method 
-Method			pub struct Method<'a>(pub &'a clean::FnDecl);
+Method			pub struct Method<'a>(pub &'a clean::FnDecl, pub &'a str);
 Module			pub struct Module 
 Module			impl Module 
 Module			pub struct Module 
@@ -276,6 +278,7 @@ add_test			    pub fn add_test(&mut self, test: String,
 all_false			    fn all_false() -> LangString 
 anchor			    fn anchor(&self, id: &'a String) -> Self 
 as_bytes			    fn as_bytes(&self) -> &[u8] 
+as_str			    pub fn as_str(&self) -> &'static str 
 assoc_const			fn assoc_const(w: &mut fmt::Formatter,
 assoc_type			fn assoc_type(w: &mut fmt::Formatter, it: &clean::Item,
 block			    extern fn block(_ob: *mut hoedown_buffer,
@@ -330,6 +333,7 @@ clean			    fn clean(&self, cx: &DocContext) -> TyParamBound
 clean			    fn clean(&self, cx: &DocContext) -> Type 
 clean			    fn clean(&self, cx: &DocContext) -> TypeBinding 
 clean			    fn clean(&self, cx: &DocContext) -> U 
+clean			    fn clean(&self, cx: &DocContext) -> VariantKind 
 clean			    fn clean(&self, cx: &DocContext) -> VariantStruct 
 clean			    fn clean(&self, cx: &DocContext) -> Vec<Item> 
 clean			    fn clean(&self, cx: &DocContext) -> Vec<U> 
@@ -359,6 +363,7 @@ document			fn document(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item)
 document_full			fn document_full(w: &mut fmt::Formatter, item: &clean::Item) -> fmt::Result 
 document_short			fn document_short(w: &mut fmt::Formatter, item: &clean::Item, link: AssocItemLink) -> fmt::Result 
 document_stability			fn document_stability(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item) -> fmt::Result 
+dont_escape			                    fn dont_escape(c: u8) -> bool 
 drop			        fn drop(&mut self) 
 emit_source			    fn emit_source(&mut self, filename: &str) -> io::Result<()> 
 empty			    fn empty() -> Span 
@@ -531,7 +536,6 @@ item_primitive			fn item_primitive(w: &mut fmt::Formatter, cx: &Context,
 item_static			fn item_static(w: &mut fmt::Formatter, cx: &Context, it: &clean::Item,
 item_struct			fn item_struct(w: &mut fmt::Formatter, cx: &Context, it: &clean::Item,
 item_trait			fn item_trait(w: &mut fmt::Formatter, cx: &Context, it: &clean::Item,
-item_type			fn item_type(item: &clean::Item) -> ItemType 
 item_type			    pub mod item_type;
 item_typedef			fn item_typedef(w: &mut fmt::Formatter, cx: &Context, it: &clean::Item,
 item_union			fn item_union(w: &mut fmt::Formatter, cx: &Context, it: &clean::Item,
@@ -546,9 +550,9 @@ list			    fn list<'a>(&'a self, &str) -> &'a [Attribute];
 list			    fn list<'a>(&'a self, name: &str) -> &'a [Attribute] 
 load			    pub fn load(in_header: &[String], before_content: &[String], after_content: &[String])
 load_attrs			pub fn load_attrs<'a, 'tcx>(cx: &DocContext, tcx: TyCtxt<'a, 'tcx, 'tcx>,
-load_external_files			pub fn load_external_files(names: &[String]) -> Option<String> 
+load_external_files			fn load_external_files(names: &[String]) -> Option<String> 
 load_plugin			    pub fn load_plugin(&mut self, name: String) 
-load_string			pub fn load_string(input: &Path) -> io::Result<Option<String>> 
+load_string			pub fn load_string<P: AsRef<Path>>(file_path: P) -> Result<String, LoadStringError> 
 main			fn main() 
 main			pub fn main() 
 main_args			pub fn main_args(args: &[String]) -> isize 
@@ -615,6 +619,7 @@ resolve_def			fn resolve_def(cx: &DocContext, id: ast::NodeId) -> Option<DefId>
 resolve_type			fn resolve_type(cx: &DocContext,
 resolve_use_source			fn resolve_use_source(cx: &DocContext, path: Path, id: ast::NodeId) -> ImportSource 
 resolved_path			fn resolved_path(w: &mut fmt::Formatter, did: DefId, path: &clean::Path,
+root_path			    fn root_path(&self) -> String 
 run			pub fn run(mut krate: clean::Crate,
 run			pub fn run(input: &str,
 run_core			pub fn run_core(search_paths: SearchPaths,
@@ -652,7 +657,6 @@ strip_priv_imports			pub fn strip_priv_imports(krate: clean::Crate)  -> plugins:
 strip_private			mod strip_private;
 strip_private			pub fn strip_private(mut krate: clean::Crate) -> plugins::PluginResult 
 stripped_filtered_line			fn stripped_filtered_line<'a>(s: &'a str) -> Option<&'a str> 
-struct_def_to_variant_kind			fn struct_def_to_variant_kind(struct_def: &hir::VariantData, cx: &DocContext) -> VariantKind 
 struct_type_from_def			pub fn struct_type_from_def(vdata: &hir::VariantData) -> StructType 
 t			        fn t(input: &str, expect: &str) 
 t			        fn t(s: &str,
@@ -668,7 +672,6 @@ to_self			    pub fn to_self(&self) -> Option<SelfTy>
 to_src			    fn to_src(&self, cx: &DocContext) -> String 
 to_src			    fn to_src(&self, cx: &DocContext) -> String;
 to_static_str			    pub fn to_static_str(&self) -> &'static str 
-to_string			    pub fn to_string(&self) -> &'static str 
 to_url_str			    pub fn to_url_str(&self) -> &'static str 
 toc			    pub mod toc;
 trait_did			    fn trait_did(&self) -> Option<DefId> 
@@ -679,6 +682,7 @@ try_inline_def			fn try_inline_def<'a, 'tcx>(cx: &DocContext, tcx: TyCtxt<'a, 't
 ty_bounds			fn ty_bounds(bounds: Vec<clean::TyParamBound>) -> Vec<clean::TyParamBound> 
 ty_params			pub fn ty_params(mut params: Vec<clean::TyParam>) -> Vec<clean::TyParam> 
 tybounds			fn tybounds(w: &mut fmt::Formatter,
+type_			    pub fn type_(&self) -> ItemType 
 typename_if_impl			        fn typename_if_impl(item: &clean::Item) -> Option<String> 
 unescape_for_testname			        fn unescape_for_testname(mut s: String) -> String 
 unindent			fn unindent(s: &str) -> String 
@@ -695,7 +699,7 @@ visit_ast			pub mod visit_ast;
 visit_enum_def			    pub fn visit_enum_def(&mut self, it: &hir::Item,
 visit_fn			    pub fn visit_fn(&mut self, item: &hir::Item,
 visit_item			    pub fn visit_item(&mut self, item: &hir::Item,
-visit_item			    fn visit_item(&mut self, def_id: DefId) 
+visit_item			    fn visit_item(&mut self, def: Def) 
 visit_lib			pub mod visit_lib;
 visit_lib			    pub fn visit_lib(&mut self, cnum: CrateNum) 
 visit_macro			    fn visit_macro(&self, def: &hir::MacroDef) -> Macro 

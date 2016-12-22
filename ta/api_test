@@ -5,6 +5,8 @@ Clone for MetricMap			impl Clone for MetricMap
 ColorConfig			pub enum ColorConfig 
 ConsoleTestState			impl<T: Write> ConsoleTestState<T> 
 ConsoleTestState			struct ConsoleTestState<T> 
+FnBox			pub trait FnBox<T>: Send + 'static 
+FnBox for F			impl<T, F: FnOnce(T) + Send + 'static> FnBox<T> for F 
 GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: HANDLE, lpMode: LPDWORD) -> BOOL;
 GetStdHandle			        fn GetStdHandle(which: DWORD) -> HANDLE;
 GetSystemInfo			            fn GetSystemInfo(info: *mut SYSTEM_INFO) -> i32;
@@ -45,6 +47,8 @@ benchmark			    pub fn benchmark<F>(f: F) -> BenchSamples
 black_box			pub fn black_box<T>(dummy: T) -> T 
 calc_result			fn calc_result(desc: &TestDesc, task_result: Result<(), Box<Any + Send>>) -> TestResult 
 calc_timeout			    fn calc_timeout(running_tests: &HashMap<TestDesc, Instant>) -> Option<Duration> 
+call_box			    fn call_box(self: Box<F>, t: T) 
+call_box			    fn call_box(self: Box<Self>, t: T);
 callback			    fn callback<T: Write>(event: &TestEvent, st: &mut ConsoleTestState<T>) -> io::Result<()> 
 check			    fn check(samples: &[f64], summ: &Summary) 
 clone			    fn clone(&self) -> MetricMap 

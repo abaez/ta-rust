@@ -30,7 +30,7 @@ extensions, strings, and numbers lexer definitions.
 *   Make this module the damn bloody best way to code in Rust.
 
 ### REQUIREMENT
-*   Rust >= v1.13.0 (rev: [2c6933ac])
+*   Rust >= v1.14.0 (rev: [e8a01232])
 *   Textadept >= v9.0
 *   (optional) [racer]
 *   (optional) [textadept ctags][6]
@@ -68,7 +68,7 @@ Check the [USERGUIDE] for more information on how to use this wonderful module.
 [5]: http://foicica.com/textadept
 [6]: http://foicica.com/hg/ctags/
 [7]: http://foicica.com/textadept/api.html#io.get_project_root
-[2c6933ac]: https://github.com/rust-lang/rust/commit/2c6933acc05c61e041be764cb1331f6281993f3f
+[e8a01232]: https://github.com/rust-lang/rust/commit/e8a0123241f0d397d39cd18fcc4e5e7edde22730
 [8i]: https://img.shields.io/badge/license-MIT-green.svg
 [8p]: ./LICENSE
 [9i]: https://img.shields.io/badge/twitter-a_baez-blue.svg

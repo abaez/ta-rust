@@ -1,4 +1,8 @@
+Add			impl<'a> Add<Cow<'a, str>> for Cow<'a, str> 
+Add for Cow			impl<'a> Add<&'a str> for Cow<'a, str> 
 Add for String			impl<'a> Add<&'a str> for String 
+AddAssign			impl<'a> AddAssign<Cow<'a, str>> for Cow<'a, str> 
+AddAssign for Cow			impl<'a> AddAssign<&'a str> for Cow<'a, str> 
 AddAssign for String			impl<'a> AddAssign<&'a str> for String 
 AsMut			impl<T> AsMut<Vec<T>> for Vec<T> 
 AsMut for Vec			impl<T> AsMut<[T]> for Vec<T> 
@@ -171,13 +175,16 @@ Extend for VecDeque			impl<A> Extend<A> for VecDeque<A>
 ForceResult			pub enum ForceResult<Leaf, Internal> 
 From			impl<T: Ord> From<Vec<T>> for BinaryHeap<T> 
 From			impl<T> From<BinaryHeap<T>> for Vec<T> 
+From			impl<'a> From<Cow<'a, str>> for String 
 From			impl<'a, T: Clone> From<Vec<T>> for Cow<'a, [T]> 
+From			impl<'a, T> From<Cow<'a, [T]>> for Vec<T> where [T]: ToOwned<Owned=Vec<T>> 
 From			impl<T> From<Vec<T>> for VecDeque<T> 
 From			impl<T> From<VecDeque<T>> for Vec<T> 
 From for Cow			impl<'a> From<&'a str> for Cow<'a, str> 
 From for Cow			impl<'a> From<String> for Cow<'a, str> 
 From for Cow			impl<'a, T: Clone> From<&'a [T]> for Cow<'a, [T]> 
 From for String			impl<'a> From<&'a str> for String 
+From for Vec			impl From<String> for Vec<u8> 
 From for Vec			impl<'a, T: Clone> From<&'a [T]> for Vec<T> 
 From for Vec			impl<'a> From<&'a str> for Vec<u8> 
 FromIterator for BTreeMap			impl<K: Ord, V> FromIterator<(K, V)> for BTreeMap<K, V> 
@@ -258,7 +265,6 @@ Internal			    pub enum Internal { }
 InternalNode			impl<K, V> InternalNode<K, V> 
 InternalNode			struct InternalNode<K, V> 
 Intersection			pub struct Intersection<'a, T: 'a> 
-Into			impl Into<Vec<u8>> for String 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<K, V> 
 IntoIter			pub struct IntoIter<T> 
@@ -283,6 +289,9 @@ IntoIterator for BinaryHeap			impl<T: Ord> IntoIterator for BinaryHeap<T>
 IntoIterator for LinkedList			impl<T> IntoIterator for LinkedList<T> 
 IntoIterator for Vec			impl<T> IntoIterator for Vec<T> 
 IntoIterator for VecDeque			impl<T> IntoIterator for VecDeque<T> 
+IsTrustedLen			trait IsTrustedLen : Iterator 
+IsTrustedLen for I			impl<I> IsTrustedLen for I where I: Iterator { }
+IsTrustedLen for I			impl<I> IsTrustedLen for I where I: TrustedLen
 Iter			pub struct Iter<'a, T: 'a> 
 Iter			pub struct Iter<'a, K: 'a, V: 'a> 
 Iter			pub struct Iter<'a, T: 'a> 
@@ -389,6 +398,9 @@ RangeArgument for RangeTo			impl<T> RangeArgument<T> for RangeTo<T>
 RangeMut			impl<'a, K, V> RangeMut<'a, K, V> 
 RangeMut			pub struct RangeMut<'a, K: 'a, V: 'a> 
 Recover			trait Recover<Q: ?Sized> 
+RingSlices			impl<'a, T> RingSlices for &'a [T] 
+RingSlices			impl<'a, T> RingSlices for &'a mut [T] 
+RingSlices			trait RingSlices : Sized 
 Root			impl<K, V> Root<K, V> 
 Root			pub struct Root<K, V> 
 SearchResult			pub enum SearchResult<BorrowType, K, V, FoundType, GoDownType> 
@@ -409,9 +421,7 @@ SliceConcatExt			pub trait SliceConcatExt<T: ?Sized>
 SpecExtend			impl<T: Ord> SpecExtend<BinaryHeap<T>> for BinaryHeap<T> 
 SpecExtend			trait SpecExtend<I: IntoIterator> 
 SpecExtend			impl<T> SpecExtend<LinkedList<T>> for LinkedList<T> 
-SpecExtend			impl<T> SpecExtend<Vec<T>> for Vec<T> 
 SpecExtend for LinkedList			impl<I: IntoIterator> SpecExtend<I> for LinkedList<I::Item> 
-SpecExtend for Vec			impl<I: IntoIterator> SpecExtend<I> for Vec<I::Item> 
 String			impl String 
 String			pub struct String 
 Sub			impl<'a, 'b, T: Ord + Clone> Sub<&'b BTreeSet<T>> for &'a BTreeSet<T> 
@@ -433,6 +443,7 @@ ToOwned for str			impl ToOwned for str
 ToString			pub trait ToString 
 ToString for T			impl<T: fmt::Display + ?Sized> ToString for T 
 ToString for str			impl ToString for str 
+TrustedLen for IntoIter			unsafe impl<T> TrustedLen for IntoIter<T> {}
 UnderflowResult			enum UnderflowResult<'a, K, V> 
 Union			pub struct Union<'a, T: 'a> 
 VacantEntry			impl<'a, K: Ord, V> VacantEntry<'a, K, V> 
@@ -447,7 +458,11 @@ VecDeque			impl<T: Clone> VecDeque<T>
 VecDeque			impl<T> VecDeque<T> 
 VecDeque			pub struct VecDeque<T> 
 a			    fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> { x }
+add			    fn add(mut self, rhs: &'a str) -> Self::Output 
+add			    fn add(mut self, rhs: Cow<'a, str>) -> Self::Output 
 add			    fn add(mut self, other: &str) -> String 
+add_assign			    fn add_assign(&mut self, rhs: &'a str) 
+add_assign			    fn add_assign(&mut self, rhs: Cow<'a, str>) 
 add_assign			    fn add_assign(&mut self, other: &str) 
 append			    pub fn append(&mut self, other: &mut Self) 
 append			    pub fn append(&mut self, other: &mut Self) 
@@ -602,6 +617,8 @@ count			fn count(tail: usize, head: usize, size: usize) -> usize
 create_vec_and_test_convert			        fn create_vec_and_test_convert(cap: usize, offset: usize, len: usize) 
 deallocate_and_ascend			    pub unsafe fn deallocate_and_ascend(self) -> Option<
 dedup			    pub fn dedup(&mut self) 
+dedup_by			    pub fn dedup_by<F>(&mut self, mut same_bucket: F) where F: FnMut(&mut T, &mut T) -> bool 
+dedup_by_key			    pub fn dedup_by_key<F, K>(&mut self, mut key: F) where F: FnMut(&mut T) -> K, K: PartialEq 
 default			    fn default() -> BinaryHeap<T> 
 default			    fn default() -> Cow<'a, B> 
 default			    fn default() -> BTreeMap<K, V> 
@@ -711,6 +728,7 @@ fmt::Display for FromUtf8Error			impl fmt::Display for FromUtf8Error
 fmt::Display for ParseError			impl fmt::Display for ParseError 
 fmt::Display for String			impl fmt::Display for String 
 fmt::Write for String			impl fmt::Write for String 
+fold			    fn fold<Acc, F>(self, mut accum: Acc, mut f: F) -> Acc
 force			    pub fn force(self) -> ForceResult<
 forget_type			    pub fn forget_type(self) -> NodeRef<BorrowType, K, V, marker::LeafOrInternal> 
 format			pub fn format(args: Arguments) -> string::String 
@@ -718,10 +736,13 @@ from			    fn from(heap: BinaryHeap<T>) -> Vec<T>
 from			    fn from(vec: Vec<T>) -> BinaryHeap<T> 
 from			    fn from(s: &'a str) -> Cow<'a, str> 
 from			    fn from(s: &'a str) -> String 
+from			    fn from(s: Cow<'a, str>) -> String 
 from			    fn from(s: String) -> Cow<'a, str> 
+from			    fn from(string : String) -> Vec<u8> 
 from			    fn from(s: &'a [T]) -> Cow<'a, [T]> 
 from			    fn from(s: &'a [T]) -> Vec<T> 
 from			    fn from(s: &'a str) -> Vec<u8> 
+from			    fn from(s: Cow<'a, [T]>) -> Vec<T> 
 from			    fn from(v: Vec<T>) -> Cow<'a, [T]> 
 from			    fn from(mut other: Vec<T>) -> Self 
 from			    fn from(other: VecDeque<T>) -> Self 
@@ -833,7 +854,6 @@ insert_str			    pub fn insert_str(&mut self, idx: usize, string: &str)
 insertion_sort			fn insertion_sort<T, F>(v: &mut [T], mut compare: F)
 intersection			    pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T>) -> Intersection<'a, T> 
 intersection			    pub fn intersection(&self, e: EnumSet<E>) -> EnumSet<E> 
-into			    fn into(self) -> Vec<u8> 
 into_boxed_slice			    pub fn into_boxed_slice(mut self) -> Box<[T]> 
 into_boxed_str			    pub fn into_boxed_str(self) -> Box<str> 
 into_bytes			    pub fn into_bytes(self) -> Vec<u8> 
@@ -1105,6 +1125,7 @@ remove			    pub fn remove(&mut self, index: usize) -> Option<T>
 remove_entry			    pub fn remove_entry(self) -> (K, V) 
 remove_kv			    fn remove_kv(self) -> (K, V) 
 remove_pair			    pub fn remove_pair(self) -> (K, V) 
+repeat			    pub fn repeat(&self, n: usize) -> String 
 replace			    pub fn replace(&mut self, mut item: T) -> Option<T> 
 replace			    fn replace(&mut self, key: K) -> Option<K> 
 replace			    fn replace(&mut self, key: Self::Key) -> Option<Self::Key>;
@@ -1127,12 +1148,13 @@ reverse			    pub fn reverse(&mut self)
 rfind			    pub fn rfind<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize>
 right_edge			    pub fn right_edge(self) -> Handle<NodeRef<BorrowType, K, V, NodeType>, marker::Edge> 
 right_kv			    pub fn right_kv(self)
+ring_slices			    fn ring_slices(buf: Self, head: usize, tail: usize) -> (Self, Self) 
 rmatch_indices			    pub fn rmatch_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> RMatchIndices<'a, P>
 rmatches			    pub fn rmatches<'a, P: Pattern<'a>>(&'a self, pat: P) -> RMatches<'a, P>
 rsplit			    pub fn rsplit<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplit<'a, P>
 rsplit_terminator			    pub fn rsplit_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplitTerminator<'a, P>
 rsplitn			    pub fn rsplitn<F>(&self, n: usize, pred: F) -> RSplitN<T, F>
-rsplitn			    pub fn rsplitn<'a, P: Pattern<'a>>(&'a self, count: usize, pat: P) -> RSplitN<'a, P>
+rsplitn			    pub fn rsplitn<'a, P: Pattern<'a>>(&'a self, n: usize, pat: P) -> RSplitN<'a, P>
 rsplitn_mut			    pub fn rsplitn_mut<F>(&mut self, n: usize, pred: F) -> RSplitNMut<T, F>
 safe_get			        fn safe_get(xs: &[u8], i: usize, total: usize) -> u8 
 search			mod search;
@@ -1159,6 +1181,8 @@ size_hint			    fn size_hint(&self) -> (usize, Option<usize>)
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 slice			pub mod slice;
+slice			    fn slice(self, from: usize, to: usize) -> Self 
+slice			    fn slice(self, from: usize, to: usize) -> Self;
 slice_insert			unsafe fn slice_insert<T>(slice: &mut [T], idx: usize, val: T) 
 slice_mut_unchecked			    pub unsafe fn slice_mut_unchecked(&mut self, begin: usize, end: usize) -> &mut str 
 slice_remove			unsafe fn slice_remove<T>(slice: &mut [T], idx: usize) -> T 
@@ -1169,12 +1193,13 @@ sort_by_key			    pub fn sort_by_key<B, F>(&mut self, mut f: F)
 spec_extend			    fn spec_extend(&mut self, ref mut other: BinaryHeap<T>) 
 spec_extend			    fn spec_extend(&mut self, iter: I);
 spec_extend			    fn spec_extend(&mut self, ref mut other: LinkedList<T>) 
-spec_extend			    fn spec_extend(&mut self, ref mut other: Vec<T>) 
 split			    pub fn split(mut self)
 split			    pub fn split<F>(&self, pred: F) -> Split<T, F>
 split			    pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> 
 split_at			    pub fn split_at(&self, mid: usize) -> (&[T], &[T]) 
 split_at			    pub fn split_at(&self, mid: usize) -> (&str, &str) 
+split_at			    fn split_at(self, i: usize) -> (Self, Self) 
+split_at			    fn split_at(self, i: usize) -> (Self, Self);
 split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut [T], &mut [T]) 
 split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) 
 split_first			    pub fn split_first(&self) -> Option<(&T, &[T])> 
@@ -1190,7 +1215,7 @@ split_off			    pub fn split_off(&mut self, at: usize) -> Self
 split_terminator			    pub fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P> 
 split_whitespace			    pub fn split_whitespace(&self) -> SplitWhitespace 
 splitn			    pub fn splitn<F>(&self, n: usize, pred: F) -> SplitN<T, F>
-splitn			    pub fn splitn<'a, P: Pattern<'a>>(&'a self, count: usize, pat: P) -> SplitN<'a, P> 
+splitn			    pub fn splitn<'a, P: Pattern<'a>>(&'a self, n: usize, pat: P) -> SplitN<'a, P> 
 splitn_mut			    pub fn splitn_mut<F>(&mut self, n: usize, pred: F) -> SplitNMut<T, F>
 start			    fn start(&self) -> Option<&T> 
 starts_with			    pub fn starts_with(&self, needle: &[T]) -> bool
@@ -1238,6 +1263,8 @@ trim_right_matches			    pub fn trim_right_matches<'a, P: Pattern<'a>>(&'a self,
 truncate			    pub fn truncate(&mut self, new_len: usize) 
 truncate			    pub fn truncate(&mut self, len: usize) 
 truncate			    pub fn truncate(&mut self, len: usize) 
+trusted_len			    fn trusted_len(&self) -> Option<usize> { None }
+trusted_len			    fn trusted_len(&self) -> Option<usize> 
 union			    pub fn union<'a>(&'a self, other: &'a BTreeSet<T>) -> Union<'a, T> 
 union			    pub fn union(&self, e: EnumSet<E>) -> EnumSet<E> 
 unsafe_get			        fn unsafe_get(xs: &[u8], i: usize) -> u8 

@@ -8,8 +8,13 @@ CodeSuggestion			pub struct CodeSuggestion
 ColorConfig			impl ColorConfig 
 ColorConfig			pub enum ColorConfig 
 CreateMutexA			        fn CreateMutexA(lpMutexAttributes: LPSECURITY_ATTRIBUTES,
+Debug for DiagnosticBuilder			impl<'a> Debug for DiagnosticBuilder<'a> 
+Deref for DiagnosticBuilder			impl<'a> Deref for DiagnosticBuilder<'a> 
+DerefMut for DiagnosticBuilder			impl<'a> DerefMut for DiagnosticBuilder<'a> 
 Destination			impl Destination 
 Destination			pub enum Destination 
+Diagnostic			impl Diagnostic 
+Diagnostic			pub struct Diagnostic 
 DiagnosticBuilder			impl<'a> DiagnosticBuilder<'a> 
 DiagnosticBuilder			pub struct DiagnosticBuilder<'a> 
 Drop for DiagnosticBuilder			impl<'a> Drop for DiagnosticBuilder<'a> 
@@ -23,7 +28,7 @@ ExplicitBug			pub struct ExplicitBug;
 FatalError			pub struct FatalError;
 FileInfo			pub struct FileInfo 
 FileWithAnnotatedLines			struct FileWithAnnotatedLines 
-GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: HANDLE,
+GetConsoleMode			        fn GetConsoleMode(hConsoleHandle: HANDLE, lpMode: *mut DWORD) -> BOOL;
 GetStdHandle			        fn GetStdHandle(which: DWORD) -> HANDLE;
 Guard			    struct Guard(Handle);
 Handle			    struct Handle(HANDLE);
@@ -42,7 +47,7 @@ StyledBuffer			impl StyledBuffer
 StyledBuffer			pub struct StyledBuffer 
 StyledString			pub struct StyledString 
 SubDiagnostic			pub struct SubDiagnostic 
-WaitForSingleObject			        fn WaitForSingleObject(hHandle: HANDLE,
+WaitForSingleObject			        fn WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD) -> DWORD;
 Write for BufferedWriter			impl Write for BufferedWriter 
 Write for Destination			impl Write for Destination 
 _new			    fn _new() -> BufferedWriter 
@@ -51,7 +56,7 @@ acquire_global_lock			pub fn acquire_global_lock(_name: &str) -> Box<Any>
 acquire_global_lock			pub fn acquire_global_lock(name: &str) -> Box<Any> 
 add_annotation_to_file			        fn add_annotation_to_file(file_vec: &mut Vec<FileWithAnnotatedLines>,
 append			    pub fn append(&mut self, line: usize, string: &str, style: Style) 
-apply_style			    fn apply_style(&mut self,
+apply_style			    fn apply_style(&mut self, lvl: Level, style: Style) -> io::Result<()> 
 bug			    pub fn bug(&self, msg: &str) -> ! 
 bump_err_count			    pub fn bump_err_count(&self) 
 cancel			    pub fn cancel(&mut self) 
@@ -59,38 +64,43 @@ cancel			    pub fn cancel(&self, err: &mut DiagnosticBuilder)
 cancelled			    pub fn cancelled(&self) -> bool 
 code			    pub fn code(&mut self, s: String) -> &mut Self 
 color			    pub fn color(self) -> term::color::Color 
+copy_details_not_message			    pub fn copy_details_not_message(&mut self, from: &Diagnostic) 
 copy_tabs			    pub fn copy_tabs(&mut self, row: usize) 
 delay_span_bug			    pub fn delay_span_bug<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
+deref			    fn deref(&self) -> &Diagnostic 
+deref_mut			    fn deref_mut(&mut self) -> &mut Diagnostic 
 description			    fn description(&self) -> &str 
+diagnostic			pub mod diagnostic;
+diagnostic_builder			pub mod diagnostic_builder;
 draw_col_separator			fn draw_col_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_col_separator_no_space			fn draw_col_separator_no_space(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_note_separator			fn draw_note_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
 drop			    fn drop(&mut self) 
 drop			        fn drop(&mut self) 
+emit			    pub fn emit(&mut self) 
 emit			    fn emit(&mut self, db: &DiagnosticBuilder) 
 emit			    fn emit(&mut self, db: &DiagnosticBuilder);
-emit			    pub fn emit(&mut self) 
-emit			    pub fn emit(&self,
+emit			    pub fn emit(&self, msp: &MultiSpan, msg: &str, lvl: Level) 
 emit_message_default			    fn emit_message_default(&mut self,
 emit_messages_default			    fn emit_messages_default(&mut self,
 emit_suggestion_default			    fn emit_suggestion_default(&mut self,
 emit_to_destination			fn emit_to_destination(rendered_buffer: &Vec<Vec<StyledString>>,
-emit_with_code			    pub fn emit_with_code(&self,
+emit_with_code			    pub fn emit_with_code(&self, msp: &MultiSpan, msg: &str, code: &str, lvl: Level) 
 emitter			pub mod emitter;
 ensure_lines			    fn ensure_lines(&mut self, line: usize) 
 err			    pub fn err(&self, msg: &str) 
 err_count			    pub fn err_count(&self) -> usize 
 error::Error for ExplicitBug			impl error::Error for ExplicitBug 
 error::Error for FatalError			impl error::Error for FatalError 
-expect			pub fn expect<T, M>(diag: &Handler, opt: Option<T>, msg: M) -> T where
+expect			pub fn expect<T, M>(diag: &Handler, opt: Option<T>, msg: M) -> T
 fatal			    pub fn fatal(&self, msg: &str) -> FatalError 
 find_description			    pub fn find_description(&self, code: &str) -> Option<&'static str> 
 fix_multispan_in_std_macros			    fn fix_multispan_in_std_macros(&mut self, span: &mut MultiSpan) -> bool 
 fix_multispans_in_std_macros			    fn fix_multispans_in_std_macros(&mut self,
 flush			    fn flush(&mut self) -> io::Result<()> 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
-fmt::Debug for DiagnosticBuilder			impl<'a> fmt::Debug for DiagnosticBuilder<'a> 
 fmt::Display for ExplicitBug			impl fmt::Display for ExplicitBug 
 fmt::Display for FatalError			impl fmt::Display for FatalError 
 fmt::Display for Level			impl fmt::Display for Level 
@@ -98,7 +108,8 @@ from_stderr			    fn from_stderr() -> Destination
 get_max_line_num			    fn get_max_line_num(&mut self, span: &MultiSpan, children: &Vec<SubDiagnostic>) -> usize 
 get_multispan_max_line_num			    fn get_multispan_max_line_num(&mut self, msp: &MultiSpan) -> usize 
 has_errors			    pub fn has_errors(&self) -> bool 
-help			    pub fn help(&mut self , msg: &str) -> &mut DiagnosticBuilder<'a> 
+help			    pub fn help(&mut self , msg: &str) -> &mut Self 
+into_diagnostic			    pub fn into_diagnostic(mut self) -> Diagnostic 
 is_fatal			    pub fn is_fatal(&self) -> bool 
 level			    pub fn level(&self) -> Level 
 lock			mod lock;
@@ -107,12 +118,14 @@ macro_backtrace			    fn macro_backtrace(&self, span: Span) -> Vec<MacroBacktrac
 merge_spans			    fn merge_spans(&self, sp_lhs: Span, sp_rhs: Span) -> Option<Span>;
 message			    pub fn message(&self) -> &str 
 mut_span_err			    pub fn mut_span_err<'a, S: Into<MultiSpan>>(&'a self,
-new			    pub fn new(dst: Box<Write + Send>,
-new			    fn new(handler: &'a Handler,
+new			    pub fn new(level: Level, message: &str) -> Self 
+new			    pub fn new(handler: &'a Handler, level: Level, message: &str) -> DiagnosticBuilder<'a> 
+new			    pub fn new(dst: Box<Write + Send>, code_map: Option<Rc<CodeMapper>>) -> EmitterWriter 
 new			    pub fn new(descriptions: &[(&'static str, &'static str)]) -> Registry 
 new			    pub fn new() -> StyledBuffer 
-new_with_code			    fn new_with_code(handler: &'a Handler,
-note			    pub fn note(&mut self, msg: &str) -> &mut DiagnosticBuilder<'a> 
+new_with_code			    pub fn new_with_code(level: Level, code: Option<String>, message: &str) -> Self 
+new_with_code			    pub fn new_with_code(handler: &'a Handler,
+note			    pub fn note(&mut self, msg: &str) -> &mut Self 
 note_expected_found			    pub fn note_expected_found(&mut self,
 note_expected_found_extra			    pub fn note_expected_found_extra(&mut self,
 note_without_error			    pub fn note_without_error(&self, msg: &str) 
@@ -121,7 +134,7 @@ overlaps			fn overlaps(a1: &Annotation, a2: &Annotation) -> bool
 panic_if_treat_err_as_bug			    fn panic_if_treat_err_as_bug(&self) 
 prepend			    pub fn prepend(&mut self, line: usize, string: &str, style: Style) 
 preprocess_annotations			    fn preprocess_annotations(&self, msp: &MultiSpan) -> Vec<FileWithAnnotatedLines> 
-push_trailing			        fn push_trailing(buf: &mut String, line_opt: Option<&str>,
+push_trailing			        fn push_trailing(buf: &mut String,
 putc			    pub fn putc(&mut self, line: usize, col: usize, chr: char, style: Style) 
 puts			    pub fn puts(&mut self, line: usize, col: usize, string: &str, style: Style) 
 registry			pub mod registry;
@@ -136,8 +149,8 @@ span_bug			    pub fn span_bug<S: Into<MultiSpan>>(&self, sp: S, msg: &str) -> !
 span_bug_no_panic			    pub fn span_bug_no_panic<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
 span_err			    pub fn span_err<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
 span_err_with_code			    pub fn span_err_with_code<S: Into<MultiSpan>>(&self, sp: S, msg: &str, code: &str) 
-span_fatal			    pub fn span_fatal<S: Into<MultiSpan>>(&self, sp: S, msg: &str)
-span_fatal_with_code			    pub fn span_fatal_with_code<S: Into<MultiSpan>>(&self, sp: S, msg: &str, code: &str)
+span_fatal			    pub fn span_fatal<S: Into<MultiSpan>>(&self, sp: S, msg: &str) -> FatalError 
+span_fatal_with_code			    pub fn span_fatal_with_code<S: Into<MultiSpan>>(&self,
 span_help			    pub fn span_help<S: Into<MultiSpan>>(&mut self,
 span_label			    pub fn span_label(&mut self, span: Span, label: &fmt::Display)
 span_note			    pub fn span_note<S: Into<MultiSpan>>(&mut self,
@@ -152,7 +165,7 @@ span_warn			    pub fn span_warn<S: Into<MultiSpan>>(&self, sp: S, msg: &str)
 span_warn_with_code			    pub fn span_warn_with_code<S: Into<MultiSpan>>(&self, sp: S, msg: &str, code: &str) 
 splice_lines			    pub fn splice_lines(&self, cm: &CodeMapper) -> String 
 start_attr			    fn start_attr(&mut self, attr: term::Attr) -> io::Result<()> 
-stderr			    pub fn stderr(color_config: ColorConfig,
+stderr			    pub fn stderr(color_config: ColorConfig, code_map: Option<Rc<CodeMapper>>) -> EmitterWriter 
 stderr_isatty			fn stderr_isatty() -> bool 
 struct_dummy			    pub fn struct_dummy<'a>(&'a self) -> DiagnosticBuilder<'a> 
 struct_err			    pub fn struct_err<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a> 
@@ -169,7 +182,7 @@ sub			    fn sub(&mut self,
 to_str			    pub fn to_str(self) -> &'static str 
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 
 use_color			    fn use_color(&self) -> bool 
-warn			    pub fn warn(&mut self, msg: &str) -> &mut DiagnosticBuilder<'a> 
+warn			    pub fn warn(&mut self, msg: &str) -> &mut Self 
 warn			    pub fn warn(&self, msg: &str) 
 with_emitter			    pub fn with_emitter(can_emit_warnings: bool,
 with_tty_emitter			    pub fn with_tty_emitter(color_config: ColorConfig,

@@ -18,6 +18,7 @@ Wrap			        struct Wrap<'a>(TypedArena<EI<'a>>);
 alloc			    pub fn alloc(&self, object: T) -> &mut T 
 alloc_inner			            fn alloc_inner<F: Fn() -> Inner>(&self, f: F) -> &Inner 
 alloc_outer			            fn alloc_outer<F: Fn() -> Outer<'a>>(&self, f: F) -> &Outer 
+alloc_slice			    pub fn alloc_slice(&self, slice: &[T]) -> &mut [T]
 bench_copy			    pub fn bench_copy(b: &mut Bencher) 
 bench_copy_nonarena			    pub fn bench_copy_nonarena(b: &mut Bencher) 
 bench_noncopy			    pub fn bench_noncopy(b: &mut Bencher) 
@@ -28,7 +29,7 @@ destroy			    unsafe fn destroy(&mut self, len: usize)
 drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 end			    fn end(&self) -> *mut T 
-grow			    fn grow(&self) 
+grow			    fn grow(&self, n: usize) 
 new			    pub fn new() -> TypedArena<T> 
 new			    unsafe fn new(capacity: usize) -> TypedArenaChunk<T> 
 start			    fn start(&self) -> *mut T 
