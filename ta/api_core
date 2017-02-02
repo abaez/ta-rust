@@ -296,28 +296,28 @@ EscapeDefault			pub struct EscapeDefault
 EscapeDefaultState			enum EscapeDefaultState 
 EscapeUnicode			pub struct EscapeUnicode 
 EscapeUnicodeState			enum EscapeUnicodeState 
-ExactSizeIterator			impl<'a, I: ExactSizeIterator + ?Sized> ExactSizeIterator for &'a mut I {}
+ExactSizeIterator			impl<'a, I: ExactSizeIterator + ?Sized> ExactSizeIterator for &'a mut I 
 ExactSizeIterator			pub trait ExactSizeIterator: Iterator 
 ExactSizeIterator for Bytes			impl<'a> ExactSizeIterator for Bytes<'a> 
 ExactSizeIterator for Chunks			impl<'a, T> ExactSizeIterator for Chunks<'a, T> {}
 ExactSizeIterator for ChunksMut			impl<'a, T> ExactSizeIterator for ChunksMut<'a, T> {}
 ExactSizeIterator for Cloned			impl<'a, I, T: 'a> ExactSizeIterator for Cloned<I>
 ExactSizeIterator for Empty			impl<T> ExactSizeIterator for Empty<T> 
-ExactSizeIterator for Enumerate			impl<I> ExactSizeIterator for Enumerate<I> where I: ExactSizeIterator {}
+ExactSizeIterator for Enumerate			impl<I> ExactSizeIterator for Enumerate<I> where I: ExactSizeIterator 
 ExactSizeIterator for EscapeDebug			impl ExactSizeIterator for EscapeDebug { }
 ExactSizeIterator for EscapeDefault			impl ExactSizeIterator for EscapeDefault 
 ExactSizeIterator for EscapeUnicode			impl ExactSizeIterator for EscapeUnicode 
-ExactSizeIterator for Fuse			impl<I> ExactSizeIterator for Fuse<I> where I: ExactSizeIterator {}
+ExactSizeIterator for Fuse			impl<I> ExactSizeIterator for Fuse<I> where I: ExactSizeIterator 
 ExactSizeIterator for Inspect			impl<I: ExactSizeIterator, F> ExactSizeIterator for Inspect<I, F>
 ExactSizeIterator for IntoIter			impl<A> ExactSizeIterator for IntoIter<A> {}
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
 ExactSizeIterator for Item			impl<A> ExactSizeIterator for Item<A> {}
 ExactSizeIterator for Iter			impl<'a, A> ExactSizeIterator for Iter<'a, A> {}
 ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
-ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
+ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> 
 ExactSizeIterator for IterMut			impl<'a, A> ExactSizeIterator for IterMut<'a, A> {}
 ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> {}
-ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> {}
+ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> 
 ExactSizeIterator for Map			impl<B, I: ExactSizeIterator, F> ExactSizeIterator for Map<I, F>
 ExactSizeIterator for Once			impl<T> ExactSizeIterator for Once<T> 
 ExactSizeIterator for Peekable			impl<I: ExactSizeIterator> ExactSizeIterator for Peekable<I> {}
@@ -752,6 +752,14 @@ Skip			pub struct Skip<I>
 SkipWhile			pub struct SkipWhile<I, P> 
 SliceExt			impl<T> SliceExt for [T] 
 SliceExt			pub trait SliceExt 
+SliceIndex			pub trait SliceIndex<T> 
+SliceIndex for ops			impl<T> SliceIndex<T> for  ops::Range<usize> 
+SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeFrom<usize> 
+SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeFull 
+SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeInclusive<usize> 
+SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeTo<usize> 
+SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeToInclusive<usize> 
+SliceIndex for usize			impl<T> SliceIndex<T> for usize 
 SliceOrd			impl SliceOrd<u8> for [u8] 
 SliceOrd			impl<A> SliceOrd<A> for [A]
 SliceOrd			trait SliceOrd<B> 
@@ -859,7 +867,7 @@ UpperHex			pub trait UpperHex
 UpperHex			struct UpperHex;
 Utf8Error			impl Utf8Error 
 Utf8Error			pub struct Utf8Error 
-Void			enum Void {}
+Void			struct Void 
 Windows			pub struct Windows<'a, T:'a> 
 Wrapping			pub struct Wrapping<T>(#[stable(feature = "rust1", since = "1.0.0")]
 Write			impl<'a, W: Write + ?Sized> Write for &'a mut W 
@@ -1253,6 +1261,7 @@ cosf32			    pub fn cosf32(x: f32) -> f32;
 cosf64			    pub fn cosf64(x: f64) -> f64;
 count			    fn count(self) -> usize 
 count			    fn count(self) -> usize where Self: Sized 
+count			    fn count(mut self) -> usize 
 count			    fn count(self) -> usize 
 count			            fn count(self) -> usize 
 count			    fn count(self) -> usize 
@@ -1625,15 +1634,19 @@ ge			                fn ge(&self, other: &(
 get			    pub fn get(&self) -> *mut T 
 get			    pub fn get(&self) -> T 
 get			    pub unsafe fn get(&self) -> &T 
-get			    fn get(&self, index: usize) -> Option<&Self::Item>;
-get			    fn get(&self, index: usize) -> Option<&T> 
+get			    fn get(self, slice: &[T]) -> Option<&Self::Output>;
+get			    fn get(self, slice: &[T]) -> Option<&T> 
+get			    fn get(self, slice: &[T]) -> Option<&[T]> 
+get			    fn get<I>(&self, index: I) -> Option<&I::Output>
 get_bit			            pub fn get_bit(&self, i: usize) -> u8 
 get_bits			pub fn get_bits(x: &Big, start: usize, end: usize) -> u64 
 get_end			    fn get_end(&mut self) -> Option<&'a str> 
 get_mut			    pub fn get_mut(&mut self) -> &mut T 
 get_mut			    pub unsafe fn get_mut(&mut self) -> &mut T 
-get_mut			    fn get_mut(&mut self, index: usize) -> Option<&mut Self::Item>;
-get_mut			    fn get_mut(&mut self, index: usize) -> Option<&mut T> 
+get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut Self::Output>;
+get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut T> 
+get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> 
+get_mut			    fn get_mut<I>(&mut self, index: I) -> Option<&mut I::Output>
 get_mut			            pub fn get_mut(&mut self) -> &mut 
 get_mut			    pub fn get_mut(&mut self) -> &mut *mut T 
 get_mut			    pub fn get_mut(&mut self) -> &mut bool 
@@ -1646,10 +1659,14 @@ get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> Self::Item
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> Self::Item;
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> &'a T 
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> &'a mut T 
-get_unchecked			    unsafe fn get_unchecked(&self, index: usize) -> &Self::Item;
-get_unchecked			    unsafe fn get_unchecked(&self, index: usize) -> &T 
-get_unchecked_mut			    unsafe fn get_unchecked_mut(&mut self, index: usize) -> &mut Self::Item;
-get_unchecked_mut			    unsafe fn get_unchecked_mut(&mut self, index: usize) -> &mut T 
+get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &Self::Output;
+get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &T 
+get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &[T] 
+get_unchecked			    unsafe fn get_unchecked<I>(&self, index: I) -> &I::Output
+get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut Self::Output;
+get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut T 
+get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut [T] 
+get_unchecked_mut			    unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
 getcount			    fn getcount(&mut self, cnt: &rt::v1::Count) -> Option<usize> 
 grisu			    pub mod grisu;
 gt			                fn gt(&self, other: &[T; 
@@ -1690,13 +1707,10 @@ impls			mod impls
 impls			mod impls 
 impls			mod impls 
 index			    fn index(&self, index: Idx) -> &Self::Output;
-index			    fn index(&self, _index: RangeFull) -> &[T] 
-index			    fn index(&self, index: ops::Range<usize>) -> &[T] 
-index			    fn index(&self, index: ops::RangeFrom<usize>) -> &[T] 
-index			    fn index(&self, index: ops::RangeInclusive<usize>) -> &[T] 
-index			    fn index(&self, index: ops::RangeTo<usize>) -> &[T] 
-index			    fn index(&self, index: ops::RangeToInclusive<usize>) -> &[T] 
-index			    fn index(&self, index: usize) -> &T 
+index			    fn index(&self, index: I) -> &I::Output 
+index			    fn index(self, slice: &[T]) -> &Self::Output;
+index			    fn index(self, slice: &[T]) -> &T 
+index			    fn index(self, slice: &[T]) -> &[T] 
 index			        fn index(&self, _index: ops::RangeFull) -> &str 
 index			        fn index(&self, index: ops::Range<usize>) -> &str 
 index			        fn index(&self, index: ops::RangeFrom<usize>) -> &str 
@@ -1704,13 +1718,10 @@ index			        fn index(&self, index: ops::RangeInclusive<usize>) -> &str
 index			        fn index(&self, index: ops::RangeTo<usize>) -> &str 
 index			        fn index(&self, index: ops::RangeToInclusive<usize>) -> &str 
 index_mut			    fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
-index_mut			    fn index_mut(&mut self, _index: RangeFull) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: ops::Range<usize>) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: ops::RangeInclusive<usize>) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut [T] 
-index_mut			    fn index_mut(&mut self, index: usize) -> &mut T 
+index_mut			    fn index_mut(&mut self, index: I) -> &mut I::Output 
+index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut Self::Output;
+index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut T 
+index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut [T] 
 index_mut			        fn index_mut(&mut self, _index: ops::RangeFull) -> &mut str 
 index_mut			        fn index_mut(&mut self, index: ops::Range<usize>) -> &mut str 
 index_mut			        fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mut str 
@@ -1764,8 +1775,11 @@ is_contained_in			    fn is_contained_in(self, haystack: &'a str) -> bool
 is_digit			    fn is_digit(self, radix: u32) -> bool 
 is_digit			    fn is_digit(self, radix: u32) -> bool;
 is_empty			    fn is_empty(&self) -> bool 
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    fn is_empty(&self) -> bool { self.len() == 0 }
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    fn is_empty(&self) -> bool { self.len() == 0 }
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    fn is_empty(&self) -> bool;
 is_err			    pub fn is_err(&self) -> bool 
 is_finite			    fn is_finite(self) -> bool 
@@ -1826,6 +1840,8 @@ last			            fn last(mut self) -> Option<
 last			    fn last(&self) -> Option<&Self::Item>;
 last			    fn last(&self) -> Option<&T> 
 last			    fn last(self) -> Option<Self::Item> 
+last			    fn last(mut self) -> Option<(usize, char)> 
+last			    fn last(mut self) -> Option<char> 
 last			    fn last(self) -> Option<Self::Item> 
 last_mut			    fn last_mut(&mut self) -> Option<&mut Self::Item>;
 last_mut			    fn last_mut(&mut self) -> Option<&mut T> 
@@ -1841,6 +1857,7 @@ le			    fn le(&self, other: &*const T) -> bool { *self <= *other }
 le			    fn le(&self, other: &*mut T) -> bool { *self <= *other }
 le			                fn le(&self, other: &(
 leading_zeros			        pub fn leading_zeros(self) -> u32 
+len			    fn len(&self) -> usize 
 len			    fn len(&self) -> usize 
 len			    fn len(&self) -> usize 
 len			    fn len(&self) -> usize 
@@ -2103,7 +2120,8 @@ not			            fn not(self) ->
 not			    fn not(self) -> Self::Output;
 not_equal			    fn not_equal(&self, other: &[B]) -> bool { !self.equal(other) }
 nth			    fn nth(&mut self, n: usize) -> Option<char> 
-nth			    fn nth(&mut self, mut n: usize) -> Option<Self::Item> where Self: Sized 
+nth			    fn nth(&mut self, mut n: usize) -> Option<Self::Item> 
+nth			    fn nth(&mut self, n: usize) -> Option<Self::Item> 
 nth			    fn nth(&mut self, mut n: usize) -> Option<A::Item> 
 nth			    fn nth(&mut self, n: usize) -> Option<(usize, I::Item)> 
 nth			    fn nth(&mut self, n: usize) -> Option<I::Item> 
@@ -2135,20 +2153,8 @@ ops			impl<A: Step> ops::Range<A>
 ops			impl<A: Step> ops::RangeFrom<A> 
 ops			impl<A: Step> ops::RangeInclusive<A> 
 ops			pub mod ops;
-ops			impl<T> ops::Index<RangeFull> for [T] 
-ops			impl<T> ops::Index<ops::Range<usize>> for [T] 
-ops			impl<T> ops::Index<ops::RangeFrom<usize>> for [T] 
-ops			impl<T> ops::Index<ops::RangeInclusive<usize>> for [T] 
-ops			impl<T> ops::Index<ops::RangeTo<usize>> for [T] 
-ops			impl<T> ops::Index<ops::RangeToInclusive<usize>> for [T] 
-ops			impl<T> ops::Index<usize> for [T] 
-ops			impl<T> ops::IndexMut<RangeFull> for [T] 
-ops			impl<T> ops::IndexMut<ops::Range<usize>> for [T] 
-ops			impl<T> ops::IndexMut<ops::RangeFrom<usize>> for [T] 
-ops			impl<T> ops::IndexMut<ops::RangeInclusive<usize>> for [T] 
-ops			impl<T> ops::IndexMut<ops::RangeTo<usize>> for [T] 
-ops			impl<T> ops::IndexMut<ops::RangeToInclusive<usize>> for [T] 
-ops			impl<T> ops::IndexMut<usize> for [T] 
+ops			impl<T, I> ops::Index<I> for [T]
+ops			impl<T, I> ops::IndexMut<I> for [T]
 ops			    impl ops::Index<ops::Range<usize>> for str 
 ops			    impl ops::Index<ops::RangeFrom<usize>> for str 
 ops			    impl ops::Index<ops::RangeInclusive<usize>> for str 
@@ -2248,6 +2254,7 @@ range			mod range;
 raw			pub mod raw;
 rawfp			pub mod rawfp;
 read			pub unsafe fn read<T>(src: *const T) -> T 
+read_unaligned			pub unsafe fn read_unaligned<T>(src: *const T) -> T 
 read_volatile			pub unsafe fn read_volatile<T>(src: *const T) -> T 
 recip			    fn recip(self) -> f32 
 recip			    fn recip(self) -> f64 
@@ -2596,6 +2603,7 @@ write_u32			    fn write_u32(&mut self, i: u32)
 write_u64			    fn write_u64(&mut self, i: u64) 
 write_u8			    fn write_u8(&mut self, i: u8) 
 write_u8			    fn write_u8(&mut self, i: u8) 
+write_unaligned			pub unsafe fn write_unaligned<T>(dst: *mut T, src: T) 
 write_usize			    fn write_usize(&mut self, i: usize) 
 write_usize			    fn write_usize(&mut self, i: usize) 
 write_volatile			pub unsafe fn write_volatile<T>(dst: *mut T, src: T) 

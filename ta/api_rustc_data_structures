@@ -1,12 +1,14 @@
 ::std::fmt::Debug for Blake2bCtx			impl ::std::fmt::Debug for Blake2bCtx 
 ::std::fmt::Debug for Blake2bHasher			impl ::std::fmt::Debug for Blake2bHasher 
 ::std::hash::Hasher for Blake2bHasher			impl ::std::hash::Hasher for Blake2bHasher 
+AccumulateVec			impl<A: Array> AccumulateVec<A> 
 AccumulateVec			pub enum AccumulateVec<A: Array> 
 AdjacentEdges			impl<'g, N, E> AdjacentEdges<'g, N, E> 
 AdjacentEdges			pub struct AdjacentEdges<'g, N, E>
-AdjacentSources			pub struct AdjacentSources<'g, N: 'g, E: 'g>
-AdjacentTargets			pub struct AdjacentTargets<'g, N: 'g, E: 'g>
+AdjacentSources			pub struct AdjacentSources<'g, N, E>
+AdjacentTargets			pub struct AdjacentTargets<'g, N, E>
 Array			pub unsafe trait Array 
+Array			unsafe impl<T> Array for [T; 1] 
 Array			unsafe impl<T> Array for [T; 8] 
 ArrayVec			impl<A: Array> ArrayVec<A> 
 ArrayVec			pub struct ArrayVec<A: Array> 
@@ -25,8 +27,11 @@ Blake2bCtx			pub struct Blake2bCtx
 Blake2bHasher			impl Blake2bHasher 
 Blake2bHasher			pub struct Blake2bHasher(Blake2bCtx);
 C			fn C<OF, BF, O>(of: OF, bf: BF) -> ClosureObligationProcessor<OF, BF, O, &'static str>
+Clone for AccumulateVec			impl<A> Clone for AccumulateVec<A>
+Clone for ArrayVec			impl<A> Clone for ArrayVec<A>
 Clone for IdxSetBuf			impl<T: Idx> Clone for IdxSetBuf<T> 
 Clone for Ivar			impl<T: Copy> Clone for Ivar<T> 
+Clone for SmallVec			impl<A> Clone for SmallVec<A>
 ClosureObligationProcessor			struct ClosureObligationProcessor<OF, BF, O, E> 
 Combine			impl Combine for () 
 Combine			pub trait Combine 
@@ -35,16 +40,26 @@ ControlFlowGraph			impl<'graph, G: ControlFlowGraph> ControlFlowGraph for &'grap
 ControlFlowGraph for TestGraph			impl ControlFlowGraph for TestGraph 
 ControlFlowGraph for TransposedGraph			impl<G: ControlFlowGraph> ControlFlowGraph for TransposedGraph<G> 
 Debug for Edge			impl<E: Debug> Debug for Edge<E> 
+Debug for SmallVec			impl<A> Debug for SmallVec<A>
+Decodable for AccumulateVec			impl<A> Decodable for AccumulateVec<A>
+Decodable for SmallVec			impl<A> Decodable for SmallVec<A>
+Default for AccumulateVec			impl<A: Array> Default for AccumulateVec<A> 
+Default for ArrayVec			impl<A> Default for ArrayVec<A>
 Default for FnvHasher			impl Default for FnvHasher 
+Default for FxHasher			impl Default for FxHasher 
 Default for ManuallyDrop			impl<T> Default for ManuallyDrop<T> 
+Default for SmallVec			impl<A: Array> Default for SmallVec<A> 
 Delegate			struct Delegate<K>(PhantomData<K>);
 DepthFirstTraversal			impl<'g, N: Debug, E: Debug> DepthFirstTraversal<'g, N, E> 
-DepthFirstTraversal			pub struct DepthFirstTraversal<'g, N: 'g, E: 'g> 
+DepthFirstTraversal			pub struct DepthFirstTraversal<'g, N, E>
 Deref for AccumulateVec			impl<A: Array> Deref for AccumulateVec<A> 
 Deref for ArrayVec			impl<A: Array> Deref for ArrayVec<A> 
 Deref for IdxSetBuf			impl<T: Idx> Deref for IdxSetBuf<T> 
+Deref for SmallVec			impl<A: Array> Deref for SmallVec<A> 
+DerefMut for AccumulateVec			impl<A: Array> DerefMut for AccumulateVec<A> 
 DerefMut for ArrayVec			impl<A: Array> DerefMut for ArrayVec<A> 
 DerefMut for IdxSetBuf			impl<T: Idx> DerefMut for IdxSetBuf<T> 
+DerefMut for SmallVec			impl<A: Array> DerefMut for SmallVec<A> 
 Direction			pub struct Direction 
 DominatorTree			impl<Node: Idx> DominatorTree<Node> 
 DominatorTree			pub struct DominatorTree<N: Idx> 
@@ -52,15 +67,22 @@ DominatorTreeNode			struct DominatorTreeNode<'tree, Node: Idx>
 Dominators			impl<Node: Idx> Dominators<Node> 
 Dominators			pub struct Dominators<N: Idx> 
 Drop for ArrayVec			impl<A: Array> Drop for ArrayVec<A> 
+Drop for Iter			impl<A: Array> Drop for Iter<A> 
 Drop for Lock			    impl Drop for Lock 
 Edge			impl<E> Edge<E> 
 Edge			pub struct Edge<E> 
 Edge			struct Edge 
 EdgeIndex			impl EdgeIndex 
 EdgeIndex			pub struct EdgeIndex(pub usize);
+Encodable for AccumulateVec			impl<A> Encodable for AccumulateVec<A>
+Encodable for SmallVec			impl<A> Encodable for SmallVec<A>
+EnumeratedEdges			pub struct EnumeratedEdges<'g, E>
+EnumeratedNodes			pub struct EnumeratedNodes<'g, N>
+Eq for ArrayVec			impl<A: Array> Eq for ArrayVec<A> {}
 Error			pub struct Error<O, E> 
 Extend for ArrayVec			impl<A: Array> Extend<A::Element> for ArrayVec<A> 
 Extend for IndexVec			impl<I: Idx, T> Extend<T> for IndexVec<I, T> 
+Extend for SmallVec			impl<A: Array> Extend<A::Element> for SmallVec<A> 
 Extend for SnapshotVec			impl<D: SnapshotVecDelegate> Extend<D::Value> for SnapshotVec<D> 
 FmtWrap			pub struct FmtWrap<T>(pub T);
 FnMut for GetObligation			                impl<'a, 'b, O> FnMut<(&'b usize,)> for GetObligation<'a, O> 
@@ -73,9 +95,15 @@ FnvHashMap			pub fn FnvHashMap<K: Hash + Eq, V>() -> FnvHashMap<K, V>
 FnvHashSet			pub fn FnvHashSet<V: Hash + Eq>() -> FnvHashSet<V> 
 FnvHasher			pub struct FnvHasher(u64);
 ForestObligation			pub trait ForestObligation : Clone + Debug 
+From			impl<A: Array> From<Vec<A::Element>> for AccumulateVec<A> 
 FromIterator for AccumulateVec			impl<A: Array> FromIterator<A::Element> for AccumulateVec<A> 
 FromIterator for BitVector			impl FromIterator<bool> for BitVector 
 FromIterator for IndexVec			impl<I: Idx, T> FromIterator<T> for IndexVec<I, T> 
+FromIterator for SmallVec			impl<A: Array> FromIterator<A::Element> for SmallVec<A> 
+FxHashMap			pub fn FxHashMap<K: Hash + Eq, V>() -> FxHashMap<K, V> 
+FxHashSet			pub fn FxHashSet<V: Hash + Eq>() -> FxHashSet<V> 
+FxHasher			impl FxHasher 
+FxHasher			pub struct FxHasher 
 GetObligation			                struct GetObligation<'a, O: 'a>(&'a [Node<O>]);
 Graph			impl<N: Debug, E: Debug> Graph<N, E> 
 Graph			pub struct Graph<N, E> 
@@ -87,7 +115,10 @@ GraphSuccessors			pub trait GraphSuccessors<'graph>
 GraphSuccessors			impl<'iter, 'graph, G: ControlFlowGraph> GraphSuccessors<'iter> for &'graph G 
 GraphSuccessors for TestGraph			impl<'graph> GraphSuccessors<'graph> for TestGraph 
 GraphSuccessors for TransposedGraph			impl<'graph, G: ControlFlowGraph> GraphSuccessors<'graph> for TransposedGraph<G> 
+Hash for ArrayVec			impl<A> Hash for ArrayVec<A>
 Hasher for FnvHasher			impl Hasher for FnvHasher 
+Hasher for FxHasher			impl Hasher for FxHasher 
+Hasher for StableHasher			impl<W> Hasher for StableHasher<W> 
 Idx			pub trait Idx: Copy + 'static + Eq + Debug 
 Idx for u32			impl Idx for u32 
 Idx for usize			impl Idx for usize 
@@ -102,9 +133,19 @@ IndexVec			impl<I: Idx, T> IndexVec<I, T>
 IndexVec			pub struct IndexVec<I: Idx, T> 
 IntKey			struct IntKey(u32);
 IntoIdx			pub struct IntoIdx<I: Idx> { _marker: PhantomData<fn(&I)> }
+IntoIter			pub struct IntoIter<A: Array> 
+IntoIterRepr			enum IntoIterRepr<A: Array> 
+IntoIterator			impl<'a, A: Array> IntoIterator for &'a AccumulateVec<A> 
+IntoIterator			impl<'a, A: Array> IntoIterator for &'a mut AccumulateVec<A> 
+IntoIterator			impl<'a, A: Array> IntoIterator for &'a ArrayVec<A> 
+IntoIterator			impl<'a, A: Array> IntoIterator for &'a mut ArrayVec<A> 
 IntoIterator			impl<'a, I: Idx, T> IntoIterator for &'a IndexVec<I, T> 
 IntoIterator			impl<'a, I: Idx, T> IntoIterator for &'a mut IndexVec<I, T> 
+IntoIterator for AccumulateVec			impl<A: Array> IntoIterator for AccumulateVec<A> 
+IntoIterator for ArrayVec			impl<A: Array> IntoIterator for ArrayVec<A> 
 IntoIterator for IndexVec			impl<I: Idx, T> IntoIterator for IndexVec<I, T> 
+IntoIterator for SmallVec			impl<A: Array> IntoIterator for SmallVec<A> 
+Iter			pub struct Iter<A: Array> 
 Iter			pub struct Iter<'dom, Node: Idx + 'dom> 
 IterChildrenOf			pub struct IterChildrenOf<'iter, Node: Idx + 'iter> 
 Iterator for AdjacentEdges			impl<'g, N: Debug, E: Debug> Iterator for AdjacentEdges<'g, N, E> 
@@ -112,6 +153,10 @@ Iterator for AdjacentSources			impl<'g, N: Debug, E: Debug> Iterator for Adjacen
 Iterator for AdjacentTargets			impl<'g, N: Debug, E: Debug> Iterator for AdjacentTargets<'g, N, E> 
 Iterator for BitVectorIter			impl<'a> Iterator for BitVectorIter<'a> 
 Iterator for DepthFirstTraversal			impl<'g, N: Debug, E: Debug> Iterator for DepthFirstTraversal<'g, N, E> 
+Iterator for EnumeratedEdges			impl<'g, E: Debug> Iterator for EnumeratedEdges<'g, E> 
+Iterator for EnumeratedNodes			impl<'g, N: Debug> Iterator for EnumeratedNodes<'g, N> 
+Iterator for IntoIter			impl<A: Array> Iterator for IntoIter<A> 
+Iterator for Iter			impl<A: Array> Iterator for Iter<A> 
 Iterator for Iter			impl<'dom, Node: Idx> Iterator for Iter<'dom, Node> 
 Iterator for IterChildrenOf			impl<'iter, Node: Idx> Iterator for IterChildrenOf<'iter, Node> 
 Ivar			impl<T: Copy> Ivar<T> 
@@ -119,6 +164,7 @@ Ivar			pub struct Ivar<T: Copy>
 Lock			    impl Lock 
 Lock			    pub struct Lock 
 LockFileEx			        fn LockFileEx(hFile: HANDLE,
+ManuallyDrop			impl<T> ManuallyDrop<T> 
 Node			pub struct Node<N> 
 Node			impl<O> Node<O> 
 Node			struct Node<O> 
@@ -133,8 +179,11 @@ ObligationForest			pub struct ObligationForest<O: ForestObligation>
 ObligationProcessor			pub trait ObligationProcessor 
 ObligationProcessor for ClosureObligationProcessor			impl<OF, BF, O, E> ObligationProcessor for ClosureObligationProcessor<OF, BF, O, E>
 Outcome			pub struct Outcome<O, E> 
+PartialEq for ArrayVec			impl<A: Array> PartialEq for ArrayVec<A> 
 Reachability			impl<Node: Idx> Reachability<Node> 
 Reachability			pub struct Reachability<Node: Idx> 
+SmallVec			impl<A: Array> SmallVec<A> 
+SmallVec			pub struct SmallVec<A: Array>(AccumulateVec<A>);
 Snapshot			pub struct Snapshot 
 Snapshot			pub struct Snapshot 
 Snapshot			pub struct Snapshot 
@@ -147,6 +196,12 @@ SnapshotVec			pub struct SnapshotVec<D: SnapshotVecDelegate>
 SnapshotVecDelegate			pub trait SnapshotVecDelegate 
 SnapshotVecDelegate for Edge			impl<N> SnapshotVecDelegate for Edge<N> 
 SnapshotVecDelegate for Node			impl<N> SnapshotVecDelegate for Node<N> 
+StableHasher			impl<W: StableHasherResult> StableHasher<W> 
+StableHasher			impl<W> StableHasher<W> 
+StableHasher			pub struct StableHasher<W> 
+StableHasherResult			impl StableHasherResult for [u8; 20] 
+StableHasherResult			pub trait StableHasherResult: Sized 
+StableHasherResult for u64			impl StableHasherResult for u64 
 Subtract			pub struct Subtract;
 TestGraph			impl TestGraph 
 TestGraph			pub struct TestGraph 
@@ -180,6 +235,7 @@ add			    pub fn add(&mut self, a: T, b: T)
 add_edge			    pub fn add_edge(&mut self, source: NodeIndex, target: NodeIndex, data: E) -> EdgeIndex 
 add_index			    fn add_index(&mut self, a: T) -> Index 
 add_node			    pub fn add_node(&mut self, data: N) -> NodeIndex 
+add_to_hash			    fn add_to_hash(&mut self, i: usize) 
 adjacent_edges			    pub fn adjacent_edges(&self, source: NodeIndex, direction: Direction) -> AdjacentEdges<N, E> 
 all_edges			    pub fn all_edges(&self) -> &[Edge<E>] 
 all_immediate_dominators			    pub fn all_immediate_dominators(&self) -> &IndexVec<Node, Option<Node>> 
@@ -195,6 +251,7 @@ as_slice			    fn as_slice(&self) -> &[T];
 assert_open_snapshot			    fn assert_open_snapshot(&self, snapshot: &Snapshot) 
 assert_open_snapshot			    fn assert_open_snapshot(&self, snapshot: &Snapshot) 
 b2b_g			fn b2b_g(v: &mut [u64; 16],
+base_n			pub mod base_n;
 basic			fn basic() 
 basic			fn basic() 
 big_array			fn big_array() 
@@ -214,6 +271,7 @@ blake2b_final			fn blake2b_final(ctx: &mut Blake2bCtx)
 blake2b_new			fn blake2b_new(outlen: usize, key: &[u8]) -> Blake2bCtx 
 blake2b_selftest			fn blake2b_selftest()
 blake2b_update			fn blake2b_update(ctx: &mut Blake2bCtx, mut data: &[u8]) 
+bytes_hashed			    pub fn bytes_hashed(&self) -> u64 
 call_mut			    extern "rust-call" fn call_mut(&mut self, ((n, t),): ((usize, T),)) -> Self::Output 
 call_mut			    extern "rust-call" fn call_mut(&mut self, (n,): (usize,)) -> Self::Output 
 call_mut			                    extern "rust-call" fn call_mut(&mut self, args: (&'b usize,)) -> &'a O 
@@ -227,7 +285,10 @@ clear			    pub fn clear(&mut self)
 clear_bit			    fn clear_bit(&mut self, idx: usize) -> bool 
 clear_bit			    fn clear_bit(&mut self, idx: usize) -> bool;
 clone			    fn clone(&self) -> Self 
+clone			    fn clone(&self) -> Self 
+clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> Ivar<T> 
+clone			    fn clone(&self) -> Self 
 clone_from			    pub fn clone_from(&mut self, other: &IdxSet<T>) 
 combine			    fn combine(&self, _other: &()) {}
 combine			    fn combine(&self, other: &Self) -> Self;
@@ -243,16 +304,25 @@ contains			    pub fn contains(&self, elem: &T) -> bool
 contains			    pub fn contains(&self, a: &T, b: &T) -> bool 
 control_flow_graph			pub mod control_flow_graph;
 create_graph			fn create_graph() -> TestGraph 
+create_graph_with_cycle			fn create_graph_with_cycle() -> TestGraph 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<AccumulateVec<A>, D::Error> 
 decode			    fn decode<D: serialize::Decoder>(d: &mut D) -> Result<Self, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<SmallVec<A>, D::Error> 
+default			    fn default() -> AccumulateVec<A> 
 default			    fn default() -> Self 
 default			    fn default() -> FnvHasher 
+default			    fn default() -> FxHasher 
+default			    fn default() -> SmallVec<A> 
 depth_traverse			    pub fn depth_traverse<'a>(&'a self,
 deref			    fn deref(&self) -> &Self::Target 
 deref			    fn deref(&self) -> &Self::Target 
 deref			    fn deref(&self) -> &IdxSet<T> 
+deref			    fn deref(&self) -> &Self::Target 
 deref			    fn deref(&self) -> &[D::Value] 
 deref_mut			    fn deref_mut(&mut self) -> &mut [A::Element] 
+deref_mut			    fn deref_mut(&mut self) -> &mut [A::Element] 
 deref_mut			    fn deref_mut(&mut self) -> &mut IdxSet<T> 
+deref_mut			    fn deref_mut(&mut self) -> &mut AccumulateVec<A> 
 deref_mut			    fn deref_mut(&mut self) -> &mut [D::Value] 
 diamond			fn diamond() 
 diamond			fn diamond() 
@@ -277,18 +347,32 @@ each_node			fn each_node()
 edge			    pub fn edge(&self, idx: EdgeIndex) -> &Edge<E> 
 edge_data			    pub fn edge_data(&self, idx: EdgeIndex) -> &E 
 edge_id			    pub fn edge_id(&self) -> usize 
+encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
+encode			pub fn encode(n: u64, base: u64) -> String 
 encode			    fn encode<S: serialize::Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
+encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
+enumerated_edges			    pub fn enumerated_edges(&self) -> EnumeratedEdges<E> 
+enumerated_nodes			    pub fn enumerated_nodes(&self) -> EnumeratedNodes<N> 
+eq			    fn eq(&self, other: &Self) -> bool 
 error_at			    fn error_at(&mut self, p: usize) -> Vec<O> 
 even_odd			fn even_odd() 
+expect_one			    pub fn expect_one(self, err: &'static str) -> A::Element 
 extend			    fn extend<I>(&mut self, iter: I) where I: IntoIterator<Item=A::Element> 
 extend			    fn extend<J: IntoIterator<Item = T>>(&mut self, iter: J) 
+extend			    fn extend<I: IntoIterator<Item=A::Element>>(&mut self, iter: I) 
 extend			    fn extend<T>(&mut self, iterable: T) where T: IntoIterator<Item=D::Value> 
+finalize			    pub fn finalize(&mut self) -> &[u8] 
 finalize			    pub fn finalize(&mut self) -> &[u8] 
 find			    pub fn find(&mut self, id: K) -> K 
 find_cycles_from_node			    fn find_cycles_from_node<P>(&self, stack: &mut Vec<usize>,
 find_value			    pub fn find_value(&mut self, id: K) -> K::Value 
 finish			    fn finish(&self) -> u64 
 finish			    fn finish(&self) -> u64 
+finish			    fn finish(&self) -> u64 
+finish			    fn finish(&self) -> u64 
+finish			    fn finish(hasher: StableHasher<Self>) -> Self;
+finish			    fn finish(mut hasher: StableHasher<Self>) -> Self 
+finish			    pub fn finish(self) -> W 
 first_adjacent			    pub fn first_adjacent(&self, node: NodeIndex, dir: Direction) -> EdgeIndex 
 flock			        pub struct flock 
 flock			pub mod flock;
@@ -300,6 +384,7 @@ fmt			    fn fmt(&self, f: &mut Formatter) -> Result<(), Error>
 fmt			    fn fmt(&self, w: &mut fmt::Formatter) -> fmt::Result { self.bits.fmt(w) }
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for ArrayVec			impl<A> fmt::Debug for ArrayVec<A>
 fmt::Debug for DominatorTree			impl<Node: Idx> fmt::Debug for DominatorTree<Node> 
 fmt::Debug for DominatorTreeNode			impl<'tree, Node: Idx> fmt::Debug for DominatorTreeNode<'tree, Node> 
@@ -310,6 +395,7 @@ fmt::Debug for Ivar			impl<T: Copy + fmt::Debug> fmt::Debug for Ivar<T>
 fmt::LowerHex for FmtWrap			impl<'a> fmt::LowerHex for FmtWrap<&'a [u8]> 
 fmt_wrap			pub mod fmt_wrap;
 fnv			pub mod fnv;
+from			    fn from(v: Vec<A::Element>) -> AccumulateVec<A> 
 from_elem			    pub fn from_elem<S>(elem: T, universe: &IndexVec<I, S>) -> Self
 from_elem_n			    pub fn from_elem_n(elem: T, n: usize) -> Self
 from_index			    fn from_index(u: u32) -> Self;
@@ -318,9 +404,11 @@ from_index			    fn from_index(u: u32) -> UnitKey
 from_iter			    fn from_iter<I>(iter: I) -> AccumulateVec<A> where I: IntoIterator<Item=A::Element> 
 from_iter			    fn from_iter<I>(iter: I) -> BitVector where I: IntoIterator<Item=bool> 
 from_iter			    fn from_iter<J>(iter: J) -> Self where J: IntoIterator<Item=T> 
+from_iter			    fn from_iter<I>(iter: I) -> Self where I: IntoIterator<Item=A::Element> 
 from_slice			    unsafe fn from_slice(s: &[Word]) -> &Self 
 from_slice_mut			    unsafe fn from_slice_mut(s: &mut [Word]) -> &mut Self 
 fulfill			    pub fn fulfill(&self, value: T) 
+fx			pub mod fx;
 get			    pub fn get(&self) -> Option<T> 
 get			    pub fn get(self) -> usize 
 get			    pub fn get(&self, key: &K) -> Option<&V> 
@@ -333,6 +421,8 @@ graph			pub mod graph;
 grow			    pub fn grow(&mut self, num_bits: usize) 
 grow			fn grow() 
 has_value			    pub fn has_value(&mut self, id: K) -> bool 
+hash			    fn hash<H>(&self, state: &mut H) where H: Hasher 
+hash			pub fn hash<T: Hash>(v: &T) -> u64 
 hash			pub fn hash<T: Hash>(v: &T) -> u64 
 if_not_self			    fn if_not_self(&self, key: K, self_key: K) -> Option<K> 
 immediate_dominator			    pub fn immediate_dominator(&self, node: Node) -> Node 
@@ -356,19 +446,27 @@ indexed_set			pub mod indexed_set;
 indexed_vec			pub mod indexed_vec;
 indices			    pub fn indices(&self) -> iter::Map<Range<usize>, IntoIdx<I>> 
 insert			    pub fn insert(&mut self, bit: usize) -> bool 
+insert			    pub fn insert(&mut self, index: usize, element: A::Element) 
 insert			    pub fn insert(&mut self, key: K, value: V) -> bool 
 insert_all			    pub fn insert_all(&mut self, all: &BitVector) -> bool 
 intersect			fn intersect<Node: Idx>(post_order_rank: &IndexVec<Node, usize>,
 intersect_opt			fn intersect_opt<Node: Idx>(post_order_rank: &IndexVec<Node, usize>,
 intersection			    pub fn intersection(&self, a: usize, b: usize) -> Vec<usize> 
+into_iter			    fn into_iter(self) -> Self::IntoIter 
+into_iter			    fn into_iter(self) -> Self::IntoIter 
 into_iter			    fn into_iter(mut self) -> slice::IterMut<'a, T> 
 into_iter			    fn into_iter(self) -> slice::Iter<'a, T> 
 into_iter			    fn into_iter(self) -> vec::IntoIter<T> 
 into_iter			    pub fn into_iter(self) -> vec::IntoIter<T> 
+into_iter			    fn into_iter(self) -> Self::IntoIter 
 into_iter_enumerated			    pub fn into_iter_enumerated(self) -> Enumerated<I, vec::IntoIter<T>>
 is_dominated_by			    pub fn is_dominated_by(&self, node: Node, dom: Node) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
+is_empty			    pub fn is_empty(&self) -> bool 
 is_fulfilled			    pub fn is_fulfilled(&self) -> bool 
+is_node_cyclic			    pub fn is_node_cyclic(&self, starting_node_index: NodeIndex) -> bool 
+is_node_cyclic_a			fn is_node_cyclic_a() 
+is_node_cyclic_b			fn is_node_cyclic_b() 
 is_reachable			    pub fn is_reachable(&self, node: Node) -> bool 
 is_root			    fn is_root(&self, key: K) -> bool 
 iter			    pub fn iter<'a>(&'a self) -> BitVectorIter<'a> 
@@ -389,8 +487,12 @@ last			    pub fn last(&self) -> Option<I>
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
 len			    pub fn len(&self) -> usize 
+len			    pub fn len(&self) -> usize 
+len			    pub fn len(&self) -> usize 
 len_edges			    pub fn len_edges(&self) -> usize 
 len_nodes			    pub fn len_nodes(&self) -> usize 
+many			    pub fn many<I: IntoIterator<Item=A::Element>>(iter: I) -> Self 
+many			    pub fn many<I: IntoIterator<Item=A::Element>>(els: I) -> Self 
 mark_as_waiting			    fn mark_as_waiting(&self) 
 mark_as_waiting_from			    fn mark_as_waiting_from(&self, node: &Node<O>) 
 mark_neighbors_as_waiting_from			    fn mark_neighbors_as_waiting_from(&self, node: &Node<O>) 
@@ -413,6 +515,8 @@ mut_node_data			    pub fn mut_node_data(&mut self, idx: NodeIndex) -> &mut N
 mutual_dominator			    pub fn mutual_dominator<I>(&self, iter: I) -> Option<Node>
 mutual_dominator_node			    pub fn mutual_dominator_node(&self, node1: Node, node2: Node) -> Node 
 nested_commit_then_rollback			fn nested_commit_then_rollback() 
+new			    pub fn new() -> AccumulateVec<A> 
+new			    fn new() -> ManuallyDrop<T> 
 new			    pub fn new() -> Self 
 new			    pub fn new(num_bits: usize) -> BitVector 
 new			    pub fn new(rows: usize, columns: usize) -> BitMatrix 
@@ -433,7 +537,9 @@ new			    fn new(parent: Option<NodeIndex>, obligation: O) -> Node<O>
 new			    pub fn new() -> ObligationForest<O> 
 new			    pub fn new(value: usize) -> NodeIndex 
 new			    pub fn new() -> Self 
+new			    pub fn new() -> Self 
 new			    pub fn new() -> SnapshotVec<D> 
+new			    pub fn new() -> Self 
 new			    pub fn new() -> TransitiveRelation<T> 
 new			    fn new(parent: K, value: K::Value, rank: u32) -> VarValue<K> 
 new			    pub fn new() -> UnificationTable<K> 
@@ -441,10 +547,13 @@ new_empty			    pub fn new_empty(universe_size: usize) -> Self
 new_filled			    pub fn new_filled(universe_size: usize) -> Self 
 new_key			    pub fn new_key(&mut self, value: K::Value) -> K 
 new_var			    fn new_var(key: K, value: K::Value) -> VarValue<K> 
+next			    fn next(&mut self) -> Option<A::Element> 
+next			    fn next(&mut self) -> Option<A::Element> 
 next			    fn next(&mut self) -> Option<usize> 
 next			    fn next(&mut self) -> Option<Node> 
 next			    fn next(&mut self) -> Option<Self::Item> 
 next			    fn next(&mut self) -> Option<(EdgeIndex, &'g Edge<E>)> 
+next			    fn next(&mut self) -> Option<(NodeIndex, &'g Node<N>)> 
 next			    fn next(&mut self) -> Option<NodeIndex> 
 next_adjacent			    pub fn next_adjacent(&self, edge: EdgeIndex, dir: Direction) -> EdgeIndex 
 next_edge_index			    pub fn next_edge_index(&self) -> EdgeIndex 
@@ -458,6 +567,8 @@ num_nodes			    fn num_nodes(&self) -> usize
 num_nodes			    fn num_nodes(&self) -> usize 
 num_nodes			    fn num_nodes(&self) -> usize 
 obligation_forest			pub mod obligation_forest;
+one			    pub fn one(el: A::Element) -> Self 
+one			    pub fn one(el: A::Element) -> Self 
 ops::Deref for SnapshotVec			impl<D: SnapshotVecDelegate> ops::Deref for SnapshotVec<D> 
 ops::DerefMut for SnapshotVec			impl<D: SnapshotVecDelegate> ops::DerefMut for SnapshotVec<D> 
 ops::Index for SnapshotMap			impl<'k, K, V> ops::Index<&'k K> for SnapshotMap<K, V>
@@ -476,6 +587,8 @@ pdub_crisscross			fn pdub_crisscross()
 pdub_crisscross_more			fn pdub_crisscross_more() 
 pdub_lub			fn pdub_lub() 
 pending_obligations			    pub fn pending_obligations(&self) -> Vec<O>
+pop			    pub fn pop(&mut self) -> Option<A::Element> 
+pop			    pub fn pop(&mut self) -> Option<A::Element> 
 post_order_from			pub fn post_order_from<G: ControlFlowGraph>(graph: &G, start_node: G::Node) -> Vec<G::Node> 
 post_order_from_to			pub fn post_order_from_to<G: ControlFlowGraph>(graph: &G,
 post_order_walk			fn post_order_walk<G: ControlFlowGraph>(graph: &G,
@@ -493,10 +606,13 @@ process_cycles			    fn process_cycles<P>(&mut self, processor: &mut P)
 process_obligation			    fn process_obligation(&mut self,
 process_obligation			    fn process_obligation(&mut self,
 process_obligations			    pub fn process_obligations<P>(&mut self, processor: &mut P) -> Outcome<O, P::Error>
+push			    pub fn push(&mut self, el: A::Element) 
 push			    pub fn push(&mut self, d: T) -> I 
+push			    pub fn push(&mut self, el: A::Element) 
 push			    pub fn push(&mut self, elem: D::Value) -> usize 
 push			    pub fn push(&self, data: T) -> usize 
 push_pop			fn push_pop() 
+push_str			pub fn push_str(mut n: u64, base: u64, output: &mut String) 
 range			    fn range(&self, row: usize) -> (usize, usize) 
 range			    pub fn range(&self, elems: &Range<T>) -> &Self 
 range_mut			    pub fn range_mut(&mut self, elems: &Range<T>) -> &mut Self 
@@ -511,6 +627,7 @@ register_obligation			    pub fn register_obligation(&mut self, obligation: O)
 register_obligation_at			    fn register_obligation_at(&mut self, obligation: O, parent: Option<NodeIndex>)
 remove			    pub fn remove(&mut self, elem: &T) -> bool 
 remove			    pub fn remove(&mut self, key: K) -> bool 
+reserve			    pub fn reserve(&mut self, n: usize) 
 reset			    pub fn reset(&mut self, start_node: NodeIndex) 
 rev_post_order_inner_loop			fn rev_post_order_inner_loop() 
 reverse			    fn reverse(_: &mut Vec<Edge<N>>, _: ()) {}
@@ -532,8 +649,13 @@ set			    pub fn set(&mut self, index: usize, new_elem: D::Value)
 set			    fn set(&mut self, key: K, new_value: VarValue<K>) 
 set_bit			    fn set_bit(&mut self, idx: usize) -> bool 
 set_bit			    fn set_bit(&mut self, idx: usize) -> bool;
+set_len			    pub unsafe fn set_len(&mut self, len: usize) 
+set_len			    pub unsafe fn set_len(&mut self, len: usize) 
 shrink_to_fit			    pub fn shrink_to_fit(&mut self) 
 simultaneous_register_and_error			fn simultaneous_register_and_error() 
+size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
+size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
+small_vec			pub mod small_vec;
 snapshot			    pub fn snapshot(&mut self) -> Snapshot 
 snapshot			    pub fn snapshot(&mut self) -> Snapshot<K> 
 snapshot_map			pub mod snapshot_map;
@@ -541,6 +663,7 @@ snapshot_vec			pub mod snapshot_vec;
 source			    pub fn source(&self) -> NodeIndex 
 source_or_target			    pub fn source_or_target(&self, direction: Direction) -> NodeIndex 
 sources			    fn sources(self) -> AdjacentSources<'g, N, E> 
+stable_hasher			pub mod stable_hasher;
 start_node			    fn start_node(&self) -> Self::Node;
 start_node			    fn start_node(&self) -> Self::Node 
 start_node			    fn start_node(&self) -> usize 
@@ -563,6 +686,7 @@ tag			    fn tag(_: Option<IntKey>) -> &'static str
 tag			    fn tag(_: Option<UnitKey>) -> &'static str 
 target			    pub fn target(&self) -> NodeIndex 
 targets			    fn targets(self) -> AdjacentTargets<'g, N, E> 
+test			    fn test(n: u64, base: u64) 
 test			mod test;
 test			mod test;
 test			mod test;
@@ -579,6 +703,7 @@ to_owned			    pub fn to_owned(&self) -> IdxSetBuf<T>
 transitive_relation			pub mod transitive_relation;
 transpose			pub mod transpose;
 truncate			    pub fn truncate(&mut self, a: usize) 
+truncate			    pub fn truncate(&mut self, len: usize) 
 tuple_slice			pub mod tuple_slice;
 u64s			fn u64s(elements: usize) -> usize 
 unify			pub mod unify;
@@ -601,6 +726,7 @@ unwrap			    pub fn unwrap(&self) -> T
 veccell			pub mod veccell;
 visit			    fn visit(&mut self, node: NodeIndex) 
 with_capacity			    pub fn with_capacity(capacity: usize) -> Self 
+with_capacity			    pub fn with_capacity(cap: usize) -> Self 
 with_capacity			    pub fn with_capacity(capacity: usize) -> VecCell<T> 
 with_closure			    fn with_closure<OP, R>(&self, op: OP) -> R
 with_start			    pub fn with_start(base_graph: G, start_node: G::Node) -> Self 
@@ -610,3 +736,24 @@ words			    pub fn words(&self) -> &[Word]
 words_mut			    pub fn words_mut(&mut self) -> &mut [Word] 
 write			    fn write(&mut self, bytes: &[u8]) 
 write			    fn write(&mut self, bytes: &[u8]) 
+write			    fn write(&mut self, bytes: &[u8]) 
+write			    fn write(&mut self, bytes: &[u8]) 
+write_i16			    fn write_i16(&mut self, i: i16) 
+write_i32			    fn write_i32(&mut self, i: i32) 
+write_i64			    fn write_i64(&mut self, i: i64) 
+write_i8			    fn write_i8(&mut self, i: i8) 
+write_ileb128			    fn write_ileb128(&mut self, value: i64) 
+write_isize			    fn write_isize(&mut self, i: isize) 
+write_signed_leb128_to_buf			fn write_signed_leb128_to_buf(buf: &mut [u8; 16], value: i64) -> usize 
+write_u16			    fn write_u16(&mut self, i: u16) 
+write_u16			    fn write_u16(&mut self, i: u16) 
+write_u32			    fn write_u32(&mut self, i: u32) 
+write_u32			    fn write_u32(&mut self, i: u32) 
+write_u64			    fn write_u64(&mut self, i: u64) 
+write_u64			    fn write_u64(&mut self, i: u64) 
+write_u8			    fn write_u8(&mut self, i: u8) 
+write_u8			    fn write_u8(&mut self, i: u8) 
+write_uleb128			    fn write_uleb128(&mut self, value: u64) 
+write_unsigned_leb128_to_buf			fn write_unsigned_leb128_to_buf(buf: &mut [u8; 16], value: u64) -> usize 
+write_usize			    fn write_usize(&mut self, i: usize) 
+write_usize			    fn write_usize(&mut self, i: usize) 

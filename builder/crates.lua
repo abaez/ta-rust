@@ -1,4 +1,4 @@
---- all crates as of v1.13.0
+--- all crates as of v1.15.0
 -- @author Alejandro Baez <https://keybase.io/baez>
 -- @copyright 2014-2016
 -- @license MIT (see LICENSE)
@@ -49,10 +49,10 @@ return {
   "rustc_save_analysis",
   "rustc_trans",
   "rustc_typeck",
-  "rustc_unicode",
   "rustdoc",
   "serialize",
   "std",
+  "std_unicode",
   "syntax",
   "syntax_ext",
   "syntax_pos",

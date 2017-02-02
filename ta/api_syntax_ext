@@ -1,17 +1,25 @@
 ArgumentType			enum ArgumentType 
+Clone for StrCursor			    impl<'a> Clone for StrCursor<'a> 
 CollectCustomDerives			impl<'a> CollectCustomDerives<'a> 
 CollectCustomDerives			struct CollectCustomDerives<'a> 
 Context			impl<'a, 'b> Context<'a, 'b> 
 Context			struct Context<'a, 'b: 'a> 
+Copy for StrCursor			    impl<'a> Copy for StrCursor<'a> {}
 CustomDerive			impl CustomDerive 
 CustomDerive			pub struct CustomDerive 
 CustomDerive			struct CustomDerive 
 FieldInfo			pub struct FieldInfo<'a> 
+Format			    impl<'a> Format<'a> 
+Format			    pub struct Format<'a> 
+Iterator for Substitutions			    impl<'a> Iterator for Substitutions<'a> 
 LifetimeBounds			impl<'a> LifetimeBounds<'a> 
 LifetimeBounds			pub struct LifetimeBounds<'a> 
+MarkAttrs			struct MarkAttrs<'a>(&'a [ast::Name]);
 MethodDef			impl<'a> MethodDef<'a> 
 MethodDef			pub struct MethodDef<'a> 
 MultiItemModifier for CustomDerive			impl MultiItemModifier for CustomDerive 
+Num			    impl Num 
+Num			    pub enum Num 
 OrderingOp			pub enum OrderingOp 
 Path			impl<'a> Path<'a> 
 Path			pub struct Path<'a> 
@@ -21,7 +29,13 @@ Result			    impl Result
 Result			    struct Result 
 State			enum State 
 State			impl State 
+State			    enum State 
 StaticFields			pub enum StaticFields 
+StrCursor			    impl<'a> StrCursor<'a> 
+StrCursor			    pub struct StrCursor<'a> 
+Substitution			    impl<'a> Substitution<'a> 
+Substitution			    pub enum Substitution<'a> 
+Substitutions			    pub struct Substitutions<'a> 
 Substructure			pub struct Substructure<'a> 
 SubstructureFields			pub enum SubstructureFields<'a> 
 TraitDef			impl<'a> TraitDef<'a> 
@@ -29,11 +43,16 @@ TraitDef			pub struct TraitDef<'a>
 Ty			impl<'a> Ty<'a> 
 Ty			pub enum Ty<'a> 
 Visitor			    struct Visitor<'a, 'b: 'a> 
-Visitor for CollectCustomDerives			impl<'a> Visitor for CollectCustomDerives<'a> 
+Visitor for CollectCustomDerives			impl<'a> Visitor<'a> for CollectCustomDerives<'a> 
+Visitor for MarkAttrs			impl<'a> Visitor<'a> for MarkAttrs<'a> 
 allow_unstable			fn allow_unstable(cx: &mut ExtCtxt, span: Span, attr_name: &str) -> Span 
+as_str			        pub fn as_str(&self) -> &str 
+as_str			        pub fn as_str(&self) -> String 
 asm			mod asm;
 assert_ty_bounds			    fn assert_ty_bounds(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>,
 assert_ty_bounds			    fn assert_ty_bounds(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>,
+at_next_cp			        pub fn at_next_cp(mut self) -> Option<StrCursor<'a>> 
+at_next_cp_while			    fn at_next_cp_while<F>(mut cur: Cur, mut pred: F) -> Cur
 base::MacResult for Result			    impl base::MacResult for Result 
 borrowed			pub fn borrowed<'r>(ty: Box<Ty<'r>>) -> Ty<'r> 
 borrowed_explicit_self			pub fn borrowed_explicit_self<'r>() -> Option<Option<PtrTy<'r>>> 
@@ -47,9 +66,11 @@ call_substructure_method			    fn call_substructure_method(&self,
 cfg			mod cfg;
 check_not_pub_in_root			    fn check_not_pub_in_root(&self, vis: &ast::Visibility, sp: Span) 
 clone			pub mod clone;
+clone			        fn clone(&self) -> StrCursor<'a> 
 combine_substructure			pub fn combine_substructure<'a>(f: CombineSubstructureFunc<'a>)
 concat			mod concat;
 concat_idents			mod concat_idents;
+cp_after			        fn cp_after(&self) -> Option<char> 
 create_derived_impl			    fn create_derived_impl(&self,
 create_enum_variant_pattern			    fn create_enum_variant_pattern
 create_method			    fn create_method(&self,
@@ -118,8 +139,11 @@ expand_syntax_ext			pub fn expand_syntax_ext<'cx>(cx: &'cx mut base::ExtCtxt,
 expand_trace_macros			pub fn expand_trace_macros(cx: &mut ExtCtxt,
 find_repr_type_name			fn find_repr_type_name(diagnostic: &Handler, type_attrs: &[ast::Attribute]) -> &'static str 
 find_type_parameters			fn find_type_parameters(ty: &ast::Ty,
+fmt			        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> Result<(), std::fmt::Error> 
 format			mod format;
 format_arg			    fn format_arg(ecx: &ExtCtxt,
+format_foreign			mod format_foreign;
+from_str			        fn from_str(s: &str, arg: Option<&str>) -> Self 
 generic			pub mod generic;
 get_explicit_self			pub fn get_explicit_self(cx: &ExtCtxt,
 get_ret_ty			    fn get_ret_ty(&self,
@@ -127,9 +151,14 @@ hash			pub mod hash;
 hash_substructure			fn hash_substructure(cx: &mut ExtCtxt, trait_span: Span, substr: &Substructure) -> P<Expr> 
 hygienic_type_parameter			fn hygienic_type_parameter(item: &Annotatable, base: &str) -> String 
 into_expr			    fn into_expr(mut self) -> P<ast::Expr> 
-is_builtin_trait			        pub fn is_builtin_trait(name: &str) -> bool 
+is_builtin_trait			        pub fn is_builtin_trait(name: ast::Name) -> bool 
+is_digit			    fn is_digit(c: char) -> bool 
+is_flag			    fn is_flag(c: char) -> bool 
+is_ident_head			    fn is_ident_head(c: char) -> bool 
+is_ident_tail			    fn is_ident_tail(c: char) -> bool 
 is_static			    fn is_static(&self) -> bool 
 is_type_without_fields			pub fn is_type_without_fields(item: &Annotatable) -> bool 
+iter_subs			    pub fn iter_subs(s: &str) -> Substitutions 
 log_syntax			mod log_syntax;
 make_expr			        fn make_expr(self: Box<Self>) -> Option<P<ast::Expr>> 
 make_ty			        fn make_ty(self: Box<Self>) -> Option<P<ast::Ty>> 
@@ -139,30 +168,44 @@ mk_lifetimes			fn mk_lifetimes(cx: &ExtCtxt, span: Span, lt: &Option<&str>) -> V
 mk_registrar			fn mk_registrar(cx: &mut ExtCtxt,
 mk_ty_param			fn mk_ty_param(cx: &ExtCtxt,
 modify			pub fn modify(sess: &ParseSess,
-new			    pub fn new(inner: fn(TokenStream) -> TokenStream) -> CustomDerive 
+new			    pub fn new(inner: fn(TokenStream) -> TokenStream, attrs: Vec<ast::Name>) -> CustomDerive 
 new			    pub fn new<'r>(path: Vec<&'r str>) -> Path<'r> 
 new_			    pub fn new_<'r>(path: Vec<&'r str>,
+new_at_start			        pub fn new_at_start(s: &'a str) -> StrCursor<'a> 
 new_local			    pub fn new_local<'r>(path: &'r str) -> Path<'r> 
 next			    fn next(&self) -> State 
+next			        fn next(&mut self) -> Option<Self::Item> 
+next_cp			        pub fn next_cp(mut self) -> Option<(char, StrCursor<'a>)> 
 nil_ty			pub fn nil_ty<'r>() -> Ty<'r> 
 ord			pub mod ord;
 ordering_collapsed			pub fn ordering_collapsed(cx: &mut ExtCtxt,
 parse_args			fn parse_args(ecx: &mut ExtCtxt,
+parse_next_substitution			    pub fn parse_next_substitution(s: &str) -> Option<(Substitution, &str)> 
 partial_eq			pub mod partial_eq;
 partial_ord			pub mod partial_ord;
 path			        fn path(&self) -> ast::Path 
+printf			pub mod printf 
 proc_macro_registrar			pub mod proc_macro_registrar;
 process_variant			    fn process_variant(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>, variant: &VariantData) 
 process_variant			    fn process_variant(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>, variant: &ast::VariantData) 
 register_builtins			pub fn register_builtins(resolver: &mut syntax::ext::base::Resolver,
 resolve_name_inplace			    fn resolve_name_inplace(&self, p: &mut parse::Piece) 
 rtpath			    fn rtpath(ecx: &ExtCtxt, s: &str) -> Vec<ast::Ident> 
+seek_right			        fn seek_right(&mut self, bytes: usize) 
+shell			pub mod shell 
 show_substructure			fn show_substructure(cx: &mut ExtCtxt, span: Span, substr: &Substructure) -> P<Expr> 
+slice_after			        pub fn slice_after(&self) -> &'a str 
+slice_before			        fn slice_before(&self) -> &'a str 
+slice_between			        pub fn slice_between(&self, until: StrCursor<'a>) -> Option<&'a str> 
 some_ordering_collapsed			pub fn some_ordering_collapsed(cx: &mut ExtCtxt,
 split_self_nonself_args			    fn split_self_nonself_args
 static_array			    fn static_array(ecx: &mut ExtCtxt,
+std::fmt::Debug for StrCursor			    impl<'a> std::fmt::Debug for StrCursor<'a> 
 stmt_let_undescore			fn stmt_let_undescore(cx: &mut ExtCtxt, sp: Span, expr: P<ast::Expr>) -> ast::Stmt 
+str_eq_literal			    fn str_eq_literal(a: &str, b: &str) -> bool 
+strcursor			mod strcursor 
 summarise_struct			    fn summarise_struct(&self, cx: &mut ExtCtxt, struct_def: &VariantData) -> StaticFields 
+tests			    mod tests 
 to_generics			    pub fn to_generics(&self,
 to_path			    pub fn to_path(&self,
 to_ty			    pub fn to_ty(&self,
@@ -170,14 +213,19 @@ trace_macros			mod trace_macros;
 trans_count			    fn trans_count(&self, c: parse::Count) -> P<ast::Expr> 
 trans_literal_string			    fn trans_literal_string(&mut self) -> P<ast::Expr> 
 trans_piece			    fn trans_piece(&mut self,
+translate			        fn translate(&self, s: &mut String) -> ::std::fmt::Result 
+translate			        pub fn translate(&self) -> Option<String> 
+try_seek_right_cp			        fn try_seek_right_cp(&mut self) -> bool 
 ty			pub mod ty;
 verify_arg_type			    fn verify_arg_type(&mut self, arg: Position, ty: ArgumentType) 
 verify_count			    fn verify_count(&mut self, c: parse::Count) 
 verify_piece			    fn verify_piece(&mut self, p: &parse::Piece) 
-visit::Visitor for Visitor			    impl<'a, 'b> visit::Visitor for Visitor<'a, 'b> 
-visit_item			    fn visit_item(&mut self, item: &ast::Item) 
+visit::Visitor for Visitor			    impl<'a, 'b> visit::Visitor<'a> for Visitor<'a, 'b> 
+visit_attribute			    fn visit_attribute(&mut self, attr: &Attribute) 
+visit_item			    fn visit_item(&mut self, item: &'a ast::Item) 
+visit_mac			    fn visit_mac(&mut self, _mac: &Mac) {}
 visit_mac			        fn visit_mac(&mut self, mac: &ast::Mac) 
 visit_mac			    fn visit_mac(&mut self, mac: &ast::Mac) 
-visit_mod			    fn visit_mod(&mut self, m: &ast::Mod, _s: Span, id: NodeId) 
-visit_ty			        fn visit_ty(&mut self, ty: &ast::Ty) 
+visit_mod			    fn visit_mod(&mut self, m: &'a ast::Mod, _s: Span, id: NodeId) 
+visit_ty			        fn visit_ty(&mut self, ty: &'a ast::Ty) 
 warn_if_deprecated			fn warn_if_deprecated(ecx: &mut ExtCtxt, sp: Span, name: &str) 

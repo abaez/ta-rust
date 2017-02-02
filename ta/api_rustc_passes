@@ -6,32 +6,38 @@ Bar			struct Bar;
 CheckCrateVisitor			impl<'a, 'gcx> CheckCrateVisitor<'a, 'gcx> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'tcx: 'a> 
 CheckCrateVisitor			struct CheckCrateVisitor<'a, 'ast: 'a> 
-CheckItemRecursionVisitor			impl<'a, 'ast: 'a> CheckItemRecursionVisitor<'a, 'ast> 
-CheckItemRecursionVisitor			struct CheckItemRecursionVisitor<'a, 'ast: 'a> 
-CheckLoopVisitor			impl<'a> CheckLoopVisitor<'a> 
-CheckLoopVisitor			struct CheckLoopVisitor<'a> 
+CheckItemRecursionVisitor			impl<'a, 'b: 'a, 'ast: 'b> CheckItemRecursionVisitor<'a, 'b, 'ast> 
+CheckItemRecursionVisitor			struct CheckItemRecursionVisitor<'a, 'b: 'a, 'ast: 'b> 
+CheckLoopVisitor			impl<'a, 'ast> CheckLoopVisitor<'a, 'ast> 
+CheckLoopVisitor			struct CheckLoopVisitor<'a, 'ast: 'a> 
 CheckNoAsm			struct CheckNoAsm<'a> 
 Context			enum Context 
 Foo			trait Foo 
 Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
 Foo for Bar			pub impl Foo for Bar 
 Id			enum Id 
+LoopKind			enum LoopKind 
+LoopKind			impl LoopKind 
 Mode			enum Mode 
+NodeData			struct NodeData 
 NodeData			struct NodeData 
 RvalueContext			struct RvalueContext<'a, 'tcx: 'a> 
 RvalueContextDelegate			struct RvalueContextDelegate<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 SomeStruct			struct SomeStruct 
 StatCollector			impl<'k> StatCollector<'k> 
 StatCollector			struct StatCollector<'k> 
-Visitor for AstValidator			impl<'a> Visitor for AstValidator<'a> 
-Visitor for CheckCrateVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for CheckCrateVisitor<'a, 'tcx> 
+StatCollector			impl<'a, 'tcx> StatCollector<'a, 'tcx> 
+StatCollector			struct StatCollector<'a, 'tcx: 'a> 
+Visitor for AstValidator			impl<'a> Visitor<'a> for AstValidator<'a> 
+Visitor for CheckCrateVisitor			impl<'a, 'tcx> Visitor<'tcx> for CheckCrateVisitor<'a, 'tcx> 
 Visitor for CheckCrateVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckCrateVisitor<'a, 'ast> 
-Visitor for CheckItemRecursionVisitor			impl<'a, 'ast: 'a> Visitor<'ast> for CheckItemRecursionVisitor<'a, 'ast> 
-Visitor for CheckLoopVisitor			impl<'a, 'v> Visitor<'v> for CheckLoopVisitor<'a> 
-Visitor for CheckNoAsm			impl<'a> Visitor for CheckNoAsm<'a> 
+Visitor for CheckItemRecursionVisitor			impl<'a, 'b: 'a, 'ast: 'b> Visitor<'ast> for CheckItemRecursionVisitor<'a, 'b, 'ast> 
+Visitor for CheckLoopVisitor			impl<'a, 'ast> Visitor<'ast> for CheckLoopVisitor<'a, 'ast> 
+Visitor for CheckNoAsm			impl<'a> Visitor<'a> for CheckNoAsm<'a> 
+Visitor for RvalueContext			impl<'a, 'tcx> Visitor<'tcx> for RvalueContext<'a, 'tcx> 
 add_qualif			    fn add_qualif(&mut self, qualif: ConstQualif) 
 ast_validation			pub mod ast_validation;
-ast_visit::Visitor for StatCollector			impl<'v> ast_visit::Visitor for StatCollector<'v> 
+ast_visit::Visitor for StatCollector			impl<'v> ast_visit::Visitor<'v> for StatCollector<'v> 
 borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 check_adjustments			fn check_adjustments<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr) 
@@ -40,7 +46,7 @@ check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>)
 check_crate			pub fn check_crate(sess: &Session, map: &Map) 
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
-check_crate			pub fn check_crate<'ast>(sess: &Session,
+check_crate			pub fn check_crate<'ast>(sess: &Session, ast_map: &ast_map::Map<'ast>) -> CompileResult 
 check_decl_no_pat			    fn check_decl_no_pat<ReportFn: Fn(Span, bool)>(&self, decl: &FnDecl, report_err: ReportFn) 
 check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr, node_ty: Ty<'tcx>) 
 check_label			    fn check_label(&self, label: Ident, span: Span, id: NodeId) 
@@ -63,100 +69,135 @@ foo			    fn foo(a: (u32, u32)); \/\/ ok!
 foo			    fn foo(s: SomeStruct); \/\/ ok!
 foo			    pub fn foo() {} \/\/ error: unnecessary visibility qualifier
 foo			    pub fn foo() {}
-global_expr			    fn global_expr(&mut self, mode: Mode, expr: &hir::Expr) -> ConstQualif 
+global_expr			    fn global_expr(&mut self, mode: Mode, expr: &'gcx hir::Expr) -> ConstQualif 
 handle_const_fn_call			    fn handle_const_fn_call(&mut self, _expr: &hir::Expr, def_id: DefId, ret_ty: Ty<'gcx>) -> bool 
 hir_stats			pub mod hir_stats;
 hir_visit::Visitor for StatCollector			impl<'v> hir_visit::Visitor<'v> for StatCollector<'v> 
-intravisit::Visitor for RvalueContext			impl<'a, 'tcx, 'v> intravisit::Visitor<'v> for RvalueContext<'a, 'tcx> 
 invalid_visibility			    fn invalid_visibility(&self, vis: &Visibility, span: Span, note: Option<&str>) 
 loops			pub mod loops;
 main			fn main() 
 matched_pat			    fn matched_pat(&mut self, _: &hir::Pat, _: mc::cmt, _: euv::MatchMode) {}
 matched_pat			    fn matched_pat(&mut self,
+mir_stats			pub mod mir_stats;
+mir_visit::Visitor for StatCollector			impl<'a, 'tcx> mir_visit::Visitor<'tcx> for StatCollector<'a, 'tcx> 
 mutate			    fn mutate(&mut self,
 mutate			    fn mutate(&mut self,
-new			    fn new(v: &'a CheckCrateVisitor<'a, 'ast>,
+name			    fn name(self) -> &'static str 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> hir_visit::NestedVisitorMap<'this, 'v> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'ast> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'ast> 
+new			    fn new(v: &'a mut CheckCrateVisitor<'b, 'ast>, span: &'b Span) -> Self 
 no_asm			pub mod no_asm;
-populate_enum_discriminants			    fn populate_enum_discriminants(&self, enum_definition: &'ast hir::EnumDef) 
+no_questions_in_bounds			    fn no_questions_in_bounds(&self, bounds: &TyParamBounds, where_: &str, is_trait: bool) 
+populate_enum_discriminants			    fn populate_enum_discriminants(&mut self, enum_definition: &'ast hir::EnumDef) 
 print			    fn print(&self, title: &str) 
-print_ast_stats			pub fn print_ast_stats(krate: &ast::Crate, title: &str) 
+print			    fn print(&self, title: &str) 
+print_ast_stats			pub fn print_ast_stats<'v>(krate: &'v ast::Crate, title: &str) 
 print_hir_stats			pub fn print_hir_stats(krate: &hir::Crate) 
+print_mir_stats			pub fn print_mir_stats<'tcx, 'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>, title: &str) 
 record			    fn record<T>(&mut self, label: &'static str, id: Id, node: &T) 
+record			    fn record<T>(&mut self, label: &'static str, node: &T) 
 record_borrow			    fn record_borrow(&mut self, id: ast::NodeId, mutbl: hir::Mutability) 
+record_with_size			    fn record_with_size(&mut self, label: &'static str, node_size: usize) 
 require_loop			    fn require_loop(&self, name: &str, span: Span) 
 rvalues			pub mod rvalues;
 some_func			fn some_func() 
 static_recursion			pub mod static_recursion;
+visit_arm			    fn visit_arm(&mut self, a: &'v ast::Arm) 
 visit_arm			    fn visit_arm(&mut self, a: &'v hir::Arm) 
-visit_arm			    fn visit_arm(&mut self, a: &ast::Arm) 
+visit_assert_message			    fn visit_assert_message(&mut self,
+visit_assoc_type_binding			    fn visit_assoc_type_binding(&mut self, type_binding: &'v ast::TypeBinding) 
 visit_assoc_type_binding			    fn visit_assoc_type_binding(&mut self, type_binding: &'v hir::TypeBinding) 
-visit_assoc_type_binding			    fn visit_assoc_type_binding(&mut self, type_binding: &ast::TypeBinding) 
 visit_attribute			    fn visit_attribute(&mut self, attr: &'v ast::Attribute) 
-visit_attribute			    fn visit_attribute(&mut self, attr: &ast::Attribute) 
-visit_block			    fn visit_block(&mut self, block: &hir::Block) 
+visit_basic_block_data			    fn visit_basic_block_data(&mut self,
+visit_block			    fn visit_block(&mut self, block: &'tcx hir::Block) 
+visit_block			    fn visit_block(&mut self, b: &'v ast::Block) 
 visit_block			    fn visit_block(&mut self, b: &'v hir::Block) 
-visit_block			    fn visit_block(&mut self, b: &ast::Block) 
+visit_closure_substs			    fn visit_closure_substs(&mut self,
+visit_const_usize			    fn visit_const_usize(&mut self,
+visit_const_val			    fn visit_const_val(&mut self,
+visit_constant			    fn visit_constant(&mut self,
 visit_decl			    fn visit_decl(&mut self, d: &'v hir::Decl) 
 visit_enum_def			    fn visit_enum_def(&mut self,
-visit_expr			    fn visit_expr(&mut self, expr: &Expr) 
-visit_expr			    fn visit_expr(&mut self, ex: &hir::Expr) 
+visit_expr			    fn visit_expr(&mut self, expr: &'a Expr) 
+visit_expr			    fn visit_expr(&mut self, ex: &'tcx hir::Expr) 
+visit_expr			    fn visit_expr(&mut self, ex: &'v ast::Expr) 
 visit_expr			    fn visit_expr(&mut self, ex: &'v hir::Expr) 
-visit_expr			    fn visit_expr(&mut self, ex: &ast::Expr) 
-visit_expr			    fn visit_expr(&mut self, e: &hir::Expr) 
-visit_expr			    fn visit_expr(&mut self, e: &ast::Expr) 
 visit_expr			    fn visit_expr(&mut self, e: &'ast hir::Expr) 
+visit_expr			    fn visit_expr(&mut self, e: &'a ast::Expr) 
 visit_fn			    fn visit_fn(&mut self,
 visit_fn			    fn visit_fn(&mut self,
 visit_fn			    fn visit_fn(&mut self,
-visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &ForeignItem) 
+visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &'a ForeignItem) 
+visit_foreign_item			    fn visit_foreign_item(&mut self, i: &'v ast::ForeignItem) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, i: &'v hir::ForeignItem) 
-visit_foreign_item			    fn visit_foreign_item(&mut self, i: &ast::ForeignItem) 
-visit_impl_item			    fn visit_impl_item(&mut self, i: &'v hir::ImplItem) 
+visit_impl_item			    fn visit_impl_item(&mut self, i: &'tcx hir::ImplItem) 
+visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v ast::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'v hir::ImplItem) 
-visit_impl_item			    fn visit_impl_item(&mut self, ii: &ast::ImplItem) 
+visit_impl_item			    fn visit_impl_item(&mut self, i: &'ast hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'ast hir::ImplItem) 
-visit_item			    fn visit_item(&mut self, item: &Item) 
-visit_item			    fn visit_item(&mut self, i: &hir::Item) 
+visit_item			    fn visit_item(&mut self, item: &'a Item) 
+visit_item			    fn visit_item(&mut self, i: &'tcx hir::Item) 
+visit_item			    fn visit_item(&mut self, i: &'v ast::Item) 
 visit_item			    fn visit_item(&mut self, i: &'v hir::Item) 
-visit_item			    fn visit_item(&mut self, i: &ast::Item) 
-visit_item			    fn visit_item(&mut self, i: &hir::Item) 
+visit_item			    fn visit_item(&mut self, i: &'ast hir::Item) 
 visit_item			    fn visit_item(&mut self, it: &'ast hir::Item) 
-visit_lifetime			    fn visit_lifetime(&mut self, lt: &Lifetime) 
+visit_lifetime			    fn visit_lifetime(&mut self, lt: &'a Lifetime) 
+visit_lifetime			    fn visit_lifetime(&mut self, lifetime: &'v ast::Lifetime) 
 visit_lifetime			    fn visit_lifetime(&mut self, lifetime: &'v hir::Lifetime) 
-visit_lifetime			    fn visit_lifetime(&mut self, lifetime: &ast::Lifetime) 
+visit_lifetime_def			    fn visit_lifetime_def(&mut self, lifetime: &'v ast::LifetimeDef) 
 visit_lifetime_def			    fn visit_lifetime_def(&mut self, lifetime: &'v hir::LifetimeDef) 
-visit_lifetime_def			    fn visit_lifetime_def(&mut self, lifetime: &ast::LifetimeDef) 
+visit_literal			    fn visit_literal(&mut self,
+visit_local			    fn visit_local(&mut self, l: &'v ast::Local) 
 visit_local			    fn visit_local(&mut self, l: &'v hir::Local) 
-visit_local			    fn visit_local(&mut self, l: &ast::Local) 
-visit_mac			    fn visit_mac(&mut self, mac: &ast::Mac) 
+visit_local_decl			    fn visit_local_decl(&mut self,
+visit_lvalue			    fn visit_lvalue(&mut self,
+visit_mac			    fn visit_mac(&mut self, mac: &'v ast::Mac) 
+visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &'v ast::MacroDef) 
 visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &'v hir::MacroDef) 
-visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &ast::MacroDef) 
+visit_mir			    fn visit_mir(&mut self, mir: &Mir<'tcx>) 
+visit_mod			    fn visit_mod(&mut self, m: &'v ast::Mod, _s: Span, _n: NodeId) 
 visit_mod			    fn visit_mod(&mut self, m: &'v hir::Mod, _s: Span, n: NodeId) 
-visit_mod			    fn visit_mod(&mut self, m: &ast::Mod, _s: Span, _n: NodeId) 
+visit_nested_impl_item			    fn visit_nested_impl_item(&mut self, impl_item_id: hir::ImplItemId) 
 visit_nested_item			    fn visit_nested_item(&mut self, id: hir::ItemId) 
-visit_pat			    fn visit_pat(&mut self, p: &hir::Pat) 
+visit_operand			    fn visit_operand(&mut self,
+visit_pat			    fn visit_pat(&mut self, p: &'tcx hir::Pat) 
+visit_pat			    fn visit_pat(&mut self, p: &'v ast::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &'v hir::Pat) 
-visit_pat			    fn visit_pat(&mut self, p: &ast::Pat) 
-visit_path			    fn visit_path(&mut self, path: &Path, id: NodeId) 
+visit_path			    fn visit_path(&mut self, path: &'a Path, id: NodeId) 
 visit_path			    fn visit_path(&mut self, path: &'v hir::Path, _id: NodeId) 
+visit_path			    fn visit_path(&mut self, path: &'ast hir::Path, _: ast::NodeId) 
 visit_path_list_item			    fn visit_path_list_item(&mut self,
 visit_path_segment			    fn visit_path_segment(&mut self,
+visit_projection			    fn visit_projection(&mut self,
+visit_projection_elem			    fn visit_projection_elem(&mut self,
+visit_qpath			    fn visit_qpath(&mut self, qpath: &'v hir::QPath, id: NodeId, span: Span) 
+visit_rvalue			    fn visit_rvalue(&mut self,
+visit_source_info			    fn visit_source_info(&mut self,
+visit_statement			    fn visit_statement(&mut self,
+visit_stmt			    fn visit_stmt(&mut self, s: &'v ast::Stmt) 
 visit_stmt			    fn visit_stmt(&mut self, s: &'v hir::Stmt) 
-visit_stmt			    fn visit_stmt(&mut self, s: &ast::Stmt) 
+visit_struct_field			    fn visit_struct_field(&mut self, s: &'v ast::StructField) 
 visit_struct_field			    fn visit_struct_field(&mut self, s: &'v hir::StructField) 
-visit_struct_field			    fn visit_struct_field(&mut self, s: &ast::StructField) 
-visit_trait_item			    fn visit_trait_item(&mut self, t: &'v hir::TraitItem) 
+visit_terminator			    fn visit_terminator(&mut self,
+visit_terminator_kind			    fn visit_terminator_kind(&mut self,
+visit_trait_item			    fn visit_trait_item(&mut self, t: &'tcx hir::TraitItem) 
+visit_trait_item			    fn visit_trait_item(&mut self, ti: &'v ast::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'v hir::TraitItem) 
-visit_trait_item			    fn visit_trait_item(&mut self, ti: &ast::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'ast hir::TraitItem) 
-visit_ty			    fn visit_ty(&mut self, ty: &Ty) 
+visit_ty			    fn visit_ty(&mut self, ty: &'a Ty) 
+visit_ty			    fn visit_ty(&mut self, t: &'v ast::Ty) 
 visit_ty			    fn visit_ty(&mut self, t: &'v hir::Ty) 
-visit_ty			    fn visit_ty(&mut self, t: &ast::Ty) 
+visit_ty_param_bound			    fn visit_ty_param_bound(&mut self, bounds: &'v ast::TyParamBound) 
 visit_ty_param_bound			    fn visit_ty_param_bound(&mut self, bounds: &'v hir::TyParamBound) 
-visit_ty_param_bound			    fn visit_ty_param_bound(&mut self, bounds: &ast::TyParamBound) 
+visit_typed_const_val			    fn visit_typed_const_val(&mut self,
 visit_variant			    fn visit_variant(&mut self,
 visit_variant			    fn visit_variant(&mut self,
-visit_vis			    fn visit_vis(&mut self, vis: &Visibility) 
+visit_vis			    fn visit_vis(&mut self, vis: &'a Visibility) 
+visit_visibility_scope			    fn visit_visibility_scope(&mut self,
+visit_visibility_scope_data			    fn visit_visibility_scope_data(&mut self,
 visit_where_predicate			    fn visit_where_predicate(&mut self, predicate: &'v hir::WherePredicate) 
 with_context			    fn with_context<F>(&mut self, cx: Context, f: F)
 with_euv			    fn with_euv<F, R>(&mut self, item_id: Option<ast::NodeId>, f: F) -> R

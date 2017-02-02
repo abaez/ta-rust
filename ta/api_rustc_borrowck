@@ -161,8 +161,8 @@ Value			struct Value {}
 Variant			impl Variant 
 Variant			pub enum Variant 
 VariantMatch			pub struct VariantMatch 
-Visitor for BorrowckCtxt			impl<'a, 'tcx, 'v> Visitor<'v> for BorrowckCtxt<'a, 'tcx> 
-Visitor for StaticInitializerCtxt			impl<'a, 'tcx, 'v> Visitor<'v> for StaticInitializerCtxt<'a, 'tcx> 
+Visitor for BorrowckCtxt			impl<'a, 'tcx> Visitor<'tcx> for BorrowckCtxt<'a, 'tcx> 
+Visitor for StaticInitializerCtxt			impl<'a, 'tcx> Visitor<'tcx> for StaticInitializerCtxt<'a, 'tcx> 
 abs_domain			mod abs_domain;
 add_assign			    pub fn add_assign(&mut self, loc: Location, lv: Lvalue<'tcx>, rv: Rvalue<'tcx>) 
 add_assignment			    pub fn add_assignment(&mut self, path_index: MovePathIndex) 
@@ -197,8 +197,8 @@ bits_per_block			    pub fn bits_per_block(&self) -> usize { self.bits_per_block
 borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 borrowck			mod borrowck;
-borrowck_fn			fn borrowck_fn(this: &mut BorrowckCtxt,
-borrowck_item			fn borrowck_item(this: &mut BorrowckCtxt, item: &hir::Item) 
+borrowck_fn			fn borrowck_fn<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>,
+borrowck_item			fn borrowck_item<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>, item: &'tcx hir::Item) 
 borrowck_mir			pub fn borrowck_mir(bcx: &mut BorrowckCtxt,
 bottom_value			    fn bottom_value() -> bool 
 bottom_value			    fn bottom_value() -> bool;
@@ -335,7 +335,7 @@ gather_assignment			pub fn gather_assignment<'a, 'tcx>(bccx: &BorrowckCtxt<'a, '
 gather_decl			pub fn gather_decl<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_loans			pub mod gather_loans;
 gather_loans_in_fn			pub fn gather_loans_in_fn<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
-gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer(bccx: &mut BorrowckCtxt,
+gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer<'a, 'tcx>(bccx: &mut BorrowckCtxt<'a, 'tcx>,
 gather_match_variant			pub fn gather_match_variant<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			fn gather_move<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			    fn gather_move(&mut self, loc: Location, lval: &Lvalue<'tcx>) 
@@ -361,7 +361,7 @@ guarantee_assignment_valid			    fn guarantee_assignment_valid(&mut self,
 guarantee_lifetime			pub fn guarantee_lifetime<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 guarantee_valid			    fn guarantee_valid(&mut self,
 has_fork			    fn has_fork(&self, other: &LoanPath<'tcx>) -> bool 
-has_rustc_mir_with			fn has_rustc_mir_with(attrs: &[ast::Attribute], name: &str) -> Option<P<MetaItem>> 
+has_rustc_mir_with			fn has_rustc_mir_with(attrs: &[ast::Attribute], name: &str) -> Option<MetaItem> 
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 helper			    fn helper<'a, 'tcx>(loan_path: &'a LoanPath<'tcx>) -> Option<&'a LoanPath<'tcx>> 
 helper			    fn helper<'tcx>(loan_path: &Rc<LoanPath<'tcx>>) -> Option<Rc<LoanPath<'tcx>>> 
@@ -432,6 +432,8 @@ name			    fn name() -> &'static str { "maybe_init" }
 name			    fn name() -> &'static str { "maybe_uninit" }
 name			    fn name() -> &'static str { "moving_out" }
 name			    fn name() -> &'static str;
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 new			    pub fn new() -> FragmentSets 
 new			    pub fn new() -> MoveErrorCollector<'tcx> 
 new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>, mir: &'a Mir<'tcx>) -> Self 
@@ -459,6 +461,7 @@ nodes			    fn nodes(&self) -> dot::Nodes<Node>
 nodes			    fn nodes(&'a self) -> dot::Nodes<'a, Node<'a>> { self.inner.nodes() }
 non_member			    fn non_member(elem: MovePathIndex, set: &[MovePathIndex]) -> bool 
 note_and_explain_bckerr			    pub fn note_and_explain_bckerr(&self, db: &mut DiagnosticBuilder, err: BckError<'tcx>,
+note_and_explain_mutbl_error			    fn note_and_explain_mutbl_error(&self, db: &mut DiagnosticBuilder, err: &BckError<'tcx>,
 note_move_destination			fn note_move_destination(mut err: DiagnosticBuilder,
 nothing_is_true			    fn nothing_is_true(&self) {} \/\/ First case, we don't take ownership
 nothing_is_true			    fn nothing_is_true(self) {}
@@ -555,11 +558,11 @@ to_type			    fn to_type(&self) -> ty::Ty<'tcx> { self.ty }
 unelaborated_free_block			    fn unelaborated_free_block<'a>(
 update_bits			    fn update_bits(sets: &mut BlockSets<MovePathIndex>, path: MovePathIndex,
 value			    fn value(self) -> bool 
-visit_expr			    fn visit_expr(&mut self, ex: &Expr) 
-visit_fn			    fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v FnDecl,
-visit_impl_item			    fn visit_impl_item(&mut self, ii: &hir::ImplItem) 
-visit_item			    fn visit_item(&mut self, item: &hir::Item) 
-visit_trait_item			    fn visit_trait_item(&mut self, ti: &hir::TraitItem) 
+visit_expr			    fn visit_expr(&mut self, ex: &'tcx Expr) 
+visit_fn			    fn visit_fn(&mut self, fk: FnKind<'tcx>, fd: &'tcx hir::FnDecl,
+visit_impl_item			    fn visit_impl_item(&mut self, ii: &'tcx hir::ImplItem) 
+visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
+visit_trait_item			    fn visit_trait_item(&mut self, ti: &'tcx hir::TraitItem) 
 walk_cfg			    fn walk_cfg(&mut self, in_out: &mut IdxSet<BD::Idx>) 
 with_move_info			    pub fn with_move_info(move_from: mc::cmt<'tcx>,
 with_temp_region_map			    fn with_temp_region_map<F>(&mut self, id: ast::NodeId, f: F)

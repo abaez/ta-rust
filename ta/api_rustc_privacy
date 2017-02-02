@@ -24,22 +24,23 @@ PrivacyVisitor			impl<'a, 'tcx> PrivacyVisitor<'a, 'tcx>
 PrivacyVisitor			struct PrivacyVisitor<'a, 'tcx: 'a> 
 PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 PrivateItemsInPublicInterfacesVisitor			struct PrivateItemsInPublicInterfacesVisitor<'a, 'tcx: 'a> 
-ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
+ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
 ReachEverythingInTheInterfaceVisitor			struct ReachEverythingInTheInterfaceVisitor<'b, 'a: 'b, 'tcx: 'a> 
 SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
 SearchInterfaceForPrivateItemsVisitor			struct SearchInterfaceForPrivateItemsVisitor<'a, 'tcx: 'a> 
-Visitor for EmbargoVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for EmbargoVisitor<'a, 'tcx> 
+TypeVisitor for ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx> TypeVisitor<'tcx> for ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
+TypeVisitor for SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> TypeVisitor<'tcx> for SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
+Visitor for EmbargoVisitor			impl<'a, 'tcx> Visitor<'tcx> for EmbargoVisitor<'a, 'tcx> 
 Visitor for ObsoleteCheckTypeForPrivatenessVisitor			impl<'a, 'b, 'tcx, 'v> Visitor<'v> for ObsoleteCheckTypeForPrivatenessVisitor<'a, 'b, 'tcx> 
-Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
-Visitor for PrivacyVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivacyVisitor<'a, 'tcx> 
-Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
-Visitor for ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx: 'a, 'v> Visitor<'v> for ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
-Visitor for SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a, 'v> Visitor<'v> for SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
+Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx> Visitor<'tcx> for ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
+Visitor for PrivacyVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivacyVisitor<'a, 'tcx> 
+Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
 bar			    pub fn bar() -> Bar { \/\/ ok!
 bar			mod bar 
+check			    fn check(&self, item_id: ast::NodeId, required_visibility: ty::Visibility)
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-check_field			    fn check_field(&mut self, span: Span, def: ty::AdtDef<'tcx>, field: ty::FieldDef<'tcx>) 
+check_field			    fn check_field(&mut self, span: Span, def: &'tcx ty::AdtDef, field: &'tcx ty::FieldDef) 
 check_method			    fn check_method(&mut self, span: Span, method_def_id: DefId) 
 check_ty_param_bound			    fn check_ty_param_bound(&mut self,
 diagnostics			pub mod diagnostics;
@@ -47,37 +48,41 @@ dummy			    fn dummy(&self) { }
 foo			fn foo() 
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ ok!
 foo			pub fn foo<T: Foo> (t: T) {} \/\/ same error
+generics			    fn generics(&mut self) -> &mut Self 
 get			    fn get(&self, id: ast::NodeId) -> Option<AccessLevel> 
+impl_trait_level			    fn impl_trait_level(&self, impl_def_id: DefId) -> Option<AccessLevel> 
+impl_trait_ref			    fn impl_trait_ref(&mut self) -> &mut Self 
 item_is_accessible			    fn item_is_accessible(&self, did: DefId) -> bool 
 item_is_public			    fn item_is_public(&self, id: &ast::NodeId, vis: &hir::Visibility) -> bool 
+item_ty_level			    fn item_ty_level(&self, item_def_id: DefId) -> Option<AccessLevel> 
+item_type			    fn item_type(&mut self) -> &mut Self 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v> 
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
 new			        pub fn new(x: isize) -> Foo 
-new			    fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>, old_error_set: &'a NodeSet) -> Self 
-path_is_private_type			    fn path_is_private_type(&self, path_id: ast::NodeId) -> bool 
-reach			    fn reach<'b>(&'b mut self) -> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
-reach_aliased_type			    fn reach_aliased_type(&mut self, item: &hir::Item, path: &hir::Path) 
-substituted_alias_visibility			    fn substituted_alias_visibility(&self, item: &hir::Item, path: &hir::Path)
+path_is_private_type			    fn path_is_private_type(&self, path: &hir::Path) -> bool 
+predicates			    fn predicates(&mut self) -> &mut Self 
+reach			    fn reach<'b>(&'b mut self, item_id: ast::NodeId)
 trait_is_public			    fn trait_is_public(&self, trait_id: ast::NodeId) -> bool 
-trait_level			    fn trait_level(&self, trait_ref: &hir::TraitRef) -> Option<AccessLevel> 
-trait_ref_visibility			    fn trait_ref_visibility(&self, trait_ref: &hir::TraitRef) -> ty::Visibility 
-ty_level			    fn ty_level(&self, ty: &hir::Ty) -> Option<AccessLevel> 
-ty_visibility			    fn ty_visibility(&self, ty: &hir::Ty) -> ty::Visibility 
 update			    fn update(&mut self, id: ast::NodeId, level: Option<AccessLevel>) -> Option<AccessLevel> 
-visit_block			    fn visit_block(&mut self, _: &hir::Block) {}
-visit_block			    fn visit_block(&mut self, b: &'v hir::Block) 
+visit_block			    fn visit_block(&mut self, _: &'tcx hir::Block) {}
+visit_block			    fn visit_block(&mut self, b: &'tcx hir::Block) 
+visit_expr			    fn visit_expr(&mut self, _: &'tcx hir::Expr) {}
 visit_expr			    fn visit_expr(&mut self, _: &hir::Expr) {}
-visit_expr			    fn visit_expr(&mut self, expr: &hir::Expr) 
-visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &hir::ForeignItem) 
-visit_foreign_item			    fn visit_foreign_item(&mut self, item: &hir::ForeignItem) 
-visit_generics			    fn visit_generics(&mut self, generics: &hir::Generics) 
-visit_item			    fn visit_item(&mut self, item: &hir::Item) 
-visit_macro_def			    fn visit_macro_def(&mut self, md: &'v hir::MacroDef) 
-visit_mod			    fn visit_mod(&mut self, m: &hir::Mod, _sp: Span, id: ast::NodeId) 
-visit_nested_item			    fn visit_nested_item(&mut self, item: hir::ItemId) 
-visit_pat			    fn visit_pat(&mut self, _: &hir::Pat) {}
-visit_pat			    fn visit_pat(&mut self, pattern: &hir::Pat) 
-visit_struct_field			    fn visit_struct_field(&mut self, s: &hir::StructField) 
-visit_trait_ref			    fn visit_trait_ref(&mut self, trait_ref: &hir::TraitRef) 
-visit_ty			    fn visit_ty(&mut self, t: &hir::Ty) 
+visit_expr			    fn visit_expr(&mut self, expr: &'tcx hir::Expr) 
+visit_foreign_item			    fn visit_foreign_item(&mut self, fi: &'tcx hir::ForeignItem) 
+visit_foreign_item			    fn visit_foreign_item(&mut self, item: &'tcx hir::ForeignItem) 
+visit_generics			    fn visit_generics(&mut self, generics: &'tcx hir::Generics) 
+visit_impl_item			    fn visit_impl_item(&mut self, _impl_item: &'tcx hir::ImplItem) 
+visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
+visit_macro_def			    fn visit_macro_def(&mut self, md: &'tcx hir::MacroDef) 
+visit_mod			    fn visit_mod(&mut self, m: &'tcx hir::Mod, _sp: Span, id: ast::NodeId) 
+visit_pat			    fn visit_pat(&mut self, _: &'tcx hir::Pat) {}
+visit_pat			    fn visit_pat(&mut self, pattern: &'tcx hir::Pat) 
+visit_struct_field			    fn visit_struct_field(&mut self, s: &'tcx hir::StructField) 
+visit_trait_ref			    fn visit_trait_ref(&mut self, trait_ref: ty::TraitRef<'tcx>) -> bool 
+visit_ty			    fn visit_ty(&mut self, t: &'tcx hir::Ty) 
+visit_ty			    fn visit_ty(&mut self, ty: &'tcx hir::Ty) 
 visit_ty			    fn visit_ty(&mut self, ty: &hir::Ty) 
-visit_variant			    fn visit_variant(&mut self, v: &hir::Variant, g: &hir::Generics, item_id: ast::NodeId) 
+visit_ty			    fn visit_ty(&mut self, ty: Ty<'tcx>) -> bool 
+visit_variant			    fn visit_variant(&mut self,

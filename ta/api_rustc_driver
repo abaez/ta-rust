@@ -2,14 +2,14 @@ Compilation			impl Compilation
 Compilation			pub enum Compilation 
 CompileController			impl<'a> CompileController<'a> 
 CompileController			pub struct CompileController<'a> 
-CompileState			impl<'a, 'b, 'ast, 'tcx> CompileState<'a, 'b, 'ast, 'tcx> 
-CompileState			pub struct CompileState<'a, 'b, 'ast: 'a, 'tcx: 'b> where 'ast: 'tcx 
+CompileState			impl<'a, 'tcx> CompileState<'a, 'tcx> 
+CompileState			pub struct CompileState<'a, 'tcx: 'a> 
 CompilerCalls			pub trait CompilerCalls<'a> 
 CompilerCalls for RustcDefaultCalls			impl<'a> CompilerCalls<'a> for RustcDefaultCalls 
 Emitter for ExpectErrorEmitter			impl Emitter for ExpectErrorEmitter 
 Env			impl<'a, 'gcx, 'tcx> Env<'a, 'gcx, 'tcx> 
 Env			struct Env<'a, 'gcx: 'a + 'tcx, 'tcx: 'a> 
-ExpansionResult			pub struct ExpansionResult<'a> 
+ExpansionResult			pub struct ExpansionResult 
 ExpectErrorEmitter			struct ExpectErrorEmitter 
 Finder			struct Finder 
 FromStr for UserIdentifiedItem			impl FromStr for UserIdentifiedItem 
@@ -19,6 +19,7 @@ HirPrinterSupport for NoAnn			impl<'ast> HirPrinterSupport<'ast> for NoAnn<'ast>
 HirPrinterSupport for TypedAnnotation			impl<'b, 'tcx> HirPrinterSupport<'tcx> for TypedAnnotation<'b, 'tcx> 
 HygieneAnnotation			struct HygieneAnnotation<'ast> 
 IdentifiedAnnotation			struct IdentifiedAnnotation<'ast> 
+ItemLikeVisitor for Finder			impl<'v> ItemLikeVisitor<'v> for Finder 
 Iterator for NodesMatchingUII			impl<'a, 'ast> Iterator for NodesMatchingUII<'a, 'ast> 
 NoAnn			struct NoAnn<'ast> 
 NodesMatchingUII			enum NodesMatchingUII<'a, 'ast: 'a> 
@@ -43,7 +44,6 @@ Sink			    struct Sink(Arc<Mutex<Vec<u8>>>);
 TypedAnnotation			struct TypedAnnotation<'a, 'tcx: 'a> 
 UserIdentifiedItem			impl UserIdentifiedItem 
 UserIdentifiedItem			pub enum UserIdentifiedItem 
-Visitor for Finder			impl<'v> Visitor<'v> for Finder 
 Write for Sink			    impl Write for Sink 
 abort_msg			fn abort_msg(err_count: usize) -> String 
 abort_on_err			pub fn abort_on_err<T>(result: Result<T, usize>, sess: &Session) -> T 
@@ -63,7 +63,6 @@ build_controller			    fn build_controller(&mut self,
 build_output_filenames			pub fn build_output_filenames(input: &Input,
 call_with_pp_support			    fn call_with_pp_support<'tcx, A, B, F>(&self,
 call_with_pp_support_hir			    fn call_with_pp_support_hir<'tcx, A, B, F>(&self,
-check_cfg			fn check_cfg(cfg: &ast::CrateConfig,
 check_glb			    pub fn check_glb(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_glb: Ty<'tcx>) 
 check_lub			    pub fn check_lub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>, t_lub: Ty<'tcx>) 
 check_not_sub			    pub fn check_not_sub(&self, t1: Ty<'tcx>, t2: Ty<'tcx>) 
@@ -143,7 +142,7 @@ parse_crate_attrs			fn parse_crate_attrs<'a>(sess: &'a Session, input: &Input) -
 parse_pretty			fn parse_pretty(sess: &Session,
 parse_pretty			pub fn parse_pretty(sess: &Session,
 phase_1_parse_input			pub fn phase_1_parse_input<'a>(sess: &'a Session, input: &Input) -> PResult<'a, ast::Crate> 
-phase_2_configure_and_expand			pub fn phase_2_configure_and_expand<'a, F>(sess: &Session,
+phase_2_configure_and_expand			pub fn phase_2_configure_and_expand<F>(sess: &Session,
 phase_3_run_analysis_passes			pub fn phase_3_run_analysis_passes<'tcx, F, R>(sess: &'tcx Session,
 phase_4_translate_to_llvm			pub fn phase_4_translate_to_llvm<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 phase_5_run_llvm_passes			pub fn phase_5_run_llvm_passes(sess: &Session,
@@ -175,7 +174,6 @@ re_late_bound_with_debruijn			    pub fn re_late_bound_with_debruijn(&self,
 reconstructed_input			    fn reconstructed_input(&self) -> String 
 release_str			pub fn release_str() -> Option<&'static str> 
 remove_message			fn remove_message(e: &mut ExpectErrorEmitter, msg: &str, lvl: Level) 
-reset_thread_local_state			pub fn reset_thread_local_state() 
 run			pub fn run<F>(run_compiler: F) -> isize
 run_compiler			pub fn run_compiler<'a>(args: &[String],
 save_analysis			fn save_analysis(sess: &Session) -> bool 
@@ -219,6 +217,7 @@ to_one_node_id			    fn to_one_node_id(self, user_option: &str, sess: &Session, 
 unw			        fn unw(x: Option<&str>) -> &str 
 usage			fn usage(verbose: bool, include_unstable_options: bool) 
 version			pub fn version(binary: &str, matches: &getopts::Matches) 
+visit_impl_item			    fn visit_impl_item(&mut self, _impl_item: &hir::ImplItem) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
 walk_ty			fn walk_ty() 
 walk_ty_skip_subtree			fn walk_ty_skip_subtree() 

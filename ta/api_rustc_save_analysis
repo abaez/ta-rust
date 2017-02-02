@@ -31,7 +31,6 @@ From for Def			impl From<EnumData> for Def
 From for Def			impl From<FunctionData> for Def 
 From for Def			impl From<MacroData> for Def 
 From for Def			impl From<MethodData> for Def 
-From for Def			impl From<ModData> for Def 
 From for Def			impl From<StructData> for Def 
 From for Def			impl From<StructVariantData> for Def 
 From for Def			impl From<TraitData> for Def 
@@ -157,8 +156,8 @@ VariableKind			pub enum VariableKind
 VariableRefData			pub struct VariableRefData 
 VariableRefData			pub struct VariableRefData 
 Visibility			pub enum Visibility 
-Visitor for DumpVisitor			impl<'l, 'tcx: 'l, 'll, D: Dump +'ll> Visitor for DumpVisitor<'l, 'tcx, 'll, D> 
-Visitor for PathCollector			impl Visitor for PathCollector 
+Visitor for DumpVisitor			impl<'l, 'tcx: 'l, 'll, D: Dump +'ll> Visitor<'l> for DumpVisitor<'l, 'tcx, 'll, D> 
+Visitor for PathCollector			impl<'a> Visitor<'a> for PathCollector 
 crate_prelude			    fn crate_prelude(&mut self, data: CratePreludeData) 
 crate_prelude			    fn crate_prelude(&mut self, CratePreludeData) {}
 crate_prelude			    fn crate_prelude(&mut self, data: CratePreludeData) 
@@ -217,7 +216,6 @@ from			    fn from(data: UseData) -> Import
 from			    fn from(data: UseGlobData) -> Import 
 from			    fn from(data: VariableData) -> Def 
 from			    fn from(data: VariableRefData) -> Ref 
-from			    fn from(data:ModData) -> Def 
 from			    fn from(id: DefId) -> Id 
 from_span			    pub fn from_span(span: Span, cm: &CodeMap) -> SpanData 
 from_span_utils			    pub fn from_span_utils(tcx: TyCtxt<'l, 'tcx, 'tcx>,
@@ -237,6 +235,7 @@ get_item_data			    pub fn get_item_data(&self, item: &ast::Item) -> Option<Data
 get_macro_use_data			    pub fn get_macro_use_data(&self, span: Span, id: NodeId) -> Option<MacroUseData> 
 get_method_data			    pub fn get_method_data(&self, id: ast::NodeId,
 get_path_data			    pub fn get_path_data(&self, id: NodeId, path: &ast::Path) -> Option<Data> 
+get_path_def			    pub fn get_path_def(&self, id: NodeId) -> Def 
 get_trait_ref_data			    pub fn get_trait_ref_data(&self,
 impl_data			    fn impl_data(&mut self, data: ImplData) 
 impl_data			    fn impl_data(&mut self, ImplData) {}
@@ -288,17 +287,18 @@ method_call			    fn method_call(&mut self, data: MethodCallData)
 method_call			    fn method_call(&mut self, MethodCallData) {}
 mod_data			    fn mod_data(&mut self, data: ModData) 
 mod_data			    fn mod_data(&mut self, ModData) {}
+mod_data			    fn mod_data(&mut self, data: ModData) 
 mod_ref			    fn mod_ref(&mut self, data: ModRefData) 
 mod_ref			    fn mod_ref(&mut self, ModRefData) {}
 nest			    fn nest<F>(&mut self, scope_id: NodeId, f: F)
 new			    pub fn new(writer: &'b mut W) -> CsvDumper<'b, W> 
-new			    pub fn new(tcx: TyCtxt<'l, 'tcx, 'tcx>,
+new			    pub fn new(save_ctxt: SaveContext<'l, 'tcx>,
 new			    fn new() -> Analysis 
 new			    pub fn new(writer: &'b mut W) -> JsonApiDumper<'b, W> 
 new			    fn new() -> Analysis 
 new			    pub fn new(writer: &'b mut W) -> JsonDumper<'b, W> 
 new			    fn new() -> PathCollector 
-new			    pub fn new(tcx: TyCtxt<'l, 'tcx, 'tcx>) -> SaveContext<'l, 'tcx> 
+new			    pub fn new(tcx: TyCtxt<'l, 'tcx, 'tcx>,
 new			    pub fn new(sess: &'a Session) -> SpanUtils<'a> 
 null_def_id			pub fn null_def_id() -> DefId 
 process_assoc_const			    fn process_assoc_const(&mut self,
@@ -306,25 +306,25 @@ process_crate			pub fn process_crate<'l, 'tcx>(tcx: TyCtxt<'l, 'tcx, 'tcx>,
 process_def_kind			    fn process_def_kind(&mut self,
 process_enum			    fn process_enum(&mut self,
 process_fn			    fn process_fn(&mut self,
-process_formals			    fn process_formals(&mut self, formals: &Vec<ast::Arg>, qualname: &str) 
+process_formals			    fn process_formals(&mut self, formals: &'l [ast::Arg], qualname: &str) 
 process_generic_params			    fn process_generic_params(&mut self,
 process_impl			    fn process_impl(&mut self,
-process_impl_item			    fn process_impl_item(&mut self, impl_item: &ast::ImplItem, impl_id: DefId) 
+process_impl_item			    fn process_impl_item(&mut self, impl_item: &'l ast::ImplItem, impl_id: DefId) 
 process_macro_use			    fn process_macro_use(&mut self, span: Span, id: NodeId) 
 process_method			    fn process_method(&mut self,
-process_method_call			    fn process_method_call(&mut self, ex: &ast::Expr, args: &Vec<P<ast::Expr>>) 
+process_method_call			    fn process_method_call(&mut self, ex: &'l ast::Expr, args: &'l [P<ast::Expr>]) 
 process_mod			    fn process_mod(&mut self, item: &ast::Item) 
-process_pat			    fn process_pat(&mut self, p: &ast::Pat) 
+process_pat			    fn process_pat(&mut self, p: &'l ast::Pat) 
 process_path			    fn process_path(&mut self, id: NodeId, path: &ast::Path, ref_kind: Option<recorder::Row>) 
 process_path_prefixes			    fn process_path_prefixes(&self, path: &ast::Path) -> Vec<(Span, String)> 
-process_static_or_const_item			    fn process_static_or_const_item(&mut self, item: &ast::Item, typ: &ast::Ty, expr: &ast::Expr) 
+process_static_or_const_item			    fn process_static_or_const_item(&mut self,
 process_struct			    fn process_struct(&mut self,
 process_struct_field_def			    fn process_struct_field_def(&mut self, field: &ast::StructField, parent_id: NodeId) 
 process_struct_lit			    fn process_struct_lit(&mut self,
 process_trait			    fn process_trait(&mut self,
-process_trait_item			    fn process_trait_item(&mut self, trait_item: &ast::TraitItem, trait_id: DefId) 
-process_trait_ref			    fn process_trait_ref(&mut self, trait_ref: &ast::TraitRef) 
-process_var_decl			    fn process_var_decl(&mut self, p: &ast::Pat, value: String) 
+process_trait_item			    fn process_trait_item(&mut self, trait_item: &'l ast::TraitItem, trait_id: DefId) 
+process_trait_ref			    fn process_trait_ref(&mut self, trait_ref: &'l ast::TraitRef) 
+process_var_decl			    fn process_var_decl(&mut self, p: &'l ast::Pat, value: String) 
 record			    fn record(&mut self, kind: &str, span: SpanData, values: String) 
 record_raw			    fn record_raw(&mut self, info: &str) 
 recorder			pub mod recorder 
@@ -353,7 +353,6 @@ sub_span_for_type_name			    pub fn sub_span_for_type_name(&self, span: Span) ->
 sub_span_of_token			    pub fn sub_span_of_token(&self, span: Span, tok: Token) -> Option<Span> 
 trait_data			    fn trait_data(&mut self, data: TraitData) 
 trait_data			    fn trait_data(&mut self, TraitData) {}
-trait_method_has_body			    fn trait_method_has_body(&self, mr: &ty::ImplOrTraitItem) -> bool 
 tuple_variant			    fn tuple_variant(&mut self, data: TupleVariantData) 
 tuple_variant			    fn tuple_variant(&mut self, TupleVariantData) {}
 type_ref			    fn type_ref(&mut self, data: TypeRefData) 
@@ -368,16 +367,16 @@ variable			    fn variable(&mut self, data: VariableData)
 variable			    fn variable(&mut self, VariableData) {}
 variable_ref			    fn variable_ref(&mut self, data: VariableRefData) 
 variable_ref			    fn variable_ref(&mut self, VariableRefData) {}
-visit_arm			    fn visit_arm(&mut self, arm: &ast::Arm) 
-visit_expr			    fn visit_expr(&mut self, ex: &ast::Expr) 
-visit_generics			    fn visit_generics(&mut self, generics: &ast::Generics) 
-visit_item			    fn visit_item(&mut self, item: &ast::Item) 
-visit_local			    fn visit_local(&mut self, l: &ast::Local) 
-visit_mac			    fn visit_mac(&mut self, mac: &ast::Mac) 
+visit_arm			    fn visit_arm(&mut self, arm: &'l ast::Arm) 
+visit_expr			    fn visit_expr(&mut self, ex: &'l ast::Expr) 
+visit_generics			    fn visit_generics(&mut self, generics: &'l ast::Generics) 
+visit_item			    fn visit_item(&mut self, item: &'l ast::Item) 
+visit_local			    fn visit_local(&mut self, l: &'l ast::Local) 
+visit_mac			    fn visit_mac(&mut self, mac: &'l ast::Mac) 
+visit_pat			    fn visit_pat(&mut self, p: &'l ast::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &ast::Pat) 
-visit_pat			    fn visit_pat(&mut self, p: &ast::Pat) 
-visit_stmt			    fn visit_stmt(&mut self, s: &ast::Stmt) 
-visit_ty			    fn visit_ty(&mut self, t: &ast::Ty) 
+visit_stmt			    fn visit_stmt(&mut self, s: &'l ast::Stmt) 
+visit_ty			    fn visit_ty(&mut self, t: &'l ast::Ty) 
 write_sub_path_trait_truncated			    fn write_sub_path_trait_truncated(&mut self, path: &ast::Path) 
 write_sub_paths			    fn write_sub_paths(&mut self, path: &ast::Path, global: bool) 
 write_sub_paths_truncated			    fn write_sub_paths_truncated(&mut self, path: &ast::Path, global: bool) 

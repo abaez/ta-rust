@@ -6,7 +6,8 @@ ConstEvalErr			impl ConstEvalErr
 ConstEvalErr			pub struct ConstEvalErr 
 ConstEvalErrDescription			impl<'a> ConstEvalErrDescription<'a> 
 ConstEvalErrDescription			pub enum ConstEvalErrDescription<'a> 
-Constructor			impl Constructor 
+ConstFnNode			pub enum ConstFnNode<'tcx> 
+Constructor			impl<'tcx> Constructor 
 Constructor			pub enum Constructor 
 Delegate for MutationChecker			impl<'a, 'gcx, 'tcx> Delegate<'tcx> for MutationChecker<'a, 'gcx> 
 Empty			enum Empty {}
@@ -36,8 +37,7 @@ PatternContext			struct PatternContext<'tcx>
 PatternContext			impl<'a, 'gcx, 'tcx> PatternContext<'a, 'gcx, 'tcx> 
 PatternContext			pub struct PatternContext<'a, 'gcx: 'tcx, 'tcx: 'a> 
 PatternError			pub enum PatternError 
-PatternFoldable			            impl<'tcx> PatternFoldable<'tcx> for 
-PatternFoldable			            impl<'tcx> PatternFoldable<'tcx> for 
+PatternFoldable			            impl<
 PatternFoldable			pub trait PatternFoldable<'tcx> : Sized 
 PatternFoldable for FieldPattern			impl<'tcx> PatternFoldable<'tcx> for FieldPattern<'tcx> 
 PatternFoldable for Pattern			impl<'tcx> PatternFoldable<'tcx> for Pattern<'tcx> 
@@ -48,8 +48,8 @@ PatternKind			pub enum PatternKind<'tcx>
 Terminator			enum Terminator 
 Usefulness			pub enum Usefulness 
 Visitor for AtBindingPatternVisitor			impl<'a, 'b, 'tcx, 'v> Visitor<'v> for AtBindingPatternVisitor<'a, 'b, 'tcx> 
-Visitor for MatchVisitor			impl<'a, 'tcx, 'v> Visitor<'v> for MatchVisitor<'a, 'tcx> 
-Visitor for OuterVisitor			impl<'a, 'v, 'tcx> Visitor<'v> for OuterVisitor<'a, 'tcx> 
+Visitor for MatchVisitor			impl<'a, 'tcx> Visitor<'tcx> for MatchVisitor<'a, 'tcx> 
+Visitor for OuterVisitor			impl<'a, 'tcx> Visitor<'tcx> for OuterVisitor<'a, 'tcx> 
 Witness			impl Witness 
 Witness			pub struct Witness(Vec<P<Pat>>);
 WitnessPreference			pub enum WitnessPreference 
@@ -124,13 +124,16 @@ lower_patterns			    fn lower_patterns(&mut self, pats: &[P<hir::Pat>]) -> Vec<P
 lower_variant_or_leaf			    fn lower_variant_or_leaf(
 main			fn main() 
 matched_pat			    fn matched_pat(&mut self, _: &Pat, _: cmt, _: euv::MatchMode) {}
+max_slice_length			fn max_slice_length<'a, 'tcx, I>(
 missing_constructors			fn missing_constructors(cx: &mut MatchCheckCtxt,
 mutate			    fn mutate(&mut self, _: ast::NodeId, span: Span, _: cmt, mode: MutateMode) 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v> 
 new			    pub fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Self 
 note_const_eval_err			pub fn note_const_eval_err<'a, 'tcx>(
 parse_float			fn parse_float(num: &str, fty_hint: Option<ast::FloatTy>)
 pat_constructors			fn pat_constructors(_cx: &mut MatchCheckCtxt,
-pat_is_catchall			fn pat_is_catchall(dm: &DefMap, pat: &Pat) -> bool 
+pat_is_catchall			fn pat_is_catchall(pat: &Pat) -> bool 
 pattern			pub mod pattern;
 patterns_for_variant			fn patterns_for_variant<'a, 'tcx>(
 push			    pub fn push(&mut self, row: Vec<&'a Pattern<'tcx>>) 
@@ -138,21 +141,21 @@ push_wild_constructor			    fn push_wild_constructor<'a, 'tcx>(
 range_covered_by_constructor			fn range_covered_by_constructor(tcx: TyCtxt, span: Span,
 report_const_eval_err			pub fn report_const_eval_err<'a, 'tcx>(
 report_inlining_errors			    fn report_inlining_errors(&self, patcx: PatternContext, pat_span: Span) 
-resolve_trait_associated_const			fn resolve_trait_associated_const<'a, 'tcx: 'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+resolve_trait_associated_const			fn resolve_trait_associated_const<'a, 'tcx: 'a>(
 single_pattern			    pub fn single_pattern(&self) -> &Pat 
 slice_or_array_pattern			    fn slice_or_array_pattern(
 slice_pat_covered_by_constructor			fn slice_pat_covered_by_constructor(_tcx: TyCtxt, _span: Span,
 specialize			fn specialize<'a, 'tcx>(
-super_fold_with			                fn super_fold_with<F: PatternFolder<'tcx>>(&self, _: &mut F) -> Self 
+super_fold_with			                fn super_fold_with<F: PatternFolder<
 super_fold_with			    fn super_fold_with<F: PatternFolder<'tcx>>(&self, folder: &mut F) -> Self 
 super_fold_with			    fn super_fold_with<F: PatternFolder<'tcx>>(&self, folder: &mut F) -> Self;
 super_fold_with			    fn super_fold_with<F: PatternFolder<'tcx>>(&self, folder: &mut F) -> Self
 variant_expr			    fn variant_expr<'a>(variants: &'a [hir::Variant], id: ast::NodeId)
-variant_for_adt			    fn variant_for_adt<'tcx, 'container, 'a>(&self,
-visit_expr			    fn visit_expr(&mut self, _expr: &hir::Expr) 
-visit_expr			    fn visit_expr(&mut self, ex: &hir::Expr) 
-visit_fn			    fn visit_fn(&mut self, fk: FnKind<'v>, fd: &'v hir::FnDecl,
-visit_impl_item			    fn visit_impl_item(&mut self, item: &hir::ImplItem) 
-visit_local			    fn visit_local(&mut self, loc: &hir::Local) 
+variant_for_adt			    fn variant_for_adt(&self, adt: &'tcx ty::AdtDef) -> &'tcx ty::VariantDef 
+visit_expr			    fn visit_expr(&mut self, _expr: &'tcx hir::Expr) 
+visit_expr			    fn visit_expr(&mut self, ex: &'tcx hir::Expr) 
+visit_fn			    fn visit_fn(&mut self, fk: FnKind<'tcx>, fd: &'tcx hir::FnDecl,
+visit_impl_item			    fn visit_impl_item(&mut self, item: &'tcx hir::ImplItem) 
+visit_local			    fn visit_local(&mut self, loc: &'tcx hir::Local) 
 visit_pat			    fn visit_pat(&mut self, pat: &Pat) 
-visit_trait_item			    fn visit_trait_item(&mut self, item: &hir::TraitItem) 
+visit_trait_item			    fn visit_trait_item(&mut self, item: &'tcx hir::TraitItem) 

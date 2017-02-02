@@ -49,7 +49,7 @@ Drop for Weak			impl<T: ?Sized> Drop for Weak<T>
 Eq for Arc			impl<T: ?Sized + Eq> Eq for Arc<T> {}
 Eq for Box			impl<T: ?Sized + Eq> Eq for Box<T> {}
 Eq for Rc			impl<T: ?Sized + Eq> Eq for Rc<T> {}
-ExactSizeIterator for Box			impl<I: ExactSizeIterator + ?Sized> ExactSizeIterator for Box<I> {}
+ExactSizeIterator for Box			impl<I: ExactSizeIterator + ?Sized> ExactSizeIterator for Box<I> 
 ExchangeHeapSingleton			pub struct ExchangeHeapSingleton 
 FnBox			pub trait FnBox<A> 
 FnBox for F			impl<A, F> FnBox<A> for F
@@ -128,7 +128,7 @@ borrow::Borrow for Box			impl<T: ?Sized> borrow::Borrow<T> for Box<T>
 borrow::Borrow for Rc			impl<T: ?Sized> borrow::Borrow<T> for Rc<T> 
 borrow::BorrowMut for Box			impl<T: ?Sized> borrow::BorrowMut<T> for Box<T> 
 borrow_mut			    fn borrow_mut(&mut self) -> &mut T 
-box_free			unsafe fn box_free<T>(ptr: *mut T) 
+box_free			unsafe fn box_free<T: ?Sized>(ptr: *mut T) 
 boxed			mod boxed 
 boxed			pub mod boxed;
 boxed_test			mod boxed_test;
@@ -203,7 +203,9 @@ from			    fn from(t: T) -> Self
 from			    fn from(t: T) -> Self 
 from			    fn from(t: T) -> Self 
 from_box			    pub fn from_box(mut slice: Box<[T]>) -> Self 
+from_raw			    pub unsafe fn from_raw(ptr: *mut T) -> Self 
 from_raw			    pub unsafe fn from_raw(raw: *mut T) -> Self 
+from_raw			    pub unsafe fn from_raw(ptr: *mut T) -> Self 
 from_raw_parts			    pub unsafe fn from_raw_parts(ptr: *mut T, cap: usize) -> Self 
 ge			    fn ge(&self, other: &Arc<T>) -> bool 
 ge			    fn ge(&self, other: &Box<T>) -> bool 
@@ -221,6 +223,7 @@ hash			    fn hash<H: hash::Hasher>(&self, state: &mut H)
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 heap			pub mod heap;
 homura			    fn homura<T: Deref<Target = i32>>(_: T) {}
+imp			mod imp 
 inc_strong			    fn inc_strong(&self) 
 inc_weak			    fn inc_weak(&self) 
 inner			    fn inner(&self) -> &ArcInner<T> 
@@ -228,16 +231,23 @@ inner			    fn inner(&self) -> &RcBox<T>
 inner			    fn inner(&self) -> &RcBox<T>;
 into_box			            unsafe fn into_box(self) -> Box<[T]> 
 into_box			    pub unsafe fn into_box(self) -> Box<[T]> 
+into_from_raw			    fn into_from_raw() 
+into_from_raw			    fn into_from_raw() 
+into_raw			    pub fn into_raw(this: Self) -> *mut T 
 into_raw			    pub fn into_raw(b: Box<T>) -> *mut T 
+into_raw			    pub fn into_raw(this: Self) -> *mut T 
+is_empty			    fn is_empty(&self) -> bool 
 is_unique			    fn is_unique(&mut self) -> bool 
 is_unique			    fn is_unique() 
 is_unique			    pub fn is_unique(this: &Self) -> bool 
 le			    fn le(&self, other: &Arc<T>) -> bool 
 le			    fn le(&self, other: &Box<T>) -> bool 
 le			    fn le(&self, other: &Rc<T>) -> bool 
+len			    fn len(&self) -> usize 
 lt			    fn lt(&self, other: &Arc<T>) -> bool 
 lt			    fn lt(&self, other: &Box<T>) -> bool 
 lt			    fn lt(&self, other: &Rc<T>) -> bool 
+macros			mod macros;
 make_mut			    pub fn make_mut(this: &mut Self) -> &mut T 
 make_mut			    pub fn make_mut(this: &mut Self) -> &mut T 
 make_place			    fn make_place() -> IntermediateBox<T> 
@@ -255,7 +265,9 @@ new			    pub fn new() -> Weak<T>
 new			    pub fn new(value: T) -> Rc<T> 
 next			    fn next(&mut self) -> Option<I::Item> 
 next_back			    fn next_back(&mut self) -> Option<I::Item> 
+nth			    fn nth(&mut self, n: usize) -> Option<I::Item> 
 oom			pub mod oom;
+oom			    pub fn oom() -> ! 
 oom			pub fn oom() -> ! 
 partial_cmp			    fn partial_cmp(&self, other: &Arc<T>) -> Option<Ordering> 
 partial_cmp			    fn partial_cmp(&self, other: &Box<T>) -> Option<Ordering> 
@@ -276,7 +288,7 @@ reserve_exact			    pub fn reserve_exact(&mut self, used_cap: usize, needed_extr
 reserve_in_place			    pub fn reserve_in_place(&mut self, used_cap: usize, needed_extra_cap: usize) -> bool 
 set			        fn set(&mut self, value: u32) 
 set			        fn set(&mut self, value: u32);
-set_oom_handler			pub fn set_oom_handler(handler: fn() -> !) 
+set_oom_handler			    pub fn set_oom_handler(handler: fn() -> !) 
 show_arc			    fn show_arc() 
 shrink_to_fit			    pub fn shrink_to_fit(&mut self, amount: usize) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 

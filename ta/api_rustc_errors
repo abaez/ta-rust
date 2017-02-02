@@ -1,4 +1,6 @@
+Annotation			impl Annotation 
 Annotation			pub struct Annotation 
+AnnotationType			pub enum AnnotationType 
 BufferedWriter			impl BufferedWriter 
 BufferedWriter			pub struct BufferedWriter 
 CloseHandle			        fn CloseHandle(hObject: HANDLE) -> BOOL;
@@ -37,6 +39,8 @@ Handler			pub struct Handler
 Level			impl Level 
 Level			pub enum Level 
 Line			pub struct Line 
+MultilineAnnotation			impl MultilineAnnotation 
+MultilineAnnotation			pub struct MultilineAnnotation 
 Registry			impl Registry 
 Registry			pub struct Registry 
 ReleaseMutex			        fn ReleaseMutex(hMutex: HANDLE) -> BOOL;
@@ -57,6 +61,9 @@ acquire_global_lock			pub fn acquire_global_lock(name: &str) -> Box<Any>
 add_annotation_to_file			        fn add_annotation_to_file(file_vec: &mut Vec<FileWithAnnotatedLines>,
 append			    pub fn append(&mut self, line: usize, string: &str, style: Style) 
 apply_style			    fn apply_style(&mut self, lvl: Level, style: Style) -> io::Result<()> 
+as_end			    pub fn as_end(&self) -> Annotation 
+as_line			    pub fn as_line(&self) -> Annotation 
+as_start			    pub fn as_start(&self) -> Annotation 
 bug			    pub fn bug(&self, msg: &str) -> ! 
 bump_err_count			    pub fn bump_err_count(&self) 
 cancel			    pub fn cancel(&mut self) 
@@ -74,7 +81,9 @@ diagnostic			pub mod diagnostic;
 diagnostic_builder			pub mod diagnostic_builder;
 draw_col_separator			fn draw_col_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_col_separator_no_space			fn draw_col_separator_no_space(buffer: &mut StyledBuffer, line: usize, col: usize) 
+draw_col_separator_no_space_with_style			fn draw_col_separator_no_space_with_style(buffer: &mut StyledBuffer,
 draw_note_separator			fn draw_note_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
+draw_range			fn draw_range(buffer: &mut StyledBuffer, symbol: char, line: usize,
 drop			    fn drop(&mut self) 
 drop			        fn drop(&mut self) 
 emit			    pub fn emit(&mut self) 
@@ -109,8 +118,12 @@ get_max_line_num			    fn get_max_line_num(&mut self, span: &MultiSpan, children
 get_multispan_max_line_num			    fn get_multispan_max_line_num(&mut self, msp: &MultiSpan) -> usize 
 has_errors			    pub fn has_errors(&self) -> bool 
 help			    pub fn help(&mut self , msg: &str) -> &mut Self 
+increase_depth			    pub fn increase_depth(&mut self) 
 into_diagnostic			    pub fn into_diagnostic(mut self) -> Diagnostic 
 is_fatal			    pub fn is_fatal(&self) -> bool 
+is_minimized			    pub fn is_minimized(&self) -> bool 
+is_multiline			    pub fn is_multiline(&self) -> bool 
+len			            fn len(a: &Annotation) -> usize 
 level			    pub fn level(&self) -> Level 
 lock			mod lock;
 lookup_char_pos			    fn lookup_char_pos(&self, pos: BytePos) -> Loc;
@@ -130,6 +143,7 @@ note_expected_found			    pub fn note_expected_found(&mut self,
 note_expected_found_extra			    pub fn note_expected_found_extra(&mut self,
 note_without_error			    pub fn note_without_error(&self, msg: &str) 
 num_lines			    pub fn num_lines(&self) -> usize 
+num_overlap			fn num_overlap(a_start: usize, a_end: usize, b_start: usize, b_end:usize, inclusive: bool) -> bool 
 overlaps			fn overlaps(a1: &Annotation, a2: &Annotation) -> bool 
 panic_if_treat_err_as_bug			    fn panic_if_treat_err_as_bug(&self) 
 prepend			    pub fn prepend(&mut self, line: usize, string: &str, style: Style) 

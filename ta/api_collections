@@ -115,9 +115,11 @@ Drop for Drain			impl<'a> Drop for Drain<'a>
 Drop for Drain			impl<'a, T> Drop for Drain<'a, T> 
 Drop for Drain			impl<'a, T: 'a> Drop for Drain<'a, T> 
 Drop for Hole			impl<'a, T> Drop for Hole<'a, T> 
+Drop for InsertionHole			    impl<T> Drop for InsertionHole<T> 
 Drop for IntoIter			impl<K, V> Drop for IntoIter<K, V> 
 Drop for IntoIter			impl<T> Drop for IntoIter<T> 
 Drop for LinkedList			impl<T> Drop for LinkedList<T> 
+Drop for MergeHole			    impl<T> Drop for MergeHole<T> 
 Drop for PeekMut			impl<'a, T: Ord> Drop for PeekMut<'a, T> 
 Drop for SetLenOnDrop			impl<'a> Drop for SetLenOnDrop<'a> 
 Drop for Vec			impl<T> Drop for Vec<T> 
@@ -134,23 +136,23 @@ Eq for LinkedList			impl<T: Eq> Eq for LinkedList<T> {}
 Eq for ParseError			impl Eq for ParseError {}
 Eq for Vec			impl<T: Eq> Eq for Vec<T> {}
 Eq for VecDeque			impl<A: Eq> Eq for VecDeque<A> {}
+ExactSizeIterator for Drain			impl<'a, T: 'a> ExactSizeIterator for Drain<'a, T> 
+ExactSizeIterator for Drain			impl<'a, T> ExactSizeIterator for Drain<'a, T> 
 ExactSizeIterator for Drain			impl<'a, T: 'a> ExactSizeIterator for Drain<'a, T> {}
-ExactSizeIterator for Drain			impl<'a, T> ExactSizeIterator for Drain<'a, T> {}
-ExactSizeIterator for Drain			impl<'a, T: 'a> ExactSizeIterator for Drain<'a, T> {}
-ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
+ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> 
 ExactSizeIterator for IntoIter			impl<K, V> ExactSizeIterator for IntoIter<K, V> 
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> 
 ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
-ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
-ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> {}
-ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
+ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> 
+ExactSizeIterator for IntoIter			impl<T> ExactSizeIterator for IntoIter<T> 
+ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> 
 ExactSizeIterator for Iter			impl<'a, K: 'a, V: 'a> ExactSizeIterator for Iter<'a, K, V> 
 ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> 
 ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
-ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> {}
+ExactSizeIterator for Iter			impl<'a, T> ExactSizeIterator for Iter<'a, T> 
 ExactSizeIterator for IterMut			impl<'a, K: 'a, V: 'a> ExactSizeIterator for IterMut<'a, K, V> 
 ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> {}
-ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> {}
+ExactSizeIterator for IterMut			impl<'a, T> ExactSizeIterator for IterMut<'a, T> 
 ExactSizeIterator for Keys			impl<'a, K, V> ExactSizeIterator for Keys<'a, K, V> 
 ExactSizeIterator for Values			impl<'a, K, V> ExactSizeIterator for Values<'a, K, V> 
 ExactSizeIterator for ValuesMut			impl<'a, K, V> ExactSizeIterator for ValuesMut<'a, K, V> 
@@ -261,6 +263,7 @@ Index for VecDeque			impl<A> Index<usize> for VecDeque<A>
 IndexMut for Vec			impl<T> IndexMut<usize> for Vec<T> 
 IndexMut for VecDeque			impl<A> IndexMut<usize> for VecDeque<A> 
 InsertResult			pub enum InsertResult<'a, K, V, Type> 
+InsertionHole			    struct InsertionHole<T> 
 Internal			    pub enum Internal { }
 InternalNode			impl<K, V> InternalNode<K, V> 
 InternalNode			struct InternalNode<K, V> 
@@ -289,9 +292,6 @@ IntoIterator for BinaryHeap			impl<T: Ord> IntoIterator for BinaryHeap<T>
 IntoIterator for LinkedList			impl<T> IntoIterator for LinkedList<T> 
 IntoIterator for Vec			impl<T> IntoIterator for Vec<T> 
 IntoIterator for VecDeque			impl<T> IntoIterator for VecDeque<T> 
-IsTrustedLen			trait IsTrustedLen : Iterator 
-IsTrustedLen for I			impl<I> IsTrustedLen for I where I: Iterator { }
-IsTrustedLen for I			impl<I> IsTrustedLen for I where I: TrustedLen
 Iter			pub struct Iter<'a, T: 'a> 
 Iter			pub struct Iter<'a, K: 'a, V: 'a> 
 Iter			pub struct Iter<'a, T: 'a> 
@@ -341,6 +341,7 @@ LeafNode			struct LeafNode<K, V>
 LeafOrInternal			    pub enum LeafOrInternal { }
 LinkedList			impl<T> LinkedList<T> 
 LinkedList			pub struct LinkedList<T> 
+MergeHole			    struct MergeHole<T> 
 MergeIter			struct MergeIter<K, V, I: Iterator<Item = (K, V)>> 
 Mut			    pub struct Mut<'a>(PhantomData<&'a mut ()>);
 Node			impl<T> Node<T> 
@@ -403,6 +404,7 @@ RingSlices			impl<'a, T> RingSlices for &'a mut [T]
 RingSlices			trait RingSlices : Sized 
 Root			impl<K, V> Root<K, V> 
 Root			pub struct Root<K, V> 
+Run			    struct Run 
 SearchResult			pub enum SearchResult<BorrowType, K, V, FoundType, GoDownType> 
 Send			unsafe impl<'a, K: Send + 'a, V: Send + 'a, Type> Send
 Send			unsafe impl<'a, K: Sync + 'a, V: Sync + 'a, Type> Send
@@ -421,7 +423,11 @@ SliceConcatExt			pub trait SliceConcatExt<T: ?Sized>
 SpecExtend			impl<T: Ord> SpecExtend<BinaryHeap<T>> for BinaryHeap<T> 
 SpecExtend			trait SpecExtend<I: IntoIterator> 
 SpecExtend			impl<T> SpecExtend<LinkedList<T>> for LinkedList<T> 
+SpecExtend			impl<'a, T: 'a> SpecExtend<&'a T, slice::Iter<'a, T>> for Vec<T>
+SpecExtend			trait SpecExtend<T, I> 
 SpecExtend for LinkedList			impl<I: IntoIterator> SpecExtend<I> for LinkedList<I::Item> 
+SpecExtend for Vec			impl<'a, T: 'a, I> SpecExtend<&'a T, I> for Vec<T>
+SpecExtend for Vec			impl<T, I> SpecExtend<T, I> for Vec<T>
 String			impl String 
 String			pub struct String 
 Sub			impl<'a, 'b, T: Ord + Clone> Sub<&'b BTreeSet<T>> for &'a BTreeSet<T> 
@@ -593,6 +599,7 @@ cmp			    fn cmp(&self, other: &Self) -> Ordering
 cmp			    fn cmp(&self, other: &Vec<T>) -> Ordering 
 cmp			    fn cmp(&self, other: &VecDeque<A>) -> Ordering 
 cmp_opt			fn cmp_opt<T: Ord>(x: Option<&T>, y: Option<&T>, short: Ordering, long: Ordering) -> Ordering 
+collapse			    fn collapse(runs: &[Run]) -> Option<usize> 
 concat			    fn concat(&self) -> Self::Output;
 concat			    fn concat(&self) -> Vec<T> 
 concat			    fn concat(&self) -> String 
@@ -616,6 +623,7 @@ count			    fn count(self) -> usize
 count			fn count(tail: usize, head: usize, size: usize) -> usize 
 create_vec_and_test_convert			        fn create_vec_and_test_convert(cap: usize, offset: usize, len: usize) 
 deallocate_and_ascend			    pub unsafe fn deallocate_and_ascend(self) -> Option<
+decrement_and_get			    unsafe fn decrement_and_get<T>(ptr: &mut *mut T) -> *mut T 
 dedup			    pub fn dedup(&mut self) 
 dedup_by			    pub fn dedup_by<F>(&mut self, mut same_bucket: F) where F: FnMut(&mut T, &mut T) -> bool 
 dedup_by_key			    pub fn dedup_by_key<F, K>(&mut self, mut key: F) where F: FnMut(&mut T) -> K, K: PartialEq 
@@ -645,6 +653,7 @@ drain			    pub fn drain<R>(&mut self, range: R) -> Drain<T>
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
+drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
@@ -759,6 +768,8 @@ from_iter			    fn from_iter<I: IntoIterator<Item = String>>(it: I) -> Cow<'a, s
 from_iter			    fn from_iter<I: IntoIterator<Item = String>>(iter: I) -> String 
 from_iter			    fn from_iter<I: IntoIterator<Item = char>>(it: I) -> Cow<'a, str> 
 from_iter			    fn from_iter<I: IntoIterator<Item = char>>(iter: I) -> String 
+from_iter			    fn from_iter(iter: I) -> Self;
+from_iter			    fn from_iter(iterator: I) -> Self 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(it: I) -> Cow<'a, [T]> 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Vec<T> 
 from_iter			    fn from_iter<T: IntoIterator<Item = A>>(iter: T) -> VecDeque<A> 
@@ -787,14 +798,15 @@ get			    pub fn get(&self) -> &V
 get			    pub fn get<Q: ?Sized>(&self, key: &Q) -> Option<&V>
 get			    fn get(&self, key: &Q) -> Option<&Self::Key>;
 get			    pub fn get<Q: ?Sized>(&self, value: &Q) -> Option<&T>
+get			    pub fn get<I>(&self, index: I) -> Option<&I::Output>
 get			    pub fn get(&self, index: usize) -> Option<&T> 
-get			    pub fn get(&self, index: usize) -> Option<&T> 
+get_and_increment			    unsafe fn get_and_increment<T>(ptr: &mut *mut T) -> *mut T 
 get_mut			    pub fn get_mut(&mut self) -> &mut V 
 get_mut			    pub fn get_mut<Q: ?Sized>(&mut self, key: &Q) -> Option<&mut V>
+get_mut			    pub fn get_mut<I>(&mut self, index: I) -> Option<&mut I::Output>
 get_mut			    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> 
-get_mut			    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> 
-get_unchecked			    pub unsafe fn get_unchecked(&self, index: usize) -> &T 
-get_unchecked_mut			    pub unsafe fn get_unchecked_mut(&mut self, index: usize) -> &mut T 
+get_unchecked			    pub unsafe fn get_unchecked<I>(&self, index: I) -> &I::Output
+get_unchecked_mut			    pub unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
 hack			mod hack 
 handle_cap_increase			    unsafe fn handle_cap_increase(&mut self, old_cap: usize) 
 handle_underfull_node			fn handle_underfull_node<'a, K, V>(node: NodeRef<marker::Mut<'a>, K, V, marker::LeafOrInternal>)
@@ -849,9 +861,9 @@ insert			    pub fn insert(&mut self, index: usize, value: T)
 insert_bytes			    unsafe fn insert_bytes(&mut self, idx: usize, bytes: &[u8]) 
 insert_fit			    fn insert_fit(&mut self, key: K, val: V) -> *mut V 
 insert_fit			    fn insert_fit(&mut self, key: K, val: V, edge: Root<K, V>) 
+insert_head			fn insert_head<T, F>(v: &mut [T], compare: &mut F)
 insert_next			    pub fn insert_next(&mut self, element: T) 
 insert_str			    pub fn insert_str(&mut self, idx: usize, string: &str) 
-insertion_sort			fn insertion_sort<T, F>(v: &mut [T], mut compare: F)
 intersection			    pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T>) -> Intersection<'a, T> 
 intersection			    pub fn intersection(&self, e: EnumSet<E>) -> EnumSet<E> 
 into_boxed_slice			    pub fn into_boxed_slice(mut self) -> Box<[T]> 
@@ -897,6 +909,7 @@ is_contained_in			    fn is_contained_in(self, haystack: &'a str) -> bool
 is_contiguous			    fn is_contiguous(&self) -> bool 
 is_disjoint			    pub fn is_disjoint(&self, other: &BTreeSet<T>) -> bool 
 is_disjoint			    pub fn is_disjoint(&self, other: &EnumSet<E>) -> bool 
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
@@ -905,7 +918,9 @@ is_empty			    pub fn is_empty(&self) -> bool
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
+is_empty			    fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_full			    fn is_full(&self) -> bool 
 is_prefix_of			    fn is_prefix_of(self, haystack: &'a str) -> bool 
@@ -965,6 +980,7 @@ marker			pub mod marker
 match_indices			    pub fn match_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> MatchIndices<'a, P> 
 matches			    pub fn matches<'a, P: Pattern<'a>>(&'a self, pat: P) -> Matches<'a, P> 
 merge			    pub fn merge(mut self)
+merge			unsafe fn merge<T, F>(v: &mut [T], mid: usize, buf: *mut T, compare: &mut F)
 merge_sort			fn merge_sort<T, F>(v: &mut [T], mut compare: F)
 move_edges			unsafe fn move_edges<K, V>(
 move_kv			unsafe fn move_kv<K, V>(
@@ -1193,6 +1209,9 @@ sort_by_key			    pub fn sort_by_key<B, F>(&mut self, mut f: F)
 spec_extend			    fn spec_extend(&mut self, ref mut other: BinaryHeap<T>) 
 spec_extend			    fn spec_extend(&mut self, iter: I);
 spec_extend			    fn spec_extend(&mut self, ref mut other: LinkedList<T>) 
+spec_extend			    fn spec_extend(&mut self, iter: I);
+spec_extend			    fn spec_extend(&mut self, iterator: I) 
+spec_extend			    fn spec_extend(&mut self, iterator: slice::Iter<'a, T>) 
 split			    pub fn split(mut self)
 split			    pub fn split<F>(&self, pred: F) -> Split<T, F>
 split			    pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> 
@@ -1210,6 +1229,7 @@ split_mut			    pub fn split_mut<F>(&mut self, pred: F) -> SplitMut<T, F>
 split_off			    pub fn split_off<Q: ?Sized + Ord>(&mut self, key: &Q) -> Self
 split_off			    pub fn split_off<Q: ?Sized + Ord>(&mut self, key: &Q) -> Self where T: Borrow<Q> 
 split_off			    pub fn split_off(&mut self, at: usize) -> LinkedList<T> 
+split_off			    pub fn split_off(&mut self, mid: usize) -> String 
 split_off			    pub fn split_off(&mut self, at: usize) -> Self 
 split_off			    pub fn split_off(&mut self, at: usize) -> Self 
 split_terminator			    pub fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P> 
@@ -1223,7 +1243,6 @@ starts_with			    pub fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bo
 std			mod std 
 steal_left			    pub fn steal_left(&mut self) 
 steal_right			    pub fn steal_right(&mut self) 
-step			    unsafe fn step<T>(ptr: &mut *mut T) -> *mut T 
 str			pub mod str;
 str			impl str 
 string			pub mod string;
@@ -1263,8 +1282,6 @@ trim_right_matches			    pub fn trim_right_matches<'a, P: Pattern<'a>>(&'a self,
 truncate			    pub fn truncate(&mut self, new_len: usize) 
 truncate			    pub fn truncate(&mut self, len: usize) 
 truncate			    pub fn truncate(&mut self, len: usize) 
-trusted_len			    fn trusted_len(&self) -> Option<usize> { None }
-trusted_len			    fn trusted_len(&self) -> Option<usize> 
 union			    pub fn union<'a>(&'a self, other: &'a BTreeSet<T>) -> Union<'a, T> 
 union			    pub fn union(&self, e: EnumSet<E>) -> EnumSet<E> 
 unsafe_get			        fn unsafe_get(xs: &[u8], i: usize) -> u8 

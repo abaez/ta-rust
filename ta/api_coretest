@@ -5,11 +5,14 @@ CrazyIterator			    impl CrazyIterator { fn new() -> CrazyIterator { CrazyIterat
 CrazyIterator			    struct CrazyIterator(bool);
 Custom			struct Custom { hash: u64 }
 CustomHasher			struct CustomHasher { output: u64 }
+CycleIter			pub struct CycleIter<'a, T: 'a> 
 Default for CustomHasher			impl Default for CustomHasher 
 Default for MyHasher			impl Default for MyHasher 
 DoubleEndedIterator for CrazyIterator			    impl DoubleEndedIterator for CrazyIterator 
+Drop for Dropper			    impl Drop for Dropper 
 Drop for HasDtor			impl Drop for HasDtor 
 Drop for R			        impl Drop for R 
+Dropper			    struct Dropper(u32);
 Foo			        struct Foo;
 Foo			    trait Foo { fn dummy(&self) { } }
 Foo for isize			    impl Foo for isize {}
@@ -19,6 +22,7 @@ Hash for Custom			impl Hash for Custom
 Hasher for CustomHasher			impl Hasher for CustomHasher 
 Hasher for MyHasher			impl Hasher for MyHasher 
 Iterator for CrazyIterator			    impl Iterator for CrazyIterator 
+Iterator for CycleIter			impl<'a, T> Iterator for CycleIter<'a, T> 
 MyHasher			struct MyHasher 
 Pair			        struct Pair 
 PartialEq for SketchyNum			    impl PartialEq for SketchyNum 
@@ -124,6 +128,7 @@ clone			mod clone;
 cmp			mod cmp;
 conv			    fn conv(sig: u64) -> u64 
 copy_zip			pub fn copy_zip(xs: &[u8], ys: &mut [u8]) 
+cycle			pub fn cycle<T>(data: &[T]) -> CycleIter<T> 
 debug_list			mod debug_list 
 debug_map			mod debug_map 
 debug_set			mod debug_set 
@@ -140,6 +145,7 @@ double_imm_borrow			fn double_imm_borrow()
 dragon			    mod dragon;
 drop			    fn drop(&mut self) 
 drop			       fn drop(&mut self) 
+drop			        fn drop(&mut self) 
 ed_iterator_specializations			fn ed_iterator_specializations() 
 eq			        fn eq(&self, other: &SketchyNum) -> bool 
 estimator			mod estimator;
@@ -171,6 +177,10 @@ from_str			        fn from_str<T: ::std::str::FromStr>(t: &str) -> Option<T>
 from_str			    fn from_str<T: FromStr>(t: &str) -> Option<T> 
 from_str_issue7588			fn from_str_issue7588() 
 g			    fn g(xy: &(isize, char)) -> bool { let (_x, y) = *xy; y == 'd' }
+get_mut_range			fn get_mut_range() 
+get_range			fn get_range() 
+get_unchecked_mut_range			fn get_unchecked_mut_range() 
+get_unchecked_range			fn get_unchecked_range() 
 grisu			    mod grisu;
 handler			    fn handler(msg: &'static str) -> isize 
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
@@ -221,6 +231,7 @@ more_shortest_sanity_test			pub fn more_shortest_sanity_test<F>(mut f: F) where 
 mut_release_borrow_mut			fn mut_release_borrow_mut() 
 nan			fn nan() 
 next			        fn next(&mut self) -> Option<i32> 
+next			    fn next(&mut self) -> Option<Self::Item> 
 next_back			        fn next_back(&mut self) -> Option<i32> 
 next_float_inf			fn next_float_inf() 
 next_float_monotonic			fn next_float_monotonic() 
@@ -303,6 +314,7 @@ whitespace			fn whitespace()
 write			    fn write(&mut self, _: &[u8]) { panic!() }
 write			    fn write(&mut self, buf: &[u8]) 
 write_u64			    fn write_u64(&mut self, data: u64) { self.output = data; }
+write_unaligned_drop			fn write_unaligned_drop() 
 zero			fn zero() 
 zero_byte			    fn zero_byte(val: u32, byte: usize) -> u32 
 zero_byte			    fn zero_byte(val: u64, byte: usize) -> u64 
