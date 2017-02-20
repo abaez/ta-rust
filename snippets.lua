@@ -78,6 +78,7 @@ return {
   ["{"]     = "{\n\t%0\n",
   ["{}"]    = "{\n\t%0\n}",
   ["=>"]    = "%1(pattern) => %2({})",
+  ["un"]    = "unimplemented!();",
 
   -- tasks and communication
   ["spawn"]   = "spawn(move || {%0});",
