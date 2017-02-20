@@ -42,8 +42,8 @@ return {
   ["whilel"]  = "while let %1(destructor) = %2(expr) {%0}",
 
   -- if
-  ["if"]      = "if %1(expr) {%2(// body)} %0",
-  ifl         = "if let %1(pattern) = %2(expr) {%3(// body)}",
+  ["if"]      = "if %1(expr) {%2(unimplemented!())} %0",
+  ifl         = "if let %1(pattern) = %2(expr) {%3(unimplemented!())}",
   ["else"]    = 'else {%0}',
   match       = "match %1(expr) {%2(=>)}",
 
