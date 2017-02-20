@@ -55,7 +55,7 @@ return {
 
   -- comments
   ["/*"]    = "/*\n\t%0\n*/",
-  ["/"]     = "//%1(/)",
+  ["/"]     = "//%1{/,!} ",
 
   -- tests
   modt      = "#[cfg(test)]\nmod tests {\n\tuse super::%1(*);\n\t%0\n};",
