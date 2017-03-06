@@ -15,7 +15,7 @@ return {
 
   -- closures
   [" |"]   = "|%1(|)",
-  move    = "move |%1(:)| {%0})",
+  move    = "move |%1(:)| {%0}",
   -- :&
   fns     = "fn %1(name)<%2(T)>(%3(param): %2) %4(-> %5 )\n\t" ..
             "where %2: Fn(&%4) -> %5(Type) {%0}",
@@ -33,6 +33,7 @@ return {
   mod     = "mod %1(name) {%0}",
   trait   = "trait %1(name) {%0}",
   impl    = "impl %1(name) %2(for %3(type) ){%0}",
+  where   = "where \n\t",
 
   -- Conditionals
   ["while"]   = "while %1(expr) {%0}",
@@ -58,7 +59,7 @@ return {
   ["/"]     = "//%1{/,!} ",
 
   -- tests
-  modt      = "#[cfg(test)]\nmod tests {\n\tuse super::%1(*);\n\t%0\n};",
+  modt      = "#[cfg(test)]\nmod tests {\n\tuse super::%1(*);\n\t%0\n}",
   test      = "#[test]",
   ["#t"]    = "#[test]\n%1(fn)",
   sp        = "#[should_panic]",
