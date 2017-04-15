@@ -1,7 +1,7 @@
 --- Rust LPeg lexer.
 -- See @{README.md} for details on usage.
 -- @author [Alejandro Baez](https://keybase.io/baez)
--- @copyright 2014-2016
+-- @copyright 2016
 -- @license MIT (see LICENSE)
 -- @module rust
 
@@ -21,7 +21,11 @@ local comment = token(l.COMMENT, line_comment + block_comment)
 
 -- Strings.
 local dq_str = P('L')^-1 * l.delimited_range('"')
-local raw_str =  '#"' * (l.any - '#')^0 * P('#')^-1
+local raw_str = lpeg.Cmt('r' * lpeg.C(P('#')^0) * '"',
+                        function (input, index, eq)
+                          local _, e = input:find('"' .. eq, index, true)
+                          return (e or #input) + 1
+                        end)
 local string = token(l.STRING, dq_str + raw_str)
 
 -- Character.
@@ -53,7 +57,7 @@ local library = token('library', l.upper * (l.lower + l.dec_num)^1)
 local extension = token('extension', l.word^1 * S("!"))
 
 -- Lifetimes
-local lifetime = token('lifetime', "'" * l.alnum)
+local lifetime = token('lifetime', "'" * ("static" + l.alnum))
 
 -- Types.
 local type = token(l.TYPE, word_match{
