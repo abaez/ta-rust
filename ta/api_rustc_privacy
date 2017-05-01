@@ -10,8 +10,6 @@ EmbargoVisitor			impl<'a, 'tcx> EmbargoVisitor<'a, 'tcx>
 EmbargoVisitor			struct EmbargoVisitor<'a, 'tcx: 'a> 
 Foo			    impl Foo 
 Foo			    pub struct Foo 
-Foo			    pub struct Foo(isize);
-Foo			    pub struct Foo(pub isize); \/\/ we set its field to public
 Foo			enum Foo 
 Foo			mod Foo 
 Foo			pub enum Foo 
@@ -37,7 +35,6 @@ Visitor for PrivacyVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivacyVisitor<'a,
 Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
 bar			    pub fn bar() -> Bar { \/\/ ok!
-bar			mod bar 
 check			    fn check(&self, item_id: ast::NodeId, required_visibility: ty::Visibility)
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 check_field			    fn check_field(&mut self, span: Span, def: &'tcx ty::AdtDef, field: &'tcx ty::FieldDef) 
@@ -59,7 +56,6 @@ item_type			    fn item_type(&mut self) -> &mut Self
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v> 
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
-new			        pub fn new(x: isize) -> Foo 
 path_is_private_type			    fn path_is_private_type(&self, path: &hir::Path) -> bool 
 predicates			    fn predicates(&mut self) -> &mut Self 
 reach			    fn reach<'b>(&'b mut self, item_id: ast::NodeId)
@@ -77,6 +73,7 @@ visit_impl_item			    fn visit_impl_item(&mut self, _impl_item: &'tcx hir::ImplI
 visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
 visit_macro_def			    fn visit_macro_def(&mut self, md: &'tcx hir::MacroDef) 
 visit_mod			    fn visit_mod(&mut self, m: &'tcx hir::Mod, _sp: Span, id: ast::NodeId) 
+visit_nested_body			    fn visit_nested_body(&mut self, body: hir::BodyId) 
 visit_pat			    fn visit_pat(&mut self, _: &'tcx hir::Pat) {}
 visit_pat			    fn visit_pat(&mut self, pattern: &'tcx hir::Pat) 
 visit_struct_field			    fn visit_struct_field(&mut self, s: &'tcx hir::StructField) 

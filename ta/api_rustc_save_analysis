@@ -2,6 +2,7 @@ Analysis			impl Analysis
 Analysis			struct Analysis 
 Analysis			impl Analysis 
 Analysis			struct Analysis 
+Attribute			pub struct Attribute 
 CrateData			pub struct CrateData 
 CratePreludeData			pub struct CratePreludeData 
 CratePreludeData			pub struct CratePreludeData 
@@ -42,6 +43,10 @@ From for Id			impl From<DefId> for Id
 From for Import			impl From<ExternCrateData> for Import 
 From for Import			impl From<UseData> for Import 
 From for Import			impl From<UseGlobData> for Import 
+From for JsonSigElement			impl From<SigElement> for JsonSigElement 
+From for JsonSigElement			impl From<SigElement> for JsonSigElement 
+From for JsonSignature			impl From<Signature> for JsonSignature 
+From for JsonSignature			impl From<Signature> for JsonSignature 
 From for MacroRef			impl From<MacroUseData> for MacroRef 
 From for Option			impl From<EnumData> for Option<Def> 
 From for Option			impl From<FunctionData> for Option<Def> 
@@ -62,6 +67,10 @@ From for Ref			impl From<MethodCallData> for Ref
 From for Ref			impl From<ModRefData> for Ref 
 From for Ref			impl From<TypeRefData> for Ref 
 From for Ref			impl From<VariableRefData> for Ref 
+From for Relation			impl From<ImplData> for Relation 
+From for Relation			impl From<InheritanceData> for Relation 
+From for Relation			impl From<ImplData> for Relation 
+From for Relation			impl From<InheritanceData> for Relation 
 From for Visibility			impl<'a> From<&'a ast::Visibility> for Visibility 
 From for Visibility			impl<'a> From<&'a hir::Visibility> for Visibility 
 FunctionCallData			pub struct FunctionCallData 
@@ -85,7 +94,12 @@ JsonApiDumper			impl<'b, W: Write> JsonApiDumper<'b, W>
 JsonApiDumper			pub struct JsonApiDumper<'b, W: Write + 'b> 
 JsonDumper			impl<'b, W: Write> JsonDumper<'b, W> 
 JsonDumper			pub struct JsonDumper<'b, W: Write + 'b> 
+JsonSigElement			pub struct JsonSigElement 
+JsonSigElement			pub struct JsonSigElement 
+JsonSignature			pub struct JsonSignature 
+JsonSignature			pub struct JsonSignature 
 Lower			pub trait Lower 
+Lower for Vec			impl Lower for Vec<ast::Attribute> 
 Lower for data			impl Lower for data::CratePreludeData 
 Lower for data			impl Lower for data::EnumData 
 Lower for data			impl Lower for data::ExternCrateData 
@@ -100,6 +114,7 @@ Lower for data			impl Lower for data::MethodCallData
 Lower for data			impl Lower for data::MethodData 
 Lower for data			impl Lower for data::ModData 
 Lower for data			impl Lower for data::ModRefData 
+Lower for data			impl Lower for data::Signature 
 Lower for data			impl Lower for data::StructData 
 Lower for data			impl Lower for data::StructVariantData 
 Lower for data			impl Lower for data::TraitData 
@@ -127,9 +142,16 @@ PathCollector			impl PathCollector
 PathCollector			struct PathCollector 
 Ref			struct Ref 
 RefKind			enum RefKind 
+Relation			struct Relation 
+Relation			struct Relation 
+RelationKind			enum RelationKind 
+RelationKind			enum RelationKind 
 Row			    pub enum Row 
 SaveContext			impl<'l, 'tcx: 'l> SaveContext<'l, 'tcx> 
 SaveContext			pub struct SaveContext<'l, 'tcx: 'l> 
+SigElement			pub struct SigElement 
+Signature			pub struct Signature 
+Signature			pub struct Signature 
 SpanData			impl SpanData 
 SpanData			pub struct SpanData 
 SpanUtils			impl<'a> SpanUtils<'a> 
@@ -184,8 +206,12 @@ from			    fn from(v: &'a ast::Visibility) -> Visibility
 from			    fn from(v: &'a hir::Visibility) -> Visibility 
 from			    fn from(data: EnumData) -> Option<Def> 
 from			    fn from(data: FunctionData) -> Option<Def> 
+from			    fn from(data: ImplData) -> Relation 
+from			    fn from(data: InheritanceData) -> Relation 
 from			    fn from(data: MacroData) -> Option<Def> 
 from			    fn from(data: MethodData) -> Option<Def> 
+from			    fn from(data: SigElement) -> JsonSigElement 
+from			    fn from(data: Signature) -> JsonSignature 
 from			    fn from(data: StructData) -> Option<Def> 
 from			    fn from(data: StructVariantData) -> Option<Def> 
 from			    fn from(data: TraitData) -> Option<Def> 
@@ -201,11 +227,15 @@ from			    fn from(data: ExternCrateData) -> Import
 from			    fn from(data: FunctionCallData) -> Ref 
 from			    fn from(data: FunctionData) -> Def 
 from			    fn from(data: FunctionRefData) -> Ref 
+from			    fn from(data: ImplData) -> Relation 
+from			    fn from(data: InheritanceData) -> Relation 
 from			    fn from(data: MacroData) -> Def 
 from			    fn from(data: MacroUseData) -> MacroRef 
 from			    fn from(data: MethodCallData) -> Ref 
 from			    fn from(data: MethodData) -> Def 
 from			    fn from(data: ModRefData) -> Ref 
+from			    fn from(data: SigElement) -> JsonSigElement 
+from			    fn from(data: Signature) -> JsonSignature 
 from			    fn from(data: StructData) -> Def 
 from			    fn from(data: StructVariantData) -> Def 
 from			    fn from(data: TraitData) -> Def 
@@ -218,7 +248,6 @@ from			    fn from(data: VariableData) -> Def
 from			    fn from(data: VariableRefData) -> Ref 
 from			    fn from(id: DefId) -> Id 
 from_span			    pub fn from_span(span: Span, cm: &CodeMap) -> SpanData 
-from_span_utils			    pub fn from_span_utils(tcx: TyCtxt<'l, 'tcx, 'tcx>,
 function			    fn function(&mut self, data: FunctionData) 
 function			    fn function(&mut self, FunctionData) {}
 function_call			    fn function_call(&mut self, data: FunctionCallData) 
@@ -229,7 +258,7 @@ generated_code			pub fn generated_code(span: Span) -> bool
 get_data_for_id			    pub fn get_data_for_id(&self, _id: &NodeId) -> Data 
 get_expr_data			    pub fn get_expr_data(&self, expr: &ast::Expr) -> Option<Data> 
 get_external_crates			    pub fn get_external_crates(&self) -> Vec<CrateData> 
-get_field_data			    pub fn get_field_data(&self, field: &ast::StructField,
+get_field_data			    pub fn get_field_data(&self,
 get_field_ref_data			    pub fn get_field_ref_data(&self,
 get_item_data			    pub fn get_item_data(&self, item: &ast::Item) -> Option<Data> 
 get_macro_use_data			    pub fn get_macro_use_data(&self, span: Span, id: NodeId) -> Option<MacroUseData> 
@@ -239,10 +268,12 @@ get_path_def			    pub fn get_path_def(&self, id: NodeId) -> Def
 get_trait_ref_data			    pub fn get_trait_ref_data(&self,
 impl_data			    fn impl_data(&mut self, data: ImplData) 
 impl_data			    fn impl_data(&mut self, ImplData) {}
-impl_data			    fn impl_data(&mut self, _data: ImplData) {}
+impl_data			    fn impl_data(&mut self, data: ImplData) 
+impl_data			    fn impl_data(&mut self, data: ImplData) 
 inheritance			    fn inheritance(&mut self, data: InheritanceData) 
 inheritance			    fn inheritance(&mut self, InheritanceData) {}
-inheritance			    fn inheritance(&mut self, _data: InheritanceData) {}
+inheritance			    fn inheritance(&mut self, data: InheritanceData) 
+inheritance			    fn inheritance(&mut self, data: InheritanceData) 
 json_api_dumper			mod json_api_dumper;
 json_dumper			mod json_dumper;
 lookup_def_id			    fn lookup_def_id(&self, ref_id: NodeId) -> Option<DefId> 
@@ -262,6 +293,7 @@ lower			    fn lower(self, tcx: TyCtxt) -> MethodData
 lower			    fn lower(self, tcx: TyCtxt) -> ModData 
 lower			    fn lower(self, tcx: TyCtxt) -> ModRefData 
 lower			    fn lower(self, tcx: TyCtxt) -> Self::Target;
+lower			    fn lower(self, tcx: TyCtxt) -> Signature 
 lower			    fn lower(self, tcx: TyCtxt) -> StructData 
 lower			    fn lower(self, tcx: TyCtxt) -> StructVariantData 
 lower			    fn lower(self, tcx: TyCtxt) -> TraitData 
@@ -272,6 +304,7 @@ lower			    fn lower(self, tcx: TyCtxt) -> UseData
 lower			    fn lower(self, tcx: TyCtxt) -> UseGlobData 
 lower			    fn lower(self, tcx: TyCtxt) -> VariableData 
 lower			    fn lower(self, tcx: TyCtxt) -> VariableRefData 
+lower			    fn lower(self, tcx: TyCtxt) -> Vec<Attribute> 
 macro_data			    fn macro_data(&mut self, data: MacroData) 
 macro_data			    fn macro_data(&mut self, MacroData) {}
 macro_use			    fn macro_use(&mut self, data: MacroUseData) 
@@ -279,7 +312,6 @@ macro_use			    fn macro_use(&mut self, MacroUseData) {}
 make_def_id			pub fn make_def_id(id: NodeId, map: &Map) -> DefId 
 make_path_string			    pub fn make_path_string(file_name: &str) -> String 
 make_signature			fn make_signature(decl: &ast::FnDecl, generics: &ast::Generics) -> String 
-make_sub_span			    pub fn make_sub_span(&self, span: Span, sub_span: Option<Span>) -> Option<Span> 
 make_values_str			fn make_values_str(pairs: &[(&'static str, &str)]) -> String 
 method			    fn method(&mut self, data: MethodData) 
 method			    fn method(&mut self, MethodData) {}
@@ -290,7 +322,8 @@ mod_data			    fn mod_data(&mut self, ModData) {}
 mod_data			    fn mod_data(&mut self, data: ModData) 
 mod_ref			    fn mod_ref(&mut self, data: ModRefData) 
 mod_ref			    fn mod_ref(&mut self, ModRefData) {}
-nest			    fn nest<F>(&mut self, scope_id: NodeId, f: F)
+nest_scope			    fn nest_scope<F>(&mut self, scope_id: NodeId, f: F)
+nest_tables			    fn nest_tables<F>(&mut self, item_id: NodeId, f: F)
 new			    pub fn new(writer: &'b mut W) -> CsvDumper<'b, W> 
 new			    pub fn new(save_ctxt: SaveContext<'l, 'tcx>,
 new			    fn new() -> Analysis 
@@ -298,7 +331,6 @@ new			    pub fn new(writer: &'b mut W) -> JsonApiDumper<'b, W>
 new			    fn new() -> Analysis 
 new			    pub fn new(writer: &'b mut W) -> JsonDumper<'b, W> 
 new			    fn new() -> PathCollector 
-new			    pub fn new(tcx: TyCtxt<'l, 'tcx, 'tcx>,
 new			    pub fn new(sess: &'a Session) -> SpanUtils<'a> 
 null_def_id			pub fn null_def_id() -> DefId 
 process_assoc_const			    fn process_assoc_const(&mut self,
@@ -330,6 +362,8 @@ record_raw			    fn record_raw(&mut self, info: &str)
 recorder			pub mod recorder 
 report_span_err			    pub fn report_span_err(&self, kind: &str, span: Span) 
 retokenise_span			    pub fn retokenise_span(&self, span: Span) -> StringReader<'a> 
+sig_base			    fn sig_base(&self, item: &ast::Item) -> Signature 
+signature_string_for_span			    pub fn signature_string_for_span(&self, span: Span) -> String 
 snippet			    pub fn snippet(&self, span: Span) -> String 
 span_extent_str			fn span_extent_str(span: SpanData) -> String 
 span_for_first_ident			    pub fn span_for_first_ident(&self, span: Span) -> Option<Span> 
@@ -375,8 +409,9 @@ visit_local			    fn visit_local(&mut self, l: &'l ast::Local)
 visit_mac			    fn visit_mac(&mut self, mac: &'l ast::Mac) 
 visit_pat			    fn visit_pat(&mut self, p: &'l ast::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &ast::Pat) 
+visit_path			    fn visit_path(&mut self, p: &'l ast::Path, id: NodeId) 
 visit_stmt			    fn visit_stmt(&mut self, s: &'l ast::Stmt) 
 visit_ty			    fn visit_ty(&mut self, t: &'l ast::Ty) 
 write_sub_path_trait_truncated			    fn write_sub_path_trait_truncated(&mut self, path: &ast::Path) 
-write_sub_paths			    fn write_sub_paths(&mut self, path: &ast::Path, global: bool) 
-write_sub_paths_truncated			    fn write_sub_paths_truncated(&mut self, path: &ast::Path, global: bool) 
+write_sub_paths			    fn write_sub_paths(&mut self, path: &ast::Path) 
+write_sub_paths_truncated			    fn write_sub_paths_truncated(&mut self, path: &ast::Path) 

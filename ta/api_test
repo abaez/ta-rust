@@ -1,3 +1,4 @@
+BenchMode			pub enum BenchMode 
 BenchSamples			pub struct BenchSamples 
 Bencher			impl Bencher 
 Bencher			pub struct Bencher 
@@ -14,7 +15,7 @@ Metric			impl Metric
 Metric			pub struct Metric 
 MetricMap			impl MetricMap 
 MetricMap			pub struct MetricMap(BTreeMap<String, Metric>);
-NamePadding			enum NamePadding 
+NamePadding			pub enum NamePadding 
 OutputLocation			enum OutputLocation<T> 
 SYSTEM_INFO			        struct SYSTEM_INFO 
 Send for TestResult			unsafe impl Send for TestResult {}
@@ -28,7 +29,7 @@ TDynBenchFn			pub trait TDynBenchFn: Send
 TestDesc			impl TestDesc 
 TestDesc			pub struct TestDesc 
 TestDescAndFn			pub struct TestDescAndFn 
-TestEvent			enum TestEvent 
+TestEvent			pub enum TestEvent 
 TestFn			impl TestFn 
 TestFn			pub enum TestFn 
 TestName			impl TestName 
@@ -39,10 +40,9 @@ TestPaths			pub struct TestPaths
 TestResult			pub enum TestResult 
 Write for Sink			        impl Write for Sink 
 as_slice			    fn as_slice(&self) -> &str 
-auto_bench			    pub fn auto_bench<F>(&mut self, mut f: F) -> stats::Summary
+bench			    pub fn bench<F>(&mut self, mut f: F) -> Option<stats::Summary>
 bench			pub mod bench 
 bench			mod bench 
-bench_n			    pub fn bench_n<F>(&mut self, n: u64, f: F)
 benchmark			    pub fn benchmark<F>(f: F) -> BenchSamples
 black_box			pub fn black_box<T>(dummy: T) -> T 
 calc_result			fn calc_result(desc: &TestDesc, task_result: Result<(), Box<Any + Send>>) -> TestResult 
@@ -57,6 +57,8 @@ do_not_run_ignored_tests			    pub fn do_not_run_ignored_tests()
 exact_filter_match			    pub fn exact_filter_match() 
 f			        fn f() 
 f			        fn f() {}
+f			        fn f(_: &mut Bencher) {}
+f			        fn f(b: &mut Bencher) 
 filter			        fn filter(test: TestDescAndFn) -> Option<TestDescAndFn> 
 filter_for_ignored_option			    pub fn filter_for_ignored_option() 
 filter_tests			pub fn filter_tests(opts: &TestOpts, tests: Vec<TestDescAndFn>) -> Vec<TestDescAndFn> 
@@ -74,6 +76,7 @@ insert_metric			    pub fn insert_metric(&mut self, name: &str, value: f64, nois
 iqr			    fn iqr(&self) -> f64 
 iqr			    fn iqr(&self) -> f64;
 iter			    pub fn iter<T, F>(&mut self, mut inner: F)
+iter			pub fn iter<T, F>(inner: &mut F) -> stats::Summary
 len_if_padded			    fn len_if_padded(t: &TestDescAndFn) -> usize 
 list_tests_console			pub fn list_tests_console(opts: &TestOpts, tests: Vec<TestDescAndFn>) -> io::Result<()> 
 local_cmp			fn local_cmp(x: f64, y: f64) -> Ordering 
@@ -95,8 +98,9 @@ new			    pub fn new() -> MetricMap
 new			    pub fn new(opts: &TestOpts, _: Option<T>) -> io::Result<ConsoleTestState<io::Stdout>> 
 new			    pub fn new(value: f64, noise: f64) -> Metric 
 new			    pub fn new(samples: &[f64]) -> Summary 
-ns_elapsed			    pub fn ns_elapsed(&mut self) -> u64 
-ns_per_iter			    pub fn ns_per_iter(&mut self) -> u64 
+no_iter			    pub fn no_iter(_: &mut Bencher) {}
+ns_from_dur			fn ns_from_dur(dur: Duration) -> u64 
+ns_iter_inner			fn ns_iter_inner<T, F>(inner: &mut F, k: u64) -> u64
 num_cpus			    fn num_cpus() -> usize 
 optgroups			fn optgroups() -> Vec<getopts::OptGroup> 
 padded_name			    fn padded_name(&self, column_count: usize, align: NamePadding) -> String 
@@ -113,7 +117,7 @@ run			    fn run(&self, harness: &mut Bencher);
 run_once			    pub fn run_once<F>(f: F)
 run_test			pub fn run_test(opts: &TestOpts,
 run_test_inner			    fn run_test_inner(desc: TestDesc,
-run_tests			fn run_tests<F>(opts: &TestOpts, tests: Vec<TestDescAndFn>, mut callback: F) -> io::Result<()>
+run_tests			pub fn run_tests<F>(opts: &TestOpts, tests: Vec<TestDescAndFn>, mut callback: F) -> io::Result<()>
 run_tests_console			pub fn run_tests_console(opts: &TestOpts, tests: Vec<TestDescAndFn>) -> io::Result<bool> 
 should_sort_failures_before_printing_them			fn should_sort_failures_before_printing_them() 
 sort_tests			    pub fn sort_tests() 

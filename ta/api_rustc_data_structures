@@ -43,6 +43,7 @@ Debug for Edge			impl<E: Debug> Debug for Edge<E>
 Debug for SmallVec			impl<A> Debug for SmallVec<A>
 Decodable for AccumulateVec			impl<A> Decodable for AccumulateVec<A>
 Decodable for SmallVec			impl<A> Decodable for SmallVec<A>
+Decodable for TransitiveRelation			impl<T> Decodable for TransitiveRelation<T>
 Default for AccumulateVec			impl<A: Array> Default for AccumulateVec<A> 
 Default for ArrayVec			impl<A> Default for ArrayVec<A>
 Default for FnvHasher			impl Default for FnvHasher 
@@ -66,7 +67,10 @@ DominatorTree			pub struct DominatorTree<N: Idx>
 DominatorTreeNode			struct DominatorTreeNode<'tree, Node: Idx> 
 Dominators			impl<Node: Idx> Dominators<Node> 
 Dominators			pub struct Dominators<N: Idx> 
+Drain			pub enum Drain<'a, A: Array>
+Drain			pub struct Drain<'a, A: Array>
 Drop for ArrayVec			impl<A: Array> Drop for ArrayVec<A> 
+Drop for Drain			impl<'a, A: Array> Drop for Drain<'a, A> 
 Drop for Iter			impl<A: Array> Drop for Iter<A> 
 Drop for Lock			    impl Drop for Lock 
 Edge			impl<E> Edge<E> 
@@ -76,9 +80,9 @@ EdgeIndex			impl EdgeIndex
 EdgeIndex			pub struct EdgeIndex(pub usize);
 Encodable for AccumulateVec			impl<A> Encodable for AccumulateVec<A>
 Encodable for SmallVec			impl<A> Encodable for SmallVec<A>
+Encodable for TransitiveRelation			impl<T> Encodable for TransitiveRelation<T>
 EnumeratedEdges			pub struct EnumeratedEdges<'g, E>
 EnumeratedNodes			pub struct EnumeratedNodes<'g, N>
-Eq for ArrayVec			impl<A: Array> Eq for ArrayVec<A> {}
 Error			pub struct Error<O, E> 
 Extend for ArrayVec			impl<A: Array> Extend<A::Element> for ArrayVec<A> 
 Extend for IndexVec			impl<I: Idx, T> Extend<T> for IndexVec<I, T> 
@@ -153,6 +157,8 @@ Iterator for AdjacentSources			impl<'g, N: Debug, E: Debug> Iterator for Adjacen
 Iterator for AdjacentTargets			impl<'g, N: Debug, E: Debug> Iterator for AdjacentTargets<'g, N, E> 
 Iterator for BitVectorIter			impl<'a> Iterator for BitVectorIter<'a> 
 Iterator for DepthFirstTraversal			impl<'g, N: Debug, E: Debug> Iterator for DepthFirstTraversal<'g, N, E> 
+Iterator for Drain			impl<'a, A: Array> Iterator for Drain<'a, A> 
+Iterator for Drain			impl<'a, A: Array> Iterator for Drain<'a, A> 
 Iterator for EnumeratedEdges			impl<'g, E: Debug> Iterator for EnumeratedEdges<'g, E> 
 Iterator for EnumeratedNodes			impl<'g, N: Debug> Iterator for EnumeratedNodes<'g, N> 
 Iterator for IntoIter			impl<A: Array> Iterator for IntoIter<A> 
@@ -179,7 +185,6 @@ ObligationForest			pub struct ObligationForest<O: ForestObligation>
 ObligationProcessor			pub trait ObligationProcessor 
 ObligationProcessor for ClosureObligationProcessor			impl<OF, BF, O, E> ObligationProcessor for ClosureObligationProcessor<OF, BF, O, E>
 Outcome			pub struct Outcome<O, E> 
-PartialEq for ArrayVec			impl<A: Array> PartialEq for ArrayVec<A> 
 Reachability			impl<Node: Idx> Reachability<Node> 
 Reachability			pub struct Reachability<Node: Idx> 
 SmallVec			impl<A: Array> SmallVec<A> 
@@ -303,11 +308,13 @@ contains			    pub fn contains(&self, source: usize, target: usize) -> bool
 contains			    pub fn contains(&self, elem: &T) -> bool 
 contains			    pub fn contains(&self, a: &T, b: &T) -> bool 
 control_flow_graph			pub mod control_flow_graph;
+count			    pub fn count(&self) -> usize 
 create_graph			fn create_graph() -> TestGraph 
 create_graph_with_cycle			fn create_graph_with_cycle() -> TestGraph 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<AccumulateVec<A>, D::Error> 
 decode			    fn decode<D: serialize::Decoder>(d: &mut D) -> Result<Self, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<SmallVec<A>, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Self, D::Error> 
 default			    fn default() -> AccumulateVec<A> 
 default			    fn default() -> Self 
 default			    fn default() -> FnvHasher 
@@ -333,6 +340,10 @@ dominators			pub fn dominators<G: ControlFlowGraph>(graph: &G) -> Dominators<G::
 dominators			pub mod dominators;
 dominators_given_rpo			pub fn dominators_given_rpo<G: ControlFlowGraph>(graph: &G,
 done_dependency			fn done_dependency() 
+drain			    pub fn drain<R>(&mut self, range: R) -> Drain<A>
+drain			    pub fn drain<R>(&mut self, range: R) -> Drain<A>
+drain			    pub fn drain<'a, R: RangeArgument<usize>>(
+drain_enumerated			    pub fn drain_enumerated<'a, R: RangeArgument<usize>>(
 drop			    fn drop(&mut self) 
 drop			        fn drop(&mut self) 
 each_adjacent_from_a			fn each_adjacent_from_a() 
@@ -351,9 +362,9 @@ encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error>
 encode			pub fn encode(n: u64, base: u64) -> String 
 encode			    fn encode<S: serialize::Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
+encode			    fn encode<E: Encoder>(&self, s: &mut E) -> Result<(), E::Error> 
 enumerated_edges			    pub fn enumerated_edges(&self) -> EnumeratedEdges<E> 
 enumerated_nodes			    pub fn enumerated_nodes(&self) -> EnumeratedNodes<N> 
-eq			    fn eq(&self, other: &Self) -> bool 
 error_at			    fn error_at(&mut self, p: usize) -> Vec<O> 
 even_odd			fn even_odd() 
 expect_one			    pub fn expect_one(self, err: &'static str) -> A::Element 
@@ -409,6 +420,7 @@ from_slice			    unsafe fn from_slice(s: &[Word]) -> &Self
 from_slice_mut			    unsafe fn from_slice_mut(s: &mut [Word]) -> &mut Self 
 fulfill			    pub fn fulfill(&self, value: T) 
 fx			pub mod fx;
+get			    pub fn get(&self, index: I) -> Option<&T> 
 get			    pub fn get(&self) -> Option<T> 
 get			    pub fn get(self) -> usize 
 get			    pub fn get(&self, key: &K) -> Option<&V> 
@@ -416,6 +428,7 @@ get			    pub fn get(&self, index: usize) -> &D::Value
 get			    fn get(&mut self, vid: K) -> VarValue<K> 
 get_bit			    fn get_bit(&self, idx: usize) -> bool 
 get_bit			    fn get_bit(&self, idx: usize) -> bool;
+get_mut			    pub fn get_mut(&mut self, index: I) -> Option<&mut T> 
 get_mut			    pub fn get_mut(&mut self, index: usize) -> &mut D::Value 
 graph			pub mod graph;
 grow			    pub fn grow(&mut self, num_bits: usize) 
@@ -461,6 +474,7 @@ into_iter			    pub fn into_iter(self) -> vec::IntoIter<T>
 into_iter			    fn into_iter(self) -> Self::IntoIter 
 into_iter_enumerated			    pub fn into_iter_enumerated(self) -> Enumerated<I, vec::IntoIter<T>>
 is_dominated_by			    pub fn is_dominated_by(&self, node: Node, dom: Node) -> bool 
+is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_fulfilled			    pub fn is_fulfilled(&self) -> bool 

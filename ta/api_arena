@@ -1,7 +1,9 @@
 Drop for DropCounter			    impl<'a> Drop for DropCounter<'a> 
 Drop for SmallDroppable			    impl Drop for SmallDroppable 
-Drop for TypedArena			impl<T> Drop for TypedArena<T> 
+Drop for TypedArena			unsafe impl<#[may_dangle] T> Drop for TypedArena<T> 
 DropCounter			    struct DropCounter<'a> 
+DroplessArena			impl DroplessArena 
+DroplessArena			pub struct DroplessArena 
 EI			        enum EI<'e> 
 Inner			        struct Inner 
 Noncopy			    struct Noncopy 
@@ -15,10 +17,13 @@ TypedArenaChunk			impl<T> TypedArenaChunk<T>
 TypedArenaChunk			struct TypedArenaChunk<T> 
 Wrap			        impl<'a> Wrap<'a> 
 Wrap			        struct Wrap<'a>(TypedArena<EI<'a>>);
+align_for			    fn align_for<T>(&self) 
 alloc			    pub fn alloc(&self, object: T) -> &mut T 
+alloc			    pub fn alloc<T>(&self, object: T) -> &mut T 
 alloc_inner			            fn alloc_inner<F: Fn() -> Inner>(&self, f: F) -> &Inner 
 alloc_outer			            fn alloc_outer<F: Fn() -> Outer<'a>>(&self, f: F) -> &Outer 
 alloc_slice			    pub fn alloc_slice(&self, slice: &[T]) -> &mut [T]
+alloc_slice			    pub fn alloc_slice<T>(&self, slice: &[T]) -> &mut [T]
 bench_copy			    pub fn bench_copy(b: &mut Bencher) 
 bench_copy_nonarena			    pub fn bench_copy_nonarena(b: &mut Bencher) 
 bench_noncopy			    pub fn bench_noncopy(b: &mut Bencher) 
@@ -30,6 +35,9 @@ drop			        fn drop(&mut self)
 drop			    fn drop(&mut self) 
 end			    fn end(&self) -> *mut T 
 grow			    fn grow(&self, n: usize) 
+grow			    fn grow<T>(&self, n: usize) 
+in_arena			    pub fn in_arena<T: ?Sized>(&self, ptr: *const T) -> bool 
+new			    pub fn new() -> DroplessArena 
 new			    pub fn new() -> TypedArena<T> 
 new			    unsafe fn new(capacity: usize) -> TypedArenaChunk<T> 
 start			    fn start(&self) -> *mut T 

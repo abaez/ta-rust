@@ -1,4 +1,4 @@
---- all crates as of v1.15.0
+--- all crates as of v1.13.0
 -- @author Alejandro Baez <https://keybase.io/baez>
 -- @copyright 2014-2016
 -- @license MIT (see LICENSE)
@@ -25,9 +25,9 @@ return {
   "panic_unwind",
   "proc_macro",
   "proc_macro_plugin",
-  "proc_macro_tokens",
   "rand",
   "rustc",
+  "rustc_asan",
   "rustc_back",
   "rustc_bitflags",
   "rustc_borrowck",
@@ -39,8 +39,10 @@ return {
   "rustc_incremental",
   "rustc_lint",
   "rustc_llvm",
+  "rustc_lsan",
   "rustc_metadata",
   "rustc_mir",
+  "rustc_msan",
   "rustc_passes",
   "rustc_platform_intrinsics",
   "rustc_plugin",
@@ -48,6 +50,7 @@ return {
   "rustc_resolve",
   "rustc_save_analysis",
   "rustc_trans",
+  "rustc_tsan",
   "rustc_typeck",
   "rustdoc",
   "serialize",

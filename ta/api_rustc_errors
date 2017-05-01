@@ -50,6 +50,7 @@ Style			pub enum Style
 StyledBuffer			impl StyledBuffer 
 StyledBuffer			pub struct StyledBuffer 
 StyledString			pub struct StyledString 
+SubDiagnostic			impl SubDiagnostic 
 SubDiagnostic			pub struct SubDiagnostic 
 WaitForSingleObject			        fn WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD) -> DWORD;
 Write for BufferedWriter			impl Write for BufferedWriter 
@@ -117,19 +118,23 @@ from_stderr			    fn from_stderr() -> Destination
 get_max_line_num			    fn get_max_line_num(&mut self, span: &MultiSpan, children: &Vec<SubDiagnostic>) -> usize 
 get_multispan_max_line_num			    fn get_multispan_max_line_num(&mut self, msp: &MultiSpan) -> usize 
 has_errors			    pub fn has_errors(&self) -> bool 
+has_label			    pub fn has_label(&self) -> bool 
 help			    pub fn help(&mut self , msg: &str) -> &mut Self 
+highlighted_note			    pub fn highlighted_note(&mut self, msg: Vec<(String, Style)>) -> &mut Self 
 increase_depth			    pub fn increase_depth(&mut self) 
 into_diagnostic			    pub fn into_diagnostic(mut self) -> Diagnostic 
 is_fatal			    pub fn is_fatal(&self) -> bool 
+is_line			    pub fn is_line(&self) -> bool 
 is_minimized			    pub fn is_minimized(&self) -> bool 
 is_multiline			    pub fn is_multiline(&self) -> bool 
-len			            fn len(a: &Annotation) -> usize 
+len			    pub fn len(&self) -> usize 
 level			    pub fn level(&self) -> Level 
 lock			mod lock;
 lookup_char_pos			    fn lookup_char_pos(&self, pos: BytePos) -> Loc;
 macro_backtrace			    fn macro_backtrace(&self, span: Span) -> Vec<MacroBacktrace>;
 merge_spans			    fn merge_spans(&self, sp_lhs: Span, sp_rhs: Span) -> Option<Span>;
-message			    pub fn message(&self) -> &str 
+message			    pub fn message(&self) -> String 
+msg_to_buffer			    fn msg_to_buffer(&self,
 mut_span_err			    pub fn mut_span_err<'a, S: Into<MultiSpan>>(&'a self,
 new			    pub fn new(level: Level, message: &str) -> Self 
 new			    pub fn new(handler: &'a Handler, level: Level, message: &str) -> DiagnosticBuilder<'a> 
@@ -144,7 +149,7 @@ note_expected_found_extra			    pub fn note_expected_found_extra(&mut self,
 note_without_error			    pub fn note_without_error(&self, msg: &str) 
 num_lines			    pub fn num_lines(&self) -> usize 
 num_overlap			fn num_overlap(a_start: usize, a_end: usize, b_start: usize, b_end:usize, inclusive: bool) -> bool 
-overlaps			fn overlaps(a1: &Annotation, a2: &Annotation) -> bool 
+overlaps			fn overlaps(a1: &Annotation, a2: &Annotation, padding: usize) -> bool 
 panic_if_treat_err_as_bug			    fn panic_if_treat_err_as_bug(&self) 
 prepend			    pub fn prepend(&mut self, line: usize, string: &str, style: Style) 
 preprocess_annotations			    fn preprocess_annotations(&self, msp: &MultiSpan) -> Vec<FileWithAnnotatedLines> 
@@ -191,8 +196,11 @@ struct_span_fatal_with_code			    pub fn struct_span_fatal_with_code<'a, S: Into
 struct_span_warn			    pub fn struct_span_warn<'a, S: Into<MultiSpan>>(&'a self,
 struct_span_warn_with_code			    pub fn struct_span_warn_with_code<'a, S: Into<MultiSpan>>(&'a self,
 struct_warn			    pub fn struct_warn<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a> 
+style_or_override			        fn style_or_override(style: Style, override_style: Option<Style>) -> Style 
 styled_buffer			pub mod styled_buffer;
+styled_message			    pub fn styled_message(&self) -> &Vec<(String, Style)> 
 sub			    fn sub(&mut self,
+sub_with_highlights			    fn sub_with_highlights(&mut self,
 to_str			    pub fn to_str(self) -> &'static str 
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 
 use_color			    fn use_color(&self) -> bool 

@@ -9,9 +9,6 @@ Block			pub struct Block<'tcx>
 BlockAnd			pub struct BlockAnd<T>(BasicBlock, T);
 BlockAndExtension			trait BlockAndExtension 
 BlockAndExtension for BasicBlock			impl BlockAndExtension for BasicBlock 
-BuildMir			impl<'a, 'gcx, 'tcx> BuildMir<'a, 'gcx> 
-BuildMir			impl<'a, 'gcx> BuildMir<'a, 'gcx> 
-BuildMir			struct BuildMir<'a, 'tcx: 'a> 
 Builder			impl<'a, 'gcx, 'tcx> Builder<'a, 'gcx, 'tcx> 
 Builder			impl<'a, 'gcx, 'tcx> Builder<'a, 'gcx, 'tcx> 
 Builder			impl<'a, 'gcx, 'tcx> Builder<'a, 'gcx, 'tcx> 
@@ -32,6 +29,10 @@ Builder			impl<'a, 'gcx, 'tcx> Builder<'a, 'gcx, 'tcx>
 C			struct C { a: Cell<usize> }
 CFG			impl<'tcx> CFG<'tcx> 
 CFG			struct CFG<'tcx> 
+CallGraph			impl CallGraph 
+CallGraph			pub struct CallGraph 
+CallSite			struct CallSite<'tcx> 
+CallVisitor			struct CallVisitor<'a> 
 Candidate			pub struct Candidate<'pat, 'tcx:'pat> 
 Candidate			pub enum Candidate 
 Category			impl Category 
@@ -43,8 +44,6 @@ ConstantPropagationVisitor			struct ConstantPropagationVisitor<'tcx>
 CopyPropagation			pub struct CopyPropagation;
 Cx			impl<'a, 'gcx, 'tcx> Cx<'a, 'gcx, 'tcx> 
 Cx			pub struct Cx<'a, 'gcx: 'a + 'tcx, 'tcx: 'a> 
-CxBuilder			impl<'a, 'gcx, 'tcx> CxBuilder<'a, 'gcx, 'tcx> 
-CxBuilder			struct CxBuilder<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 Deaggregator			pub struct Deaggregator;
 DeclMarker			struct DeclMarker 
 DefUseAnalysis			impl<'tcx> DefUseAnalysis<'tcx> 
@@ -74,14 +73,22 @@ GlobalizeMir			struct GlobalizeMir<'a, 'gcx: 'a>
 Idx for ScopeId			impl Idx for ScopeId 
 Info			impl<'tcx> Info<'tcx> 
 Info			pub struct Info<'tcx> 
+Inline			pub struct Inline;
+Inliner			impl<'a, 'tcx> Inliner<'a, 'tcx> 
+Inliner			struct Inliner<'a, 'tcx: 'a> 
 InstCombine			impl InstCombine 
 InstCombine			pub struct InstCombine 
+Integrator			impl<'a, 'tcx> Integrator<'a, 'tcx> 
+Integrator			struct Integrator<'a, 'tcx: 'a> 
+Iterator for SCCIterator			impl<'g> Iterator for SCCIterator<'g> 
 LocalUpdater			struct LocalUpdater 
 LogicalOp			pub enum LogicalOp 
 LoopScope			pub struct LoopScope<'tcx> 
 Marker			pub struct Marker<'a>(pub &'a str);
 MatchPair			pub struct MatchPair<'pat, 'tcx:'pat> 
 MatchPair			impl<'pat, 'tcx> MatchPair<'pat, 'tcx> 
+MirMapPass for Inline			impl<'tcx> MirMapPass<'tcx> for Inline 
+MirMapPass for QualifyAndPromoteConstants			impl<'tcx> MirMapPass<'tcx> for QualifyAndPromoteConstants 
 MirPass for AddCallGuards			impl<'tcx> MirPass<'tcx> for AddCallGuards 
 MirPass for CopyPropagation			impl<'tcx> MirPass<'tcx> for CopyPropagation 
 MirPass for Deaggregator			impl<'tcx> MirPass<'tcx> for Deaggregator 
@@ -89,7 +96,6 @@ MirPass for EraseRegions			impl<'tcx> MirPass<'tcx> for EraseRegions
 MirPass for InstCombine			impl<'tcx> MirPass<'tcx> for InstCombine 
 MirPass for Marker			impl<'b, 'tcx> MirPass<'tcx> for Marker<'b> 
 MirPass for NoLandingPads			impl<'tcx> MirPass<'tcx> for NoLandingPads 
-MirPass for QualifyAndPromoteConstants			impl<'tcx> MirPass<'tcx> for QualifyAndPromoteConstants 
 MirPass for SimplifyBranches			impl<'l, 'tcx> MirPass<'tcx> for SimplifyBranches<'l> 
 MirPass for SimplifyCfg			impl<'l, 'tcx> MirPass<'tcx> for SimplifyCfg<'l> 
 MirPass for SimplifyLocals			impl<'tcx> MirPass<'tcx> for SimplifyLocals 
@@ -108,6 +114,7 @@ MutVisitor for ConstantPropagationVisitor			impl<'tcx> MutVisitor<'tcx> for Cons
 MutVisitor for EraseRegionsVisitor			impl<'a, 'tcx> MutVisitor<'tcx> for EraseRegionsVisitor<'a, 'tcx> 
 MutVisitor for GlobalizeMir			impl<'a, 'gcx: 'tcx, 'tcx> MutVisitor<'tcx> for GlobalizeMir<'a, 'gcx> 
 MutVisitor for InstCombine			impl<'tcx> MutVisitor<'tcx> for InstCombine 
+MutVisitor for Integrator			impl<'a, 'tcx> MutVisitor<'tcx> for Integrator<'a, 'tcx> 
 MutVisitor for LocalUpdater			impl<'tcx> MutVisitor<'tcx> for LocalUpdater 
 MutVisitor for MutateUseVisitor			impl<'tcx, F> MutVisitor<'tcx> for MutateUseVisitor<'tcx, F>
 MutVisitor for NoLandingPads			impl<'tcx> MutVisitor<'tcx> for NoLandingPads 
@@ -124,6 +131,7 @@ Pass for CopyPropagation			impl Pass for CopyPropagation {}
 Pass for Deaggregator			impl Pass for Deaggregator {}
 Pass for DumpMir			impl<'b> Pass for DumpMir {}
 Pass for EraseRegions			impl Pass for EraseRegions {}
+Pass for Inline			impl<'tcx> Pass for Inline { }
 Pass for InstCombine			impl Pass for InstCombine {}
 Pass for Marker			impl<'b> Pass for Marker<'b> 
 Pass for NoLandingPads			impl Pass for NoLandingPads {}
@@ -138,8 +146,11 @@ Promoter			struct Promoter<'a, 'tcx: 'a>
 Qualif			impl<'a, 'tcx> Qualif 
 Qualifier			impl<'a, 'tcx> Qualifier<'a, 'tcx, 'tcx> 
 Qualifier			struct Qualifier<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
-QualifyAndPromoteConstants			pub struct QualifyAndPromoteConstants 
+QualifyAndPromoteConstants			impl<'tcx> QualifyAndPromoteConstants 
+QualifyAndPromoteConstants			pub struct QualifyAndPromoteConstants;
 RvalueFunc			pub enum RvalueFunc 
+SCCIterator			impl<'g> SCCIterator<'g> 
+SCCIterator			pub struct SCCIterator<'g> 
 Scope			impl<'tcx> Scope<'tcx> 
 Scope			pub struct Scope<'tcx> 
 ScopeId			pub struct ScopeId(u32);
@@ -148,6 +159,7 @@ SimplifyBranches			pub struct SimplifyBranches<'a> { label: &'a str }
 SimplifyCfg			impl<'a> SimplifyCfg<'a> 
 SimplifyCfg			pub struct SimplifyCfg<'a> { label: &'a str }
 SimplifyLocals			pub struct SimplifyLocals;
+StackElement			struct StackElement<'g> 
 Stmt			pub struct Stmt<'tcx> 
 StmtKind			pub enum StmtKind<'tcx> 
 StmtRef			pub enum StmtRef<'tcx> 
@@ -173,7 +185,7 @@ TypeVerifier			struct TypeVerifier<'a, 'b: 'a, 'gcx: 'b+'tcx, 'tcx: 'b>
 TypeckMir			impl TypeckMir 
 TypeckMir			pub struct TypeckMir;
 Use			pub struct Use<'tcx> 
-Visitor for BuildMir			impl<'a, 'tcx> Visitor<'tcx> for BuildMir<'a, 'tcx> 
+Visitor for CallVisitor			impl<'a, 'tcx> Visitor<'tcx> for CallVisitor<'a> 
 Visitor for DeclMarker			impl<'tcx> Visitor<'tcx> for DeclMarker 
 Visitor for DefUseFinder			impl<'tcx> Visitor<'tcx> for DefUseFinder<'tcx> 
 Visitor for OptimizationFinder			impl<'b, 'a, 'tcx> Visitor<'tcx> for OptimizationFinder<'b, 'a, 'tcx> 
@@ -183,6 +195,7 @@ Visitor for TypeVerifier			impl<'a, 'b, 'gcx, 'tcx> Visitor<'tcx> for TypeVerifi
 add			    fn add(&mut self, qualif: Qualif) 
 add_call_guards			pub mod add_call_guards;
 add_cases_to_switch			    pub fn add_cases_to_switch<'pat>(&mut self,
+add_node			    fn add_node(&mut self, id: DefId) -> graph::NodeIndex 
 add_type			    fn add_type(&mut self, ty: Ty<'tcx>) 
 add_variants_to_switch			    pub fn add_variants_to_switch<'pat>(&mut self,
 all_fields			    pub fn all_fields(&mut self, adt_def: &ty::AdtDef, variant_index: usize) -> Vec<Field> 
@@ -190,16 +203,19 @@ analyze			    pub fn analyze(&mut self, mir: &Mir<'tcx>)
 and			    fn and<T>(self, v: T) -> BlockAnd<T> 
 and			    fn and<T>(self, v: T) -> BlockAnd<T>;
 and			                                  struct and enum constructors",
+arg_index			    fn arg_index(&self, arg: Local) -> Option<usize> 
 args_and_body			    fn args_and_body(&mut self,
 as_constant			    pub fn as_constant<M>(&mut self, expr: M) -> Constant<'tcx>
 as_constant			mod as_constant;
+as_local_operand			    pub fn as_local_operand<M>(&mut self, block: BasicBlock, expr: M)
+as_local_rvalue			    pub fn as_local_rvalue<M>(&mut self, block: BasicBlock, expr: M)
 as_lvalue			    pub fn as_lvalue<M>(&mut self,
 as_lvalue			mod as_lvalue;
-as_operand			    pub fn as_operand<M>(&mut self, block: BasicBlock, expr: M) -> BlockAnd<Operand<'tcx>>
+as_operand			    pub fn as_operand<M>(&mut self,
 as_operand			mod as_operand;
-as_rvalue			    pub fn as_rvalue<M>(&mut self, block: BasicBlock, expr: M) -> BlockAnd<Rvalue<'tcx>>
+as_rvalue			    pub fn as_rvalue<M>(&mut self, block: BasicBlock, scope: Option<CodeExtent>, expr: M)
 as_rvalue			mod as_rvalue;
-as_temp			    pub fn as_temp<M>(&mut self, block: BasicBlock, expr: M) -> BlockAnd<Lvalue<'tcx>>
+as_temp			    pub fn as_temp<M>(&mut self,
 as_temp			mod as_temp;
 assert			    pub fn assert(&mut self, block: BasicBlock,
 assert_iscleanup			    fn assert_iscleanup(&mut self,
@@ -214,21 +230,24 @@ block			mod block;
 block_data			    pub fn block_data(&self, blk: BasicBlock) -> &BasicBlockData<'tcx> 
 block_data_mut			    pub fn block_data_mut(&mut self, blk: BasicBlock) -> &mut BasicBlockData<'tcx> 
 bool_ty			    pub fn bool_ty(&mut self) -> Ty<'tcx> 
+build			    pub fn build<'a, 'tcx>(tcx: ty::TyCtxt<'a, 'tcx, 'tcx>) -> CallGraph 
 build			pub mod build;
-build			    fn build<F>(&'tcx mut self, f: F)
 build_binary_op			    pub fn build_binary_op(&mut self, mut block: BasicBlock,
-build_const_integer			    fn build_const_integer(&mut self, expr: &'gcx hir::Expr) 
 build_diverge_scope			fn build_diverge_scope<'a, 'gcx, 'tcx>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 build_drop			    pub fn build_drop(&mut self,
 build_drop_and_replace			    pub fn build_drop_and_replace(&mut self,
 build_free			fn build_free<'a, 'gcx, 'tcx>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
+build_mir			fn build_mir<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId)
 build_mir_for_crate			pub fn build_mir_for_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
+build_mir_for_crate_task			    fn build_mir_for_crate_task<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, (): ()) 
 build_scope_drops			fn build_scope_drops<'tcx>(cfg: &mut CFG<'tcx>,
 cached_block			    fn cached_block(&self) -> Option<BasicBlock> 
+callgraph			pub mod callgraph;
 candidate_after_slice_test			    fn candidate_after_slice_test<'pat>(&mut self,
 candidate_after_variant_switch			    fn candidate_after_variant_switch<'pat>(&mut self,
 candidate_without_match_pair			    fn candidate_without_match_pair<'pat>(&mut self,
 capture_freevar			fn capture_freevar<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>,
+cast_box_free_arg			    fn cast_box_free_arg(&self, arg: Lvalue<'tcx>, ptr_ty: Ty<'tcx>,
 category			mod category;
 cfg			mod cfg;
 check_box_free_inputs			    fn check_box_free_inputs(&mut self,
@@ -246,20 +265,22 @@ compare			    fn compare(&mut self,
 const_eval_literal			    pub fn const_eval_literal(&mut self, e: &hir::Expr) -> Literal<'tcx> 
 constant			    fn constant(src_constant: &Constant<'tcx>) -> Option<Action<'tcx>> 
 construct_const			pub fn construct_const<'a, 'gcx, 'tcx>(hir: Cx<'a, 'gcx, 'tcx>,
+construct_error			pub fn construct_error<'a, 'gcx, 'tcx>(hir: Cx<'a, 'gcx, 'tcx>,
 construct_fn			pub fn construct_fn<'a, 'gcx, 'tcx, A>(hir: Cx<'a, 'gcx, 'tcx>,
 convert_arm			fn convert_arm<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>, arm: &'tcx hir::Arm) -> Arm<'tcx> 
 convert_path_expr			fn convert_path_expr<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>,
 convert_var			fn convert_var<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>,
 copy_prop			pub mod copy_prop;
 cx			pub mod cx;
-cx			    fn cx<'b>(&'b mut self, src: MirSource) -> CxBuilder<'b, 'gcx, 'tcx> 
 deaggregator			pub mod deaggregator;
 declare_binding			    fn declare_binding(&mut self,
 declare_bindings			    pub fn declare_bindings(&mut self,
 def_count			    pub fn def_count(&self) -> usize 
 def_count_not_including_drop			    pub fn def_count_not_including_drop(&self) -> usize 
+def_id			    pub fn def_id(&self, node: graph::NodeIndex) -> DefId 
 def_use			pub mod def_use;
 deny_drop			    fn deny_drop(&self) 
+dest_needs_borrow			                fn dest_needs_borrow(lval: &Lvalue) -> bool 
 diagnostics			pub mod diagnostics;
 disambiguator			    fn disambiguator<'a>(&'a self) -> Option<Box<fmt::Display+'a>> 
 disambiguator			    fn disambiguator<'a>(&'a self) -> Option<Box<fmt::Display+'a>> 
@@ -280,9 +301,8 @@ expr_as_constant			    fn expr_as_constant(&mut self, expr: Expr<'tcx>) -> Const
 expr_as_lvalue			    fn expr_as_lvalue(&mut self,
 expr_as_operand			    fn expr_as_operand(&mut self,
 expr_as_rvalue			    fn expr_as_rvalue(&mut self,
-expr_as_temp			    fn expr_as_temp(&mut self, mut block: BasicBlock, expr: Expr<'tcx>) -> BlockAnd<Lvalue<'tcx>> 
+expr_as_temp			    fn expr_as_temp(&mut self,
 expr_into_pattern			    pub fn expr_into_pattern(&mut self,
-extent_of_innermost_scope			    pub fn extent_of_innermost_scope(&self) -> CodeExtent 
 extent_of_return_scope			    pub fn extent_of_return_scope(&self) -> CodeExtent 
 false_literal			    pub fn false_literal(&mut self) -> Literal<'tcx> 
 field_match_pairs			    pub fn field_match_pairs<'pat>(&mut self,
@@ -296,12 +316,16 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt::Display for Disambiguator			impl<'a> fmt::Display for Disambiguator<'a> 
 fmt::Display for Mode			impl fmt::Display for Mode 
 get_aggregate_statement_index			fn get_aggregate_statement_index<'a, 'tcx, 'b>(start: usize,
+get_next			    fn get_next(&mut self) 
 get_unit_temp			    fn get_unit_temp(&mut self) -> Lvalue<'tcx> 
 graphviz			pub mod graphviz;
 hair			mod hair;
 in_loop_scope			    pub fn in_loop_scope<F>(&mut self,
 in_scope			    pub fn in_scope<F, R>(&mut self, extent: CodeExtent, mut block: BasicBlock, f: F) -> BlockAnd<R>
 index			    fn index(self) -> usize 
+inline			pub mod inline;
+inline_call			    fn inline_call(&self, callsite: CallSite<'tcx>,
+inline_scc			    fn inline_scc(&mut self, callgraph: &callgraph::CallGraph, scc: &[graph::NodeIndex]) -> bool 
 instcombine			pub mod instcombine;
 into			mod into;
 into			    pub fn into<E>(&mut self,
@@ -320,6 +344,7 @@ local_info_mut			    pub fn local_info_mut(&mut self, local: Local) -> &mut Info
 lvalue_into_pattern			    pub fn lvalue_into_pattern(&mut self,
 lvalue_mut_info			    fn lvalue_mut_info(&mut self, lvalue: &Lvalue<'tcx>) -> Option<&mut Info<'tcx>> 
 main			fn main() 
+make_call_args			    fn make_call_args(&self, args: Vec<Operand<'tcx>>,
 make_local_map			fn make_local_map<'tcx, I: Idx, V>(vec: &mut IndexVec<I, V>, mask: BitVector) -> Vec<usize> 
 make_mirror			    fn make_mirror<'a, 'gcx>(self, cx: &mut Cx<'a, 'gcx, 'tcx>) -> Block<'tcx> 
 make_mirror			    fn make_mirror<'a, 'gcx>(self, cx: &mut Cx<'a, 'gcx, 'tcx>) -> Expr<'tcx> 
@@ -336,6 +361,7 @@ merge_successor			    fn merge_successor(&mut self,
 method_callee			fn method_callee<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>,
 minval_literal			    fn minval_literal(&mut self, span: Span, ty: ty::Ty<'tcx>) -> Operand<'tcx> 
 mir_map			pub mod mir_map;
+mirbug			fn mirbug(tcx: TyCtxt, span: Span, msg: &str) 
 mirror			    pub fn mirror<M: Mirror<'tcx>>(&mut self, ast: M) -> M::Output 
 mirror_stmts			fn mirror_stmts<'a, 'gcx, 'tcx>(cx: &mut Cx<'a, 'gcx, 'tcx>,
 misc			mod misc;
@@ -348,10 +374,10 @@ name			    fn name(&self) -> ::std::borrow::Cow<'static, str> { "SimplifyBranche
 needs_drop			    pub fn needs_drop(&mut self, ty: Ty<'tcx>) -> bool 
 neg_1_literal			    fn neg_1_literal(&mut self, span: Span, ty: ty::Ty<'tcx>) -> Operand<'tcx> 
 nest			    fn nest<F: FnOnce(&mut Self)>(&mut self, f: F) 
-nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 new			    pub fn new(lvalue: Lvalue<'tcx>, pattern: &'pat Pattern<'tcx>) -> MatchPair<'pat, 'tcx> 
 new			    fn new(hir: Cx<'a, 'gcx, 'tcx>,
 new			    fn new(index: usize) -> ScopeId 
+new			    pub fn new(graph: &'g graph::Graph<DefId, ()>) -> SCCIterator<'g> 
 new			    fn new() -> Info<'tcx> 
 new			    fn new(query: Local, callback: F, _: &Mir<'tcx>)
 new			    pub fn new(mir: &Mir<'tcx>) -> DefUseAnalysis<'tcx> 
@@ -361,16 +387,18 @@ new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Self
 new			    fn new(mir: &'b Mir<'tcx>, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> OptimizationFinder<'b, 'a, 'tcx> 
 new			    pub fn new() -> InstCombine 
 new			    fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-new			    fn new(mir: &'a mut Mir<'tcx>) -> Self 
 new			    pub fn new(label: &'a str) -> Self 
+new			    pub fn new(mir: &'a mut Mir<'tcx>) -> Self 
 new			    pub fn new(label: &'a str) -> Self 
 new			    fn new(cx: &'a mut TypeChecker<'b, 'gcx, 'tcx>, mir: &'a Mir<'tcx>) -> Self 
 new			    fn new(infcx: &'a InferCtxt<'a, 'gcx, 'tcx>, body_id: ast::NodeId) -> Self 
 new			    pub fn new() -> Self 
 new_block			    fn new_block(&mut self) -> BasicBlock 
 new_visibility_scope			    pub fn new_visibility_scope(&mut self, span: Span) -> VisibilityScope 
+next			    fn next(&mut self) -> Option<Vec<graph::NodeIndex>> 
 no_landing_pads			pub mod no_landing_pads;
 node			fn node(block: BasicBlock) -> String 
+node_index			    fn node_index(&self, node: graph::NodeIndex) -> Option<usize> 
 normalize			    fn normalize<T>(&mut self, value: &T) -> T
 not_const			    fn not_const(&mut self) 
 num_variants			    pub fn num_variants(&mut self, adt_def: &ty::AdtDef) -> usize 
@@ -387,6 +415,9 @@ promote_candidate			    fn promote_candidate(mut self, candidate: Candidate)
 promote_candidates			pub fn promote_candidates<'a, 'tcx>(mir: &mut Mir<'tcx>,
 promote_consts			pub mod promote_consts;
 promote_temp			    fn promote_temp(&mut self, temp: Local) -> Local 
+provide			pub fn provide(providers: &mut Providers) 
+provide			pub fn provide(providers: &mut Providers) 
+provide			pub fn provide(providers: &mut Providers) 
 push			    pub fn push(&mut self, block: BasicBlock, statement: Statement<'tcx>) 
 push_assign			    pub fn push_assign(&mut self,
 push_assign_constant			    pub fn push_assign_constant(&mut self,
@@ -394,10 +425,10 @@ push_assign_unit			    pub fn push_assign_unit(&mut self,
 push_scope			    pub fn push_scope(&mut self, extent: CodeExtent) 
 push_usize			    pub fn push_usize(&mut self,
 qualify_const			    fn qualify_const(&mut self) -> Qualif 
-qualify_const_item_cached			fn qualify_const_item_cached<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+qualify_const_item			fn qualify_const_item<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 qualify_consts			pub mod qualify_consts;
 register_infer_ok_obligations			    pub fn register_infer_ok_obligations<T>(&mut self, infer_ok: InferOk<'tcx, T>) -> T 
-remove_dead_blocks			fn remove_dead_blocks(mir: &mut Mir) 
+remove_dead_blocks			pub fn remove_dead_blocks(mir: &mut Mir) 
 replace_all_defs_and_uses_with			    pub fn replace_all_defs_and_uses_with(&self,
 restrict			    fn restrict(&mut self, ty: Ty<'tcx>,
 return_block			    fn return_block(&mut self) -> BasicBlock 
@@ -406,9 +437,11 @@ run_pass			    fn run_pass<'a>(&mut self,
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 run_pass			    fn run_pass<'a>(&mut self, _tcx: TyCtxt<'a, 'tcx, 'tcx>,
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+run_pass			    fn run_pass<'a>(
 run_pass			    fn run_pass<'a>(&mut self,
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+run_pass			    fn run_pass<'a>(&mut self,
 run_pass			    fn run_pass<'a>(&mut self, _: TyCtxt<'a, 'tcx, 'tcx>, _: MirSource, mir: &mut Mir<'tcx>) 
 run_pass			    fn run_pass<'a>(&mut self, _tcx: TyCtxt<'a, 'tcx, 'tcx>, _src: MirSource, mir: &mut Mir<'tcx>) 
 run_pass			    fn run_pass<'a>(&mut self, _tcx: TyCtxt<'a, 'tcx, 'tcx>, _src: MirSource, mir: &mut Mir<'tcx>) 
@@ -416,12 +449,16 @@ run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 sanitize_lvalue			    fn sanitize_lvalue(&mut self, lvalue: &Lvalue<'tcx>, location: Location) -> LvalueTy<'tcx> 
 sanitize_projection			    fn sanitize_projection(&mut self,
 sanitize_type			    fn sanitize_type(&mut self, parent: &fmt::Debug, ty: Ty<'tcx>) -> Ty<'tcx> 
+scc_iter			    pub fn scc_iter(&self) -> SCCIterator 
 schedule_box_free			    pub fn schedule_box_free(&mut self,
 schedule_drop			    pub fn schedule_drop(&mut self,
+schedule_drop_for_binding			    pub fn schedule_drop_for_binding(&mut self, var: NodeId, span: Span) 
 scope			mod scope;
+set_node_index			    fn set_node_index(&mut self, node: graph::NodeIndex, idx: usize) 
+should_inline			    fn should_inline(&self, callsite: CallSite<'tcx>,
 simplify			mod simplify;
 simplify			pub mod simplify;
-simplify			    fn simplify(mut self) 
+simplify			    pub fn simplify(mut self) 
 simplify_branch			    fn simplify_branch(&mut self, terminator: &mut Terminator<'tcx>) -> bool 
 simplify_branches			pub mod simplify_branches;
 simplify_candidate			    pub fn simplify_candidate<'pat>(&mut self,
@@ -434,9 +471,11 @@ start_new_cleanup_block			    pub fn start_new_cleanup_block(&mut self) -> Basic
 statement_like			    fn statement_like(&mut self) 
 stmt			mod stmt;
 stmt_expr			    pub fn stmt_expr(&mut self, mut block: BasicBlock, expr: Expr<'tcx>) -> BlockAnd<()> 
-storage_live_for_bindings			    pub fn storage_live_for_bindings(&mut self,
+storage_live_binding			    pub fn storage_live_binding(&mut self, block: BasicBlock, var: NodeId, span: Span)
 str_literal			    pub fn str_literal(&mut self, value: InternedString) -> Literal<'tcx> 
+strip_nops			    fn strip_nops(&mut self) 
 sub_types			    fn sub_types(&mut self, sup: Ty<'tcx>, sub: Ty<'tcx>)
+tables			    pub fn tables(&self) -> &'a ty::TypeckTables<'gcx> 
 tcx			    pub fn tcx(&self) -> TyCtxt<'a, 'gcx, 'tcx> 
 tcx			    fn tcx(&self) -> TyCtxt<'a, 'gcx, 'tcx> 
 temp			    pub fn temp(&mut self, ty: Ty<'tcx>) -> Lvalue<'tcx> 
@@ -451,16 +490,20 @@ to_ref			    fn to_ref(self) -> ExprRef<'tcx>
 to_ref			    fn to_ref(self) -> Option<U> 
 to_ref			    fn to_ref(self) -> Self::Output;
 to_ref			    fn to_ref(self) -> Vec<U> 
+topmost_scope			    pub fn topmost_scope(&self) -> CodeExtent 
 trait_method			    pub fn trait_method(&mut self,
 transform			pub mod transform;
 true_literal			    pub fn true_literal(&mut self) -> Literal<'tcx> 
 try_consume			    fn try_consume(&mut self) -> bool 
 type_check			pub mod type_check;
+type_size_of			fn type_size_of<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, param_env: ty::ParameterEnvironment<'tcx>,
 typeck_mir			    fn typeck_mir(&mut self, mir: &Mir<'tcx>) 
 unit			    fn unit(self) -> BlockAnd<()> 
 unit			    fn unit(self) -> BlockAnd<()>;
 unit_rvalue			    pub fn unit_rvalue(&mut self) -> Rvalue<'tcx> 
 unit_ty			    pub fn unit_ty(&mut self) -> Ty<'tcx> 
+update_local			    fn update_local(&self, local: Local) -> Option<Local> 
+update_target			    fn update_target(&self, tgt: BasicBlock) -> BasicBlock 
 use_count			    pub fn use_count(&self) -> usize 
 usize_literal			    pub fn usize_literal(&mut self, value: u64) -> Literal<'tcx> 
 usize_ty			    pub fn usize_ty(&mut self) -> Ty<'tcx> 
@@ -468,11 +511,12 @@ util			mod util;
 verify_obligations			    fn verify_obligations(&mut self, mir: &Mir<'tcx>) 
 visit_assign			    fn visit_assign(&mut self,
 visit_basic_block_data			    fn visit_basic_block_data(&mut self, block: BasicBlock, data: &mut BasicBlockData<'tcx>) 
+visit_basic_block_data			    fn visit_basic_block_data(&mut self, block: BasicBlock, data: &mut BasicBlockData<'tcx>) 
+visit_bindings			    pub fn visit_bindings<F>(&mut self, pattern: &Pattern<'tcx>, mut f: &mut F)
+visit_children			    fn visit_children(&mut self) 
 visit_constant			    fn visit_constant(&mut self, constant: &Constant<'tcx>, location: Location) 
-visit_expr			    fn visit_expr(&mut self, expr: &'tcx hir::Expr) 
-visit_fn			    fn visit_fn(&mut self,
-visit_impl_item			    fn visit_impl_item(&mut self, item: &'tcx hir::ImplItem) 
-visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
+visit_literal			    fn visit_literal(&mut self, literal: &mut Literal<'tcx>, loc: Location) 
+visit_lvalue			    fn visit_lvalue(&mut self,
 visit_lvalue			    fn visit_lvalue(&mut self,
 visit_lvalue			    fn visit_lvalue(&mut self,
 visit_lvalue			    fn visit_lvalue(&mut self,
@@ -480,6 +524,8 @@ visit_lvalue			    fn visit_lvalue(&mut self, lval: &Lvalue<'tcx>, ctx: LvalueCo
 visit_lvalue			    fn visit_lvalue(&mut self, lval: &mut Lvalue<'tcx>, ctx: LvalueContext<'tcx>, loc: Location) 
 visit_lvalue			    fn visit_lvalue(&mut self,
 visit_mir			    fn visit_mir(&mut self, mir: &Mir<'tcx>) 
+visit_one			    fn visit_one(&mut self, node: graph::NodeIndex) 
+visit_operand			    fn visit_operand(&mut self, operand: &mut Operand<'tcx>, location: Location) 
 visit_operand			    fn visit_operand(&mut self, operand: &mut Operand<'tcx>, location: Location) 
 visit_operand			    fn visit_operand(&mut self, operand: &Operand<'tcx>, location: Location) 
 visit_rvalue			    fn visit_rvalue(&mut self, rvalue: &Rvalue<'tcx>, location: Location) 
@@ -494,12 +540,13 @@ visit_substs			    fn visit_substs(&mut self, substs: &mut &'tcx Substs<'tcx>)
 visit_substs			    fn visit_substs(&mut self, substs: &mut &'tcx Substs<'tcx>) 
 visit_terminator			    fn visit_terminator(&mut self,
 visit_terminator			    fn visit_terminator(&mut self,
+visit_terminator_kind			    fn visit_terminator_kind(&mut self, _block: BasicBlock,
+visit_terminator_kind			    fn visit_terminator_kind(&mut self, block: BasicBlock,
 visit_terminator_kind			    fn visit_terminator_kind(&mut self,
-visit_trait_item			    fn visit_trait_item(&mut self, item: &'tcx hir::TraitItem) 
-visit_ty			    fn visit_ty(&mut self, ty: &'tcx hir::Ty) 
 visit_ty			    fn visit_ty(&mut self, ty: &mut Ty<'tcx>) 
 visit_ty			    fn visit_ty(&mut self, ty: &mut Ty<'tcx>) 
-visit_variant			    fn visit_variant(&mut self, v: &'tcx hir::Variant,
+visit_visibility_scope			    fn visit_visibility_scope(&mut self, scope: &mut VisibilityScope) 
+with_entry			    pub fn with_entry(graph: &'g graph::Graph<DefId, ()>,
 write_basic_block			fn write_basic_block(tcx: TyCtxt,
 write_edges			fn write_edges<W: Write>(source: BasicBlock, mir: &Mir, w: &mut W) -> io::Result<()> 
 write_graph_label			fn write_graph_label<'a, 'tcx, W: Write>(tcx: TyCtxt<'a, 'tcx, 'tcx>,

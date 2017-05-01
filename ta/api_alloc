@@ -28,6 +28,7 @@ Clone for Weak			impl<T: ?Sized> Clone for Weak<T>
 Cycle			        struct Cycle 
 Cycle			        struct Cycle 
 Default for Arc			impl<T: Default> Default for Arc<T> 
+Default for Box			impl Default for Box<str> 
 Default for Box			impl<T: Default> Default for Box<T> 
 Default for Box			impl<T> Default for Box<[T]> 
 Default for Rc			impl<T: Default> Default for Rc<T> 
@@ -38,12 +39,13 @@ Deref for Box			impl<T: ?Sized> Deref for Box<T>
 Deref for Rc			impl<T: ?Sized> Deref for Rc<T> 
 DerefMut for Box			impl<T: ?Sized> DerefMut for Box<T> 
 DoubleEndedIterator for Box			impl<I: DoubleEndedIterator + ?Sized> DoubleEndedIterator for Box<I> 
-Drop for Arc			impl<T: ?Sized> Drop for Arc<T> 
+Drop for Arc			unsafe impl<#[may_dangle] T: ?Sized> Drop for Arc<T> 
+Drop for Box			unsafe impl<#[may_dangle] T: ?Sized> Drop for Box<T> 
 Drop for BoxBuilder			        impl<T> Drop for BoxBuilder<T> 
 Drop for Canary			    impl Drop for Canary 
 Drop for IntermediateBox			impl<T: ?Sized> Drop for IntermediateBox<T> 
-Drop for RawVec			impl<T> Drop for RawVec<T> 
-Drop for Rc			impl<T: ?Sized> Drop for Rc<T> 
+Drop for RawVec			unsafe impl<#[may_dangle] T> Drop for RawVec<T> 
+Drop for Rc			unsafe impl<#[may_dangle] T: ?Sized> Drop for Rc<T> 
 Drop for Weak			impl<T: ?Sized> Drop for Weak<T> 
 Drop for Weak			impl<T: ?Sized> Drop for Weak<T> 
 Eq for Arc			impl<T: ?Sized + Eq> Eq for Arc<T> {}
@@ -59,6 +61,8 @@ Foo			    struct Foo
 Foo			    trait Foo 
 Foo for Bar			    impl Foo for Bar 
 From for Arc			impl<T> From<T> for Arc<T> 
+From for Box			impl<'a, T: Copy> From<&'a [T]> for Box<[T]> 
+From for Box			impl<'a> From<&'a str> for Box<str> 
 From for Box			impl<T> From<T> for Box<T> 
 From for Rc			impl<T> From<T> for Rc<T> 
 FusedIterator for Box			impl<I: FusedIterator + ?Sized> FusedIterator for Box<I> {}
@@ -154,6 +158,7 @@ default			    fn default() -> Arc<T>
 default			    fn default() -> Weak<T> 
 default			    fn default() -> Box<T> 
 default			    fn default() -> Box<[T]> 
+default			    fn default() -> Box<str> 
 default			    fn default() -> Rc<T> 
 default			    fn default() -> Weak<T> 
 default_oom_handler			fn default_oom_handler() -> ! 
@@ -180,8 +185,8 @@ drop_slow			    unsafe fn drop_slow(&mut self)
 eq			    fn eq(&self, other: &Arc<T>) -> bool 
 eq			    fn eq(&self, other: &Box<T>) -> bool 
 eq			    fn eq(&self, other: &Rc<T>) -> bool 
-exchange_free			unsafe fn exchange_free(ptr: *mut u8, old_size: usize, align: usize) 
 exchange_malloc			unsafe fn exchange_malloc(size: usize, align: usize) -> *mut u8 
+f64_slice			fn f64_slice() 
 finalize			    unsafe fn finalize(b: IntermediateBox<T>) -> Box<T> 
 finalize			    unsafe fn finalize(self) -> Box<T> 
 finalize			unsafe fn finalize<T>(b: IntermediateBox<T>) -> Box<T> 
@@ -200,12 +205,14 @@ fmt::Pointer for Arc			impl<T: ?Sized> fmt::Pointer for Arc<T>
 fmt::Pointer for Box			impl<T: ?Sized> fmt::Pointer for Box<T> 
 fmt::Pointer for Rc			impl<T: ?Sized> fmt::Pointer for Rc<T> 
 from			    fn from(t: T) -> Self 
+from			    fn from(s: &'a str) -> Box<str> 
+from			    fn from(slice: &'a [T]) -> Box<[T]> 
 from			    fn from(t: T) -> Self 
 from			    fn from(t: T) -> Self 
 from_box			    pub fn from_box(mut slice: Box<[T]>) -> Self 
-from_raw			    pub unsafe fn from_raw(ptr: *mut T) -> Self 
+from_raw			    pub unsafe fn from_raw(ptr: *const T) -> Self 
 from_raw			    pub unsafe fn from_raw(raw: *mut T) -> Self 
-from_raw			    pub unsafe fn from_raw(ptr: *mut T) -> Self 
+from_raw			    pub unsafe fn from_raw(ptr: *const T) -> Self 
 from_raw_parts			    pub unsafe fn from_raw_parts(ptr: *mut T, cap: usize) -> Self 
 ge			    fn ge(&self, other: &Arc<T>) -> bool 
 ge			    fn ge(&self, other: &Box<T>) -> bool 
@@ -223,6 +230,7 @@ hash			    fn hash<H: hash::Hasher>(&self, state: &mut H)
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 heap			pub mod heap;
 homura			    fn homura<T: Deref<Target = i32>>(_: T) {}
+i64_slice			fn i64_slice() 
 imp			mod imp 
 inc_strong			    fn inc_strong(&self) 
 inc_weak			    fn inc_weak(&self) 
@@ -233,9 +241,9 @@ into_box			            unsafe fn into_box(self) -> Box<[T]>
 into_box			    pub unsafe fn into_box(self) -> Box<[T]> 
 into_from_raw			    fn into_from_raw() 
 into_from_raw			    fn into_from_raw() 
-into_raw			    pub fn into_raw(this: Self) -> *mut T 
+into_raw			    pub fn into_raw(this: Self) -> *const T 
 into_raw			    pub fn into_raw(b: Box<T>) -> *mut T 
-into_raw			    pub fn into_raw(this: Self) -> *mut T 
+into_raw			    pub fn into_raw(this: Self) -> *const T 
 is_empty			    fn is_empty(&self) -> bool 
 is_unique			    fn is_unique(&mut self) -> bool 
 is_unique			    fn is_unique() 
@@ -292,6 +300,7 @@ set_oom_handler			    pub fn set_oom_handler(handler: fn() -> !)
 show_arc			    fn show_arc() 
 shrink_to_fit			    pub fn shrink_to_fit(&mut self, amount: usize) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
+str_slice			fn str_slice() 
 strong			    fn strong(&self) -> usize 
 strong_count			    pub fn strong_count(this: &Self) -> usize 
 strong_count			    pub fn strong_count(this: &Self) -> usize 

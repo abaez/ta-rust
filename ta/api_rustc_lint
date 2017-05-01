@@ -125,7 +125,7 @@ check_item			    fn check_item(&mut self, cx: &LateContext, item: &hir::Item)
 check_item			    fn check_item(&mut self, cx: &LateContext, it: &hir::Item) 
 check_item			    fn check_item(&mut self, cx: &EarlyContext, item: &ast::Item) 
 check_lifetime_def			    fn check_lifetime_def(&mut self, cx: &LateContext, t: &hir::LifetimeDef) 
-check_limits			        fn check_limits<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_limits			        fn check_limits(cx: &LateContext,
 check_missing_docs_attrs			    fn check_missing_docs_attrs(&self,
 check_must_use			        fn check_must_use(cx: &LateContext, attrs: &[ast::Attribute], sp: Span) -> bool 
 check_pat			    fn check_pat(&mut self, cx: &LateContext, p: &hir::Pat) 
@@ -137,14 +137,16 @@ check_struct_def			    fn check_struct_def(&mut self,
 check_struct_def			    fn check_struct_def(&mut self,
 check_struct_def_post			    fn check_struct_def_post(&mut self,
 check_struct_field			    fn check_struct_field(&mut self, cx: &LateContext, sf: &hir::StructField) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, ti: &hir::TraitItem) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
-check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
-check_type_for_ffi			    fn check_type_for_ffi(&self, cache: &mut FxHashSet<Ty<'tcx>>, ty: Ty<'tcx>) -> FfiResult 
+check_type_for_ffi			    fn check_type_for_ffi(&self,
 check_type_for_ffi_and_report_errors			    fn check_type_for_ffi_and_report_errors(&mut self, sp: Span, ty: Ty<'tcx>) 
 check_unused_mut_pat			    fn check_unused_mut_pat(&self, cx: &LateContext, pats: &[P<hir::Pat>]) 
 check_unused_parens_core			    fn check_unused_parens_core(&self,
 check_upper_case			    fn check_upper_case(cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
+check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
 check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
 check_variant_post			    fn check_variant_post(&mut self, _: &LateContext, _: &hir::Variant, _: &hir::Generics) 
 contains_exterior_struct_lit			        fn contains_exterior_struct_lit(value: &ast::Expr) -> bool 
@@ -152,19 +154,20 @@ def_id_is_transmute			        fn def_id_is_transmute(cx: &LateContext, def_id: D
 doc_hidden			    fn doc_hidden(&self) -> bool 
 enter_lint_attrs			    fn enter_lint_attrs(&mut self, _: &LateContext, attrs: &[ast::Attribute]) 
 exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &LateContext, _attrs: &[ast::Attribute]) 
-expr_refers_to_this_fn			        fn expr_refers_to_this_fn(tcx: TyCtxt, fn_id: ast::NodeId, id: ast::NodeId) -> bool 
-expr_refers_to_this_method			        fn expr_refers_to_this_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+expr_refers_to_this_fn			        fn expr_refers_to_this_fn(cx: &LateContext, fn_id: ast::NodeId, id: ast::NodeId) -> bool 
+expr_refers_to_this_method			        fn expr_refers_to_this_method(cx: &LateContext,
 float_ty_range			        fn float_ty_range(float_ty: ast::FloatTy) -> (f64, f64) 
-forbid_unsigned_negation			        fn forbid_unsigned_negation(cx: &LateContext, span: Span) 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_transmute_from_to			        fn get_transmute_from_to<'a, 'tcx>
 int_ty_bits			        fn int_ty_bits(int_ty: ast::IntTy, target_int_ty: ast::IntTy) -> u64 
-int_ty_range			        fn int_ty_range(int_ty: ast::IntTy) -> (i64, i64) 
+int_ty_range			        fn int_ty_range(int_ty: ast::IntTy) -> (i128, i128) 
 is_camel_case			        fn is_camel_case(name: ast::Name) -> bool 
 is_comparison			        fn is_comparison(binop: hir::BinOp) -> bool 
+is_enclosed			        fn is_enclosed(cx: &LateContext, id: ast::NodeId) -> Option<(String, ast::NodeId)> 
+is_ffi_safe			fn is_ffi_safe(ty: attr::IntType) -> bool 
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
 is_valid			        fn is_valid<T: cmp::PartialOrd>(binop: hir::BinOp, v: T, min: T, max: T) -> bool 
@@ -180,5 +183,5 @@ to_camel_case			        fn to_camel_case(s: &str) -> String
 to_snake_case			    fn to_snake_case(mut str: &str) -> String 
 types			mod types;
 uint_ty_bits			        fn uint_ty_bits(uint_ty: ast::UintTy, target_uint_ty: ast::UintTy) -> u64 
-uint_ty_range			        fn uint_ty_range(uint_ty: ast::UintTy) -> (u64, u64) 
+uint_ty_range			        fn uint_ty_range(uint_ty: ast::UintTy) -> (u128, u128) 
 unused			mod unused;

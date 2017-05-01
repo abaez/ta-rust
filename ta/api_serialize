@@ -14,6 +14,7 @@ Decodable for Arc			impl<T:Decodable+Send+Sync> Decodable for Arc<T>
 Decodable for Box			impl< T: Decodable> Decodable for Box<T> 
 Decodable for Box			impl< T: Decodable> Decodable for Box<[T]> 
 Decodable for Cell			impl<T: Decodable + Copy> Decodable for Cell<T> 
+Decodable for Cow			impl<T:Decodable+ToOwned> Decodable for Cow<'static, [T]>
 Decodable for HashMap			impl<K, V, S> Decodable for HashMap<K, V, S>
 Decodable for HashSet			impl<T, S> Decodable for HashSet<T, S>
 Decodable for LinkedList			impl<T:Decodable> Decodable for LinkedList<T> 
@@ -28,12 +29,14 @@ Decodable for bool			impl Decodable for bool
 Decodable for char			impl Decodable for char 
 Decodable for f32			impl Decodable for f32 
 Decodable for f64			impl Decodable for f64 
+Decodable for i128			impl Decodable for i128 
 Decodable for i16			impl Decodable for i16 
 Decodable for i32			impl Decodable for i32 
 Decodable for i64			impl Decodable for i64 
 Decodable for i8			impl Decodable for i8 
 Decodable for isize			impl Decodable for isize 
 Decodable for path			impl Decodable for path::PathBuf 
+Decodable for u128			impl Decodable for u128 
 Decodable for u16			impl Decodable for u16 
 Decodable for u32			impl Decodable for u32 
 Decodable for u64			impl Decodable for u64 
@@ -55,6 +58,7 @@ Encodable			pub trait Encodable
 Encodable for Arc			impl<T:Encodable> Encodable for Arc<T> 
 Encodable for Box			impl<T: ?Sized + Encodable> Encodable for Box<T> 
 Encodable for Cell			impl<T: Encodable + Copy> Encodable for Cell<T> 
+Encodable for Cow			impl<'a, T:Encodable> Encodable for Cow<'a, [T]>
 Encodable for HashMap			impl<K, V, S> Encodable for HashMap<K, V, S>
 Encodable for HashSet			impl<T, S> Encodable for HashSet<T, S>
 Encodable for Json			impl Encodable for Json 
@@ -69,6 +73,7 @@ Encodable for bool			impl Encodable for bool
 Encodable for char			impl Encodable for char 
 Encodable for f32			impl Encodable for f32 
 Encodable for f64			impl Encodable for f64 
+Encodable for i128			impl Encodable for i128 
 Encodable for i16			impl Encodable for i16 
 Encodable for i32			impl Encodable for i32 
 Encodable for i64			impl Encodable for i64 
@@ -76,6 +81,7 @@ Encodable for i8			impl Encodable for i8
 Encodable for isize			impl Encodable for isize 
 Encodable for path			impl Encodable for path::PathBuf 
 Encodable for str			impl Encodable for str 
+Encodable for u128			impl Encodable for u128 
 Encodable for u16			impl Encodable for u16 
 Encodable for u32			impl Encodable for u32 
 Encodable for u64			impl Encodable for u64 
@@ -174,7 +180,6 @@ check_round_trip			    fn check_round_trip<T: Encodable + Decodable + PartialEq 
 collection_impls			mod collection_impls;
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BTreeMap<K, V>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BTreeSet<T>, D::Error> 
-decode			    fn decode<D: Decoder>(d: &mut D) -> Result<EnumSet<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashMap<K, V, S>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<HashSet<T, S>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<LinkedList<T>, D::Error> 
@@ -186,6 +191,7 @@ decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Arc<T>, D::Error>
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Box<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Box<[T]>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Cell<T>, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Cow<'static, [T]>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Option<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Rc<T>, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<RefCell<T>, D::Error> 
@@ -196,12 +202,14 @@ decode			    fn decode<D: Decoder>(d: &mut D) -> Result<bool, D::Error>
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<char, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<f32, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<f64, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i128, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i16, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i32, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i64, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<i8, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<isize, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<path::PathBuf, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u128, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u16, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u32, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<u64, D::Error> 
@@ -235,6 +243,9 @@ emit_f32			    fn emit_f32(&mut self, v: f32) -> Result<(), Self::Error>;
 emit_f64			    fn emit_f64(&mut self, v: f64) -> EncodeResult 
 emit_f64			    fn emit_f64(&mut self, v: f64) -> EncodeResult 
 emit_f64			    fn emit_f64(&mut self, v: f64) -> Result<(), Self::Error>;
+emit_i128			    fn emit_i128(&mut self, v: i128) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
+emit_i128			    fn emit_i128(&mut self, v: i128) -> EncodeResult 
+emit_i128			    fn emit_i128(&mut self, v: i128) -> Result<(), Self::Error>;
 emit_i16			    fn emit_i16(&mut self, v: i16) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
 emit_i16			    fn emit_i16(&mut self, v: i16) -> EncodeResult 
 emit_i16			    fn emit_i16(&mut self, v: i16) -> Result<(), Self::Error>;
@@ -288,6 +299,9 @@ emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _name: &str, len: usi
 emit_tuple_struct			    fn emit_tuple_struct<F>(&mut self, _name: &str, len: usize, f: F)
 emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, idx: usize, f: F) -> EncodeResult where
 emit_tuple_struct_arg			    fn emit_tuple_struct_arg<F>(&mut self, f_idx: usize, f: F)
+emit_u128			    fn emit_u128(&mut self, v: u128) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
+emit_u128			    fn emit_u128(&mut self, v: u128) -> EncodeResult 
+emit_u128			    fn emit_u128(&mut self, v: u128) -> Result<(), Self::Error>;
 emit_u16			    fn emit_u16(&mut self, v: u16) -> EncodeResult { emit_enquoted_if_mapkey!(self, v) }
 emit_u16			    fn emit_u16(&mut self, v: u16) -> EncodeResult 
 emit_u16			    fn emit_u16(&mut self, v: u16) -> Result<(), Self::Error>;
@@ -423,6 +437,8 @@ read_f32			    fn read_f32(&mut self) -> Result<f32, Self::Error>;
 read_f64			    fn read_f64(&mut self) -> DecodeResult<f64> 
 read_f64			    fn read_f64(&mut self) -> Result<f64, Self::Error> 
 read_f64			    fn read_f64(&mut self) -> Result<f64, Self::Error>;
+read_i128			    fn read_i128(&mut self) -> Result<i128, Self::Error> 
+read_i128			    fn read_i128(&mut self) -> Result<i128, Self::Error>;
 read_i16			    fn read_i16(&mut self) -> Result<i16, Self::Error> 
 read_i16			    fn read_i16(&mut self) -> Result<i16, Self::Error>;
 read_i32			    fn read_i32(&mut self) -> Result<i32, Self::Error> 
@@ -448,7 +464,7 @@ read_seq			    fn read_seq<T, F>(&mut self, f: F) -> DecodeResult<T> where
 read_seq			    fn read_seq<T, F>(&mut self, f: F) -> Result<T, Self::Error>
 read_seq_elt			    fn read_seq_elt<T, F>(&mut self, _idx: usize, f: F) -> DecodeResult<T> where
 read_seq_elt			    fn read_seq_elt<T, F>(&mut self, _idx: usize, f: F) -> Result<T, Self::Error>
-read_signed_leb128			pub fn read_signed_leb128(data: &[u8], start_position: usize) -> (i64, usize) 
+read_signed_leb128			pub fn read_signed_leb128(data: &[u8], start_position: usize) -> (i128, usize) 
 read_str			    fn read_str(&mut self) -> DecodeResult<Cow<str>> 
 read_str			    fn read_str(&mut self) -> Result<Cow<str>, Self::Error> 
 read_str			    fn read_str(&mut self) -> Result<Cow<str>, Self::Error>;
@@ -464,6 +480,8 @@ read_tuple_struct			    fn read_tuple_struct<T, F>(&mut self,
 read_tuple_struct			    fn read_tuple_struct<T, F>(&mut self, _s_name: &str, len: usize, f: F)
 read_tuple_struct_arg			    fn read_tuple_struct_arg<T, F>(&mut self,
 read_tuple_struct_arg			    fn read_tuple_struct_arg<T, F>(&mut self, a_idx: usize, f: F)
+read_u128			    fn read_u128(&mut self) -> Result<u128, Self::Error> 
+read_u128			    fn read_u128(&mut self) -> Result<u128, Self::Error>;
 read_u16			    fn read_u16(&mut self) -> Result<u16, Self::Error> 
 read_u16			    fn read_u16(&mut self) -> Result<u16, Self::Error>;
 read_u32			    fn read_u32(&mut self) -> Result<u32, Self::Error> 
@@ -472,7 +490,7 @@ read_u64			    fn read_u64(&mut self) -> Result<u64, Self::Error>
 read_u64			    fn read_u64(&mut self) -> Result<u64, Self::Error>;
 read_u8			    fn read_u8(&mut self) -> Result<u8, Self::Error> 
 read_u8			    fn read_u8(&mut self) -> Result<u8, Self::Error>;
-read_unsigned_leb128			pub fn read_unsigned_leb128(data: &[u8], start_position: usize) -> (u64, usize) 
+read_unsigned_leb128			pub fn read_unsigned_leb128(data: &[u8], start_position: usize) -> (u128, usize) 
 read_usize			    fn read_usize(&mut self) -> Result<usize, Self::Error> 
 read_usize			    fn read_usize(&mut self) -> Result<usize, Self::Error>;
 rustc_serialize			mod rustc_serialize 
@@ -504,9 +522,9 @@ to_json			    fn to_json(&self) -> Json { self.clone() }
 to_json			    fn to_json(&self) -> Json 
 to_json			    fn to_json(&self) -> Json;
 top			    pub fn top(&self) -> Option<StackElement> 
-write_signed_leb128			pub fn write_signed_leb128(out: &mut Vec<u8>, start_position: usize, value: i64) -> usize 
-write_signed_leb128_to			pub fn write_signed_leb128_to<W>(mut value: i64, mut write: W) -> usize
+write_signed_leb128			pub fn write_signed_leb128(out: &mut Vec<u8>, start_position: usize, value: i128) -> usize 
+write_signed_leb128_to			pub fn write_signed_leb128_to<W>(mut value: i128, mut write: W) -> usize
 write_str			    fn write_str(&mut self, s: &str) -> fmt::Result 
 write_to_vec			fn write_to_vec(vec: &mut Vec<u8>, position: usize, byte: u8) 
-write_unsigned_leb128			pub fn write_unsigned_leb128(out: &mut Vec<u8>, start_position: usize, value: u64) -> usize 
-write_unsigned_leb128_to			pub fn write_unsigned_leb128_to<W>(mut value: u64, mut write: W) -> usize
+write_unsigned_leb128			pub fn write_unsigned_leb128(out: &mut Vec<u8>, start_position: usize, value: u128) -> usize 
+write_unsigned_leb128_to			pub fn write_unsigned_leb128_to<W>(mut value: u128, mut write: W) -> usize

@@ -23,7 +23,6 @@ BitwiseOperator for MoveDataFlowOperator			impl BitwiseOperator for MoveDataFlow
 BitwiseOperator for MovingOutStatements			impl<'a, 'tcx> BitwiseOperator for MovingOutStatements<'a, 'tcx> 
 BlockSets			impl<'a, E:Idx> BlockSets<'a, E> 
 BlockSets			pub struct BlockSets<'a, E: Idx> 
-BorrowStats			struct BorrowStats 
 BorrowckCtxt			impl<'a, 'tcx> BorrowckCtxt<'a, 'tcx> 
 BorrowckCtxt			pub struct BorrowckCtxt<'a, 'tcx: 'a> 
 CheckLoanCtxt			impl<'a, 'tcx> CheckLoanCtxt<'a, 'tcx> 
@@ -79,6 +78,11 @@ Graph			struct Graph<'a, 'tcx, MWF:'a, P> where
 GroupedMoveErrors			pub struct GroupedMoveErrors<'tcx> 
 GuaranteeLifetimeContext			impl<'a, 'tcx> GuaranteeLifetimeContext<'a, 'tcx> 
 GuaranteeLifetimeContext			struct GuaranteeLifetimeContext<'a, 'tcx: 'a> 
+HasMoveData			pub trait HasMoveData<'tcx> 
+HasMoveData for DefinitelyInitializedLvals			impl<'a, 'tcx: 'a> HasMoveData<'tcx> for DefinitelyInitializedLvals<'a, 'tcx> 
+HasMoveData for MaybeInitializedLvals			impl<'a, 'tcx: 'a> HasMoveData<'tcx> for MaybeInitializedLvals<'a, 'tcx> 
+HasMoveData for MaybeUninitializedLvals			impl<'a, 'tcx: 'a> HasMoveData<'tcx> for MaybeUninitializedLvals<'a, 'tcx> 
+HasMoveData for MovingOutStatements			impl<'a, 'tcx> HasMoveData<'tcx> for MovingOutStatements<'a, 'tcx> 
 Hash for LoanPath			impl<'tcx> Hash for LoanPath<'tcx> 
 Idx			            impl Idx for 
 Index for LocationMap			impl<T> Index<Location> for LocationMap<T> 
@@ -109,7 +113,7 @@ MaybeUninitializedLvals			pub struct MaybeUninitializedLvals<'a, 'tcx: 'a>
 MirBorrowckCtxt			impl<'b, 'a: 'b, 'tcx: 'a> MirBorrowckCtxt<'b, 'a, 'tcx> 
 MirBorrowckCtxt			pub struct MirBorrowckCtxt<'b, 'a: 'b, 'tcx: 'a> 
 MirBorrowckCtxtPreDataflow			impl<'a, 'tcx: 'a, BD> MirBorrowckCtxtPreDataflow<'a, 'tcx, BD>
-MirBorrowckCtxtPreDataflow			pub struct MirBorrowckCtxtPreDataflow<'a, 'tcx: 'a, BD>
+MirBorrowckCtxtPreDataflow			pub struct MirBorrowckCtxtPreDataflow<'a, 'tcx: 'a, BD> where BD: BitDenotation
 MirPass for ElaborateDrops			impl<'tcx> MirPass<'tcx> for ElaborateDrops 
 MirPatch			impl<'tcx> MirPatch<'tcx> 
 MirPatch			pub struct MirPatch<'tcx> 
@@ -151,7 +155,6 @@ PropagationContext			struct PropagationContext<'b, 'a: 'b, 'tcx: 'a, O>
 RestrictionResult			pub enum RestrictionResult<'tcx> 
 RestrictionsContext			impl<'a, 'tcx> RestrictionsContext<'a, 'tcx> 
 RestrictionsContext			struct RestrictionsContext<'a, 'tcx: 'a> 
-StaticInitializerCtxt			struct StaticInitializerCtxt<'a, 'tcx: 'a> 
 TheDarkKnight			impl TheDarkKnight 
 TheDarkKnight			struct TheDarkKnight;
 ToInteriorKind			trait ToInteriorKind { fn cleaned(self) -> InteriorKind; }
@@ -161,8 +164,6 @@ Value			struct Value {}
 Variant			impl Variant 
 Variant			pub enum Variant 
 VariantMatch			pub struct VariantMatch 
-Visitor for BorrowckCtxt			impl<'a, 'tcx> Visitor<'tcx> for BorrowckCtxt<'a, 'tcx> 
-Visitor for StaticInitializerCtxt			impl<'a, 'tcx> Visitor<'tcx> for StaticInitializerCtxt<'a, 'tcx> 
 abs_domain			mod abs_domain;
 add_assign			    pub fn add_assign(&mut self, loc: Location, lv: Lvalue<'tcx>, rv: Rvalue<'tcx>) 
 add_assignment			    pub fn add_assignment(&mut self, path_index: MovePathIndex) 
@@ -179,8 +180,6 @@ add_move			    pub fn add_move(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 add_move_helper			    fn add_move_helper(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 add_statement			    pub fn add_statement(&mut self, loc: Location, stmt: StatementKind<'tcx>) 
 add_variant_match			    pub fn add_variant_match(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
-analysis_ctxt			    fn analysis_ctxt(&self) -> &<Self::BD as BitDenotation>::Ctxt;
-analysis_ctxt			    fn analysis_ctxt(&self) -> &BD::Ctxt { &self.flow_state.ctxt }
 analyze_restrictions_on_use			    pub fn analyze_restrictions_on_use(&self,
 append_autoderefd_loan_path_to_string			    pub fn append_autoderefd_loan_path_to_string(&self,
 append_loan_path_to_string			    pub fn append_loan_path_to_string(&self,
@@ -190,15 +189,14 @@ apply_location			    fn apply_location<'a,'tcx>(&mut self,
 assigned_leaf_paths			    pub fn assigned_leaf_paths(&self) -> &[MovePathIndex] 
 bar			fn bar(x: &mut i32) {}
 bckerr_code			pub enum bckerr_code<'tcx> 
-bckerr_to_string			    pub fn bckerr_to_string(&self, err: &BckError<'tcx>) -> String 
-bits_per_block			    fn bits_per_block(&self, ctxt: &Self::Ctxt) -> usize 
-bits_per_block			    fn bits_per_block(&self, &Self::Ctxt) -> usize;
+bckerr_to_diag			    pub fn bckerr_to_diag(&self, err: &BckError<'tcx>) -> DiagnosticBuilder<'a> 
+bits_per_block			    fn bits_per_block(&self) -> usize 
+bits_per_block			    fn bits_per_block(&self) -> usize;
 bits_per_block			    pub fn bits_per_block(&self) -> usize { self.bits_per_block }
 borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 borrowck			mod borrowck;
-borrowck_fn			fn borrowck_fn<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>,
-borrowck_item			fn borrowck_item<'a, 'tcx>(this: &mut BorrowckCtxt<'a, 'tcx>, item: &'tcx hir::Item) 
+borrowck_fn			fn borrowck_fn<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, body_id: hir::BodyId) 
 borrowck_mir			pub fn borrowck_mir(bcx: &mut BorrowckCtxt,
 bottom_value			    fn bottom_value() -> bool 
 bottom_value			    fn bottom_value() -> bool;
@@ -213,6 +211,7 @@ check_aliasability			fn check_aliasability<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tc
 check_and_get_illegal_move_origin			fn check_and_get_illegal_move_origin<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 check_assignment			    fn check_assignment(&self,
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
+check_crate_task			    fn check_crate_task<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, (): ()) 
 check_for_conflicting_loans			    pub fn check_for_conflicting_loans(&self, node: ast::NodeId) 
 check_for_copy_of_frozen_path			    fn check_for_copy_of_frozen_path(&self,
 check_for_move_of_borrowed_path			    fn check_for_move_of_borrowed_path(&self,
@@ -245,8 +244,8 @@ consume_pat			    fn consume_pat(&mut self,
 consume_pat			    fn consume_pat(&mut self,
 create_drop_flag			    fn create_drop_flag(&mut self, index: MovePathIndex) 
 create_move_path			    fn create_move_path(&mut self, lval: &Lvalue<'tcx>) 
-dataflow			    fn dataflow<P>(&mut self, p: P) where P: Fn(&BD::Ctxt, BD::Idx) -> &Debug 
-dataflow			    fn dataflow<P>(&mut self, p: P) where P: Fn(&BD::Ctxt, BD::Idx) -> &Debug;
+dataflow			    fn dataflow<P>(&mut self, p: P) where P: Fn(&BD, BD::Idx) -> &Debug 
+dataflow			    fn dataflow<P>(&mut self, p: P) where P: Fn(&BD, BD::Idx) -> &Debug;
 dataflow			mod dataflow;
 dataflow_assigns_for			    fn dataflow_assigns_for(&self, e: EntryOrExit, cfgidx: CFGIndex) -> String 
 dataflow_for			    fn dataflow_for(&self, e: EntryOrExit, n: &Node<'a>) -> String 
@@ -255,10 +254,10 @@ dataflow_loans_for			    fn dataflow_loans_for(&self, e: EntryOrExit, cfgidx: CF
 dataflow_moves_for			    fn dataflow_moves_for(&self, e: EntryOrExit, cfgidx: CFGIndex) -> String 
 dataflow_path			fn dataflow_path(context: &str, prepost: &str, path: &str) -> PathBuf 
 decl_without_init			    fn decl_without_init(&mut self, _id: ast::NodeId, _span: Span) { }
-decl_without_init			    fn decl_without_init(&mut self, id: ast::NodeId, span: Span) 
+decl_without_init			    fn decl_without_init(&mut self, id: ast::NodeId, _span: Span) 
 depth			    fn depth(&self) -> usize 
 diagnostics			pub mod diagnostics;
-do_dataflow			fn do_dataflow<'a, 'tcx, BD>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+do_dataflow			fn do_dataflow<'a, 'tcx, BD, P>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 dot::GraphWalk for DataflowLabeller			impl<'a, 'tcx> dot::GraphWalk<'a> for DataflowLabeller<'a, 'tcx> 
 dot::GraphWalk for Graph			impl<'a, 'tcx, MWF, P> dot::GraphWalk<'a> for Graph<'a, 'tcx, MWF, P>
 dot::Labeller for DataflowLabeller			impl<'a, 'tcx> dot::Labeller<'a> for DataflowLabeller<'a, 'tcx> 
@@ -280,7 +279,7 @@ drop_ladder			    fn drop_ladder<'a>(&mut self,
 each_applicable_move			    fn each_applicable_move<F>(&self, index0: MovePathIndex, mut f: F) -> bool where
 each_assignment_of			    pub fn each_assignment_of<F>(&self,
 each_base_path			    fn each_base_path<F>(&self, index: MovePathIndex, mut f: F) -> bool where
-each_bit			    fn each_bit<F>(&self, ctxt: &O::Ctxt, words: &IdxSet<O::Idx>, mut f: F)
+each_bit			    fn each_bit<F>(&self, words: &IdxSet<O::Idx>, mut f: F)
 each_block			fn each_block<'a, 'tcx, O>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 each_extending_path			    fn each_extending_path<F>(&self, index: MovePathIndex, mut f: F) -> bool where
 each_extending_path_			    fn each_extending_path_<F>(&self, index: MovePathIndex, f: &mut F) -> bool where
@@ -335,7 +334,6 @@ gather_assignment			pub fn gather_assignment<'a, 'tcx>(bccx: &BorrowckCtxt<'a, '
 gather_decl			pub fn gather_decl<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_loans			pub mod gather_loans;
 gather_loans_in_fn			pub fn gather_loans_in_fn<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
-gather_loans_in_static_initializer			pub fn gather_loans_in_static_initializer<'a, 'tcx>(bccx: &mut BorrowckCtxt<'a, 'tcx>,
 gather_match_variant			pub fn gather_match_variant<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			fn gather_move<'a, 'tcx>(bccx: &BorrowckCtxt<'a, 'tcx>,
 gather_move			    fn gather_move(&mut self, loc: Location, lval: &Lvalue<'tcx>) 
@@ -365,6 +363,7 @@ has_rustc_mir_with			fn has_rustc_mir_with(attrs: &[ast::Attribute], name: &str)
 hash			    fn hash<H: Hasher>(&self, state: &mut H) 
 helper			    fn helper<'a, 'tcx>(loan_path: &'a LoanPath<'tcx>) -> Option<&'a LoanPath<'tcx>> 
 helper			    fn helper<'tcx>(loan_path: &Rc<LoanPath<'tcx>>) -> Option<Rc<LoanPath<'tcx>>> 
+immutable_argument_should_be_mut			    fn immutable_argument_should_be_mut(&self, nid: ast::NodeId, db: &mut DiagnosticBuilder) 
 impls			mod impls;
 index			                fn index(self) -> usize 
 index			    fn index(&self, index: Location) -> &Self::Output 
@@ -379,7 +378,7 @@ instrument_move_fragments			pub fn instrument_move_fragments<'a, 'tcx>(this: &Mo
 interpret_set			    pub fn interpret_set<'c, P>(&self,
 is_patched			    pub fn is_patched(&self, bb: BasicBlock) -> bool 
 is_rustc_peek			fn is_rustc_peek<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-is_subregion_of			    pub fn is_subregion_of(&self, r_sub: &'tcx ty::Region, r_sup: &'tcx ty::Region)
+is_subregion_of			    pub fn is_subregion_of(&self,
 is_terminal_path			    fn is_terminal_path<'a, 'tcx>(
 is_var_path			    fn is_var_path(&self, index: MovePathIndex) -> bool 
 join			    fn join(&self, pred1: usize, pred2: usize) -> usize 
@@ -403,7 +402,6 @@ loans_generated_by			    pub fn loans_generated_by(&self, node: ast::NodeId) -> 
 lookup_set_for			    fn lookup_set_for<'a>(&self, sets: &'a Bits<E>, block_idx: usize) -> &'a IdxSet<E> 
 lvalue_contents_drop_state_cannot_differ			fn lvalue_contents_drop_state_cannot_differ<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 main			fn main() 
-make_stat			    fn make_stat(bccx: &BorrowckCtxt, stat: usize) -> String 
 mark_loan_path_as_mutated			    pub fn mark_loan_path_as_mutated(&self, loan_path: &LoanPath) 
 matched_pat			    fn matched_pat(&mut self,
 matched_pat			    fn matched_pat(&mut self,
@@ -411,7 +409,9 @@ mir			    fn mir(&self) -> &Mir<'tcx> { self.flow_state.mir() }
 mir			    fn mir(&self) -> &Mir<'tcx>;
 mir			    pub fn mir(&self) -> &'a Mir<'tcx> { self.mir }
 mir			mod mir;
+move_data			    fn move_data(&self) -> &MoveData<'tcx> { &self.mdpe.move_data }
 move_data			    fn move_data(&self) -> &'b MoveData<'tcx> { &self.env.move_data }
+move_data			    fn move_data(&self) -> &MoveData<'tcx>;
 move_data			pub mod move_data;
 move_error			mod move_error;
 move_next_move			    fn move_next_move(&self, index: MoveIndex) -> MoveIndex 
@@ -432,11 +432,9 @@ name			    fn name() -> &'static str { "maybe_init" }
 name			    fn name() -> &'static str { "maybe_uninit" }
 name			    fn name() -> &'static str { "moving_out" }
 name			    fn name() -> &'static str;
-nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
-nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 new			    pub fn new() -> FragmentSets 
 new			    pub fn new() -> MoveErrorCollector<'tcx> 
-new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>, mir: &'a Mir<'tcx>) -> Self 
+new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 new			    fn new(bits: IdxSetBuf<E>) -> Self 
 new			    pub fn new(_tcx: TyCtxt<'a, 'tcx, 'tcx>,
 new			                fn new(idx: usize) -> Self 
@@ -460,7 +458,7 @@ node_shape			    fn node_shape(&self, _n: &Node) -> Option<dot::LabelText>
 nodes			    fn nodes(&self) -> dot::Nodes<Node> 
 nodes			    fn nodes(&'a self) -> dot::Nodes<'a, Node<'a>> { self.inner.nodes() }
 non_member			    fn non_member(elem: MovePathIndex, set: &[MovePathIndex]) -> bool 
-note_and_explain_bckerr			    pub fn note_and_explain_bckerr(&self, db: &mut DiagnosticBuilder, err: BckError<'tcx>,
+note_and_explain_bckerr			    pub fn note_and_explain_bckerr(&self, db: &mut DiagnosticBuilder, err: BckError<'tcx>) 
 note_and_explain_mutbl_error			    fn note_and_explain_mutbl_error(&self, db: &mut DiagnosticBuilder, err: &BckError<'tcx>,
 note_move_destination			fn note_move_destination(mut err: DiagnosticBuilder,
 nothing_is_true			    fn nothing_is_true(&self) {} \/\/ First case, we don't take ownership
@@ -473,7 +471,6 @@ open_drop			    fn open_drop<'a>(&mut self, c: &DropCtxt<'a, 'tcx>) -> BasicBloc
 open_drop_for_adt			    fn open_drop_for_adt<'a>(&mut self, c: &DropCtxt<'a, 'tcx>,
 open_drop_for_box			    fn open_drop_for_box<'a>(&mut self, c: &DropCtxt<'a, 'tcx>, ty: Ty<'tcx>)
 open_drop_for_tuple			    fn open_drop_for_tuple<'a>(&mut self, c: &DropCtxt<'a, 'tcx>, tys: &[Ty<'tcx>])
-open_drop_for_variant			    fn open_drop_for_variant<'a>(&mut self,
 opt_loan_path			pub fn opt_loan_path<'tcx>(cmt: &mc::cmt<'tcx>) -> Option<Rc<LoanPath<'tcx>>> 
 outgoing			fn outgoing(mir: &Mir, bb: BasicBlock) -> Vec<Edge> 
 outside_closure			fn outside_closure(x: &mut i32) 
@@ -537,16 +534,17 @@ source_info_for_index			    pub fn source_info_for_index(data: &BasicBlockData, 
 source_info_for_location			    pub fn source_info_for_location(&self, mir: &Mir, loc: Location) -> SourceInfo 
 span_err			    pub fn span_err(&self, s: Span, m: &str) 
 span_err_with_code			    pub fn span_err_with_code<S: Into<MultiSpan>>(&self, s: S, msg: &str, code: &str) 
-start_block_effect			    fn start_block_effect(&self, ctxt: &Self::Ctxt, sets: &mut BlockSets<MovePathIndex>) 
-start_block_effect			    fn start_block_effect(&self, ctxt: &Self::Ctxt, sets: &mut BlockSets<MovePathIndex>)
-start_block_effect			    fn start_block_effect(&self,_move_data: &Self::Ctxt, _sets: &mut BlockSets<MoveOutIndex>) 
-start_block_effect			    fn start_block_effect(&self, ctxt: &Self::Ctxt, sets: &mut BlockSets<Self::Idx>);
+start_block_effect			    fn start_block_effect(&self, _sets: &mut BlockSets<MoveOutIndex>) 
+start_block_effect			    fn start_block_effect(&self, sets: &mut BlockSets<MovePathIndex>) 
+start_block_effect			    fn start_block_effect(&self, sets: &mut BlockSets<MovePathIndex>)
+start_block_effect			    fn start_block_effect(&self, sets: &mut BlockSets<Self::Idx>);
 state			    fn state(&self, path: MovePathIndex) -> (bool, bool) 
 statement_effect			    fn statement_effect(&self,
 statement_effect			    fn statement_effect(&self,
 statement_scope_span			fn statement_scope_span(tcx: TyCtxt, region: &ty::Region) -> Option<Span> 
 struct_span_err			    pub fn struct_span_err<S: Into<MultiSpan>>(&self, s: S, m: &str)
 struct_span_err_with_code			    pub fn struct_span_err_with_code<S: Into<MultiSpan>>(&self,
+suggest_mut_for_immutable			    fn suggest_mut_for_immutable(&self, pty: &hir::Ty) -> Option<String> 
 target			    fn target(&self, edge: &Edge) -> Node 
 target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> { self.inner.target(edge) }
 tcx			    pub fn tcx(&self) -> TyCtxt<'a, 'tcx, 'tcx> { self.bccx.tcx }
@@ -558,13 +556,7 @@ to_type			    fn to_type(&self) -> ty::Ty<'tcx> { self.ty }
 unelaborated_free_block			    fn unelaborated_free_block<'a>(
 update_bits			    fn update_bits(sets: &mut BlockSets<MovePathIndex>, path: MovePathIndex,
 value			    fn value(self) -> bool 
-visit_expr			    fn visit_expr(&mut self, ex: &'tcx Expr) 
-visit_fn			    fn visit_fn(&mut self, fk: FnKind<'tcx>, fd: &'tcx hir::FnDecl,
-visit_impl_item			    fn visit_impl_item(&mut self, ii: &'tcx hir::ImplItem) 
-visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
-visit_trait_item			    fn visit_trait_item(&mut self, ti: &'tcx hir::TraitItem) 
 walk_cfg			    fn walk_cfg(&mut self, in_out: &mut IdxSet<BD::Idx>) 
 with_move_info			    pub fn with_move_info(move_from: mc::cmt<'tcx>,
-with_temp_region_map			    fn with_temp_region_map<F>(&mut self, id: ast::NodeId, f: F)
 you_know_nothing			fn you_know_nothing(jon_snow: &mut i32) 
 zero_to_one			fn zero_to_one(bitvec: &mut [usize], move_index: MoveOutIndex) 

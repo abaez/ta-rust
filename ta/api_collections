@@ -20,6 +20,7 @@ BTreeSet			pub struct BTreeSet<T>
 BackPlace			pub struct BackPlace<'a, T: 'a> 
 BinaryHeap			impl<T: Ord> BinaryHeap<T> 
 BinaryHeap			pub struct BinaryHeap<T> 
+BinaryHeapPlace			pub struct BinaryHeapPlace<'a, T: 'a>
 BitAnd			impl<'a, 'b, T: Ord + Clone> BitAnd<&'b BTreeSet<T>> for &'a BTreeSet<T> 
 BitAnd for EnumSet			impl<E: CLike> BitAnd for EnumSet<E> 
 BitOr			impl<'a, 'b, T: Ord + Clone> BitOr<&'b BTreeSet<T>> for &'a BTreeSet<T> 
@@ -36,7 +37,7 @@ BoxedNode			struct BoxedNode<K, V>
 CLike			pub trait CLike 
 Clone for BTreeMap			impl<K: Clone, V: Clone> Clone for BTreeMap<K, V> 
 Clone for BinaryHeap			impl<T: Clone> Clone for BinaryHeap<T> 
-Clone for Cow			impl<'a, B: ?Sized> Clone for Cow<'a, B> where B: ToOwned 
+Clone for Cow			impl<'a, B: ?Sized> Clone for Cow<'a, B>
 Clone for Difference			impl<'a, T> Clone for Difference<'a, T> 
 Clone for EnumSet			impl<E> Clone for EnumSet<E> 
 Clone for Handle			impl<Node: Copy, Type> Clone for Handle<Node, Type> 
@@ -63,7 +64,7 @@ Clone for VecDeque			impl<T: Clone> Clone for VecDeque<T>
 Copy for EnumSet			impl<E> Copy for EnumSet<E> {}
 Copy for Handle			impl<Node: Copy, Type> Copy for Handle<Node, Type> { }
 Copy for NodeRef			impl<'a, K: 'a, V: 'a, Type> Copy for NodeRef<marker::Immut<'a>, K, V, Type> { }
-Cow			impl<'a, B: ?Sized> Cow<'a, B> where B: ToOwned 
+Cow			impl<'a, B: ?Sized> Cow<'a, B>
 Cow			pub enum Cow<'a, B: ?Sized + 'a>
 Debug for BTreeMap			impl<K: Debug, V: Debug> Debug for BTreeMap<K, V> 
 Debug for BTreeSet			impl<T: Debug> Debug for BTreeSet<T> 
@@ -78,7 +79,7 @@ Default for LinkedList			impl<T> Default for LinkedList<T>
 Default for String			impl Default for String 
 Default for Vec			impl<T> Default for Vec<T> 
 Default for VecDeque			impl<T> Default for VecDeque<T> 
-Deref for Cow			impl<'a, B: ?Sized> Deref for Cow<'a, B> where B: ToOwned 
+Deref for Cow			impl<'a, B: ?Sized> Deref for Cow<'a, B>
 Deref for PeekMut			impl<'a, T: Ord> Deref for PeekMut<'a, T> 
 DerefMut for PeekMut			impl<'a, T: Ord> DerefMut for PeekMut<'a, T> 
 Difference			pub struct Difference<'a, T: 'a> 
@@ -110,20 +111,20 @@ Drain			pub struct Drain<'a, T: 'a>
 Drain			pub struct Drain<'a> 
 Drain			pub struct Drain<'a, T: 'a> 
 Drain			pub struct Drain<'a, T: 'a> 
-Drop for BTreeMap			impl<K, V> Drop for BTreeMap<K, V> 
+Drop for BTreeMap			unsafe impl<#[may_dangle] K, #[may_dangle] V> Drop for BTreeMap<K, V> 
 Drop for Drain			impl<'a> Drop for Drain<'a> 
 Drop for Drain			impl<'a, T> Drop for Drain<'a, T> 
 Drop for Drain			impl<'a, T: 'a> Drop for Drain<'a, T> 
 Drop for Hole			impl<'a, T> Drop for Hole<'a, T> 
 Drop for InsertionHole			    impl<T> Drop for InsertionHole<T> 
 Drop for IntoIter			impl<K, V> Drop for IntoIter<K, V> 
-Drop for IntoIter			impl<T> Drop for IntoIter<T> 
-Drop for LinkedList			impl<T> Drop for LinkedList<T> 
+Drop for IntoIter			unsafe impl<#[may_dangle] T> Drop for IntoIter<T> 
+Drop for LinkedList			unsafe impl<#[may_dangle] T> Drop for LinkedList<T> 
 Drop for MergeHole			    impl<T> Drop for MergeHole<T> 
 Drop for PeekMut			impl<'a, T: Ord> Drop for PeekMut<'a, T> 
 Drop for SetLenOnDrop			impl<'a> Drop for SetLenOnDrop<'a> 
-Drop for Vec			impl<T> Drop for Vec<T> 
-Drop for VecDeque			impl<T> Drop for VecDeque<T> 
+Drop for Vec			unsafe impl<#[may_dangle] T> Drop for Vec<T> 
+Drop for VecDeque			unsafe impl<#[may_dangle] T> Drop for VecDeque<T> 
 Edge			    pub enum Edge { }
 EncodeUtf16			pub struct EncodeUtf16<'a> 
 Entry			impl<'a, K: Ord, V> Entry<'a, K, V> 
@@ -200,6 +201,7 @@ FromIterator for EnumSet			impl<E: CLike> FromIterator<E> for EnumSet<E>
 FromIterator for LinkedList			impl<T> FromIterator<T> for LinkedList<T> 
 FromIterator for String			impl FromIterator<String> for String 
 FromIterator for String			impl FromIterator<char> for String 
+FromIterator for String			impl<'a> FromIterator<&'a char> for String 
 FromIterator for String			impl<'a> FromIterator<&'a str> for String 
 FromIterator for Vec			impl<T> FromIterator<T> for Vec<T> 
 FromIterator for VecDeque			impl<A> FromIterator<A> for VecDeque<A> 
@@ -248,7 +250,7 @@ Handle			impl<BorrowType, K, V, NodeType> Handle<NodeRef<BorrowType, K, V, NodeT
 Handle			impl<Node, Type> Handle<Node, Type> 
 Handle			pub struct Handle<Node, Type> 
 Hash for BTreeMap			impl<K: Hash, V: Hash> Hash for BTreeMap<K, V> 
-Hash for Cow			impl<'a, B: ?Sized> Hash for Cow<'a, B> where B: Hash + ToOwned 
+Hash for Cow			impl<'a, B: ?Sized> Hash for Cow<'a, B>
 Hash for LinkedList			impl<T: Hash> Hash for LinkedList<T> 
 Hash for Vec			impl<T: Hash> Hash for Vec<T> 
 Hash for VecDeque			impl<A: Hash> Hash for VecDeque<A> 
@@ -256,7 +258,11 @@ Hole			impl<'a, T> Hole<'a, T>
 Hole			struct Hole<'a, T: 'a> 
 Immut			    pub struct Immut<'a>(PhantomData<&'a ()>);
 InPlace for BackPlace			impl<'a, T> InPlace<T> for BackPlace<'a, T> 
+InPlace for BinaryHeapPlace			impl<'a, T> InPlace<T> for BinaryHeapPlace<'a, T>
 InPlace for FrontPlace			impl<'a, T> InPlace<T> for FrontPlace<'a, T> 
+InPlace for PlaceBack			impl<'a, T> InPlace<T> for PlaceBack<'a, T> 
+InPlace for PlaceBack			impl<'a, T> InPlace<T> for PlaceBack<'a, T> 
+InPlace for PlaceFront			impl<'a, T> InPlace<T> for PlaceFront<'a, T> 
 Index for BTreeMap			impl<'a, K: Ord, Q: ?Sized, V> Index<&'a Q> for BTreeMap<K, V>
 Index for Vec			impl<T> Index<usize> for Vec<T> 
 Index for VecDeque			impl<A> Index<usize> for VecDeque<A> 
@@ -275,11 +281,11 @@ IntoIter			pub struct IntoIter<T>
 IntoIter			impl<T> IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
 IntoIter			pub struct IntoIter<T> 
-IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T> where T: Ord 
+IntoIterator			impl<'a, T> IntoIterator for &'a BinaryHeap<T>
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a BTreeMap<K, V> 
 IntoIterator			impl<'a, K: 'a, V: 'a> IntoIterator for &'a mut BTreeMap<K, V> 
 IntoIterator			impl<'a, T> IntoIterator for &'a BTreeSet<T> 
-IntoIterator			impl<'a, E> IntoIterator for &'a EnumSet<E> where E: CLike
+IntoIterator			impl<'a, E> IntoIterator for &'a EnumSet<E>
 IntoIterator			impl<'a, T> IntoIterator for &'a LinkedList<T> 
 IntoIterator			impl<'a, T> IntoIterator for &'a mut LinkedList<T> 
 IntoIterator			impl<'a, T> IntoIterator for &'a Vec<T> 
@@ -361,7 +367,7 @@ NodeRef			pub struct NodeRef<BorrowType, K, V, Type>
 OccupiedEntry			impl<'a, K: Ord, V> OccupiedEntry<'a, K, V> 
 OccupiedEntry			pub struct OccupiedEntry<'a, K: 'a, V: 'a> 
 Ord for BTreeMap			impl<K: Ord, V: Ord> Ord for BTreeMap<K, V> 
-Ord for Cow			impl<'a, B: ?Sized> Ord for Cow<'a, B> where B: Ord + ToOwned 
+Ord for Cow			impl<'a, B: ?Sized> Ord for Cow<'a, B>
 Ord for LinkedList			impl<T: Ord> Ord for LinkedList<T> 
 Ord for Vec			impl<T: Ord> Ord for Vec<T> 
 Ord for VecDeque			impl<A: Ord> Ord for VecDeque<A> 
@@ -372,36 +378,53 @@ PartialEq			impl<BorrowType, K, V, NodeType, HandleType> PartialEq
 PartialEq			        impl<'a, 'b> PartialEq<
 PartialEq			        impl<'a, 'b> PartialEq<
 PartialEq			        impl<'a, 'b, A: 
+PartialEq			        impl<'a, 'b, A: 
 PartialEq for BTreeMap			impl<K: PartialEq, V: PartialEq> PartialEq for BTreeMap<K, V> 
 PartialEq for LinkedList			impl<T: PartialEq> PartialEq for LinkedList<T> 
 PartialEq for ParseError			impl PartialEq for ParseError 
 PartialEq for String			impl PartialEq for String 
 PartialEq for VecDeque			impl<A: PartialEq> PartialEq for VecDeque<A> 
 PartialOrd for BTreeMap			impl<K: PartialOrd, V: PartialOrd> PartialOrd for BTreeMap<K, V> 
-PartialOrd for Cow			impl<'a, B: ?Sized> PartialOrd for Cow<'a, B> where B: PartialOrd + ToOwned 
+PartialOrd for Cow			impl<'a, B: ?Sized> PartialOrd for Cow<'a, B>
 PartialOrd for LinkedList			impl<T: PartialOrd> PartialOrd for LinkedList<T> 
 PartialOrd for Vec			impl<T: PartialOrd> PartialOrd for Vec<T> 
 PartialOrd for VecDeque			impl<A: PartialOrd> PartialOrd for VecDeque<A> 
 Pattern			impl<'a, 'b> Pattern<'a> for &'b String 
+PeekMut			impl<'a, T: Ord> PeekMut<'a, T> 
 PeekMut			pub struct PeekMut<'a, T: 'a + Ord> 
 Place for BackPlace			impl<'a, T> Place<T> for BackPlace<'a, T> 
+Place for BinaryHeapPlace			impl<'a, T> Place<T> for BinaryHeapPlace<'a, T>
 Place for FrontPlace			impl<'a, T> Place<T> for FrontPlace<'a, T> 
+Place for PlaceBack			impl<'a, T> Place<T> for PlaceBack<'a, T> 
+Place for PlaceBack			impl<'a, T> Place<T> for PlaceBack<'a, T> 
+Place for PlaceFront			impl<'a, T> Place<T> for PlaceFront<'a, T> 
+PlaceBack			pub struct PlaceBack<'a, T: 'a> 
+PlaceBack			pub struct PlaceBack<'a, T: 'a> 
+PlaceFront			pub struct PlaceFront<'a, T: 'a> 
+Placer			impl<'a, T: 'a> Placer<T> for &'a mut BinaryHeap<T>
 Placer for BackPlace			impl<'a, T> Placer<T> for BackPlace<'a, T> 
 Placer for FrontPlace			impl<'a, T> Placer<T> for FrontPlace<'a, T> 
+Placer for PlaceBack			impl<'a, T> Placer<T> for PlaceBack<'a, T> 
+Placer for PlaceBack			impl<'a, T> Placer<T> for PlaceBack<'a, T> 
+Placer for PlaceFront			impl<'a, T> Placer<T> for PlaceFront<'a, T> 
 Range			impl<'a, K, V> Range<'a, K, V> 
 Range			pub struct Range<'a, K: 'a, V: 'a> 
 Range			pub struct Range<'a, T: 'a> 
-RangeArgument			pub trait RangeArgument<T> 
+RangeArgument			impl<'a, T: ?Sized + 'a> RangeArgument<T> for (Bound<&'a T>, Bound<&'a T>) 
+RangeArgument			impl<T> RangeArgument<T> for (Bound<T>, Bound<T>) 
+RangeArgument			pub trait RangeArgument<T: ?Sized> 
 RangeArgument for Range			impl<T> RangeArgument<T> for Range<T> 
 RangeArgument for RangeFrom			impl<T> RangeArgument<T> for RangeFrom<T> 
-RangeArgument for RangeFull			impl<T> RangeArgument<T> for RangeFull {}
+RangeArgument for RangeFull			impl<T: ?Sized> RangeArgument<T> for RangeFull 
+RangeArgument for RangeInclusive			impl<T> RangeArgument<T> for RangeInclusive<T> 
 RangeArgument for RangeTo			impl<T> RangeArgument<T> for RangeTo<T> 
+RangeArgument for RangeToInclusive			impl<T> RangeArgument<T> for RangeToInclusive<T> 
 RangeMut			impl<'a, K, V> RangeMut<'a, K, V> 
 RangeMut			pub struct RangeMut<'a, K: 'a, V: 'a> 
 Recover			trait Recover<Q: ?Sized> 
 RingSlices			impl<'a, T> RingSlices for &'a [T] 
 RingSlices			impl<'a, T> RingSlices for &'a mut [T] 
-RingSlices			trait RingSlices : Sized 
+RingSlices			trait RingSlices: Sized 
 Root			impl<K, V> Root<K, V> 
 Root			pub struct Root<K, V> 
 Run			    struct Run 
@@ -444,9 +467,11 @@ Sync for LinkedList			unsafe impl<T: Sync> Sync for LinkedList<T> {}
 Sync for Root			unsafe impl<K: Sync, V: Sync> Sync for Root<K, V> { }
 ToOwned			pub trait ToOwned 
 ToOwned			impl<T: Clone> ToOwned for [T] 
-ToOwned for T			impl<T> ToOwned for T where T: Clone 
+ToOwned for T			impl<T> ToOwned for T
 ToOwned for str			impl ToOwned for str 
 ToString			pub trait ToString 
+ToString for Cow			impl<'a> ToString for Cow<'a, str> 
+ToString for String			impl ToString for String 
 ToString for T			impl<T: fmt::Display + ?Sized> ToString for T 
 ToString for str			impl ToString for str 
 TrustedLen for IntoIter			unsafe impl<T> TrustedLen for IntoIter<T> {}
@@ -463,7 +488,7 @@ Vec			pub struct Vec<T>
 VecDeque			impl<T: Clone> VecDeque<T> 
 VecDeque			impl<T> VecDeque<T> 
 VecDeque			pub struct VecDeque<T> 
-a			    fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> { x }
+a			    fn a<'a>(x: LinkedList<&'static str>) -> LinkedList<&'a str> 
 add			    fn add(mut self, rhs: &'a str) -> Self::Output 
 add			    fn add(mut self, rhs: Cow<'a, str>) -> Self::Output 
 add			    fn add(mut self, other: &str) -> String 
@@ -487,7 +512,6 @@ as_mut			    fn as_mut(&mut self) -> &mut Vec<T>
 as_mut			    fn as_mut(&mut self) -> &mut [T] 
 as_mut_ptr			    pub fn as_mut_ptr(&mut self) -> *mut T 
 as_mut_slice			    pub fn as_mut_slice(&mut self) -> &mut [T] 
-as_mut_slice			    pub fn as_mut_slice(&self) -> &mut [T] 
 as_mut_slices			    pub fn as_mut_slices(&mut self) -> (&mut [T], &mut [T]) 
 as_mut_str			    pub fn as_mut_str(&mut self) -> &mut str 
 as_mut_vec			    pub unsafe fn as_mut_vec(&mut self) -> &mut Vec<u8> 
@@ -505,16 +529,114 @@ as_slices			    pub fn as_slices(&self) -> (&[T], &[T])
 as_str			    pub fn as_str(&self) -> &str 
 ascend			    pub fn ascend(self) -> Result<
 assert_covariance			fn assert_covariance() 
-b			    fn b<'i, 'a>(x: Iter<'i, &'static str>) -> Iter<'i, &'a str> { x }
+b			    fn b<'i, 'a>(x: Iter<'i, &'static str>) -> Iter<'i, &'a str> 
 back			    pub fn back(&self) -> Option<&T> 
 back			    pub fn back(&self) -> Option<&T> 
 back_mut			    pub fn back_mut(&mut self) -> Option<&mut T> 
 back_mut			    pub fn back_mut(&mut self) -> Option<&mut T> 
 back_place			    pub fn back_place(&mut self) -> BackPlace<T> 
+bench_clone_0000			fn bench_clone_0000(b: &mut Bencher) 
+bench_clone_0010			fn bench_clone_0010(b: &mut Bencher) 
+bench_clone_0100			fn bench_clone_0100(b: &mut Bencher) 
+bench_clone_1000			fn bench_clone_1000(b: &mut Bencher) 
+bench_clone_from_01_0000_0000			fn bench_clone_from_01_0000_0000(b: &mut Bencher) 
+bench_clone_from_01_0000_0010			fn bench_clone_from_01_0000_0010(b: &mut Bencher) 
+bench_clone_from_01_0000_0100			fn bench_clone_from_01_0000_0100(b: &mut Bencher) 
+bench_clone_from_01_0000_1000			fn bench_clone_from_01_0000_1000(b: &mut Bencher) 
+bench_clone_from_01_0010_0000			fn bench_clone_from_01_0010_0000(b: &mut Bencher) 
+bench_clone_from_01_0010_0010			fn bench_clone_from_01_0010_0010(b: &mut Bencher) 
+bench_clone_from_01_0010_0100			fn bench_clone_from_01_0010_0100(b: &mut Bencher) 
+bench_clone_from_01_0100_0010			fn bench_clone_from_01_0100_0010(b: &mut Bencher) 
+bench_clone_from_01_0100_0100			fn bench_clone_from_01_0100_0100(b: &mut Bencher) 
+bench_clone_from_01_0100_1000			fn bench_clone_from_01_0100_1000(b: &mut Bencher) 
+bench_clone_from_01_1000_0100			fn bench_clone_from_01_1000_0100(b: &mut Bencher) 
+bench_clone_from_01_1000_1000			fn bench_clone_from_01_1000_1000(b: &mut Bencher) 
+bench_clone_from_10_0000_0000			fn bench_clone_from_10_0000_0000(b: &mut Bencher) 
+bench_clone_from_10_0000_0010			fn bench_clone_from_10_0000_0010(b: &mut Bencher) 
+bench_clone_from_10_0000_0100			fn bench_clone_from_10_0000_0100(b: &mut Bencher) 
+bench_clone_from_10_0000_1000			fn bench_clone_from_10_0000_1000(b: &mut Bencher) 
+bench_clone_from_10_0010_0000			fn bench_clone_from_10_0010_0000(b: &mut Bencher) 
+bench_clone_from_10_0010_0010			fn bench_clone_from_10_0010_0010(b: &mut Bencher) 
+bench_clone_from_10_0010_0100			fn bench_clone_from_10_0010_0100(b: &mut Bencher) 
+bench_clone_from_10_0100_0010			fn bench_clone_from_10_0100_0010(b: &mut Bencher) 
+bench_clone_from_10_0100_0100			fn bench_clone_from_10_0100_0100(b: &mut Bencher) 
+bench_clone_from_10_0100_1000			fn bench_clone_from_10_0100_1000(b: &mut Bencher) 
+bench_clone_from_10_1000_0100			fn bench_clone_from_10_1000_0100(b: &mut Bencher) 
+bench_clone_from_10_1000_1000			fn bench_clone_from_10_1000_1000(b: &mut Bencher) 
+bench_collect_into			fn bench_collect_into(b: &mut Bencher) 
+bench_contains_bad_naive			fn bench_contains_bad_naive(b: &mut Bencher) 
+bench_contains_equal			fn bench_contains_equal(b: &mut Bencher) 
+bench_contains_short_long			fn bench_contains_short_long(b: &mut Bencher) 
+bench_contains_short_short			fn bench_contains_short_short(b: &mut Bencher) 
+bench_exact_size_shrink_to_fit			fn bench_exact_size_shrink_to_fit(b: &mut Bencher) 
+bench_extend_0000_0000			fn bench_extend_0000_0000(b: &mut Bencher) 
+bench_extend_0000_0010			fn bench_extend_0000_0010(b: &mut Bencher) 
+bench_extend_0000_0100			fn bench_extend_0000_0100(b: &mut Bencher) 
+bench_extend_0000_1000			fn bench_extend_0000_1000(b: &mut Bencher) 
+bench_extend_0010_0010			fn bench_extend_0010_0010(b: &mut Bencher) 
+bench_extend_0100_0100			fn bench_extend_0100_0100(b: &mut Bencher) 
+bench_extend_1000_1000			fn bench_extend_1000_1000(b: &mut Bencher) 
+bench_from			fn bench_from(b: &mut Bencher) 
+bench_from_elem_0000			fn bench_from_elem_0000(b: &mut Bencher) 
+bench_from_elem_0010			fn bench_from_elem_0010(b: &mut Bencher) 
+bench_from_elem_0100			fn bench_from_elem_0100(b: &mut Bencher) 
+bench_from_elem_1000			fn bench_from_elem_1000(b: &mut Bencher) 
+bench_from_fn_0000			fn bench_from_fn_0000(b: &mut Bencher) 
+bench_from_fn_0010			fn bench_from_fn_0010(b: &mut Bencher) 
+bench_from_fn_0100			fn bench_from_fn_0100(b: &mut Bencher) 
+bench_from_fn_1000			fn bench_from_fn_1000(b: &mut Bencher) 
+bench_from_iter_0000			fn bench_from_iter_0000(b: &mut Bencher) 
+bench_from_iter_0010			fn bench_from_iter_0010(b: &mut Bencher) 
+bench_from_iter_0100			fn bench_from_iter_0100(b: &mut Bencher) 
+bench_from_iter_1000			fn bench_from_iter_1000(b: &mut Bencher) 
+bench_from_slice_0000			fn bench_from_slice_0000(b: &mut Bencher) 
+bench_from_slice_0010			fn bench_from_slice_0010(b: &mut Bencher) 
+bench_from_slice_0100			fn bench_from_slice_0100(b: &mut Bencher) 
+bench_from_slice_1000			fn bench_from_slice_1000(b: &mut Bencher) 
+bench_from_str			fn bench_from_str(b: &mut Bencher) 
+bench_grow_1025			fn bench_grow_1025(b: &mut Bencher) 
+bench_iter			fn bench_iter(b: &mut Bencher, size: i32) 
+bench_iter			fn bench_iter(b: &mut Bencher) 
+bench_iter_1000			fn bench_iter_1000(b: &mut Bencher) 
+bench_iter_mut			fn bench_iter_mut(b: &mut Bencher) 
+bench_iter_mut_rev			fn bench_iter_mut_rev(b: &mut Bencher) 
+bench_iter_rev			fn bench_iter_rev(b: &mut Bencher) 
+bench_join			fn bench_join(b: &mut Bencher) 
+bench_mut_iter_1000			fn bench_mut_iter_1000(b: &mut Bencher) 
+bench_new			fn bench_new(b: &mut Bencher) 
+bench_new			fn bench_new(b: &mut Bencher) 
 bench_pop_back_100			    fn bench_pop_back_100(b: &mut test::Bencher) 
 bench_pop_front_100			    fn bench_pop_front_100(b: &mut test::Bencher) 
+bench_push_all_0000_0000			fn bench_push_all_0000_0000(b: &mut Bencher) 
+bench_push_all_0000_0010			fn bench_push_all_0000_0010(b: &mut Bencher) 
+bench_push_all_0000_0100			fn bench_push_all_0000_0100(b: &mut Bencher) 
+bench_push_all_0000_1000			fn bench_push_all_0000_1000(b: &mut Bencher) 
+bench_push_all_0010_0010			fn bench_push_all_0010_0010(b: &mut Bencher) 
+bench_push_all_0100_0100			fn bench_push_all_0100_0100(b: &mut Bencher) 
+bench_push_all_1000_1000			fn bench_push_all_1000_1000(b: &mut Bencher) 
+bench_push_all_move_0000_0000			fn bench_push_all_move_0000_0000(b: &mut Bencher) 
+bench_push_all_move_0000_0010			fn bench_push_all_move_0000_0010(b: &mut Bencher) 
+bench_push_all_move_0000_0100			fn bench_push_all_move_0000_0100(b: &mut Bencher) 
+bench_push_all_move_0000_1000			fn bench_push_all_move_0000_1000(b: &mut Bencher) 
+bench_push_all_move_0010_0010			fn bench_push_all_move_0010_0010(b: &mut Bencher) 
+bench_push_all_move_0100_0100			fn bench_push_all_move_0100_0100(b: &mut Bencher) 
+bench_push_all_move_1000_1000			fn bench_push_all_move_1000_1000(b: &mut Bencher) 
+bench_push_back			fn bench_push_back(b: &mut Bencher) 
 bench_push_back_100			    fn bench_push_back_100(b: &mut test::Bencher) 
+bench_push_back_pop_back			fn bench_push_back_pop_back(b: &mut Bencher) 
+bench_push_char_one_byte			fn bench_push_char_one_byte(b: &mut Bencher) 
+bench_push_char_two_bytes			fn bench_push_char_two_bytes(b: &mut Bencher) 
+bench_push_front			fn bench_push_front(b: &mut Bencher) 
 bench_push_front_100			    fn bench_push_front_100(b: &mut test::Bencher) 
+bench_push_front_pop_front			fn bench_push_front_pop_front(b: &mut Bencher) 
+bench_push_str			fn bench_push_str(b: &mut Bencher) 
+bench_push_str_one_byte			fn bench_push_str_one_byte(b: &mut Bencher) 
+bench_to_string			fn bench_to_string(b: &mut Bencher) 
+bench_with_capacity			fn bench_with_capacity(b: &mut Bencher) 
+bench_with_capacity_0000			fn bench_with_capacity_0000(b: &mut Bencher) 
+bench_with_capacity_0010			fn bench_with_capacity_0010(b: &mut Bencher) 
+bench_with_capacity_0100			fn bench_with_capacity_0100(b: &mut Bencher) 
+bench_with_capacity_1000			fn bench_with_capacity_1000(b: &mut Bencher) 
 better_to_rebuild			        fn better_to_rebuild(len1: usize, len2: usize) -> bool 
 binary_heap			pub mod binary_heap;
 binary_search			    pub fn binary_search(&self, x: &T) -> Result<usize, usize>
@@ -533,6 +655,7 @@ borrow			    fn borrow(&self) -> &[T]
 borrow			    fn borrow(&self) -> &str 
 borrow_mut			    fn borrow_mut(&mut self) -> &mut [T] 
 btree			mod btree;
+btree			mod btree;
 btree_map			pub mod btree_map 
 btree_set			pub mod btree_set 
 buffer_as_mut_slice			    unsafe fn buffer_as_mut_slice(&mut self) -> &mut [T] 
@@ -542,7 +665,7 @@ buffer_write			    unsafe fn buffer_write(&mut self, off: usize, value: T)
 bulk_steal_left			    pub fn bulk_steal_left(&mut self, count: usize) 
 bulk_steal_right			    pub fn bulk_steal_right(&mut self, count: usize) 
 bytes			    pub fn bytes(&self) -> Bytes 
-c			    fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> { x }
+c			    fn c<'a>(x: IntoIter<&'static str>) -> IntoIter<&'a str> 
 can_merge			    pub fn can_merge(&self) -> bool 
 cap			    fn cap(&self) -> usize 
 capacity			    pub fn capacity(&self) -> usize 
@@ -552,6 +675,13 @@ capacity			    pub fn capacity(&self) -> usize
 case_ignoreable_then_cased			        fn case_ignoreable_then_cased<I: Iterator<Item = char>>(iter: I) -> bool 
 cast_unchecked			    unsafe fn cast_unchecked<NewType>(&mut self)
 char_indices			    pub fn char_indices(&self) -> CharIndices 
+char_indicesator			fn char_indicesator(b: &mut Bencher) 
+char_indicesator_rev			fn char_indicesator_rev(b: &mut Bencher) 
+char_iterator			fn char_iterator(b: &mut Bencher) 
+char_iterator_ascii			fn char_iterator_ascii(b: &mut Bencher) 
+char_iterator_for			fn char_iterator_for(b: &mut Bencher) 
+char_iterator_rev			fn char_iterator_rev(b: &mut Bencher) 
+char_iterator_rev_for			fn char_iterator_rev_for(b: &mut Bencher) 
 chars			    pub fn chars(&self) -> Chars 
 check_links			    pub fn check_links<T>(list: &LinkedList<T>) 
 chunks			    pub fn chunks(&self, size: usize) -> Chunks<T> 
@@ -600,6 +730,7 @@ cmp			    fn cmp(&self, other: &Vec<T>) -> Ordering
 cmp			    fn cmp(&self, other: &VecDeque<A>) -> Ordering 
 cmp_opt			fn cmp_opt<T: Ord>(x: Option<&T>, y: Option<&T>, short: Ordering, long: Ordering) -> Ordering 
 collapse			    fn collapse(runs: &[Run]) -> Option<usize> 
+concat			fn concat(b: &mut Bencher) 
 concat			    fn concat(&self) -> Self::Output;
 concat			    fn concat(&self) -> Vec<T> 
 concat			    fn concat(&self) -> String 
@@ -613,6 +744,7 @@ contains			    pub fn contains(&self, x: &T) -> bool
 contains			    pub fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 contains			    pub fn contains(&self, x: &T) -> bool
 contains_key			    pub fn contains_key<Q: ?Sized>(&self, key: &Q) -> bool
+contains_last_element			fn contains_last_element(b: &mut Bencher) 
 copy			    unsafe fn copy(&self, dst: usize, src: usize, len: usize) 
 copy_from_slice			    pub fn copy_from_slice(&mut self, src: &[T]) where T: Copy 
 copy_nonoverlapping			    unsafe fn copy_nonoverlapping(&self, dst: usize, src: usize, len: usize) 
@@ -646,6 +778,16 @@ descend			    pub fn descend(self) -> NodeRef<BorrowType, K, V, marker::LeafOrIn
 dfs			        fn dfs<K, V>(node: NodeRef<marker::Immut, K, V, marker::LeafOrInternal>) -> usize 
 diff			        fn diff(a: usize, b: usize) -> usize 
 difference			    pub fn difference<'a>(&'a self, other: &'a BTreeSet<T>) -> Difference<'a, T> 
+do_bench_clone			fn do_bench_clone(b: &mut Bencher, src_len: usize) 
+do_bench_clone_from			fn do_bench_clone_from(b: &mut Bencher, times: usize, dst_len: usize, src_len: usize) 
+do_bench_extend			fn do_bench_extend(b: &mut Bencher, dst_len: usize, src_len: usize) 
+do_bench_from_elem			fn do_bench_from_elem(b: &mut Bencher, src_len: usize) 
+do_bench_from_fn			fn do_bench_from_fn(b: &mut Bencher, src_len: usize) 
+do_bench_from_iter			fn do_bench_from_iter(b: &mut Bencher, src_len: usize) 
+do_bench_from_slice			fn do_bench_from_slice(b: &mut Bencher, src_len: usize) 
+do_bench_push_all			fn do_bench_push_all(b: &mut Bencher, dst_len: usize, src_len: usize) 
+do_bench_push_all_move			fn do_bench_push_all_move(b: &mut Bencher, dst_len: usize, src_len: usize) 
+do_bench_with_capacity			fn do_bench_with_capacity(b: &mut Bencher, src_len: usize) 
 drain			    pub fn drain(&mut self) -> Drain<T> 
 drain			    pub fn drain<R>(&mut self, range: R) -> Drain
 drain			    pub fn drain<R>(&mut self, range: R) -> Drain<T>
@@ -659,9 +801,13 @@ drop			    fn drop(&mut self)
 drop			    fn drop(&mut self) 
 element			    fn element(&self) -> &T 
 encode_utf16			    pub fn encode_utf16(&self) -> EncodeUtf16 
-end			    fn end(&self) -> Option<&T> 
+end			    fn end(&self) -> Bound<&T> 
+end			    fn end(&self) -> Bound<&T>;
 ends_with			    pub fn ends_with(&self, needle: &[T]) -> bool
 ends_with			    pub fn ends_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool
+ends_with_diff_one_element_at_beginning			fn ends_with_diff_one_element_at_beginning(b: &mut Bencher) 
+ends_with_same_vector			fn ends_with_same_vector(b: &mut Bencher) 
+ends_with_single_element			fn ends_with_single_element(b: &mut Bencher) 
 entry			    pub fn entry(&mut self, key: K) -> Entry<K, V> 
 enum_set			pub mod enum_set;
 eq			    fn eq(&self, other: &Cow<'b, C>) -> bool 
@@ -672,6 +818,7 @@ eq			            fn eq(&self, other: &
 eq			            fn eq(&self, other: &
 eq			    fn eq(&self, _: &ParseError) -> bool 
 eq			    fn eq(&self, other: &String) -> bool 
+eq			            fn eq(&self, other: &
 eq			            fn eq(&self, other: &
 eq			    fn eq(&self, other: &VecDeque<A>) -> bool 
 escape_debug			    pub fn escape_debug(&self) -> String 
@@ -699,8 +846,11 @@ extend_desugared			    fn extend_desugared<I: IntoIterator<Item = T>>(&mut self,
 extend_desugared			    fn extend_desugared<I: Iterator<Item = T>>(&mut self, mut iterator: I) 
 extend_from_slice			    pub fn extend_from_slice(&mut self, other: &[T]) 
 extend_with_element			    fn extend_with_element(&mut self, n: usize, value: T) 
+finalize			    unsafe fn finalize(self) -> &'a T 
 finalize			    unsafe fn finalize(self) 
 finalize			unsafe fn finalize<T>(node: IntermediateBox<Node<T>>) -> Box<Node<T>> 
+finalize			    unsafe fn finalize(mut self) -> &'a mut T 
+finalize			    unsafe fn finalize(mut self) -> &'a mut T 
 find			    pub fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize> 
 first			    pub fn first(&self) -> Option<&T> 
 first_edge			    pub fn first_edge(self) -> Handle<Self, marker::Edge> 
@@ -715,20 +865,50 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			pub mod fmt;
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, _: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Debug for BackPlace			impl<'a, T: 'a + fmt::Debug> fmt::Debug for BackPlace<'a, T> 
 fmt::Debug for BinaryHeap			impl<T: fmt::Debug + Ord> fmt::Debug for BinaryHeap<T> 
+fmt::Debug for BinaryHeapPlace			impl<'a, T: Clone + Ord + fmt::Debug> fmt::Debug for BinaryHeapPlace<'a, T> 
 fmt::Debug for Cow			impl<'a, B: ?Sized> fmt::Debug for Cow<'a, B>
+fmt::Debug for Difference			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Difference<'a, T> 
+fmt::Debug for Drain			impl<'a> fmt::Debug for Drain<'a> 
+fmt::Debug for Drain			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Drain<'a, T> 
+fmt::Debug for Drain			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Drain<'a, T> 
+fmt::Debug for EncodeUtf16			impl<'a> fmt::Debug for EncodeUtf16<'a> 
 fmt::Debug for EnumSet			impl<E: CLike + fmt::Debug> fmt::Debug for EnumSet<E> 
+fmt::Debug for FrontPlace			impl<'a, T: 'a + fmt::Debug> fmt::Debug for FrontPlace<'a, T> 
+fmt::Debug for Intersection			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Intersection<'a, T> 
 fmt::Debug for IntoIter			impl<T: fmt::Debug> fmt::Debug for IntoIter<T> 
+fmt::Debug for IntoIter			impl<K: fmt::Debug, V: fmt::Debug> fmt::Debug for IntoIter<K, V> 
+fmt::Debug for IntoIter			impl<T: fmt::Debug> fmt::Debug for IntoIter<T> 
+fmt::Debug for IntoIter			impl<T: fmt::Debug> fmt::Debug for IntoIter<T> 
+fmt::Debug for IntoIter			impl<T: fmt::Debug> fmt::Debug for IntoIter<T> 
+fmt::Debug for Iter			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Iter<'a, T> 
+fmt::Debug for Iter			impl<'a, K: 'a + fmt::Debug, V: 'a + fmt::Debug> fmt::Debug for Iter<'a, K, V> 
+fmt::Debug for Iter			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Iter<'a, T> 
+fmt::Debug for Iter			impl<E: fmt::Debug> fmt::Debug for Iter<E> 
+fmt::Debug for Iter			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Iter<'a, T> 
+fmt::Debug for Iter			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Iter<'a, T> 
+fmt::Debug for IterMut			impl<'a, T: 'a + fmt::Debug> fmt::Debug for IterMut<'a, T> 
+fmt::Debug for IterMut			impl<'a, T: 'a + fmt::Debug> fmt::Debug for IterMut<'a, T> 
+fmt::Debug for Keys			impl<'a, K: 'a + fmt::Debug, V: 'a + fmt::Debug> fmt::Debug for Keys<'a, K, V> 
 fmt::Debug for LinkedList			impl<T: fmt::Debug> fmt::Debug for LinkedList<T> 
 fmt::Debug for ParseError			impl fmt::Debug for ParseError 
+fmt::Debug for PeekMut			impl<'a, T: Ord + fmt::Debug> fmt::Debug for PeekMut<'a, T> 
+fmt::Debug for Range			impl<'a, K: 'a + fmt::Debug, V: 'a + fmt::Debug> fmt::Debug for Range<'a, K, V> 
+fmt::Debug for RangeMut			impl<'a, K: 'a + fmt::Debug, V: 'a + fmt::Debug> fmt::Debug for RangeMut<'a, K, V> 
 fmt::Debug for String			impl fmt::Debug for String 
+fmt::Debug for SymmetricDifference			impl<'a, T: 'a + fmt::Debug> fmt::Debug for SymmetricDifference<'a, T> 
+fmt::Debug for Union			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Union<'a, T> 
+fmt::Debug for Values			impl<'a, K: 'a + fmt::Debug, V: 'a + fmt::Debug> fmt::Debug for Values<'a, K, V> 
 fmt::Debug for Vec			impl<T: fmt::Debug> fmt::Debug for Vec<T> 
 fmt::Debug for VecDeque			impl<T: fmt::Debug> fmt::Debug for VecDeque<T> 
 fmt::Display for Cow			impl<'a, B: ?Sized> fmt::Display for Cow<'a, B>
@@ -747,7 +927,7 @@ from			    fn from(s: &'a str) -> Cow<'a, str>
 from			    fn from(s: &'a str) -> String 
 from			    fn from(s: Cow<'a, str>) -> String 
 from			    fn from(s: String) -> Cow<'a, str> 
-from			    fn from(string : String) -> Vec<u8> 
+from			    fn from(string: String) -> Vec<u8> 
 from			    fn from(s: &'a [T]) -> Cow<'a, [T]> 
 from			    fn from(s: &'a [T]) -> Vec<T> 
 from			    fn from(s: &'a str) -> Vec<u8> 
@@ -762,6 +942,7 @@ from_iter			    fn from_iter<T: IntoIterator<Item = (K, V)>>(iter: T) -> BTreeMa
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> BTreeSet<T> 
 from_iter			    fn from_iter<I: IntoIterator<Item = E>>(iter: I) -> EnumSet<E> 
 from_iter			    fn from_iter<I: IntoIterator<Item = T>>(iter: I) -> Self 
+from_iter			    fn from_iter<I: IntoIterator<Item = &'a char>>(iter: I) -> String 
 from_iter			    fn from_iter<I: IntoIterator<Item = &'a str>>(iter: I) -> String 
 from_iter			    fn from_iter<I: IntoIterator<Item = &'b str>>(it: I) -> Cow<'a, str> 
 from_iter			    fn from_iter<I: IntoIterator<Item = String>>(it: I) -> Cow<'a, str> 
@@ -785,6 +966,10 @@ from_utf16			    pub fn from_utf16(v: &[u16]) -> Result<String, FromUtf16Error>
 from_utf16_lossy			    pub fn from_utf16_lossy(v: &[u16]) -> String 
 from_utf8			    pub fn from_utf8(vec: Vec<u8>) -> Result<String, FromUtf8Error> 
 from_utf8_lossy			    pub fn from_utf8_lossy<'a>(v: &'a [u8]) -> Cow<'a, str> 
+from_utf8_lossy_100_ascii			fn from_utf8_lossy_100_ascii(b: &mut Bencher) 
+from_utf8_lossy_100_invalid			fn from_utf8_lossy_100_invalid(b: &mut Bencher) 
+from_utf8_lossy_100_multibyte			fn from_utf8_lossy_100_multibyte(b: &mut Bencher) 
+from_utf8_lossy_invalid			fn from_utf8_lossy_invalid(b: &mut Bencher) 
 from_utf8_unchecked			    pub unsafe fn from_utf8_unchecked(bytes: Vec<u8>) -> String 
 front			    pub fn front(&self) -> Option<&T> 
 front			    pub fn front(&self) -> Option<&T> 
@@ -792,6 +977,14 @@ front_mut			    pub fn front_mut(&mut self) -> Option<&mut T>
 front_mut			    pub fn front_mut(&mut self) -> Option<&mut T> 
 front_place			    pub fn front_place(&mut self) -> FrontPlace<T> 
 fuzz_test			    fn fuzz_test(sz: i32) 
+gen_ascending			fn gen_ascending(len: usize) -> Vec<u64> 
+gen_big_ascending			fn gen_big_ascending(len: usize) -> Vec<[u64; 16]> 
+gen_big_descending			fn gen_big_descending(len: usize) -> Vec<[u64; 16]> 
+gen_big_random			fn gen_big_random(len: usize) -> Vec<[u64; 16]> 
+gen_descending			fn gen_descending(len: usize) -> Vec<u64> 
+gen_mostly_ascending			fn gen_mostly_ascending(len: usize) -> Vec<u64> 
+gen_mostly_descending			fn gen_mostly_descending(len: usize) -> Vec<u64> 
+gen_random			fn gen_random(len: usize) -> Vec<u64> 
 get			    unsafe fn get(&self, index: usize) -> &T 
 get			    fn get(&self, key: &Q) -> Option<&K> 
 get			    pub fn get(&self) -> &V 
@@ -807,6 +1000,7 @@ get_mut			    pub fn get_mut<I>(&mut self, index: I) -> Option<&mut I::Output>
 get_mut			    pub fn get_mut(&mut self, index: usize) -> Option<&mut T> 
 get_unchecked			    pub unsafe fn get_unchecked<I>(&self, index: I) -> &I::Output
 get_unchecked_mut			    pub unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
+grow_if_necessary			    fn grow_if_necessary(&mut self) 
 hack			mod hack 
 handle_cap_increase			    unsafe fn handle_cap_increase(&mut self, old_cap: usize) 
 handle_underfull_node			fn handle_underfull_node<'a, K, V>(node: NodeRef<marker::Mut<'a>, K, V, marker::LeafOrInternal>)
@@ -861,7 +1055,7 @@ insert			    pub fn insert(&mut self, index: usize, value: T)
 insert_bytes			    unsafe fn insert_bytes(&mut self, idx: usize, bytes: &[u8]) 
 insert_fit			    fn insert_fit(&mut self, key: K, val: V) -> *mut V 
 insert_fit			    fn insert_fit(&mut self, key: K, val: V, edge: Root<K, V>) 
-insert_head			fn insert_head<T, F>(v: &mut [T], compare: &mut F)
+insert_head			fn insert_head<T, F>(v: &mut [T], is_less: &mut F)
 insert_next			    pub fn insert_next(&mut self, element: T) 
 insert_str			    pub fn insert_str(&mut self, idx: usize, string: &str) 
 intersection			    pub fn intersection<'a>(&'a self, other: &'a BTreeSet<T>) -> Intersection<'a, T> 
@@ -935,10 +1129,15 @@ iter			    pub fn iter(&self) -> Iter<E>
 iter			    pub fn iter(&self) -> Iter<T> 
 iter			    pub fn iter(&self) -> Iter<T> 
 iter			    pub fn iter(&self) -> Iter<T> 
+iter_1000			pub fn iter_1000(b: &mut Bencher) 
+iter_100000			pub fn iter_100000(b: &mut Bencher) 
+iter_20			pub fn iter_20(b: &mut Bencher) 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<K, V> 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
+iterator			fn iterator(b: &mut Bencher) 
+join			fn join(b: &mut Bencher) 
 join			    fn join(&self, sep: &T) -> Self::Output;
 join			    fn join(&self, sep: &T) -> Vec<T> 
 join			    fn join(&self, sep: &str) -> String 
@@ -969,23 +1168,29 @@ len			    pub fn len(&self) -> usize
 len			    pub fn len(&self) -> usize 
 lines			    pub fn lines(&self) -> Lines 
 lines_any			    pub fn lines_any(&self) -> LinesAny 
+linked_list			mod linked_list;
 linked_list			pub mod linked_list;
 list_from			    fn list_from<T: Clone>(v: &[T]) -> LinkedList<T> 
 log2_fast			        fn log2_fast(x: usize) -> usize 
 macros			mod macros;
+make_place			    fn make_place(self) -> Self::Place 
 make_place			    fn make_place(self) -> Self 
+make_place			    fn make_place(self) -> Self 
+make_place			    fn make_place(self) -> Self 
+map			mod map;
 map			pub mod map;
 map_uppercase_sigma			        fn map_uppercase_sigma(from: &str, i: usize, to: &mut String) 
 marker			pub mod marker 
 match_indices			    pub fn match_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> MatchIndices<'a, P> 
 matches			    pub fn matches<'a, P: Pattern<'a>>(&'a self, pat: P) -> Matches<'a, P> 
 merge			    pub fn merge(mut self)
-merge			unsafe fn merge<T, F>(v: &mut [T], mid: usize, buf: *mut T, compare: &mut F)
-merge_sort			fn merge_sort<T, F>(v: &mut [T], mut compare: F)
+merge			unsafe fn merge<T, F>(v: &mut [T], mid: usize, buf: *mut T, is_less: &mut F)
+merge_sort			fn merge_sort<T, F>(v: &mut [T], mut is_less: F)
 move_edges			unsafe fn move_edges<K, V>(
 move_kv			unsafe fn move_kv<K, V>(
 move_suffix			    pub fn move_suffix(&mut self,
 move_to			    unsafe fn move_to(&mut self, index: usize) 
+mut_iterator			fn mut_iterator(b: &mut Bencher) 
 ne			    fn ne(&self, other: &Self) -> bool 
 ne			            fn ne(&self, other: &
 ne			            fn ne(&self, other: &
@@ -1089,8 +1294,15 @@ partial_cmp			    fn partial_cmp(&self, other: &VecDeque<A>) -> Option<Ordering>
 peek			    pub fn peek(&self) -> Option<&T> 
 peek_mut			    pub fn peek_mut(&mut self) -> Option<PeekMut<T>> 
 peek_next			    pub fn peek_next(&mut self) -> Option<&mut T> 
+place_back			    pub fn place_back(&mut self) -> PlaceBack<T> 
+place_back			    pub fn place_back(&mut self) -> PlaceBack<T> 
+place_front			    pub fn place_front(&mut self) -> PlaceFront<T> 
+pointer			    fn pointer(&mut self) -> *mut T 
+pointer			    fn pointer(&mut self) -> *mut T 
+pointer			    fn pointer(&mut self) -> *mut T 
 pointer			    fn pointer(&mut self) -> *mut T 
 pop			    pub fn pop(&mut self) -> Option<T> 
+pop			    pub fn pop(mut this: PeekMut<'a, T>) -> T 
 pop			    pub fn pop(&mut self) -> (K, V, Option<Root<K, V>>) 
 pop			    pub fn pop(&mut self) -> Option<char> 
 pop			    pub fn pop(&mut self) -> Option<T> 
@@ -1103,7 +1315,9 @@ pop_front			    pub fn pop_front(&mut self) -> Option<T>
 pop_front_node			    fn pop_front_node(&mut self) -> Option<Box<Node<T>>> 
 pop_level			    pub fn pop_level(&mut self) 
 pos			    fn pos(&self) -> usize 
+pred			    fn pred(c: char) -> bool { c == ' ' }
 ptr			    fn ptr(&self) -> *mut T 
+push			fn push(b: &mut Bencher) 
 push			    pub fn push(&mut self, item: T) 
 push			    pub fn push(&mut self, key: K, val: V) 
 push			    pub fn push(&mut self, key: K, val: V, edge: Root<K, V>) 
@@ -1120,10 +1334,13 @@ push_front_node			    fn push_front_node(&mut self, mut node: Box<Node<T>>)
 push_level			    pub fn push_level(&mut self)
 push_pop			    pub fn push_pop(&mut self, mut item: T) -> T 
 push_str			    pub fn push_str(&mut self, string: &str) 
-range			    pub fn range<Min: ?Sized + Ord, Max: ?Sized + Ord>(&self,
-range			    pub fn range<'a, Min: ?Sized + Ord, Max: ?Sized + Ord>(&'a self,
+random_inserts			fn random_inserts(b: &mut Bencher) 
+random_removes			fn random_removes(b: &mut Bencher) 
+range			    pub fn range<T: ?Sized, R>(&self, range: R) -> Range<K, V>
+range			    pub fn range<K: ?Sized, R>(&self, range: R) -> Range<T>
 range			pub mod range;
-range_mut			    pub fn range_mut<Min: ?Sized + Ord, Max: ?Sized + Ord>(&mut self,
+range_mut			    pub fn range_mut<T: ?Sized, R>(&mut self, range: R) -> RangeMut<K, V>
+range_search			fn range_search<BorrowType, K, V, Q: ?Sized, R: RangeArgument<Q>>(
 reborrow			    fn reborrow<'a>(&'a self) -> NodeRef<marker::Immut<'a>, K, V, Type> 
 reborrow			    pub fn reborrow(&self)
 reborrow_mut			    pub unsafe fn reborrow_mut(&mut self)
@@ -1139,6 +1356,7 @@ remove			    pub fn remove(&mut self, idx: usize) -> char
 remove			    pub fn remove(&mut self, index: usize) -> T 
 remove			    pub fn remove(&mut self, index: usize) -> Option<T> 
 remove_entry			    pub fn remove_entry(self) -> (K, V) 
+remove_item			    pub fn remove_item(&mut self, item: &T) -> Option<T> 
 remove_kv			    fn remove_kv(self) -> (K, V) 
 remove_pair			    pub fn remove_pair(self) -> (K, V) 
 repeat			    pub fn repeat(&self, n: usize) -> String 
@@ -1174,7 +1392,7 @@ rsplitn			    pub fn rsplitn<'a, P: Pattern<'a>>(&'a self, n: usize, pat: P) -> 
 rsplitn_mut			    pub fn rsplitn_mut<F>(&mut self, n: usize, pred: F) -> RSplitNMut<T, F>
 safe_get			        fn safe_get(xs: &[u8], i: usize, total: usize) -> u8 
 search			mod search;
-search_linear			fn search_linear<BorrowType, K, V, Type, Q: ?Sized>(
+search_linear			pub fn search_linear<BorrowType, K, V, Type, Q: ?Sized>(
 search_node			pub fn search_node<BorrowType, K, V, Type, Q: ?Sized>(
 search_tree			pub fn search_tree<BorrowType, K, V, Q: ?Sized>(
 set			pub mod set;
@@ -1186,7 +1404,7 @@ shrink_to_fit			    pub fn shrink_to_fit(&mut self)
 sift_down			    fn sift_down(&mut self, pos: usize) 
 sift_down_range			    fn sift_down_range(&mut self, pos: usize, end: usize) 
 sift_down_to_bottom			    fn sift_down_to_bottom(&mut self, mut pos: usize) 
-sift_up			    fn sift_up(&mut self, start: usize, pos: usize) 
+sift_up			    fn sift_up(&mut self, start: usize, pos: usize) -> usize 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
@@ -1196,6 +1414,7 @@ size_hint			    fn size_hint(&self) -> (usize, Option<usize>)
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
+slice			mod slice;
 slice			pub mod slice;
 slice			    fn slice(self, from: usize, to: usize) -> Self 
 slice			    fn slice(self, from: usize, to: usize) -> Self;
@@ -1204,8 +1423,9 @@ slice_mut_unchecked			    pub unsafe fn slice_mut_unchecked(&mut self, begin: us
 slice_remove			unsafe fn slice_remove<T>(slice: &mut [T], idx: usize) -> T 
 slice_unchecked			    pub unsafe fn slice_unchecked(&self, begin: usize, end: usize) -> &str 
 sort			    pub fn sort(&mut self)
-sort_by			    pub fn sort_by<F>(&mut self, compare: F)
+sort_by			    pub fn sort_by<F>(&mut self, mut compare: F)
 sort_by_key			    pub fn sort_by_key<B, F>(&mut self, mut f: F)
+sort_large_random_expensive			fn sort_large_random_expensive(b: &mut Bencher) 
 spec_extend			    fn spec_extend(&mut self, ref mut other: BinaryHeap<T>) 
 spec_extend			    fn spec_extend(&mut self, iter: I);
 spec_extend			    fn spec_extend(&mut self, ref mut other: LinkedList<T>) 
@@ -1215,12 +1435,15 @@ spec_extend			    fn spec_extend(&mut self, iterator: slice::Iter<'a, T>)
 split			    pub fn split(mut self)
 split			    pub fn split<F>(&self, pred: F) -> Split<T, F>
 split			    pub fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> 
+split_ascii			fn split_ascii(b: &mut Bencher) 
 split_at			    pub fn split_at(&self, mid: usize) -> (&[T], &[T]) 
 split_at			    pub fn split_at(&self, mid: usize) -> (&str, &str) 
 split_at			    fn split_at(self, i: usize) -> (Self, Self) 
 split_at			    fn split_at(self, i: usize) -> (Self, Self);
 split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut [T], &mut [T]) 
 split_at_mut			    pub fn split_at_mut(&mut self, mid: usize) -> (&mut str, &mut str) 
+split_closure			fn split_closure(b: &mut Bencher) 
+split_extern_fn			fn split_extern_fn(b: &mut Bencher) 
 split_first			    pub fn split_first(&self) -> Option<(&T, &[T])> 
 split_first_mut			    pub fn split_first_mut(&mut self) -> Option<(&mut T, &mut [T])> 
 split_last			    pub fn split_last(&self) -> Option<(&T, &[T])> 
@@ -1229,22 +1452,30 @@ split_mut			    pub fn split_mut<F>(&mut self, pred: F) -> SplitMut<T, F>
 split_off			    pub fn split_off<Q: ?Sized + Ord>(&mut self, key: &Q) -> Self
 split_off			    pub fn split_off<Q: ?Sized + Ord>(&mut self, key: &Q) -> Self where T: Borrow<Q> 
 split_off			    pub fn split_off(&mut self, at: usize) -> LinkedList<T> 
-split_off			    pub fn split_off(&mut self, mid: usize) -> String 
+split_off			    pub fn split_off(&mut self, at: usize) -> String 
 split_off			    pub fn split_off(&mut self, at: usize) -> Self 
 split_off			    pub fn split_off(&mut self, at: usize) -> Self 
+split_slice			fn split_slice(b: &mut Bencher) 
 split_terminator			    pub fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P> 
+split_unicode_ascii			fn split_unicode_ascii(b: &mut Bencher) 
 split_whitespace			    pub fn split_whitespace(&self) -> SplitWhitespace 
 splitn			    pub fn splitn<F>(&self, n: usize, pred: F) -> SplitN<T, F>
 splitn			    pub fn splitn<'a, P: Pattern<'a>>(&'a self, n: usize, pat: P) -> SplitN<'a, P> 
 splitn_mut			    pub fn splitn_mut<F>(&mut self, n: usize, pred: F) -> SplitNMut<T, F>
-start			    fn start(&self) -> Option<&T> 
+start			    fn start(&self) -> Bound<&T> 
+start			    fn start(&self) -> Bound<&T>;
 starts_with			    pub fn starts_with(&self, needle: &[T]) -> bool
 starts_with			    pub fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
+starts_with_diff_one_element_at_end			fn starts_with_diff_one_element_at_end(b: &mut Bencher) 
+starts_with_same_vector			fn starts_with_same_vector(b: &mut Bencher) 
+starts_with_single_element			fn starts_with_single_element(b: &mut Bencher) 
 std			mod std 
 steal_left			    pub fn steal_left(&mut self) 
 steal_right			    pub fn steal_right(&mut self) 
+str			mod str;
 str			pub mod str;
 str			impl str 
+string			mod string;
 string			pub mod string;
 sub			    fn sub(self, rhs: &BTreeSet<T>) -> BTreeSet<T> 
 sub			    fn sub(self, e: EnumSet<E>) -> EnumSet<E> 
@@ -1291,7 +1522,9 @@ vals			    pub fn vals(&self) -> &[V]
 vals_mut			    pub fn vals_mut(&mut self) -> &mut [V] 
 values			    pub fn values<'a>(&'a self) -> Values<'a, K, V> 
 values_mut			    pub fn values_mut(&mut self) -> ValuesMut<K, V> 
+vec			mod vec;
 vec			pub mod vec;
+vec_deque			mod vec_deque;
 vec_deque			pub mod vec_deque;
 windows			    pub fn windows(&self, size: usize) -> Windows<T> 
 with_capacity			    pub fn with_capacity(capacity: usize) -> BinaryHeap<T> 
@@ -1305,3 +1538,7 @@ wrap_index			fn wrap_index(index: usize, size: usize) -> usize
 wrap_sub			    fn wrap_sub(&self, idx: usize, subtrahend: usize) -> usize 
 write_char			    fn write_char(&mut self, c: char) -> fmt::Result 
 write_str			    fn write_str(&mut self, s: &str) -> fmt::Result 
+zero_1kb_from_elem			fn zero_1kb_from_elem(b: &mut Bencher) 
+zero_1kb_loop_set			fn zero_1kb_loop_set(b: &mut Bencher) 
+zero_1kb_mut_iter			fn zero_1kb_mut_iter(b: &mut Bencher) 
+zero_1kb_set_memory			fn zero_1kb_set_memory(b: &mut Bencher) 

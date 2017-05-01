@@ -1,13 +1,12 @@
 ArgumentType			enum ArgumentType 
+AttrProcMacro			pub struct AttrProcMacro 
+BangProcMacro			pub struct BangProcMacro 
 Clone for StrCursor			    impl<'a> Clone for StrCursor<'a> 
-CollectCustomDerives			impl<'a> CollectCustomDerives<'a> 
-CollectCustomDerives			struct CollectCustomDerives<'a> 
+CollectProcMacros			impl<'a> CollectProcMacros<'a> 
+CollectProcMacros			struct CollectProcMacros<'a> 
 Context			impl<'a, 'b> Context<'a, 'b> 
 Context			struct Context<'a, 'b: 'a> 
 Copy for StrCursor			    impl<'a> Copy for StrCursor<'a> {}
-CustomDerive			impl CustomDerive 
-CustomDerive			pub struct CustomDerive 
-CustomDerive			struct CustomDerive 
 FieldInfo			pub struct FieldInfo<'a> 
 Format			    impl<'a> Format<'a> 
 Format			    pub struct Format<'a> 
@@ -17,13 +16,17 @@ LifetimeBounds			pub struct LifetimeBounds<'a>
 MarkAttrs			struct MarkAttrs<'a>(&'a [ast::Name]);
 MethodDef			impl<'a> MethodDef<'a> 
 MethodDef			pub struct MethodDef<'a> 
-MultiItemModifier for CustomDerive			impl MultiItemModifier for CustomDerive 
+MultiItemModifier for ProcMacroDerive			impl MultiItemModifier for ProcMacroDerive 
 Num			    impl Num 
 Num			    pub enum Num 
 OrderingOp			pub enum OrderingOp 
 Path			impl<'a> Path<'a> 
 Path			pub struct Path<'a> 
 Position			enum Position 
+ProcMacroDef			struct ProcMacroDef 
+ProcMacroDerive			impl ProcMacroDerive 
+ProcMacroDerive			pub struct ProcMacroDerive 
+ProcMacroDerive			struct ProcMacroDerive 
 PtrTy			pub enum PtrTy<'a> 
 Result			    impl Result 
 Result			    struct Result 
@@ -43,7 +46,7 @@ TraitDef			pub struct TraitDef<'a>
 Ty			impl<'a> Ty<'a> 
 Ty			pub enum Ty<'a> 
 Visitor			    struct Visitor<'a, 'b: 'a> 
-Visitor for CollectCustomDerives			impl<'a> Visitor<'a> for CollectCustomDerives<'a> 
+Visitor for CollectProcMacros			impl<'a> Visitor<'a> for CollectProcMacros<'a> 
 Visitor for MarkAttrs			impl<'a> Visitor<'a> for MarkAttrs<'a> 
 allow_unstable			fn allow_unstable(cx: &mut ExtCtxt, span: Span, attr_name: &str) -> Span 
 as_str			        pub fn as_str(&self) -> &str 
@@ -53,7 +56,9 @@ assert_ty_bounds			    fn assert_ty_bounds(cx: &mut ExtCtxt, stmts: &mut Vec<ast
 assert_ty_bounds			    fn assert_ty_bounds(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>,
 at_next_cp			        pub fn at_next_cp(mut self) -> Option<StrCursor<'a>> 
 at_next_cp_while			    fn at_next_cp_while<F>(mut cur: Cur, mut pred: F) -> Cur
+base::AttrProcMacro for AttrProcMacro			impl base::AttrProcMacro for AttrProcMacro 
 base::MacResult for Result			    impl base::MacResult for Result 
+base::ProcMacro for BangProcMacro			impl base::ProcMacro for BangProcMacro 
 borrowed			pub fn borrowed<'r>(ty: Box<Ty<'r>>) -> Ty<'r> 
 borrowed_explicit_self			pub fn borrowed_explicit_self<'r>() -> Option<Option<PtrTy<'r>>> 
 borrowed_ptrty			pub fn borrowed_ptrty<'r>() -> PtrTy<'r> 
@@ -67,6 +72,9 @@ cfg			mod cfg;
 check_not_pub_in_root			    fn check_not_pub_in_root(&self, vis: &ast::Visibility, sp: Span) 
 clone			pub mod clone;
 clone			        fn clone(&self) -> StrCursor<'a> 
+collect_attr_proc_macro			    fn collect_attr_proc_macro(&mut self, item: &'a ast::Item, attr: &'a ast::Attribute) 
+collect_bang_proc_macro			    fn collect_bang_proc_macro(&mut self, item: &'a ast::Item, attr: &'a ast::Attribute) 
+collect_custom_derive			    fn collect_custom_derive(&mut self, item: &'a ast::Item, attr: &'a ast::Attribute) 
 combine_substructure			pub fn combine_substructure<'a>(f: CombineSubstructureFunc<'a>)
 concat			mod concat;
 concat_idents			mod concat_idents;
@@ -102,10 +110,9 @@ env			mod env;
 eq			pub mod eq;
 expand			    fn expand(&self,
 expand			    pub fn expand(&self,
+expand			    fn expand<'cx>(&self,
 expand_asm			pub fn expand_asm<'cx>(cx: &'cx mut ExtCtxt,
-expand_builtin			        fn expand_builtin(name: &str,
 expand_cfg			pub fn expand_cfg<'cx>(cx: &mut ExtCtxt,
-expand_derive			pub fn expand_derive(cx: &mut ExtCtxt,
 expand_deriving_clone			pub fn expand_deriving_clone(cx: &mut ExtCtxt,
 expand_deriving_copy			pub fn expand_deriving_copy(cx: &mut ExtCtxt,
 expand_deriving_debug			pub fn expand_deriving_debug(cx: &mut ExtCtxt,
@@ -156,6 +163,7 @@ is_digit			    fn is_digit(c: char) -> bool
 is_flag			    fn is_flag(c: char) -> bool 
 is_ident_head			    fn is_ident_head(c: char) -> bool 
 is_ident_tail			    fn is_ident_tail(c: char) -> bool 
+is_proc_macro_attr			fn is_proc_macro_attr(attr: &ast::Attribute) -> bool 
 is_static			    fn is_static(&self) -> bool 
 is_type_without_fields			pub fn is_type_without_fields(item: &Annotatable) -> bool 
 iter_subs			    pub fn iter_subs(s: &str) -> Substitutions 
@@ -168,7 +176,7 @@ mk_lifetimes			fn mk_lifetimes(cx: &ExtCtxt, span: Span, lt: &Option<&str>) -> V
 mk_registrar			fn mk_registrar(cx: &mut ExtCtxt,
 mk_ty_param			fn mk_ty_param(cx: &ExtCtxt,
 modify			pub fn modify(sess: &ParseSess,
-new			    pub fn new(inner: fn(TokenStream) -> TokenStream, attrs: Vec<ast::Name>) -> CustomDerive 
+new			    pub fn new(inner: fn(TokenStream) -> TokenStream, attrs: Vec<ast::Name>) -> ProcMacroDerive 
 new			    pub fn new<'r>(path: Vec<&'r str>) -> Path<'r> 
 new_			    pub fn new_<'r>(path: Vec<&'r str>,
 new_at_start			        pub fn new_at_start(s: &'a str) -> StrCursor<'a> 
@@ -185,9 +193,11 @@ partial_eq			pub mod partial_eq;
 partial_ord			pub mod partial_ord;
 path			        fn path(&self) -> ast::Path 
 printf			pub mod printf 
+proc_macro_impl			pub mod proc_macro_impl;
 proc_macro_registrar			pub mod proc_macro_registrar;
 process_variant			    fn process_variant(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>, variant: &VariantData) 
 process_variant			    fn process_variant(cx: &mut ExtCtxt, stmts: &mut Vec<ast::Stmt>, variant: &ast::VariantData) 
+register_builtin_derives			        pub fn register_builtin_derives(resolver: &mut Resolver) 
 register_builtins			pub fn register_builtins(resolver: &mut syntax::ext::base::Resolver,
 resolve_name_inplace			    fn resolve_name_inplace(&self, p: &mut parse::Piece) 
 rtpath			    fn rtpath(ecx: &ExtCtxt, s: &str) -> Vec<ast::Ident> 

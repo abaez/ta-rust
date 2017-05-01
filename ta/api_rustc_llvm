@@ -88,7 +88,6 @@ LLVMBuildInBoundsGEP			    pub fn LLVMBuildInBoundsGEP(B: BuilderRef,
 LLVMBuildIndirectBr			    pub fn LLVMBuildIndirectBr(B: BuilderRef, Addr: ValueRef, NumDests: c_uint) -> ValueRef;
 LLVMBuildInsertElement			    pub fn LLVMBuildInsertElement(B: BuilderRef,
 LLVMBuildInsertValue			    pub fn LLVMBuildInsertValue(B: BuilderRef,
-LLVMBuildIntCast			    pub fn LLVMBuildIntCast(B: BuilderRef,
 LLVMBuildIntToPtr			    pub fn LLVMBuildIntToPtr(B: BuilderRef,
 LLVMBuildIsNotNull			    pub fn LLVMBuildIsNotNull(B: BuilderRef, Val: ValueRef, Name: *const c_char) -> ValueRef;
 LLVMBuildIsNull			    pub fn LLVMBuildIsNull(B: BuilderRef, Val: ValueRef, Name: *const c_char) -> ValueRef;
@@ -158,6 +157,7 @@ LLVMConstInt			    pub fn LLVMConstInt(IntTy: TypeRef, N: c_ulonglong, SignExten
 LLVMConstIntCast			    pub fn LLVMConstIntCast(ConstantVal: ValueRef, ToType: TypeRef, isSigned: Bool) -> ValueRef;
 LLVMConstIntGetSExtValue			    pub fn LLVMConstIntGetSExtValue(ConstantVal: ValueRef) -> c_longlong;
 LLVMConstIntGetZExtValue			    pub fn LLVMConstIntGetZExtValue(ConstantVal: ValueRef) -> c_ulonglong;
+LLVMConstIntOfArbitraryPrecision			    pub fn LLVMConstIntOfArbitraryPrecision(IntTy: TypeRef, Wn: c_uint, Ws: *const u64) -> ValueRef;
 LLVMConstIntToPtr			    pub fn LLVMConstIntToPtr(ConstantVal: ValueRef, ToType: TypeRef) -> ValueRef;
 LLVMConstLShr			    pub fn LLVMConstLShr(LHSConstant: ValueRef, RHSConstant: ValueRef) -> ValueRef;
 LLVMConstMul			    pub fn LLVMConstMul(LHSConstant: ValueRef, RHSConstant: ValueRef) -> ValueRef;
@@ -212,6 +212,7 @@ LLVMGetBasicBlockParent			    pub fn LLVMGetBasicBlockParent(BB: BasicBlockRef) 
 LLVMGetCurrentDebugLocation			    pub fn LLVMGetCurrentDebugLocation(Builder: BuilderRef) -> ValueRef;
 LLVMGetDataLayout			    pub fn LLVMGetDataLayout(M: ModuleRef) -> *const c_char;
 LLVMGetElementType			    pub fn LLVMGetElementType(Ty: TypeRef) -> TypeRef;
+LLVMGetFirstBasicBlock			    pub fn LLVMGetFirstBasicBlock(Fn: ValueRef) -> BasicBlockRef;
 LLVMGetFirstFunction			    pub fn LLVMGetFirstFunction(M: ModuleRef) -> ValueRef;
 LLVMGetFirstGlobal			    pub fn LLVMGetFirstGlobal(M: ModuleRef) -> ValueRef;
 LLVMGetFirstInstruction			    pub fn LLVMGetFirstInstruction(BB: BasicBlockRef) -> ValueRef;
@@ -309,10 +310,12 @@ LLVMRustBuildCatchRet			    pub fn LLVMRustBuildCatchRet(B: BuilderRef, Pad: Val
 LLVMRustBuildCatchSwitch			    pub fn LLVMRustBuildCatchSwitch(Builder: BuilderRef,
 LLVMRustBuildCleanupPad			    pub fn LLVMRustBuildCleanupPad(B: BuilderRef,
 LLVMRustBuildCleanupRet			    pub fn LLVMRustBuildCleanupRet(B: BuilderRef,
+LLVMRustBuildIntCast			    pub fn LLVMRustBuildIntCast(B: BuilderRef,
 LLVMRustBuildInvoke			    pub fn LLVMRustBuildInvoke(B: BuilderRef,
 LLVMRustBuildLandingPad			    pub fn LLVMRustBuildLandingPad(B: BuilderRef,
 LLVMRustBuildOperandBundleDef			    pub fn LLVMRustBuildOperandBundleDef(Name: *const c_char,
 LLVMRustConfigurePassManagerBuilder			    pub fn LLVMRustConfigurePassManagerBuilder(PMB: PassManagerBuilderRef,
+LLVMRustConstInt128Get			    pub fn LLVMRustConstInt128Get(ConstantVal: ValueRef, SExt: bool,
 LLVMRustCreateMemoryBufferWithContentsOfFile			    pub fn LLVMRustCreateMemoryBufferWithContentsOfFile(Path: *const c_char) -> MemoryBufferRef;
 LLVMRustCreateTargetMachine			    pub fn LLVMRustCreateTargetMachine(Triple: *const c_char,
 LLVMRustDIBuilderCreate			    pub fn LLVMRustDIBuilderCreate(M: ModuleRef) -> DIBuilderRef;
@@ -387,7 +390,6 @@ LLVMRustSetLLVMOptions			    pub fn LLVMRustSetLLVMOptions(Argc: c_int, Argv: *c
 LLVMRustSetLinkage			    pub fn LLVMRustSetLinkage(Global: ValueRef, RustLinkage: Linkage);
 LLVMRustSetModulePIELevel			    pub fn LLVMRustSetModulePIELevel(M: ModuleRef);
 LLVMRustSetNormalizedTarget			    pub fn LLVMRustSetNormalizedTarget(M: ModuleRef, triple: *const c_char);
-LLVMRustSetPersonalityFn			    pub fn LLVMRustSetPersonalityFn(B: BuilderRef, Pers: ValueRef);
 LLVMRustSetVisibility			    pub fn LLVMRustSetVisibility(Global: ValueRef, Viz: Visibility);
 LLVMRustUnpackInlineAsmDiagnostic			    pub fn LLVMRustUnpackInlineAsmDiagnostic(DI: DiagnosticInfoRef,
 LLVMRustUnpackOptimizationDiagnostic			    pub fn LLVMRustUnpackOptimizationDiagnostic(DI: DiagnosticInfoRef,
@@ -414,6 +416,7 @@ LLVMSetInstDebugLocation			    pub fn LLVMSetInstDebugLocation(Builder: BuilderR
 LLVMSetInstructionCallConv			    pub fn LLVMSetInstructionCallConv(Instr: ValueRef, CC: c_uint);
 LLVMSetMetadata			    pub fn LLVMSetMetadata(Val: ValueRef, KindID: c_uint, Node: ValueRef);
 LLVMSetModuleInlineAsm			    pub fn LLVMSetModuleInlineAsm(M: ModuleRef, Asm: *const c_char);
+LLVMSetPersonalityFn			    pub fn LLVMSetPersonalityFn(Func: ValueRef, Pers: ValueRef);
 LLVMSetSection			    pub fn LLVMSetSection(Global: ValueRef, Section: *const c_char);
 LLVMSetThreadLocal			    pub fn LLVMSetThreadLocal(GlobalVar: ValueRef, IsThreadLocal: Bool);
 LLVMSetUnnamedAddr			    pub fn LLVMSetUnnamedAddr(GlobalVar: ValueRef, UnnamedAddr: Bool);
@@ -494,7 +497,6 @@ initialize_available_targets			pub fn initialize_available_targets()
 into_result			    pub fn into_result(self) -> Result<(), ()> 
 iter			    pub fn iter(&self) -> Iter 
 last_error			pub fn last_error() -> Option<String> 
-llvmdeps			mod llvmdeps 
 main			fn main() 
 mk_section_iter			pub fn mk_section_iter(llof: ObjectFileRef) -> SectionIter 
 mk_target_data			pub fn mk_target_data(string_rep: &str) -> TargetData 
