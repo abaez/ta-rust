@@ -19,6 +19,8 @@ Diagnostic			impl Diagnostic
 Diagnostic			pub struct Diagnostic 
 DiagnosticBuilder			impl<'a> DiagnosticBuilder<'a> 
 DiagnosticBuilder			pub struct DiagnosticBuilder<'a> 
+DiagnosticStyledString			impl DiagnosticStyledString 
+DiagnosticStyledString			pub struct DiagnosticStyledString(pub Vec<StringPart>);
 Drop for DiagnosticBuilder			impl<'a> Drop for DiagnosticBuilder<'a> 
 Drop for Guard			    impl Drop for Guard 
 Drop for Handle			    impl Drop for Handle 
@@ -46,6 +48,8 @@ Registry			pub struct Registry
 ReleaseMutex			        fn ReleaseMutex(hMutex: HANDLE) -> BOOL;
 RenderSpan			pub enum RenderSpan 
 SnippetData			pub struct SnippetData 
+StringPart			impl StringPart 
+StringPart			pub enum StringPart 
 Style			pub enum Style 
 StyledBuffer			impl StyledBuffer 
 StyledBuffer			pub struct StyledBuffer 
@@ -72,6 +76,7 @@ cancel			    pub fn cancel(&self, err: &mut DiagnosticBuilder)
 cancelled			    pub fn cancelled(&self) -> bool 
 code			    pub fn code(&mut self, s: String) -> &mut Self 
 color			    pub fn color(self) -> term::color::Color 
+content			    pub fn content(&self) -> String 
 copy_details_not_message			    pub fn copy_details_not_message(&mut self, from: &Diagnostic) 
 copy_tabs			    pub fn copy_tabs(&mut self, row: usize) 
 delay_span_bug			    pub fn delay_span_bug<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
@@ -83,6 +88,7 @@ diagnostic_builder			pub mod diagnostic_builder;
 draw_col_separator			fn draw_col_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_col_separator_no_space			fn draw_col_separator_no_space(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_col_separator_no_space_with_style			fn draw_col_separator_no_space_with_style(buffer: &mut StyledBuffer,
+draw_multiline_line			fn draw_multiline_line(buffer: &mut StyledBuffer,
 draw_note_separator			fn draw_note_separator(buffer: &mut StyledBuffer, line: usize, col: usize) 
 draw_range			fn draw_range(buffer: &mut StyledBuffer, symbol: char, line: usize,
 drop			    fn drop(&mut self) 
@@ -120,22 +126,22 @@ get_multispan_max_line_num			    fn get_multispan_max_line_num(&mut self, msp: &
 has_errors			    pub fn has_errors(&self) -> bool 
 has_label			    pub fn has_label(&self) -> bool 
 help			    pub fn help(&mut self , msg: &str) -> &mut Self 
+highlighted			    pub fn highlighted<S: Into<String>>(t: S) -> DiagnosticStyledString 
 highlighted_note			    pub fn highlighted_note(&mut self, msg: Vec<(String, Style)>) -> &mut Self 
 increase_depth			    pub fn increase_depth(&mut self) 
 into_diagnostic			    pub fn into_diagnostic(mut self) -> Diagnostic 
 is_fatal			    pub fn is_fatal(&self) -> bool 
 is_line			    pub fn is_line(&self) -> bool 
-is_minimized			    pub fn is_minimized(&self) -> bool 
 is_multiline			    pub fn is_multiline(&self) -> bool 
 len			    pub fn len(&self) -> usize 
 level			    pub fn level(&self) -> Level 
 lock			mod lock;
 lookup_char_pos			    fn lookup_char_pos(&self, pos: BytePos) -> Loc;
-macro_backtrace			    fn macro_backtrace(&self, span: Span) -> Vec<MacroBacktrace>;
 merge_spans			    fn merge_spans(&self, sp_lhs: Span, sp_rhs: Span) -> Option<Span>;
 message			    pub fn message(&self) -> String 
 msg_to_buffer			    fn msg_to_buffer(&self,
 mut_span_err			    pub fn mut_span_err<'a, S: Into<MultiSpan>>(&'a self,
+new			    pub fn new() -> DiagnosticStyledString 
 new			    pub fn new(level: Level, message: &str) -> Self 
 new			    pub fn new(handler: &'a Handler, level: Level, message: &str) -> DiagnosticBuilder<'a> 
 new			    pub fn new(dst: Box<Write + Send>, code_map: Option<Rc<CodeMapper>>) -> EmitterWriter 
@@ -143,6 +149,7 @@ new			    pub fn new(descriptions: &[(&'static str, &'static str)]) -> Registry
 new			    pub fn new() -> StyledBuffer 
 new_with_code			    pub fn new_with_code(level: Level, code: Option<String>, message: &str) -> Self 
 new_with_code			    pub fn new_with_code(handler: &'a Handler,
+normal			    pub fn normal<S: Into<String>>(t: S) -> DiagnosticStyledString 
 note			    pub fn note(&mut self, msg: &str) -> &mut Self 
 note_expected_found			    pub fn note_expected_found(&mut self,
 note_expected_found_extra			    pub fn note_expected_found_extra(&mut self,
@@ -153,6 +160,8 @@ overlaps			fn overlaps(a1: &Annotation, a2: &Annotation, padding: usize) -> bool
 panic_if_treat_err_as_bug			    fn panic_if_treat_err_as_bug(&self) 
 prepend			    pub fn prepend(&mut self, line: usize, string: &str, style: Style) 
 preprocess_annotations			    fn preprocess_annotations(&self, msp: &MultiSpan) -> Vec<FileWithAnnotatedLines> 
+push_highlighted			    pub fn push_highlighted<S: Into<String>>(&mut self, t: S) 
+push_normal			    pub fn push_normal<S: Into<String>>(&mut self, t: S) 
 push_trailing			        fn push_trailing(buf: &mut String,
 putc			    pub fn putc(&mut self, line: usize, col: usize, chr: char, style: Style) 
 puts			    pub fn puts(&mut self, line: usize, col: usize, string: &str, style: Style) 
@@ -201,6 +210,7 @@ styled_buffer			pub mod styled_buffer;
 styled_message			    pub fn styled_message(&self) -> &Vec<(String, Style)> 
 sub			    fn sub(&mut self,
 sub_with_highlights			    fn sub_with_highlights(&mut self,
+takes_space			    pub fn takes_space(&self) -> bool 
 to_str			    pub fn to_str(self) -> &'static str 
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 
 use_color			    fn use_color(&self) -> bool 

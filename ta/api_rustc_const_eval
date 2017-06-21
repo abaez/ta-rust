@@ -4,18 +4,11 @@ AtBindingPatternVisitor			struct AtBindingPatternVisitor<'a, 'b:'a, 'tcx:'b>
 BindingMode			pub enum BindingMode<'tcx> 
 ConstContext			impl<'a, 'tcx> ConstContext<'a, 'tcx> 
 ConstContext			pub struct ConstContext<'a, 'tcx: 'a> 
-ConstEvalErr			impl<'tcx> ConstEvalErr<'tcx> 
-ConstEvalErr			pub struct ConstEvalErr<'tcx> 
-ConstEvalErrDescription			impl<'a> ConstEvalErrDescription<'a> 
-ConstEvalErrDescription			pub enum ConstEvalErrDescription<'a> 
 Constructor			impl<'tcx> Constructor<'tcx> 
 Constructor			pub enum Constructor<'tcx> 
 Delegate for MutationChecker			impl<'a, 'gcx, 'tcx> Delegate<'tcx> for MutationChecker<'a, 'gcx> 
 Empty			enum Empty {}
-Enum			enum Enum 
-ErrKind			pub enum ErrKind<'tcx> 
 FieldPattern			pub struct FieldPattern<'tcx> 
-From for ErrKind			impl<'tcx> From<ConstMathErr> for ErrKind<'tcx> 
 FromIterator			impl<'a, 'tcx> FromIterator<Vec<&'a Pattern<'tcx>>> for Matrix<'a, 'tcx> 
 Irrefutable			struct Irrefutable(i32);
 LiteralExpander			struct LiteralExpander;
@@ -33,6 +26,7 @@ Pattern			impl<'tcx> Pattern<'tcx>
 Pattern			impl<'a, 'gcx, 'tcx> Pattern<'tcx> 
 Pattern			pub struct Pattern<'tcx> 
 PatternContext			struct PatternContext<'tcx> 
+PatternContext			impl<'a, 'gcx, 'tcx> PatternContext<'a, 'gcx, 'tcx> 
 PatternContext			impl<'a, 'gcx, 'tcx> PatternContext<'a, 'gcx, 'tcx> 
 PatternContext			pub struct PatternContext<'a, 'gcx: 'tcx, 'tcx: 'a> 
 PatternError			pub enum PatternError<'tcx> 
@@ -58,7 +52,6 @@ _match			mod _match;
 all_constructors			fn all_constructors<'a, 'tcx: 'a>(cx: &mut MatchCheckCtxt<'a, 'tcx>,
 apply_constructor			    fn apply_constructor<'a>(
 borrow			    fn borrow(&mut self,
-build_const_eval_err			fn build_const_eval_err<'a, 'tcx>(
 cast_const			fn cast_const<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 cast_const_float			fn cast_const_float<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 cast_const_int			fn cast_const_int<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
@@ -76,6 +69,7 @@ check_patterns			    fn check_patterns(&self, has_guard: bool, pats: &[P<Pat>])
 compare_const_vals			pub fn compare_const_vals(tcx: TyCtxt, span: Span, a: &ConstVal, b: &ConstVal)
 compare_lit_exprs			    pub fn compare_lit_exprs(&self,
 conservative_is_uninhabited			    fn conservative_is_uninhabited(&self, scrutinee_ty: Ty<'tcx>) -> bool 
+const_eval			fn const_eval<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 constructor_arity			fn constructor_arity(_cx: &MatchCheckCtxt, ctor: &Constructor, ty: Ty) -> usize 
 constructor_sub_pattern_tys			fn constructor_sub_pattern_tys<'a, 'tcx: 'a>(cx: &MatchCheckCtxt<'a, 'tcx>,
 consume			    fn consume(&mut self, _: ast::NodeId, _: Span, _: cmt, _: ConsumeMode) {}
@@ -84,15 +78,12 @@ consume_pat			    fn consume_pat(&mut self, _: &Pat, _: cmt, _: ConsumeMode) {}
 create_and_enter			    pub fn create_and_enter<F, R>(
 create_e0004			fn create_e0004<'a>(sess: &'a Session, sp: Span, error_message: String) -> DiagnosticBuilder<'a> 
 decl_without_init			    fn decl_without_init(&mut self, _: ast::NodeId, _: Span) {}
-description			    pub fn description(&self) -> ConstEvalErrDescription 
 diagnostics			pub mod diagnostics;
 empty			    pub fn empty() -> Self 
 eval			    pub fn eval(&self, e: &Expr) -> EvalResult<'tcx> 
 eval			mod eval;
 eval_const_expr_partial			fn eval_const_expr_partial<'a, 'tcx>(cx: &ConstContext<'a, 'tcx>,
-eval_length			pub fn eval_length<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 expand_pattern			pub fn expand_pattern<'a, 'tcx>(cx: &MatchCheckCtxt<'a, 'tcx>, pat: Pattern<'tcx>)
-fatal_const_eval_err			pub fn fatal_const_eval_err<'a, 'tcx>(
 flatten_nested_slice_patterns			    fn flatten_nested_slice_patterns(
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -104,10 +95,8 @@ fold_pattern_kind			    fn fold_pattern_kind(&mut self, kind: &PatternKind<'tcx>
 fold_with			    fn fold_with<F: PatternFolder<'tcx>>(&self, folder: &mut F) -> Self 
 foo			fn foo(x: Empty) 
 foo			fn foo(x: Option<String>) 
-from			    fn from(err: ConstMathErr) -> ErrKind<'tcx> 
 from_hir			    pub fn from_hir(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 from_iter			    fn from_iter<T: IntoIterator<Item=Vec<&'a Pattern<'tcx>>>>(iter: T) -> Self
-into_oneline			    pub fn into_oneline(self) -> Cow<'a, str> 
 is_uninhabited			    fn is_uninhabited(&self, ty: Ty<'tcx>) -> bool 
 is_useful			    fn is_useful(&self) -> bool 
 is_useful			pub fn is_useful<'p, 'a: 'p, 'tcx: 'a>(cx: &mut MatchCheckCtxt<'a, 'tcx>,
@@ -115,9 +104,7 @@ is_useful_specialized			fn is_useful_specialized<'p, 'a:'p, 'tcx: 'a>(
 is_variant_uninhabited			    fn is_variant_uninhabited(&self,
 is_wildcard			    fn is_wildcard(&self) -> bool 
 lit_to_const			fn lit_to_const<'a, 'tcx>(lit: &ast::LitKind,
-lookup_const_by_id			pub fn lookup_const_by_id<'a, 'tcx: 'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-lookup_const_fn_by_id			fn lookup_const_fn_by_id<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId)
-lookup_variant_by_id			fn lookup_variant_by_id<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+lookup_const_by_id			pub fn lookup_const_by_id<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 lower_byte_str_pattern			    fn lower_byte_str_pattern<'p>(&mut self, pat: &'p Pattern<'tcx>) -> Vec<&'p Pattern<'tcx>>
 lower_const_expr			    fn lower_const_expr(&mut self,
 lower_lit			    fn lower_lit(&mut self, expr: &hir::Expr) -> PatternKind<'tcx> 
@@ -132,21 +119,19 @@ max_slice_length			fn max_slice_length<'p, 'a: 'p, 'tcx: 'a, I>(
 mutate			    fn mutate(&mut self, _: ast::NodeId, span: Span, _: cmt, mode: MutateMode) 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v> 
-new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>, body: hir::BodyId) -> Self 
 new			    pub fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>, tables: &'a ty::TypeckTables<'gcx>) -> Self 
-note_const_eval_err			pub fn note_const_eval_err<'a, 'tcx>(
 parse_float			fn parse_float<'tcx>(num: &str, fty: ast::FloatTy)
 pat_constructors			fn pat_constructors<'tcx>(_cx: &mut MatchCheckCtxt,
 pat_is_catchall			fn pat_is_catchall(pat: &Pat) -> bool 
 pattern			pub mod pattern;
 patterns_for_variant			fn patterns_for_variant<'p, 'a: 'p, 'tcx: 'a>(
 print_const_val			fn print_const_val(value: &ConstVal, f: &mut fmt::Formatter) -> fmt::Result 
+provide			pub fn provide(providers: &mut Providers) 
 push			    pub fn push(&mut self, row: Vec<&'a Pattern<'tcx>>) 
 push_wild_constructor			    fn push_wild_constructor<'a>(
 range_covered_by_constructor			fn range_covered_by_constructor(tcx: TyCtxt, span: Span,
-report_const_eval_err			pub fn report_const_eval_err<'a, 'tcx>(
-report_inlining_errors			    fn report_inlining_errors(&self, patcx: PatternContext, pat_span: Span) 
-resolve_trait_associated_const			fn resolve_trait_associated_const<'a, 'tcx: 'a>(
+report_inlining_errors			    fn report_inlining_errors(&self, pat_span: Span) 
+resolve_trait_associated_const			fn resolve_trait_associated_const<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 single_pattern			    pub fn single_pattern(&self) -> &Pattern<'tcx> 
 slice_or_array_pattern			    fn slice_or_array_pattern(
 slice_pat_covered_by_constructor			fn slice_pat_covered_by_constructor(_tcx: TyCtxt, _span: Span,

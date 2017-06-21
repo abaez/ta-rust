@@ -22,6 +22,7 @@ PrivacyVisitor			impl<'a, 'tcx> PrivacyVisitor<'a, 'tcx>
 PrivacyVisitor			struct PrivacyVisitor<'a, 'tcx: 'a> 
 PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
 PrivateItemsInPublicInterfacesVisitor			struct PrivateItemsInPublicInterfacesVisitor<'a, 'tcx: 'a> 
+PubRestrictedVisitor			struct PubRestrictedVisitor<'a, 'tcx: 'a> 
 ReachEverythingInTheInterfaceVisitor			impl<'b, 'a, 'tcx> ReachEverythingInTheInterfaceVisitor<'b, 'a, 'tcx> 
 ReachEverythingInTheInterfaceVisitor			struct ReachEverythingInTheInterfaceVisitor<'b, 'a: 'b, 'tcx: 'a> 
 SearchInterfaceForPrivateItemsVisitor			impl<'a, 'tcx: 'a> SearchInterfaceForPrivateItemsVisitor<'a, 'tcx> 
@@ -33,10 +34,11 @@ Visitor for ObsoleteCheckTypeForPrivatenessVisitor			impl<'a, 'b, 'tcx, 'v> Visi
 Visitor for ObsoleteVisiblePrivateTypesVisitor			impl<'a, 'tcx> Visitor<'tcx> for ObsoleteVisiblePrivateTypesVisitor<'a, 'tcx> 
 Visitor for PrivacyVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivacyVisitor<'a, 'tcx> 
 Visitor for PrivateItemsInPublicInterfacesVisitor			impl<'a, 'tcx> Visitor<'tcx> for PrivateItemsInPublicInterfacesVisitor<'a, 'tcx> 
+Visitor for PubRestrictedVisitor			impl<'a, 'tcx> Visitor<'tcx> for PubRestrictedVisitor<'a, 'tcx> 
 bar			    pub fn bar() -> Bar { \/\/ error: private type in public interface
 bar			    pub fn bar() -> Bar { \/\/ ok!
 check			    fn check(&self, item_id: ast::NodeId, required_visibility: ty::Visibility)
-check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Rc<AccessLevels> 
 check_field			    fn check_field(&mut self, span: Span, def: &'tcx ty::AdtDef, field: &'tcx ty::FieldDef) 
 check_method			    fn check_method(&mut self, span: Span, method_def_id: DefId) 
 check_ty_param_bound			    fn check_ty_param_bound(&mut self,
@@ -58,6 +60,8 @@ nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisi
 new			        pub fn new() -> Foo { \/\/ we create a method to instantiate `Foo`
 path_is_private_type			    fn path_is_private_type(&self, path: &hir::Path) -> bool 
 predicates			    fn predicates(&mut self) -> &mut Self 
+privacy_access_levels			fn privacy_access_levels<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+provide			pub fn provide(providers: &mut Providers) 
 reach			    fn reach<'b>(&'b mut self, item_id: ast::NodeId)
 trait_is_public			    fn trait_is_public(&self, trait_id: ast::NodeId) -> bool 
 update			    fn update(&mut self, id: ast::NodeId, level: Option<AccessLevel>) -> Option<AccessLevel> 
@@ -83,3 +87,4 @@ visit_ty			    fn visit_ty(&mut self, ty: &'tcx hir::Ty)
 visit_ty			    fn visit_ty(&mut self, ty: &hir::Ty) 
 visit_ty			    fn visit_ty(&mut self, ty: Ty<'tcx>) -> bool 
 visit_variant			    fn visit_variant(&mut self,
+visit_vis			    fn visit_vis(&mut self, vis: &'tcx hir::Visibility) 

@@ -1,28 +1,54 @@
+::std::cmp::PartialEq for String			impl ::std::cmp::PartialEq<InternedString> for String 
+::std::cmp::PartialEq for str			impl ::std::cmp::PartialEq<InternedString> for str 
+::std::convert::AsRef for InternedString			impl<U: ?Sized> ::std::convert::AsRef<U> for InternedString where str: ::std::convert::AsRef<U> 
+::std::ops::Deref for InternedString			impl ::std::ops::Deref for InternedString 
 Add for BytePos			impl Add for BytePos 
 Add for CharPos			impl Add for CharPos 
 BytePos			pub struct BytePos(pub u32);
 CharPos			pub struct CharPos(pub usize);
 Decodable for BytePos			impl Decodable for BytePos 
 Decodable for FileMap			impl Decodable for FileMap 
+Decodable for Ident			impl Decodable for Ident 
+Decodable for InternedString			impl Decodable for InternedString 
+Decodable for Symbol			impl Decodable for Symbol 
+Decodable for SyntaxContext			impl Decodable for SyntaxContext 
 DistinctSources			pub struct DistinctSources 
 Encodable for BytePos			impl Encodable for BytePos 
 Encodable for FileMap			impl Encodable for FileMap 
-ExpnId			impl ExpnId 
-ExpnId			pub struct ExpnId(pub u32);
+Encodable for Ident			impl Encodable for Ident 
+Encodable for InternedString			impl Encodable for InternedString 
+Encodable for Symbol			impl Encodable for Symbol 
+Encodable for SyntaxContext			impl Encodable for SyntaxContext 
+ExpnFormat			pub enum ExpnFormat 
+ExpnInfo			pub struct ExpnInfo 
 FileLines			pub struct FileLines 
 FileMap			impl FileMap 
 FileMap			pub struct FileMap 
 FileMapAndBytePos			pub struct FileMapAndBytePos { pub fm: Rc<FileMap>, pub pos: BytePos }
 FileMapAndLine			pub struct FileMapAndLine { pub fm: Rc<FileMap>, pub line: usize }
 From for MultiSpan			impl From<Span> for MultiSpan 
+HygieneData			impl HygieneData 
+HygieneData			struct HygieneData 
+Ident			impl Ident 
+Ident			pub struct Ident 
+InternedString			pub struct InternedString 
+Interner			    impl Interner 
+Interner			impl Interner 
+Interner			pub struct Interner 
+Keyword			        impl Keyword 
+Keyword			        pub struct Keyword 
 LineInfo			pub struct LineInfo 
 Loc			pub struct Loc 
 LocWithOpt			pub struct LocWithOpt 
 MacroBacktrace			pub struct MacroBacktrace 
 MalformedCodemapPositions			pub struct MalformedCodemapPositions 
+Mark			impl Mark 
+Mark			pub struct Mark(u32);
 MultiByteChar			pub struct MultiByteChar 
 MultiSpan			impl MultiSpan 
 MultiSpan			pub struct MultiSpan 
+NameAndSpan			impl NameAndSpan 
+NameAndSpan			pub struct NameAndSpan 
 Pos			pub trait Pos 
 Pos for BytePos			impl Pos for BytePos 
 Pos for CharPos			impl Pos for CharPos 
@@ -33,53 +59,114 @@ SpanLinesError			pub enum SpanLinesError
 SpanSnippetError			pub enum SpanSnippetError 
 Sub for BytePos			impl Sub for BytePos 
 Sub for CharPos			impl Sub for CharPos 
+Symbol			impl Symbol 
+Symbol			pub struct Symbol(u32);
+SyntaxContext			impl SyntaxContext 
+SyntaxContext			pub struct SyntaxContext(u32);
+SyntaxContextData			pub struct SyntaxContextData 
 add			    fn add(self, rhs: BytePos) -> BytePos 
 add			    fn add(self, rhs: CharPos) -> CharPos 
+allows_unstable			    pub fn allows_unstable(&self) -> bool 
+apply_mark			    pub fn apply_mark(self, mark: Mark) -> SyntaxContext 
+as_ref			    fn as_ref(&self) -> &U 
+as_str			    pub fn as_str(self) -> InternedString 
+as_u32			    pub fn as_u32(self) -> u32 
+as_u32			    pub fn as_u32(self) -> u32 
+between			    pub fn between(self, end: Span) -> Span 
 byte_length			    pub fn byte_length(&self) -> u32 
+clear_markings			pub fn clear_markings() 
 contains			    pub fn contains(self, other: Span) -> bool 
 count_lines			    pub fn count_lines(&self) -> usize 
+data			    pub fn data(self) -> SyntaxContextData 
+decode			    fn decode<D: Decoder>(_: &mut D) -> Result<SyntaxContext, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BytePos, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<FileMap, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Ident, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<InternedString, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Symbol, D::Error> 
 default_decode			    fn default_decode<D: Decoder>(d: &mut D) -> Result<Span, D::Error> 
 default_encode			    fn default_encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 default_span_debug			fn default_span_debug(span: Span, f: &mut fmt::Formatter) -> fmt::Result 
+deref			    fn deref(&self) -> &str { self.string }
+encode			    fn encode<E: Encoder>(&self, _: &mut E) -> Result<(), E::Error> 
+encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 end_point			    pub fn end_point(self) -> Span 
+eq			    fn eq(&self, other: &InternedString) -> bool 
+eq			    fn eq(&self, other: &T) -> bool 
+expn_info			    pub fn expn_info(self) -> Option<ExpnInfo> 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Debug for FileMap			impl fmt::Debug for FileMap 
+fmt::Debug for Ident			impl fmt::Debug for Ident 
+fmt::Debug for InternedString			impl fmt::Debug for InternedString 
 fmt::Debug for Span			impl fmt::Debug for Span 
+fmt::Debug for Symbol			impl fmt::Debug for Symbol 
+fmt::Debug for SyntaxContext			impl fmt::Debug for SyntaxContext 
+fmt::Display for Ident			impl fmt::Display for Ident 
+fmt::Display for InternedString			impl fmt::Display for InternedString 
+fmt::Display for Symbol			impl fmt::Display for Symbol 
+fresh			    pub fn fresh() -> Self 
+fresh			        fn fresh() -> Self 
 from			    fn from(span: Span) -> MultiSpan 
 from_span			    pub fn from_span(primary_span: Span) -> MultiSpan 
 from_spans			    pub fn from_spans(vec: Vec<Span>) -> MultiSpan 
-from_u32			    pub fn from_u32(id: u32) -> ExpnId 
+from_str			    pub fn from_str(string: &str) -> Ident 
+from_u32			    pub fn from_u32(raw: u32) -> Mark 
 from_usize			    fn from_usize(n: usize) -> BytePos { BytePos(n as u32) }
 from_usize			    fn from_usize(n: usize) -> CharPos { CharPos(n) }
 from_usize			    fn from_usize(n: usize) -> Self;
+gensym			    fn gensym(&mut self, string: &str) -> Symbol 
+gensym			    pub fn gensym(string: &str) -> Self 
+get			    pub fn get(&self, name: Symbol) -> &str 
 get_line			    pub fn get_line(&self, line_number: usize) -> Option<&str> 
-into_u32			    pub fn into_u32(self) -> u32 
+hygiene			pub mod hygiene;
+intern			    pub fn intern(&mut self, string: &str) -> Symbol 
+intern			    pub fn intern(string: &str) -> Self 
+interner_tests			    fn interner_tests() 
 is_imported			    pub fn is_imported(&self) -> bool 
 is_real_file			    pub fn is_real_file(&self) -> bool 
+keywords			    pub mod keywords 
 line_bounds			    pub fn line_bounds(&self, line_index: usize) -> (BytePos, BytePos) 
 lookup_line			    pub fn lookup_line(&self, pos: BytePos) -> Option<usize> 
 lookup_line			fn lookup_line(lines: &[BytePos], pos: BytePos) -> isize 
-mk_sp			pub fn mk_sp(lo: BytePos, hi: BytePos) -> Span 
+macro_backtrace			    pub fn macro_backtrace(mut self) -> Vec<MacroBacktrace> 
+name			    pub fn name(&self) -> Symbol 
+new			    fn new() -> Self 
 new			    pub fn new() -> MultiSpan 
+new			    pub fn new() -> Self 
 next_line			    pub fn next_line(&self, pos: BytePos) 
+next_point			    pub fn next_point(self) -> Span 
+outer			    pub fn outer(self) -> Mark 
+prefill			    fn prefill(init: &[&str]) -> Self 
 primary_span			    pub fn primary_span(&self) -> Option<Span> 
 primary_spans			    pub fn primary_spans(&self) -> &[Span] 
 push_span_label			    pub fn push_span_label(&mut self, span: Span, label: String) 
 record_multibyte_char			    pub fn record_multibyte_char(&self, pos: BytePos, bytes: usize) 
 replace			    pub fn replace(&mut self, before: Span, after: Span) -> bool 
+root			    pub fn root() -> Self 
 serialize::UseSpecializedDecodable for Span			impl serialize::UseSpecializedDecodable for Span 
 serialize::UseSpecializedEncodable for Span			impl serialize::UseSpecializedEncodable for Span 
+set_expn_info			    pub fn set_expn_info(self, info: ExpnInfo) 
+source_callee			        fn source_callee(info: ExpnInfo) -> NameAndSpan 
+source_callee			    pub fn source_callee(self) -> Option<NameAndSpan> 
+source_callsite			    pub fn source_callsite(self) -> Span 
 source_equal			    pub fn source_equal(&self, other: &Span) -> bool 
 span_labels			    pub fn span_labels(&self) -> Vec<SpanLabel> 
 sub			    fn sub(self, rhs: BytePos) -> BytePos 
 sub			    fn sub(self, rhs: CharPos) -> CharPos 
 substitute_dummy			    pub fn substitute_dummy(self, other: Span) -> Span 
+symbol			pub mod symbol;
 tests			mod tests 
+tests			mod tests 
+to			    pub fn to(self, end: Span) -> Span 
 to_usize			    fn to_usize(&self) -> usize { let BytePos(n) = *self; n as usize }
 to_usize			    fn to_usize(&self) -> usize { let CharPos(n) = *self; n }
 to_usize			    fn to_usize(&self) -> usize;
 trim_start			    pub fn trim_start(self, other: Span) -> Option<Span> 
+unhygienize			    pub fn unhygienize(self) -> Ident 
+until			    pub fn until(self, end: Span) -> Span 
+with			    fn with<T, F: FnOnce(&mut HygieneData) -> T>(f: F) -> T 
+with_interner			fn with_interner<T, F: FnOnce(&mut Interner) -> T>(f: F) -> T 

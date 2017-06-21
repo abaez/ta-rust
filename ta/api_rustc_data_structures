@@ -1,5 +1,6 @@
 ::std::fmt::Debug for Blake2bCtx			impl ::std::fmt::Debug for Blake2bCtx 
 ::std::fmt::Debug for Blake2bHasher			impl ::std::fmt::Debug for Blake2bHasher 
+::std::fmt::Debug for StableHasher			impl<W: StableHasherResult> ::std::fmt::Debug for StableHasher<W> 
 ::std::hash::Hasher for Blake2bHasher			impl ::std::hash::Hasher for Blake2bHasher 
 AccumulateVec			impl<A: Array> AccumulateVec<A> 
 AccumulateVec			pub enum AccumulateVec<A: Array> 
@@ -9,6 +10,7 @@ AdjacentSources			pub struct AdjacentSources<'g, N, E>
 AdjacentTargets			pub struct AdjacentTargets<'g, N, E>
 Array			pub unsafe trait Array 
 Array			unsafe impl<T> Array for [T; 1] 
+Array			unsafe impl<T> Array for [T; 32] 
 Array			unsafe impl<T> Array for [T; 8] 
 ArrayVec			impl<A: Array> ArrayVec<A> 
 ArrayVec			pub struct ArrayVec<A: Array> 
@@ -48,7 +50,6 @@ Default for AccumulateVec			impl<A: Array> Default for AccumulateVec<A>
 Default for ArrayVec			impl<A> Default for ArrayVec<A>
 Default for FnvHasher			impl Default for FnvHasher 
 Default for FxHasher			impl Default for FxHasher 
-Default for ManuallyDrop			impl<T> Default for ManuallyDrop<T> 
 Default for SmallVec			impl<A: Array> Default for SmallVec<A> 
 Delegate			struct Delegate<K>(PhantomData<K>);
 DepthFirstTraversal			impl<'g, N: Debug, E: Debug> DepthFirstTraversal<'g, N, E> 
@@ -89,10 +90,10 @@ Extend for IndexVec			impl<I: Idx, T> Extend<T> for IndexVec<I, T>
 Extend for SmallVec			impl<A: Array> Extend<A::Element> for SmallVec<A> 
 Extend for SnapshotVec			impl<D: SnapshotVecDelegate> Extend<D::Value> for SnapshotVec<D> 
 FmtWrap			pub struct FmtWrap<T>(pub T);
-FnMut for GetObligation			                impl<'a, 'b, O> FnMut<(&'b usize,)> for GetObligation<'a, O> 
+FnMut for GetObligation			impl<'a, 'b, O> FnMut<(&'b usize,)> for GetObligation<'a, O> 
 FnMut for IntoIdx			impl<I: Idx, T> FnMut<((usize, T),)> for IntoIdx<I> 
 FnMut for IntoIdx			impl<I: Idx> FnMut<(usize,)> for IntoIdx<I> 
-FnOnce for GetObligation			                impl<'a, 'b, O> FnOnce<(&'b usize,)> for GetObligation<'a, O> 
+FnOnce for GetObligation			impl<'a, 'b, O> FnOnce<(&'b usize,)> for GetObligation<'a, O> 
 FnOnce for IntoIdx			impl<I: Idx, T> FnOnce<((usize, T),)> for IntoIdx<I> 
 FnOnce for IntoIdx			impl<I: Idx> FnOnce<(usize,)> for IntoIdx<I> 
 FnvHashMap			pub fn FnvHashMap<K: Hash + Eq, V>() -> FnvHashMap<K, V> 
@@ -108,7 +109,7 @@ FxHashMap			pub fn FxHashMap<K: Hash + Eq, V>() -> FxHashMap<K, V>
 FxHashSet			pub fn FxHashSet<V: Hash + Eq>() -> FxHashSet<V> 
 FxHasher			impl FxHasher 
 FxHasher			pub struct FxHasher 
-GetObligation			                struct GetObligation<'a, O: 'a>(&'a [Node<O>]);
+GetObligation			struct GetObligation<'a, O: 'a>(&'a [Node<O>]);
 Graph			impl<N: Debug, E: Debug> Graph<N, E> 
 Graph			pub struct Graph<N, E> 
 GraphPredecessors			pub trait GraphPredecessors<'graph> 
@@ -120,6 +121,21 @@ GraphSuccessors			impl<'iter, 'graph, G: ControlFlowGraph> GraphSuccessors<'iter
 GraphSuccessors for TestGraph			impl<'graph> GraphSuccessors<'graph> for TestGraph 
 GraphSuccessors for TransposedGraph			impl<'graph, G: ControlFlowGraph> GraphSuccessors<'graph> for TransposedGraph<G> 
 Hash for ArrayVec			impl<A> Hash for ArrayVec<A>
+HashStable			        impl<CTX> HashStable<CTX> for 
+HashStable			impl<'a, T, CTX> HashStable<CTX> for &'a T
+HashStable			impl<I: ::indexed_vec::Idx, T, CTX> HashStable<CTX> for ::indexed_vec::IndexVec<I, T>
+HashStable			impl<K, V, CTX> HashStable<CTX> for ::std::collections::BTreeMap<K, V>
+HashStable			impl<T, CTX> HashStable<CTX> for ::std::collections::BTreeSet<T>
+HashStable			impl<T, CTX> HashStable<CTX> for ::std::mem::Discriminant<T> 
+HashStable			pub trait HashStable<CTX> 
+HashStable for Edge			impl<CTX> HashStable<CTX> for Edge 
+HashStable for Index			impl<CTX> HashStable<CTX> for Index 
+HashStable for Option			impl<T, CTX> HashStable<CTX> for Option<T>
+HashStable for TransitiveRelation			impl<CTX, T> HashStable<CTX> for TransitiveRelation<T>
+HashStable for bool			impl<CTX> HashStable<CTX> for bool 
+HashStable for f32			impl<CTX> HashStable<CTX> for f32 
+HashStable for f64			impl<CTX> HashStable<CTX> for f64 
+HashStable for str			impl<CTX> HashStable<CTX> for str 
 Hasher for FnvHasher			impl Hasher for FnvHasher 
 Hasher for FxHasher			impl Hasher for FxHasher 
 Hasher for StableHasher			impl<W> Hasher for StableHasher<W> 
@@ -133,6 +149,7 @@ IdxSetBuf			pub struct IdxSetBuf<T: Idx>
 Index			struct Index(usize);
 Index for IndexVec			impl<I: Idx, T> Index<I> for IndexVec<I, T> 
 IndexMut for IndexVec			impl<I: Idx, T> IndexMut<I> for IndexVec<I, T> 
+IndexVec			impl<I: Idx, T: Clone> IndexVec<I, T> 
 IndexVec			impl<I: Idx, T> IndexVec<I, T> 
 IndexVec			pub struct IndexVec<I: Idx, T> 
 IntKey			struct IntKey(u32);
@@ -170,7 +187,6 @@ Ivar			pub struct Ivar<T: Copy>
 Lock			    impl Lock 
 Lock			    pub struct Lock 
 LockFileEx			        fn LockFileEx(hFile: HANDLE,
-ManuallyDrop			impl<T> ManuallyDrop<T> 
 Node			pub struct Node<N> 
 Node			impl<O> Node<O> 
 Node			struct Node<O> 
@@ -279,10 +295,10 @@ blake2b_update			fn blake2b_update(ctx: &mut Blake2bCtx, mut data: &[u8])
 bytes_hashed			    pub fn bytes_hashed(&self) -> u64 
 call_mut			    extern "rust-call" fn call_mut(&mut self, ((n, t),): ((usize, T),)) -> Self::Output 
 call_mut			    extern "rust-call" fn call_mut(&mut self, (n,): (usize,)) -> Self::Output 
-call_mut			                    extern "rust-call" fn call_mut(&mut self, args: (&'b usize,)) -> &'a O 
+call_mut			    extern "rust-call" fn call_mut(&mut self, args: (&'b usize,)) -> &'a O 
 call_once			    extern "rust-call" fn call_once(self, ((n, t),): ((usize, T),)) -> Self::Output 
 call_once			    extern "rust-call" fn call_once(self, (n,): (usize,)) -> Self::Output 
-call_once			                    extern "rust-call" fn call_once(self, args: (&'b usize,)) -> &'a O 
+call_once			    extern "rust-call" fn call_once(self, args: (&'b usize,)) -> &'a O 
 can_reach			    pub fn can_reach(&self, source: Node, target: Node) -> bool 
 checked_mem_copy			fn checked_mem_copy<T1, T2>(from: &[T1], to: &mut [T2], byte_count: usize) 
 children			    pub fn children(&self, node: Node) -> &[Node] 
@@ -388,6 +404,7 @@ first_adjacent			    pub fn first_adjacent(&self, node: NodeIndex, dir: Directio
 flock			        pub struct flock 
 flock			pub mod flock;
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> Result<(), ::std::fmt::Error> 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> 
 fmt			    fn fmt(&self, formatter: &mut fmt::Formatter) -> fmt::Result 
@@ -396,6 +413,7 @@ fmt			    fn fmt(&self, w: &mut fmt::Formatter) -> fmt::Result { self.bits.fmt(w
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result 
 fmt::Debug for ArrayVec			impl<A> fmt::Debug for ArrayVec<A>
 fmt::Debug for DominatorTree			impl<Node: Idx> fmt::Debug for DominatorTree<Node> 
 fmt::Debug for DominatorTreeNode			impl<'tree, Node: Idx> fmt::Debug for DominatorTreeNode<'tree, Node> 
@@ -437,6 +455,9 @@ has_value			    pub fn has_value(&mut self, id: K) -> bool
 hash			    fn hash<H>(&self, state: &mut H) where H: Hasher 
 hash			pub fn hash<T: Hash>(v: &T) -> u64 
 hash			pub fn hash<T: Hash>(v: &T) -> u64 
+hash_stable			            fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
 if_not_self			    fn if_not_self(&self, key: K, self_key: K) -> Option<K> 
 immediate_dominator			    pub fn immediate_dominator(&self, node: Node) -> Node 
 imp			impl imp::Lock 
@@ -530,7 +551,6 @@ mutual_dominator			    pub fn mutual_dominator<I>(&self, iter: I) -> Option<Node
 mutual_dominator_node			    pub fn mutual_dominator_node(&self, node1: Node, node2: Node) -> Node 
 nested_commit_then_rollback			fn nested_commit_then_rollback() 
 new			    pub fn new() -> AccumulateVec<A> 
-new			    fn new() -> ManuallyDrop<T> 
 new			    pub fn new() -> Self 
 new			    pub fn new(num_bits: usize) -> BitVector 
 new			    pub fn new(rows: usize, columns: usize) -> BitMatrix 
@@ -614,7 +634,7 @@ predecessors			    fn predecessors<'iter>(&'iter self,
 predecessors			    fn predecessors<'graph>(&'graph self,
 predecessors			    fn predecessors<'graph>(&'graph self,
 probe			    pub fn probe(&mut self, a_id: K) -> Option<V> 
-process_backedge			    fn process_backedge<'c, I>(&mut self, cycle: I,
+process_backedge			    fn process_backedge<'c, I>(&mut self,
 process_backedge			    fn process_backedge<'c, I>(&mut self, _cycle: I,
 process_cycles			    fn process_cycles<P>(&mut self, processor: &mut P)
 process_obligation			    fn process_obligation(&mut self,
@@ -643,6 +663,7 @@ remove			    pub fn remove(&mut self, elem: &T) -> bool
 remove			    pub fn remove(&mut self, key: K) -> bool 
 reserve			    pub fn reserve(&mut self, n: usize) 
 reset			    pub fn reset(&mut self, start_node: NodeIndex) 
+resize			    pub fn resize(&mut self, new_len: usize, value: T) 
 rev_post_order_inner_loop			fn rev_post_order_inner_loop() 
 reverse			    fn reverse(_: &mut Vec<Edge<N>>, _: ()) {}
 reverse			    fn reverse(_: &mut Vec<Node<N>>, _: ()) {}

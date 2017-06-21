@@ -1,3 +1,5 @@
+::std::fmt::Display for Fingerprint			impl ::std::fmt::Display for Fingerprint 
+::std::ops::Deref for Attributes			impl<'gcx> ::std::ops::Deref for Attributes<'gcx> 
 AccessLevel			pub enum AccessLevel 
 AccessLevels			impl<Id: Hash + Eq> AccessLevels<Id> 
 AccessLevels			pub struct AccessLevels<Id = NodeId> 
@@ -34,6 +36,9 @@ AssociatedItemKind			pub enum AssociatedItemKind
 AssociatedKind			pub enum AssociatedKind 
 AssociatedTypeNormalizer			impl<'a, 'b, 'gcx, 'tcx> AssociatedTypeNormalizer<'a, 'b, 'gcx, 'tcx> 
 AssociatedTypeNormalizer			struct AssociatedTypeNormalizer<'a, 'b: 'a, 'gcx: 'b+'tcx, 'tcx: 'b> 
+AssociatedTypeNormalizer			impl<'a, 'gcx> AssociatedTypeNormalizer<'a, 'gcx> 
+AssociatedTypeNormalizer			struct AssociatedTypeNormalizer<'a, 'gcx: 'a> 
+Attributes			pub enum Attributes<'gcx> 
 AutoBorrow			pub enum AutoBorrow<'tcx> 
 Bar			enum Bar { A(u8), B(&bool), }        \/\/ error
 Bar			enum Bar<'a> { A(u8), B(&'a bool), } \/\/ correct
@@ -55,11 +60,10 @@ BindingMode			pub enum BindingMode
 BitwiseOperator			pub trait BitwiseOperator 
 BitwiseOperator for Subtract			impl BitwiseOperator for Subtract 
 BitwiseOperator for Union			impl BitwiseOperator for Union 
-Bivariate			impl<'combine, 'infcx, 'gcx, 'tcx> Bivariate<'combine, 'infcx, 'gcx, 'tcx> 
-Bivariate			pub struct Bivariate<'combine, 'infcx: 'combine, 'gcx: 'infcx+'tcx, 'tcx: 'infcx> 
 Block			pub struct Block 
 BlockCheckMode			pub enum BlockCheckMode 
 BlockRemainder			pub struct BlockRemainder 
+BlockScope			struct BlockScope 
 Body			impl Body 
 Body			pub struct Body 
 BodyId			pub struct BodyId 
@@ -85,6 +89,9 @@ CFGNodeData			pub enum CFGNodeData
 CReaderCacheKey			pub struct CReaderCacheKey 
 Cache			impl Cache 
 Cache			pub struct Cache 
+CacheEntry			struct CacheEntry 
+CachingCodemapView			impl<'tcx> CachingCodemapView<'tcx> 
+CachingCodemapView			pub struct CachingCodemapView<'tcx> 
 CallSiteScopeData			impl CallSiteScopeData 
 CallSiteScopeData			pub struct CallSiteScopeData 
 CaptureClause			pub enum CaptureClause 
@@ -101,6 +108,8 @@ CheckLintNameResult			enum CheckLintNameResult
 Checker			struct Checker<'a, 'tcx: 'a> 
 Children			impl<'a, 'gcx, 'tcx> Children 
 Children			struct Children 
+Clone for DefPathTable			impl Clone for DefPathTable 
+Clone for Definitions			impl Clone for Definitions 
 Clone for LiveNode			impl Clone for LiveNode 
 Clone for MapEntry			impl<'hir> Clone for MapEntry<'hir> 
 Clone for Providers			        impl<
@@ -119,6 +128,7 @@ CodeExtentData			impl CodeExtentData
 CodeExtentData			pub enum CodeExtentData 
 CodeStats			impl CodeStats 
 CodeStats			pub struct CodeStats 
+CoerceUnsizedInfo			pub struct CoerceUnsizedInfo 
 CollectPrivateImplItemsVisitor			struct CollectPrivateImplItemsVisitor<'a, 'tcx: 'a> 
 Combine for RegionVidKey			impl Combine for RegionVidKey 
 CombineFields			impl<'infcx, 'gcx, 'tcx> CombineFields<'infcx, 'gcx, 'tcx> 
@@ -130,6 +140,10 @@ CommonTypes			impl<'tcx> CommonTypes<'tcx>
 CommonTypes			pub struct CommonTypes<'tcx> 
 Component			pub enum Component<'tcx> 
 Config			pub struct Config 
+ConstEvalErr			impl<'a, 'gcx, 'tcx> ConstEvalErr<'tcx> 
+ConstEvalErr			pub struct ConstEvalErr<'tcx> 
+ConstEvalErrDescription			impl<'a> ConstEvalErrDescription<'a> 
+ConstEvalErrDescription			pub enum ConstEvalErrDescription<'a> 
 ConstVal			impl<'tcx> ConstVal<'tcx> 
 ConstVal			pub enum ConstVal<'tcx> 
 Constant			pub struct Constant<'tcx> 
@@ -148,6 +162,7 @@ CopyImplementationError			pub enum CopyImplementationError<'tcx>
 Crate			impl Crate 
 Crate			pub struct Crate 
 CrateAnalysis			pub struct CrateAnalysis 
+CrateInherentImpls			pub struct CrateInherentImpls 
 CrateLoader			pub trait CrateLoader 
 CrateNum			impl CrateNum 
 CrateNum			pub struct CrateNum(u32);
@@ -160,7 +175,7 @@ CtorKind			pub enum CtorKind
 CtxtInterners			impl<'gcx: 'tcx, 'tcx> CtxtInterners<'tcx> 
 CtxtInterners			pub struct CtxtInterners<'tcx> 
 CustomCoerceUnsized			pub enum CustomCoerceUnsized 
-CycleError			pub struct CycleError<'a> 
+CycleError			pub struct CycleError<'a, 'tcx: 'a> 
 DataFlowContext			impl<'a, 'tcx, O:DataFlowOperator+Clone+'static> DataFlowContext<'a, 'tcx, O> 
 DataFlowContext			impl<'a, 'tcx, O:DataFlowOperator> DataFlowContext<'a, 'tcx, O> 
 DataFlowContext			pub struct DataFlowContext<'a, 'tcx: 'a, O> 
@@ -183,6 +198,7 @@ DebugStat			            struct DebugStat
 Decl_			impl Decl_ 
 Decl_			pub enum Decl_ 
 Decodable for DefPathTable			impl Decodable for DefPathTable 
+Decodable for Fingerprint			impl Decodable for Fingerprint 
 Decodable for Kind			impl<'tcx> Decodable for Kind<'tcx> 
 Decodable for LintId			impl Decodable for LintId 
 Decodable for Svh			impl Decodable for Svh 
@@ -202,6 +218,9 @@ DefIdTree			pub trait DefIdTree: Copy
 DefIdTree for TyCtxt			impl<'a, 'gcx, 'tcx> DefIdTree for TyCtxt<'a, 'gcx, 'tcx> 
 DefIndex			impl DefIndex 
 DefIndex			pub struct DefIndex(u32);
+DefIndexAddressSpace			impl DefIndexAddressSpace 
+DefIndexAddressSpace			pub enum DefIndexAddressSpace 
+DefKey			impl DefKey 
 DefKey			pub struct DefKey 
 DefPath			impl DefPath 
 DefPath			pub struct DefPath 
@@ -255,11 +274,14 @@ DepTrackingHash for Vec			            impl DepTrackingHash for Vec<
 DepTrackingMap			impl<M: DepTrackingMapConfig> DepTrackingMap<M> 
 DepTrackingMap			pub struct DepTrackingMap<M: DepTrackingMapConfig> 
 DepTrackingMapConfig			pub trait DepTrackingMapConfig 
+DepTrackingMapConfig for ProjectionCache			impl<'gcx> DepTrackingMapConfig for ProjectionCache<'gcx> 
+DepTrackingMapConfig for TraitSelectionCache			impl<'tcx> DepTrackingMapConfig for TraitSelectionCache<'tcx> 
 DeprecationEntry			impl DeprecationEntry 
 DeprecationEntry			pub struct DeprecationEntry 
 Deref for InferTablesRef			impl<'a, 'gcx, 'tcx> Deref for InferTablesRef<'a, 'gcx, 'tcx> 
 Deref for Slice			impl<T> Deref for Slice<T> 
 Deref for TyCtxt			impl<'a, 'gcx, 'tcx> Deref for TyCtxt<'a, 'gcx, 'tcx> 
+Deref for TyLayout			impl<'tcx> Deref for TyLayout<'tcx> 
 DerivedObligationCause			pub struct DerivedObligationCause<'tcx> 
 Destination			pub struct Destination 
 Destructor			pub struct Destructor 
@@ -267,6 +289,8 @@ DisambiguatedDefPathData			pub struct DisambiguatedDefPathData
 Drop for DepTask			impl<'graph> Drop for DepTask<'graph> 
 Drop for IgnoreTask			impl<'graph> Drop for IgnoreTask<'graph> 
 Drop for Indenter			impl Drop for Indenter 
+DtorckConstraint			impl<'tcx> DtorckConstraint<'tcx> 
+DtorckConstraint			pub struct DtorckConstraint<'tcx> 
 DummyCrateStore			pub struct DummyCrateStore;
 EarlyBoundRegion			pub struct EarlyBoundRegion 
 EarlyContext			impl<'a> EarlyContext<'a> 
@@ -284,13 +308,17 @@ ElementKind			pub enum ElementKind
 Elide			enum Elide 
 ElisionFailureInfo			struct ElisionFailureInfo 
 Encodable for DefPathTable			impl Encodable for DefPathTable 
+Encodable for Fingerprint			impl Encodable for Fingerprint 
 Encodable for Kind			impl<'tcx> Encodable for Kind<'tcx> 
 Encodable for LintId			impl Encodable for LintId 
 Encodable for Svh			impl Encodable for Svh 
+EncodedMetadata			pub struct EncodedMetadata 
+EncodedMetadataHash			pub struct EncodedMetadataHash 
 Endian			pub enum Endian 
 EntryContext			struct EntryContext<'a, 'tcx: 'a> 
 EntryFnType			pub enum EntryFnType 
 EntryOrExit			pub enum EntryOrExit 
+Enum			enum Enum 
 EnumDef			pub struct EnumDef 
 EnumerateAndAdjust			pub struct EnumerateAndAdjust<I> 
 EnumerateAndAdjustIterator			pub trait EnumerateAndAdjustIterator 
@@ -305,6 +333,7 @@ Eq for TyS			impl<'tcx> Eq for TyS<'tcx> {}
 Equate			impl<'combine, 'infcx, 'gcx, 'tcx> Equate<'combine, 'infcx, 'gcx, 'tcx> 
 Equate			pub struct Equate<'combine, 'infcx: 'combine, 'gcx: 'infcx+'tcx, 'tcx: 'infcx> 
 EquatePredicate			pub struct EquatePredicate<'tcx>(pub Ty<'tcx>, pub Ty<'tcx>); \/\/ `0 == 1`
+ErrKind			pub enum ErrKind<'tcx> 
 ErrorOutputType			pub enum ErrorOutputType 
 ErrorReported			pub struct ErrorReported;
 EvaluatedCandidate			struct EvaluatedCandidate<'tcx> 
@@ -343,7 +372,10 @@ FileSearch			pub struct FileSearch<'a>
 FilterToTraits			impl<I> FilterToTraits<I> 
 FilterToTraits			pub struct FilterToTraits<I> 
 FindLintError			enum FindLintError 
+FindLocalByTypeVisitor			impl<'a, 'gcx, 'tcx> FindLocalByTypeVisitor<'a, 'gcx, 'tcx> 
 FindLocalByTypeVisitor			struct FindLocalByTypeVisitor<'a, 'gcx: 'a + 'tcx, 'tcx: 'a> 
+Fingerprint			impl Fingerprint 
+Fingerprint			pub struct Fingerprint(pub [u8; FINGERPRINT_LENGTH]);
 FirstTrait			trait FirstTrait : SecondTrait 
 FixupError			pub enum FixupError 
 FlagComputation			impl FlagComputation 
@@ -395,7 +427,9 @@ Freevar			pub struct Freevar
 From			impl From<Result<NodeId, LoopIdError>> for LoopIdResult 
 From			impl<'tcx> From<Ty<'tcx>> for Kind<'tcx> 
 From for DataTypeKind			impl From<AdtKind> for DataTypeKind 
+From for ErrKind			impl<'tcx> From<ConstMathErr> for ErrKind<'tcx> 
 From for Kind			impl<'tcx> From<&'tcx ty::Region> for Kind<'tcx> 
+FromIterator			impl<'tcx> FromIterator<DtorckConstraint<'tcx>> for DtorckConstraint<'tcx>
 FulfillProcessor			struct FulfillProcessor<'a, 'b: 'a, 'gcx: 'tcx, 'tcx: 'b> 
 FulfillmentContext			impl<'a, 'gcx, 'tcx> FulfillmentContext<'tcx> 
 FulfillmentContext			pub struct FulfillmentContext<'tcx> 
@@ -408,6 +442,7 @@ FunctionRetTy			pub enum FunctionRetTy
 FutureIncompatibleInfo			pub struct FutureIncompatibleInfo 
 GatherLabels			    struct GatherLabels<'a, 'tcx: 'a> 
 GatherLifetimes			        struct GatherLifetimes<'a> 
+Generalization			struct Generalization<'tcx> 
 Generalizer			struct Generalizer<'cx, 'gcx: 'cx+'tcx, 'tcx: 'cx> 
 Generator			trait Generator 
 Generator for AnotherImpl			impl Generator for AnotherImpl 
@@ -426,6 +461,7 @@ Glb			impl<'combine, 'infcx, 'gcx, 'tcx> Glb<'combine, 'infcx, 'gcx, 'tcx>
 Glb			pub struct Glb<'combine, 'infcx: 'combine, 'gcx: 'infcx+'tcx, 'tcx: 'infcx> 
 GlobalArenas			impl<'tcx> GlobalArenas<'tcx> 
 GlobalArenas			pub struct GlobalArenas<'tcx> 
+GlobalAsm			pub struct GlobalAsm 
 GlobalCtxt			impl<'gcx: 'tcx, 'tcx> GlobalCtxt<'gcx> 
 GlobalCtxt			impl<'tcx> GlobalCtxt<'tcx> 
 GlobalCtxt			pub struct GlobalCtxt<'tcx> 
@@ -436,7 +472,14 @@ Graph			pub struct Graph
 GraphPredecessors for Mir			impl<'a, 'b> GraphPredecessors<'b> for Mir<'a> 
 GraphSuccessors for Mir			impl<'a, 'b>  GraphSuccessors<'b> for Mir<'a> 
 HardwiredLints			pub struct HardwiredLints;
+HasDataLayout			impl<'a, 'gcx, 'tcx> HasDataLayout for &'a InferCtxt<'a, 'gcx, 'tcx> 
+HasDataLayout			impl<'a> HasDataLayout for &'a TargetDataLayout 
+HasDataLayout			pub trait HasDataLayout: Copy 
+HasDataLayout for TyCtxt			impl<'a, 'gcx, 'tcx> HasDataLayout for TyCtxt<'a, 'gcx, 'tcx> 
 HasEscapingRegionsVisitor			struct HasEscapingRegionsVisitor 
+HasTyCtxt			impl<'a, 'gcx, 'tcx> HasTyCtxt<'gcx> for &'a InferCtxt<'a, 'gcx, 'tcx> 
+HasTyCtxt			pub trait HasTyCtxt<'tcx>: HasDataLayout 
+HasTyCtxt for TyCtxt			impl<'a, 'gcx, 'tcx> HasTyCtxt<'gcx> for TyCtxt<'a, 'gcx, 'tcx> 
 HasTypeFlagsVisitor			struct HasTypeFlagsVisitor 
 Hash for AdtDef			impl Hash for AdtDef 
 Hash for Interned			        impl<
@@ -445,6 +488,79 @@ Hash for Interned			impl<'tcx> Hash for Interned<'tcx, TyS<'tcx>>
 Hash for Slice			impl<T> Hash for Slice<T> 
 Hash for Svh			impl Hash for Svh 
 Hash for TyS			impl<'tcx> Hash for TyS<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for Span 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ast::NodeId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for DefId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ast::Ident 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::AssociatedItemKind 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Block 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::BodyId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Defaultness 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Expr 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::GlobalAsm 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::HirId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::ImplItem 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::ImplItemId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::InlineAsm 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Item 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::ItemId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::MatchSource 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Mod 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Pat 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::TraitItem 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::TraitItemId 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::TraitRef 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Ty 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::Visibility 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for hir::def_id::DefIndex 
+HashStable			impl<'a, 'tcx, B, V> HashStable<StableHashingContext<'a, 'tcx>> for mir::Projection<'tcx, B, V>
+HashStable			impl<'a, 'tcx, V> HashStable<StableHashingContext<'a, 'tcx>> for mir::ProjectionElem<'tcx, V>
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::AggregateKind<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::AssertMessage<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::BasicBlock 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Field 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Literal<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Local 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Lvalue<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Operand<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Promoted 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::Rvalue<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::StatementKind<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::TerminatorKind<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for mir::VisibilityScope 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ::syntax::attr::StabilityLevel 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ::syntax::symbol::InternedString 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for [ast::Attribute] 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ast::Attribute 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ast::Name 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for tokenstream::TokenStream 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for tokenstream::TokenTree 
+HashStable			impl<'a, 'tcx, A, B> HashStable<StableHashingContext<'a, 'tcx>> for ty::OutlivesPredicate<A, B>
+HashStable			impl<'a, 'tcx, T> HashStable<StableHashingContext<'a, 'tcx>> for &'tcx ty::Slice<T>
+HashStable			impl<'a, 'tcx, T> HashStable<StableHashingContext<'a, 'tcx>> for ty::Binder<T>
+HashStable			impl<'a, 'tcx, T> HashStable<StableHashingContext<'a, 'tcx>>
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ::middle::region::CodeExtent
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ::middle::region::CodeExtentData
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::AdtFlags 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::ExistentialPredicate<'tcx>
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::Generics 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::Predicate<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::Region 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::RegionParameterDef 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::TypeVariants<'tcx>
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::TypeckTables<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::UpvarCapture<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::adjustment::Adjust<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::adjustment::AutoBorrow<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::subst::Kind<'tcx> 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>>
+HashStable			        impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ::syntax::codemap::Spanned<
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for Cache 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for AdtDef 
+HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for ty::TyS<'tcx> 
+HirId			pub struct HirId 
+HirIdValidator			impl<'a, 'hir: 'a> HirIdValidator<'a, 'hir> 
+HirIdValidator			struct HirIdValidator<'a, 'hir: 'a> 
 HrMatchResult			pub struct HrMatchResult<U> 
 IdIndex			impl IdIndex 
 IdIndex			struct IdIndex 
@@ -456,6 +572,7 @@ Idx			        impl Idx for
 Idx for CrateNum			impl Idx for CrateNum 
 IgnoreTask			impl<'graph> IgnoreTask<'graph> 
 IgnoreTask			pub struct IgnoreTask<'graph> 
+ImmutabilityBlame			pub enum ImmutabilityBlame<'tcx> 
 Impl			struct Impl;
 ImplHeader			impl<'a, 'gcx, 'tcx> ImplHeader<'tcx> 
 ImplHeader			pub struct ImplHeader<'tcx> 
@@ -502,10 +619,15 @@ InlineAsmOutput			pub struct InlineAsmOutput
 Input			impl Input 
 Input			pub enum Input 
 Inserted			enum Inserted 
+Instance			impl<'a, 'b, 'tcx> Instance<'tcx> 
+Instance			pub struct Instance<'tcx> 
+InstanceDef			impl<'tcx> InstanceDef<'tcx> 
+InstanceDef			pub enum InstanceDef<'tcx> 
+Instantiate			struct Instantiate<'tcx> 
 InstantiatedPredicates			impl<'tcx> InstantiatedPredicates<'tcx> 
 InstantiatedPredicates			pub struct InstantiatedPredicates<'tcx> 
 IntTy			pub enum IntTy 
-IntTypeExt			 pub trait IntTypeExt 
+IntTypeExt			pub trait IntTypeExt 
 IntTypeExt for attr			impl IntTypeExt for attr::IntType 
 IntVarValue			pub enum IntVarValue 
 IntVid			pub struct IntVid 
@@ -515,6 +637,7 @@ InteriorKind			pub enum InteriorKind
 InteriorOffsetKind			pub enum InteriorOffsetKind 
 InternAs			pub trait InternAs<T: ?Sized, R> 
 InternAs for I			impl<I, T, R, E> InternAs<[T], R> for I
+InternIteratorElement			impl<'a, T, R> InternIteratorElement<T, R> for &'a T
 InternIteratorElement			pub trait InternIteratorElement<T, R>: Sized 
 InternIteratorElement for Result			impl<T, R, E> InternIteratorElement<T, R> for Result<T, E> 
 InternIteratorElement for T			impl<T, R> InternIteratorElement<T, R> for T 
@@ -535,7 +658,10 @@ ItemLikeVisitor for DeepVisitor			impl<'v, 'hir, V> ItemLikeVisitor<'hir> for De
 ItemLikeVisitor for EntryContext			impl<'a, 'tcx> ItemLikeVisitor<'tcx> for EntryContext<'a, 'tcx> 
 ItemLikeVisitor for LanguageItemCollector			impl<'a, 'v, 'tcx> ItemLikeVisitor<'v> for LanguageItemCollector<'a, 'tcx> 
 ItemLikeVisitor for LifeSeeder			impl<'v, 'k> ItemLikeVisitor<'v> for LifeSeeder<'k> 
+ItemLikeVisitor for OuterVisitor			impl<'a, 'hir: 'a> ItemLikeVisitor<'hir> for OuterVisitor<'a, 'hir> 
 ItemLikeVisitor for TrackingVisitor			    impl<'visit, 'tcx, F, V> ItemLikeVisitor<'tcx> for TrackingVisitor<'visit, 'tcx, F, V>
+ItemLocalId			impl ItemLocalId 
+ItemLocalId			pub struct ItemLocalId(pub u32);
 ItemLowerer			        struct ItemLowerer<'lcx, 'interner: 'lcx> 
 ItemPathBuffer			pub trait ItemPathBuffer 
 ItemPathBuffer for LocalPathBuffer			impl ItemPathBuffer for LocalPathBuffer 
@@ -561,9 +687,11 @@ Iterator for TraitObligationStackList			impl<'o,'tcx> Iterator for TraitObligati
 Iterator for TypeWalker			impl<'tcx> Iterator for TypeWalker<'tcx> 
 Key			impl Key for (CrateNum, DefId) 
 Key			impl Key for (DefId, DefId) 
+Key			impl<'tcx> Key for (DefId, &'tcx Substs<'tcx>) 
 Key			trait Key 
 Key for CrateNum			impl Key for CrateNum 
 Key for DefId			impl Key for DefId 
+Key for ty			impl<'tcx> Key for ty::InstanceDef<'tcx> 
 KillFrom			pub enum KillFrom 
 Kind			impl<'tcx> Kind<'tcx> 
 Kind			pub struct Kind<'tcx> 
@@ -585,6 +713,8 @@ LatticeDir			impl<'combine, 'infcx, 'gcx, 'tcx> LatticeDir<'infcx, 'gcx, 'tcx>
 Layout			impl<'a, 'gcx, 'tcx> Layout 
 Layout			pub enum Layout 
 LayoutError			pub enum LayoutError<'tcx> 
+LayoutTyper			impl<'a, 'gcx, 'tcx> LayoutTyper<'gcx> for &'a InferCtxt<'a, 'gcx, 'tcx> 
+LayoutTyper			pub trait LayoutTyper<'tcx>: HasTyCtxt<'tcx> 
 Level			impl Level 
 Level			pub enum Level 
 LibSource			impl LibSource 
@@ -615,6 +745,7 @@ Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::ItemSubsts<'a>
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::Predicate<'a> 
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::ProjectionPredicate<'a> 
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::ProjectionTy<'a> 
+Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::SubtypePredicate<'a> 
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::TraitPredicate<'a> 
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::TraitRef<'a> 
 Lift for ty			impl<'a, 'tcx> Lift<'tcx> for ty::adjustment::AutoBorrow<'a> 
@@ -701,9 +832,6 @@ MemoizationMap for RefCell			impl<K, V, S> MemoizationMap for RefCell<HashMap<K,
 MethodCall			impl MethodCall 
 MethodCall			pub struct MethodCall 
 MethodCallee			pub struct MethodCallee<'tcx> 
-MethodMatchResult			impl MethodMatchResult 
-MethodMatchResult			pub enum MethodMatchResult 
-MethodMatchedData			pub enum MethodMatchedData 
 MethodSig			pub struct MethodSig 
 MethodViolationCode			pub enum MethodViolationCode 
 Mir			impl<'tcx> Mir<'tcx> 
@@ -751,6 +879,7 @@ Node			impl<'a, 'gcx, 'tcx> Node
 Node			pub enum Node 
 NodeCollector			impl<'hir> NodeCollector<'hir> 
 NodeCollector			pub struct NodeCollector<'hir> 
+NodeIdHashingMode			pub enum NodeIdHashingMode 
 NodeItem			impl<T> NodeItem<T> 
 NodeItem			pub struct NodeItem<T> 
 NodeMap			pub fn NodeMap<T>() -> NodeMap<T> { FxHashMap() }
@@ -770,6 +899,7 @@ ObligationCause			pub struct ObligationCause<'tcx>
 ObligationCauseCode			pub enum ObligationCauseCode<'tcx> 
 ObligationProcessor for FulfillProcessor			impl<'a, 'b, 'gcx, 'tcx> ObligationProcessor for FulfillProcessor<'a, 'b, 'gcx, 'tcx> 
 OpenNode			enum OpenNode 
+Operand			impl<'tcx> Operand<'tcx> 
 Operand			pub enum Operand<'tcx> 
 Operand			impl<'tcx> Operand<'tcx> 
 OpportunisticTypeAndRegionResolver			impl<'a, 'gcx, 'tcx> OpportunisticTypeAndRegionResolver<'a, 'gcx, 'tcx> 
@@ -784,6 +914,8 @@ Options			    pub struct Options
 Options			impl Options 
 Original			struct Original { kind: ShadowKind, span: Span }
 OrphanCheckErr			pub enum OrphanCheckErr<'tcx> 
+OuterVisitor			impl<'a, 'hir: 'a> OuterVisitor<'a, 'hir> 
+OuterVisitor			struct OuterVisitor<'a, 'hir: 'a> 
 OutlivesPredicate			pub struct OutlivesPredicate<A,B>(pub A, pub B); \/\/ `A : B`
 OutputFilenames			impl OutputFilenames 
 OutputFilenames			pub struct OutputFilenames 
@@ -864,6 +996,7 @@ ProjectedTy			enum ProjectedTy<'tcx>
 Projection			pub struct Projection<'tcx, B, V> 
 ProjectionCache			impl<'tcx> ProjectionCache<'tcx> 
 ProjectionCache			pub struct ProjectionCache<'tcx> 
+ProjectionCache			pub struct ProjectionCache<'gcx> 
 ProjectionCacheEntry			enum ProjectionCacheEntry<'tcx> 
 ProjectionCacheSnapshot			pub struct ProjectionCacheSnapshot 
 ProjectionElem			pub enum ProjectionElem<'tcx, V> 
@@ -876,13 +1009,19 @@ PropagationContext			impl<'a, 'b, 'tcx, O:DataFlowOperator> PropagationContext<'
 PropagationContext			struct PropagationContext<'a, 'b: 'a, 'tcx: 'b, O: 'a> 
 Providers			        pub struct Providers<
 QPath			pub enum QPath 
-Query			        impl Query 
-Query			        pub enum Query 
+Query			        impl<
+Query			        pub enum Query<
 QueryDescription			trait QueryDescription: DepTrackingMapConfig 
-QueryDescription for queries			impl<'tcx> QueryDescription for queries::coherent_inherent_impls<'tcx> 
 QueryDescription for queries			impl<'tcx> QueryDescription for queries::coherent_trait<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::const_eval<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::crate_inherent_impls<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::crate_inherent_impls_overlap_check<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::mir_shims<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::privacy_access_levels<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::reachable_set<'tcx> 
 QueryDescription for queries			impl<'tcx> QueryDescription for queries::super_predicates<'tcx> 
 QueryDescription for queries			impl<'tcx> QueryDescription for queries::type_param_predicates<'tcx> 
+QueryDescription for queries			impl<'tcx> QueryDescription for queries::typeck_item_bodies<'tcx> 
 Quux			trait Quux { }
 Quux for Foo			impl Quux for Foo { }
 RangeEnd			pub enum RangeEnd 
@@ -931,7 +1070,6 @@ Relate for ty			impl<'tcx> Relate<'tcx> for ty::TraitRef<'tcx>
 Relate for ty			impl<'tcx> Relate<'tcx> for ty::TypeAndMut<'tcx> 
 RelateResultCompare			pub trait RelateResultCompare<'tcx, T> 
 RelateResultCompare for RelateResult			impl<'tcx, T:Clone + PartialEq> RelateResultCompare<'tcx, T> for RelateResult<'tcx, T> 
-RelationDir			impl RelationDir 
 RelationDir			pub enum RelationDir 
 RenameOrCopyRemove			pub enum RenameOrCopyRemove 
 ReprOptions			impl ReprOptions 
@@ -950,6 +1088,9 @@ Rvalue			pub enum Rvalue<'tcx>
 Rvalue			impl<'tcx> Rvalue<'tcx> 
 Sanitizer			pub enum Sanitizer 
 Scope			enum Scope<'a> 
+ScopeCfKind			enum ScopeCfKind 
+ScopeTarget			impl ScopeTarget 
+ScopeTarget			pub enum ScopeTarget 
 SearchPaths			impl SearchPaths 
 SearchPaths			pub struct SearchPaths 
 SecondTrait			trait SecondTrait : FirstTrait 
@@ -972,7 +1113,7 @@ Shadower			struct Shadower { kind: ShadowKind, span: Span }
 SimplifiedType			pub enum SimplifiedType 
 Size			impl Size 
 Size			pub struct Size 
-SizeKind			pub enum SizeKind { Exact, Min }
+SizeKind			pub enum SizeKind 
 SizeSkeleton			impl<'a, 'gcx, 'tcx> SizeSkeleton<'gcx> 
 SizeSkeleton			pub enum SizeSkeleton<'tcx> 
 SkolemizedRegionVid			pub struct SkolemizedRegionVid 
@@ -987,6 +1128,8 @@ SpecializesCache			pub struct SpecializesCache
 Specials			struct Specials 
 StabilityLevel			impl StabilityLevel 
 StabilityLevel			pub enum StabilityLevel 
+StableHashingContext			impl<'a, 'tcx: 'a> StableHashingContext<'a, 'tcx> 
+StableHashingContext			pub struct StableHashingContext<'a, 'tcx: 'a> 
 State			impl<'a> State<'a> 
 State			pub struct State<'a> 
 Statement			impl<'tcx> Statement<'tcx> 
@@ -1010,13 +1153,13 @@ SubstFolder			impl<'a, 'gcx, 'tcx> SubstFolder<'a, 'gcx, 'tcx>
 SubstFolder			struct SubstFolder<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 Substs			impl<'a, 'gcx, 'tcx> Substs<'tcx> 
 Subtract			struct Subtract;
+SubtypePredicate			pub struct SubtypePredicate<'tcx> 
 Super			trait Super<A> 
 Super			trait Super<A> {}
 Super for Foo			impl Super<Foo> for Foo{}
 SupertraitDefIds			pub struct SupertraitDefIds<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 Svh			impl Svh 
 Svh			pub struct Svh 
-TC			    mod TC 
 TaintDirections			impl TaintDirections 
 TaintDirections			pub struct TaintDirections 
 TaintSet			impl<'a, 'gcx, 'tcx> TaintSet<'tcx> 
@@ -1078,8 +1221,11 @@ TraitPredicate			pub struct TraitPredicate<'tcx>
 TraitRef			pub struct TraitRef 
 TraitRef			impl<'tcx> TraitRef<'tcx> 
 TraitRef			pub struct TraitRef<'tcx> 
+TraitSelectionCache			pub struct TraitSelectionCache<'tcx> 
 TransNormalize			pub trait TransNormalize<'gcx>: TypeFoldable<'gcx> 
 TransNormalize for LvalueTy			impl<'gcx> TransNormalize<'gcx> for LvalueTy<'gcx> 
+TransTraitCaches			impl<'tcx> TransTraitCaches<'tcx> 
+TransTraitCaches			pub struct TransTraitCaches<'tcx> 
 TupleArgumentsFlag			pub enum TupleArgumentsFlag { Yes, No }
 TwoRegions			pub struct TwoRegions<'tcx> 
 Ty			pub struct Ty 
@@ -1089,6 +1235,7 @@ TyCtxt			impl<'a, 'tcx> TyCtxt<'a, 'tcx, 'tcx>
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
+TyCtxt			impl<'a, 'tcx> TyCtxt<'a, 'tcx, 'tcx> 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
 TyCtxt			        impl<'a, 'gcx, 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
@@ -1101,6 +1248,9 @@ TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx>
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
 TyCtxt			impl<'a, 'gcx, 'tcx> TyCtxt<'a, 'gcx, 'tcx> 
+TyCtxt			impl<'a, 'tcx> TyCtxt<'a, 'tcx, 'tcx> 
+TyLayout			impl<'a, 'tcx> TyLayout<'tcx> 
+TyLayout			pub struct TyLayout<'tcx> 
 TyParam			pub struct TyParam 
 TyParamBound			pub enum TyParamBound 
 TyS			impl<'a, 'gcx, 'tcx> TyS<'tcx> 
@@ -1111,8 +1261,6 @@ TyVid			pub struct TyVid
 Ty_			pub enum Ty_ 
 TypeAndMut			pub struct TypeAndMut<'tcx> 
 TypeBinding			pub struct TypeBinding 
-TypeContents			impl TypeContents 
-TypeContents			pub struct TypeContents 
 TypeError			pub enum TypeError<'tcx> 
 TypeFoldable			pub trait TypeFoldable<'tcx>: fmt::Debug + Clone 
 TypeFoldable			            impl<'tcx> TypeFoldable<'tcx> for 
@@ -1154,12 +1302,14 @@ TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::ItemSubsts<'tcx>
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::Predicate<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::ProjectionPredicate<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::ProjectionTy<'tcx> 
+TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::SubtypePredicate<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::TraitPredicate<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::TraitRef<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::TypeAndMut<'tcx> 
 TypeFoldable for ty			impl<'tcx> TypeFoldable<'tcx> for ty::adjustment::AutoBorrow<'tcx> 
 TypeFolder			pub trait TypeFolder<'gcx: 'tcx, 'tcx> : Sized 
 TypeFolder for AssociatedTypeNormalizer			impl<'a, 'b, 'gcx, 'tcx> TypeFolder<'gcx, 'tcx> for AssociatedTypeNormalizer<'a, 'b, 'gcx, 'tcx> 
+TypeFolder for AssociatedTypeNormalizer			impl<'a, 'gcx> TypeFolder<'gcx, 'gcx> for AssociatedTypeNormalizer<'a, 'gcx> 
 TypeFolder for BottomUpFolder			impl<'a, 'gcx, 'tcx, F> TypeFolder<'gcx, 'tcx> for BottomUpFolder<'a, 'gcx, 'tcx, F>
 TypeFolder for FullTypeResolver			impl<'a, 'gcx, 'tcx> TypeFolder<'gcx, 'tcx> for FullTypeResolver<'a, 'gcx, 'tcx> 
 TypeFolder for OpportunisticTypeAndRegionResolver			impl<'a, 'gcx, 'tcx> TypeFolder<'gcx, 'tcx> for OpportunisticTypeAndRegionResolver<'a, 'gcx, 'tcx> 
@@ -1180,8 +1330,8 @@ TypeRelation			impl<'combine, 'infcx, 'gcx, 'tcx> TypeRelation<'infcx, 'gcx, 'tc
 TypeRelation			impl<'combine, 'infcx, 'gcx, 'tcx> TypeRelation<'infcx, 'gcx, 'tcx>
 TypeRelation			impl<'combine, 'infcx, 'gcx, 'tcx> TypeRelation<'infcx, 'gcx, 'tcx>
 TypeRelation			impl<'combine, 'infcx, 'gcx, 'tcx> TypeRelation<'infcx, 'gcx, 'tcx>
-TypeRelation			impl<'combine, 'infcx, 'gcx, 'tcx> TypeRelation<'infcx, 'gcx, 'tcx>
 TypeRelation			pub trait TypeRelation<'a, 'gcx: 'a+'tcx, 'tcx: 'a> : Sized 
+TypeRelation for Generalizer			impl<'cx, 'gcx, 'tcx> TypeRelation<'cx, 'gcx, 'tcx> for Generalizer<'cx, 'gcx, 'tcx> 
 TypeRelation for Match			impl<'a, 'gcx, 'tcx> TypeRelation<'a, 'gcx, 'tcx> for Match<'a, 'gcx, 'tcx> 
 TypeSizeInfo			pub struct TypeSizeInfo 
 TypeTrace			impl<'a, 'gcx, 'tcx> TypeTrace<'tcx> 
@@ -1205,7 +1355,6 @@ UnOp			impl UnOp
 UnOp			pub enum UnOp 
 UnOp			pub enum UnOp 
 UnconstrainedNumeric			pub enum UnconstrainedNumeric 
-UndoEntry			enum UndoEntry<'tcx> 
 UndoLogEntry			pub enum UndoLogEntry<'tcx> 
 UnifyKey for ty			impl UnifyKey for ty::FloatVid 
 UnifyKey for ty			impl UnifyKey for ty::IntVid 
@@ -1231,11 +1380,13 @@ Value			trait Value<'tcx>: Sized
 Value for T			impl<'tcx, T: Default> Value<'tcx> for T 
 Value for T			impl<'tcx, T> Value<'tcx> for T 
 Value for Ty			impl<'tcx> Value<'tcx> for Ty<'tcx> 
+Value for ty			impl<'tcx> Value<'tcx> for ty::DtorckConstraint<'tcx> 
 ValuePairs			pub enum ValuePairs<'tcx> 
 VarKind			enum VarKind 
 VarValue			pub enum VarValue<'tcx> 
 Variable			impl Variable 
 Variable			struct Variable(usize);
+Variance			impl Variance 
 Variance			pub enum Variance 
 VariantData			impl VariantData 
 VariantData			pub enum VariantData 
@@ -1248,6 +1399,7 @@ Variant_			pub struct Variant_
 Verify			pub struct Verify<'tcx> 
 VerifyBound			impl<'a, 'gcx, 'tcx> VerifyBound<'tcx> 
 VerifyBound			pub enum VerifyBound<'tcx> 
+Visibility			impl Visibility 
 Visibility			pub enum Visibility 
 Visibility			impl Visibility 
 Visibility			pub enum Visibility 
@@ -1262,7 +1414,7 @@ Visitor for Context			impl<'a, 'v> Visitor<'v> for Context<'a>
 Visitor for DeadVisitor			impl<'a, 'tcx> Visitor<'tcx> for DeadVisitor<'a, 'tcx> 
 Visitor for EffectCheckVisitor			impl<'a, 'tcx> Visitor<'tcx> for EffectCheckVisitor<'a, 'tcx> 
 Visitor for ExprVisitor			impl<'a, 'gcx, 'tcx> Visitor<'gcx> for ExprVisitor<'a, 'gcx, 'tcx> 
-Visitor for FindLocalByTypeVisitor			impl<'a, 'gcx, 'tcx> Visitor<'a> for FindLocalByTypeVisitor<'a, 'gcx, 'tcx> 
+Visitor for FindLocalByTypeVisitor			impl<'a, 'gcx, 'tcx> Visitor<'gcx> for FindLocalByTypeVisitor<'a, 'gcx, 'tcx> 
 Visitor for Formals			        impl<'a, 'v> Visitor<'v> for Formals<'a> 
 Visitor for GatherLabels			    impl<'v, 'a, 'tcx> Visitor<'v> for GatherLabels<'a, 'tcx> 
 Visitor for GatherLifetimes			        impl<'v, 'a> Visitor<'v> for GatherLifetimes<'a> 
@@ -1299,7 +1451,7 @@ WorkProduct			pub struct WorkProduct
 WorkProductId			pub struct WorkProductId(pub String);
 X			struct X;
 _match			pub mod _match;
-a_is_expected			    fn a_is_expected(&self) -> bool { self.a_is_expected }
+a_is_expected			    fn a_is_expected(&self) -> bool 
 a_is_expected			    fn a_is_expected(&self) -> bool { self.a_is_expected }
 a_is_expected			    fn a_is_expected(&self) -> bool { self.a_is_expected }
 a_is_expected			    fn a_is_expected(&self) -> bool { self.a_is_expected }
@@ -1357,19 +1509,23 @@ add_tys			    fn add_tys(&mut self, tys: &[Ty])
 add_unreachable_node			    fn add_unreachable_node(&mut self) -> CFGIndex 
 add_variable			    fn add_variable(&mut self, vk: VarKind) -> Variable 
 add_verify			    fn add_verify(&self, verify: Verify<'tcx>) 
+address_space			    pub fn address_space(&self) -> DefIndexAddressSpace 
 adjust_for_autoderef			    pub fn adjust_for_autoderef<F>(&'tcx self,
 adjust_for_autoref			    pub fn adjust_for_autoref(&'tcx self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 adjustment			pub mod adjustment;
+adt_dtorck_constraint			fn adt_dtorck_constraint<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 adt_kind			    pub fn adt_kind(&self) -> AdtKind 
-align			    pub fn align(&self, dl: &TargetDataLayout) -> Align 
-align			    pub fn align(&self, dl: &TargetDataLayout)-> Align 
-align			    pub fn align(self, dl: &TargetDataLayout) -> Align 
+adt_sized_constraint			fn adt_sized_constraint<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+align			    pub fn align<C: HasDataLayout>(&self, cx: C) -> Align 
+align			    pub fn align<C: HasDataLayout>(self, cx: C) -> Align 
 all_fields			    pub fn all_fields<'s>(&'s self) -> impl Iterator<Item = &'s FieldDef> 
 alloc_adt_def			    pub fn alloc_adt_def(self,
 alloc_generics			    pub fn alloc_generics(self, generics: ty::Generics) -> &'gcx ty::Generics 
 alloc_mir			    pub fn alloc_mir(self, mir: Mir<'gcx>) -> &'gcx RefCell<Mir<'gcx>> 
 alloc_tables			    pub fn alloc_tables(self, tables: ty::TypeckTables<'gcx>) -> &'gcx ty::TypeckTables<'gcx> 
 alloc_trait_def			    pub fn alloc_trait_def(self, def: ty::TraitDef) -> &'gcx ty::TraitDef 
+allocate			    fn allocate(&mut self,
+allocate_hir_id_counter			    fn allocate_hir_id_counter<T: Debug>(&mut self,
 allow_internal_unstable			    fn allow_internal_unstable(&self, reason: &'static str, mut span: Span) -> Span 
 ambiguous			    fn ambiguous(&mut self, key: ty::ProjectionTy<'tcx>) 
 ancestors			pub fn ancestors<'a>(trait_def: &'a TraitDef, start_from_impl: DefId) -> Ancestors<'a> 
@@ -1380,12 +1536,12 @@ annotate			    fn annotate<F>(&mut self, id: NodeId, attrs: &[Attribute],
 anonymize_late_bound_regions			    pub fn anonymize_late_bound_regions<T>(self, sig: &Binder<T>) -> Binder<T>
 anonymize_predicate			fn anonymize_predicate<'a, 'gcx, 'tcx>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 apply_gen_kill			    fn apply_gen_kill(&self, cfgidx: CFGIndex, bits: &mut [usize]) 
-apply_lang_items			        fn apply_lang_items<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 are_inner_types_recursive			        fn are_inner_types_recursive<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, sp: Span,
 args_iter			    pub fn args_iter(&self) -> impl Iterator<Item=Local> 
 arm			    fn arm(&mut self, pats: hir::HirVec<P<hir::Pat>>, expr: P<hir::Expr>) -> hir::Arm 
 arm_move_mode			    fn arm_move_mode(&mut self, discr_cmt: mc::cmt<'tcx>, arm: &hir::Arm) -> TrackMatchMode 
 arm_pats_bindings			    fn arm_pats_bindings<F>(&mut self, pat: Option<&hir::Pat>, f: F) where
+as_array_index			    pub fn as_array_index(&self) -> usize 
 as_deep_visitor			    fn as_deep_visitor<'s>(&'s mut self) -> DeepVisitor<'s, Self> 
 as_failure_str			    fn as_failure_str(&self) -> &'static str 
 as_interned_str			    pub fn as_interned_str(&self) -> InternedString 
@@ -1401,6 +1557,7 @@ as_str			    pub fn as_str(self) -> &'static str
 as_type			    pub fn as_type(self) -> Option<Ty<'tcx>> 
 as_u32			    pub fn as_u32(&self) -> u32 
 as_u64			    pub fn as_u64(&self) -> u64 
+as_usize			    pub fn as_usize(&self) -> usize 
 as_usize			    pub fn as_usize(&self) -> usize 
 asm_comments			    pub fn asm_comments(&self) -> bool { self.opts.debugging_opts.asm_comments }
 assemble_builtin_bound_candidates			    fn assemble_builtin_bound_candidates<'o>(&mut self,
@@ -1424,9 +1581,11 @@ assigned_on_exit			    fn assigned_on_exit(&self, ln: LiveNode, var: Variable)
 assoc_ty_def			fn assoc_ty_def<'cx, 'gcx, 'tcx>(
 associated_body			    fn associated_body(self) -> Option<BodyId> 
 associated_item			    pub fn associated_item(self, def_id: DefId) -> AssociatedItem 
+associated_item			fn associated_item<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId)
 associated_item_cloned			    fn associated_item_cloned(&self, def: DefId) -> ty::AssociatedItem
 associated_item_cloned			    fn associated_item_cloned(&self, def: DefId) -> ty::AssociatedItem;
 associated_item_def_ids			    pub fn associated_item_def_ids(self, def_id: DefId) -> Rc<Vec<DefId>> 
+associated_item_def_ids			fn associated_item_def_ids<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 associated_item_from_impl_item_ref			    fn associated_item_from_impl_item_ref(self,
 associated_item_from_trait_item_ref			    fn associated_item_from_trait_item_ref(self,
 associated_items			    pub fn associated_items(self, def_id: DefId)
@@ -1440,6 +1599,7 @@ attr_name			    pub fn attr_name(&self) -> &'static str
 attrs			    pub fn attrs(&self) -> &'a [Attribute] 
 attrs			    pub fn attrs(&self, id: NodeId) -> &'hir [ast::Attribute] 
 attrs			    pub fn attrs(&self) -> &[Attribute] 
+attrs			    pub fn attrs<'a>(&self, tcx: ty::TyCtxt<'a, 'tcx, 'tcx>) -> ty::Attributes<'tcx> 
 auto_traits			    pub fn auto_traits<'a>(&'a self) -> impl Iterator<Item=DefId> + 'a 
 autoderef			    pub fn autoderef(expr_id: NodeId, autoderef: u32) -> MethodCall 
 bar			    fn bar(&self) {}
@@ -1464,14 +1624,11 @@ binders			    fn binders<T>(&mut self, a: &ty::Binder<T>, b: &ty::Binder<T>)
 binders			    fn binders<T>(&mut self, a: &ty::Binder<T>, b: &ty::Binder<T>)
 binders			    fn binders<T>(&mut self, a: &ty::Binder<T>, b: &ty::Binder<T>)
 bindings			    pub fn bindings(&self) -> HirVec<&TypeBinding> 
+binop_can_panic_at_runtime			    pub fn binop_can_panic_at_runtime(&self, binop: hir::BinOp_) -> bool
 bit_str			fn bit_str(bit: usize) -> String 
-bitand			    fn bitand(self, other: TypeContents) -> TypeContents 
-bitor			    fn bitor(self, other: TypeContents) -> TypeContents 
 bits			    pub fn bits(self) -> u64 
 bits_to_string			fn bits_to_string(words: &[usize]) -> String 
 bitwise			fn bitwise<Op:BitwiseOperator>(out_vec: &mut [usize],
-bivariate			    pub fn bivariate<'a>(&'a mut self, a_is_expected: bool) -> Bivariate<'a, 'infcx, 'gcx, 'tcx> 
-bivariate			mod bivariate;
 block			    fn block(&mut self, blk: &hir::Block, pred: CFGIndex) -> CFGIndex 
 block_all			    fn block_all(&mut self, span: Span, stmts: hir::HirVec<hir::Stmt>, expr: Option<P<hir::Expr>>)
 block_expr			    fn block_expr(&mut self, expr: P<hir::Expr>) -> hir::Block 
@@ -1480,6 +1637,7 @@ body			    pub fn body(self) -> ast::BodyId
 body			    pub fn body(&self, id: BodyId) -> &'hir Body 
 body			    pub fn body(&self, id: BodyId) -> &Body 
 body_ids			fn body_ids(bodies: &BTreeMap<hir::BodyId, hir::Body>) -> Vec<hir::BodyId> 
+body_owned_by			    pub fn body_owned_by(&self, id: NodeId) -> BodyId 
 body_owner			    pub fn body_owner(&self, BodyId { node_id }: BodyId) -> NodeId 
 body_owner_def_id			    pub fn body_owner_def_id(&self, id: BodyId) -> DefId 
 body_tables			    pub fn body_tables(self, body: hir::BodyId) -> &'gcx TypeckTables<'gcx> 
@@ -1513,13 +1671,15 @@ build_target_config			pub fn build_target_config(opts: &Options, sp: &Handler) -
 builtin			pub mod builtin;
 builtin_deref			    pub fn builtin_deref(&self, explicit: bool, pref: ty::LvaluePreference)
 builtin_index			    pub fn builtin_index(&self) -> Option<Ty<'tcx>> 
+byte_pos_to_line_and_col			    pub fn byte_pos_to_line_and_col(&mut self,
 bytes			    pub fn bytes(self) -> u64 
+c			    pub fn c(&self) -> bool { self.flags.contains(ReprFlags::IS_C) }
 cache			mod cache;
+caching_codemap_view			mod caching_codemap_view;
 cake			    fn cake();
 calculate			pub fn calculate(sess: &session::Session) 
 calculate_dtor			    pub fn calculate_dtor(
 calculate_predecessors			fn calculate_predecessors(mir: &Mir) -> IndexVec<BasicBlock, Vec<BasicBlock>> 
-calculate_sized_constraint_inner			    fn calculate_sized_constraint_inner(&self,
 calculate_type			fn calculate_type(sess: &session::Session,
 call			    fn call<'b, I: Iterator<Item=&'b hir::Expr>>(&mut self,
 call_foo			fn call_foo(thing: Box<Trait>) 
@@ -1561,6 +1721,7 @@ cause			    fn cause(&mut self, code: traits::ObligationCauseCode<'tcx>) -> trai
 cbox			    pub fn cbox(&mut self, u: usize) -> io::Result<()> 
 cfg			pub mod cfg;
 characteristic_def_id_of_type			pub fn characteristic_def_id_of_type(ty: Ty) -> Option<DefId> 
+check			    fn check<F: FnOnce(&mut HirIdValidator<'a, 'hir>)>(&mut self,
 check			    pub fn check(&self, a: DefId, b: DefId) -> Option<bool> 
 check_and_note_conflicting_crates			    fn check_and_note_conflicting_crates(&self,
 check_arm			    fn check_arm(&mut self, _: &EarlyContext, _: &ast::Arm) { }
@@ -1579,10 +1740,11 @@ check_body			    fn check_body(&mut self, _: &LateContext, _: &'tcx hir::Body) {
 check_body_post			    fn check_body_post(&mut self, _: &LateContext, _: &'tcx hir::Body) { }
 check_candidate_cache			    fn check_candidate_cache(&mut self,
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
-check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_crate			pub fn check_crate<'hir>(hir_map: &hir::map::Map<'hir>) 
+check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			    fn check_crate(&mut self, _: &EarlyContext, _: &ast::Crate) { }
 check_crate			    fn check_crate(&mut self, _: &LateContext<'a, 'tcx>, _: &'tcx hir::Crate) { }
-check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
@@ -1665,17 +1827,18 @@ check_transmute			    fn check_transmute(&self, span: Span, from: Ty<'gcx>, to: 
 check_ty			    fn check_ty(&mut self, _: &EarlyContext, _: &ast::Ty) { }
 check_ty			    fn check_ty(&mut self, _: &LateContext<'a, 'tcx>, _: &'tcx hir::Ty) { }
 check_unstable_api_usage			pub fn check_unstable_api_usage<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
-check_unused_or_stable_features			pub fn check_unused_or_stable_features<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
+check_unused_or_stable_features			pub fn check_unused_or_stable_features<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_variant			    fn check_variant(&mut self, _: &EarlyContext, _: &ast::Variant, _: &ast::Generics) { }
 check_variant			    fn check_variant(&mut self,
 check_variant_post			    fn check_variant_post(&mut self, _: &EarlyContext, _: &ast::Variant, _: &ast::Generics) { }
 check_variant_post			    fn check_variant_post(&mut self,
-checked_add			    pub fn checked_add(self, offset: Size, dl: &TargetDataLayout) -> Option<Size> 
-checked_mul			    pub fn checked_mul(self, count: u64, dl: &TargetDataLayout) -> Option<Size> 
+checked_add			    pub fn checked_add<C: HasDataLayout>(self, offset: Size, cx: C) -> Option<Size> 
+checked_mul			    pub fn checked_mul<C: HasDataLayout>(self, count: u64, cx: C) -> Option<Size> 
+clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> MapEntry<'hir> 
 clone			    fn clone(&self) -> LiveNode 
 clone			            fn clone(&self) -> Self { *self }
-closure_base_def_id			    pub fn closure_base_def_id(&self, def_id: DefId) -> DefId 
+closure_base_def_id			    pub fn closure_base_def_id(self, def_id: DefId) -> DefId 
 closure_kind			    pub fn closure_kind(&self,
 closure_kind			    pub fn closure_kind(self, def_id: DefId) -> ty::ClosureKind 
 closure_trait_ref			    fn closure_trait_ref(&mut self,
@@ -1684,14 +1847,17 @@ closure_trait_ref_unnormalized			    fn closure_trait_ref_unnormalized(&mut self
 closure_type			    pub fn closure_type(&self, def_id: DefId) -> ty::PolyFnSig<'tcx> 
 closure_type			    pub fn closure_type(self, def_id: DefId) -> ty::PolyFnSig<'tcx> 
 closure_typer			    pub fn closure_typer(&self) -> &'cx InferCtxt<'cx, 'gcx, 'tcx> 
+cmp			    fn cmp(&self, t1: ty::Ty<'tcx>, t2: ty::Ty<'tcx>)
 cmp			    pub fn cmp(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>, other: &Self) -> Ordering 
+cmp_type_arg			    fn cmp_type_arg(&self,
 cmt_			impl<'tcx> cmt_<'tcx> 
 cmt_			pub struct cmt_<'tcx> 
 code_extent_data			    pub fn code_extent_data(&self, e: CodeExtent) -> CodeExtentData 
 code_stats			mod code_stats;
+codemap			    pub fn codemap(&mut self) -> &mut CachingCodemapView<'tcx> 
 codemap			    pub fn codemap<'a>(&'a self) -> &'a codemap::CodeMap 
+coerce_unsized_info			    pub fn coerce_unsized_info(self, did: DefId) -> adjustment::CoerceUnsizedInfo 
 coherence			mod coherence;
-coherent_inherent_impls_dep_node			fn coherent_inherent_impls_dep_node(_: CrateNum) -> DepNode<DefId> 
 coherent_trait_dep_node			fn coherent_trait_dep_node((_, def_id): (CrateNum, DefId)) -> DepNode<DefId> 
 coinductive_match			fn coinductive_match<'a,'c,'gcx,'tcx,I>(selcx: &mut SelectionContext<'a,'gcx,'tcx>,
 coinductive_obligation			fn coinductive_obligation<'a,'gcx,'tcx>(selcx: &SelectionContext<'a,'gcx,'tcx>,
@@ -1708,7 +1874,7 @@ collect_local_language_items			    pub fn collect_local_language_items(&mut self
 collect_predicates_for_types			    fn collect_predicates_for_types(&mut self,
 collect_referenced_late_bound_regions			    pub fn collect_referenced_late_bound_regions<T>(&self, value: &Binder<T>)
 collect_regions			    pub fn collect_regions<T>(self,
-collect_root			    pub fn collect_root(&mut self) 
+collect_root			    pub fn collect_root(&mut self, crate_name: &str, crate_disambiguator: &str) 
 collect_var_errors			    fn collect_var_errors(&self,
 collector			mod collector;
 combine			mod combine;
@@ -1737,6 +1903,7 @@ compute_components			    fn compute_components(&self, ty: Ty<'tcx>, out: &mut Ve
 compute_id_range			    fn compute_id_range(&self, cfgidx: CFGIndex) -> (usize, usize) 
 compute_object_lifetime_defaults			fn compute_object_lifetime_defaults(sess: &Session, hir_map: &Map)
 compute_projection			    fn compute_projection(&mut self, data: ty::ProjectionTy<'tcx>) 
+compute_stable_hash			    fn compute_stable_hash(&self, parent_hash: u64) -> u64 
 compute_trait_ref			    fn compute_trait_ref(&mut self, trait_ref: &ty::TraitRef<'tcx>) 
 compute_uncached			    pub fn compute_uncached(ty: Ty<'gcx>,
 config			pub mod config;
@@ -1761,6 +1928,9 @@ confirm_param_env_candidate			fn confirm_param_env_candidate<'cx, 'gcx, 'tcx>(
 confirm_poly_trait_refs			    fn confirm_poly_trait_refs(&mut self,
 confirm_projection_candidate			    fn confirm_projection_candidate(&mut self,
 confirm_select_candidate			fn confirm_select_candidate<'cx, 'gcx, 'tcx>(
+consider_optimizing			    pub fn consider_optimizing<T: Fn() -> String>(&self, crate_name: &str, msg: T) -> bool 
+consider_optimizing			    pub fn consider_optimizing<T: Fn() -> String>(&self, msg: T) -> bool 
+const_eval_dep_node			fn const_eval_dep_node((def_id, _): (DefId, &Substs)) -> DepNode<DefId> 
 const_is_rvalue_promotable_to_static			    fn const_is_rvalue_promotable_to_static(&self, def: DefId) -> bool 
 const_is_rvalue_promotable_to_static			    fn const_is_rvalue_promotable_to_static(&self, def: DefId) -> bool;
 const_val			    pub mod const_val;
@@ -1789,7 +1959,6 @@ contains_key			    pub fn contains_key(&self, key: &DefKey) -> bool
 contains_key			    pub fn contains_key(&self, key: &OutputType) -> bool 
 contains_node			    pub fn contains_node(&self, node: &DepNode<D>) -> bool 
 contains_ref_binding			    pub fn contains_ref_binding(&self) -> Option<hir::Mutability> 
-contents			mod contents;
 context			mod context;
 context			mod context;
 cookie			fn cookie() -> ! { \/\/ error: definition of an unknown language item: `cookie`
@@ -1806,6 +1975,7 @@ crate_disambiguator			    fn crate_disambiguator(&self, cnum: CrateNum)
 crate_disambiguator			    pub fn crate_disambiguator(self, cnum: CrateNum) -> Symbol 
 crate_hash			    fn crate_hash(&self, cnum: CrateNum) -> Svh { bug!("crate_hash") }
 crate_hash			    fn crate_hash(&self, cnum: CrateNum) -> Svh;
+crate_inherent_impls_dep_node			fn crate_inherent_impls_dep_node(_: CrateNum) -> DepNode<DefId> 
 crate_name			    fn crate_name(&self, cnum: CrateNum) -> Symbol { bug!("crate_name") }
 crate_name			    fn crate_name(&self, cnum: CrateNum) -> Symbol;
 crate_name			    pub fn crate_name(self, cnum: CrateNum) -> Symbol 
@@ -1816,17 +1986,17 @@ create			    fn create() -> u32 { 2 }
 create			    fn create() -> u32;
 create_and_enter			    pub fn create_and_enter<F, R>(s: &'tcx Session,
 create_and_seed_worklist			fn create_and_seed_worklist<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-create_def			    fn create_def(&mut self, node_id: NodeId, data: DefPathData) -> DefIndex 
-create_def_with_parent			    fn create_def_with_parent(&mut self,
+create_def			    fn create_def(&mut self,
 create_def_with_parent			    pub fn create_def_with_parent(&mut self,
-create_dir_racy			pub fn create_dir_racy(path: &Path) -> io::Result<()> 
 create_item_scope_if_needed			    fn create_item_scope_if_needed(&mut self, id: ast::NodeId) 
+create_root_def			    pub fn create_root_def(&mut self,
 cstore			    pub mod cstore;
 cur_cmnt_and_lit			    fn cur_cmnt_and_lit(&mut self) -> &mut ast_pp::CurrentCommentAndLiteral 
 current_level			    fn current_level(&self, lint: &'static Lint) -> Level 
 current_node			    fn current_node(&self) -> Option<OpenNode> 
-custom_coerce_unsized_kind			    pub fn custom_coerce_unsized_kind(self, did: DefId) -> adjustment::CustomCoerceUnsized 
-cycle_check			    fn cycle_check<F, R>(self, span: Span, query: Query, compute: F)
+cycle_check			    fn cycle_check<F, R>(self, span: Span, query: Query<'gcx>, compute: F)
+data_layout			    fn data_layout(&self) -> &TargetDataLayout 
+data_layout			    fn data_layout(&self) -> &TargetDataLayout;
 dataflow			    pub mod dataflow;
 dead			    pub mod dead;
 debug			pub mod debug;
@@ -1835,9 +2005,11 @@ decl			    pub fn decl(self) -> &'a FnDecl
 decl_without_init			    fn decl_without_init(&mut self,
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<DefPathTable, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Svh, D::Error> 
+decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Fingerprint, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<LintId, D::Error> 
 decode			    fn decode<D: serialize::Decoder>(d: &mut D) -> Result<Self, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<Kind<'tcx>, D::Error> 
+dedup			    fn dedup<'a>(&mut self) 
 def			pub mod def;
 def			    pub fn def(&self) -> Def 
 def_collector			mod def_collector;
@@ -1846,10 +2018,12 @@ def_id			pub mod def_id;
 def_id			    pub fn def_id(&self) -> DefId 
 def_id			    pub fn def_id(&self) -> DefId 
 def_id			    pub fn def_id(&self) -> DefId 
+def_id			    pub fn def_id(&self) -> DefId 
 def_id			    fn def_id(&mut self, did: DefId) 
 def_id_forest			mod def_id_forest;
 def_id_is_transmute			    fn def_id_is_transmute(&self, def_id: DefId) -> bool 
 def_id_represents_local_inlined_item			    fn def_id_represents_local_inlined_item(&self, def_id: DefId) -> bool 
+def_index_counts_lo_hi			    pub fn def_index_counts_lo_hi(&self) -> (usize, usize) 
 def_index_for_def_key			    pub fn def_index_for_def_key(&self, key: &DefKey) -> Option<DefIndex> 
 def_index_for_def_key			    pub fn def_index_for_def_key(&self, key: DefKey) -> Option<DefIndex> 
 def_index_for_def_key			    pub fn def_index_for_def_key(&self, def_key: DefKey) -> Option<DefIndex> 
@@ -1864,12 +2038,17 @@ def_path			    pub fn def_path(&self, def_id: DefId) -> DefPath
 def_path			    fn def_path(&self, def: DefId) -> hir_map::DefPath 
 def_path			    fn def_path(&self, def: DefId) -> hir_map::DefPath;
 def_path			    pub fn def_path(self, id: DefId) -> hir_map::DefPath 
-def_path			    pub fn def_path(&mut self, def_path: &hir_map::DefPath) 
 def_path_from_id			    pub fn def_path_from_id(&self, id: NodeId) -> Option<DefPath> 
+def_path_hash			    pub fn def_path_hash(&self, index: DefIndex) -> u64 
+def_path_hash			    pub fn def_path_hash(&mut self, def_id: DefId) -> u64 
+def_path_hash			    fn def_path_hash(&self, def: DefId) -> u64 
+def_path_hash			    fn def_path_hash(&self, def: DefId) -> u64;
+def_path_hash			    pub fn def_path_hash(self, def_id: DefId) -> u64 
 def_path_table			    pub fn def_path_table(&self) -> &DefPathTable 
 def_span			    fn def_span(&self, sess: &Session, def: DefId) -> Span { bug!("def_span") }
 def_span			    fn def_span(&self, sess: &Session, def: DefId) -> Span;
 def_span			    pub fn def_span(self, def_id: DefId) -> Span 
+def_ty			    pub fn def_ty<'a>(&self, tcx: ty::TyCtxt<'a, 'tcx, 'tcx>) -> Ty<'tcx> 
 default			    pub fn default(&self, ty: Ty<'tcx>) -> Option<type_variable::Default<'tcx>> 
 default			    pub fn default(&self, vid: ty::TyVid) -> Option<Default<'tcx>> 
 default			    fn default() -> Self 
@@ -1887,7 +2066,6 @@ default_span			    fn default_span(&self, tcx: TyCtxt) -> Span;
 define			    fn define(&mut self, writer: LiveNode, var: Variable) 
 define_bindings_in_arm_pats			    fn define_bindings_in_arm_pats(&mut self, pat: Option<&hir::Pat>, succ: LiveNode)
 define_bindings_in_pat			    fn define_bindings_in_pat(&mut self, pat: &hir::Pat, succ: LiveNode)
-definition			                                                            trait definition for {} refers to \\
 definition			                                                    trait definition for {} must have a value, \\
 definitions			    fn definitions(&mut self) -> &mut Definitions;
 definitions			    pub fn definitions(&self) -> &Definitions 
@@ -1912,7 +2090,9 @@ deprecation			    fn deprecation(&self, def: DefId) -> Option<attr::Deprecation>
 deref			    fn deref(&self) -> &Self::Target 
 deref			    pub fn deref(self) -> Lvalue<'tcx> 
 deref			    fn deref(&self) -> &Self::Target 
+deref			    fn deref(&self) -> &Layout 
 deref			    fn deref(&self) -> &[T] 
+deref			    fn deref(&self) -> &[ast::Attribute] 
 derive_registrar_fn			    fn derive_registrar_fn(&self, cnum: CrateNum) -> Option<DefId>
 derive_registrar_fn			    fn derive_registrar_fn(&self, cnum: CrateNum) -> Option<DefId>;
 derived_cause			    pub fn derived_cause(&self,
@@ -1920,25 +2100,29 @@ desc			    fn desc(&self) -> &'static str
 descr			    pub fn descr(&self) -> &'static str 
 describe			            pub fn describe(&self, tcx: TyCtxt) -> String 
 describe			    fn describe(_: TyCtxt, _: CrateNum) -> String 
+describe			    fn describe(_: TyCtxt, k: CrateNum) -> String 
 describe			    fn describe(tcx: TyCtxt, (_, def_id): (CrateNum, DefId)) -> String 
 describe			    fn describe(tcx: TyCtxt, (_, def_id): (DefId, DefId)) -> String 
+describe			    fn describe(tcx: TyCtxt, (def_id, _): (DefId, &'tcx Substs<'tcx>)) -> String 
+describe			    fn describe(tcx: TyCtxt, def: ty::InstanceDef<'tcx>) -> String 
 describe			    fn describe(tcx: TyCtxt, def_id: DefId) -> String 
 describe			    fn describe(tcx: TyCtxt, key: Self::Key) -> String;
 describe_def			    fn describe_def(&self, def: DefId) -> Option<Def> { bug!("describe_def") }
 describe_def			    fn describe_def(&self, def: DefId) -> Option<Def>;
 description			    pub fn description(&self) -> &'static str 
+description			    pub fn description(&self) -> ConstEvalErrDescription 
 descriptive_string			    pub fn descriptive_string(&self, tcx: TyCtxt) -> String 
 descriptive_variant			    pub fn descriptive_variant(&self) -> &str 
 destructor			    pub fn destructor(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Option<Destructor> 
+destructor_constraints			    pub fn destructor_constraints(self, def: &'tcx ty::AdtDef)
 determine_pat_move_mode			    fn determine_pat_move_mode(&mut self,
-deterministic_hash			    pub fn deterministic_hash(&self, tcx: TyCtxt) -> u64 
-deterministic_hash_to			    pub fn deterministic_hash_to<H: Hasher>(&self, tcx: TyCtxt, state: &mut H) 
 diag_span_note_once			    pub fn diag_span_note_once<'a, 'b>(&'a self,
 diagnostic			    fn diagnostic(&self) -> &errors::Handler 
 diagnostic			    pub fn diagnostic<'a>(&'a self) -> &'a errors::Handler 
 diagnostics			pub mod diagnostics;
 disambiguator			    fn disambiguator<'a>(&'a self) -> Option<Box<fmt::Display+'a>> { None }
 discr_type			    pub fn discr_type(&self) -> attr::IntType 
+discriminant_for_variant			    pub fn discriminant_for_variant(&self,
 discriminants			    pub fn discriminants(&'a self, tcx: TyCtxt<'a, 'gcx, 'tcx>)
 disr_incr			    fn disr_incr<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>, val: Option<Disr>)
 dominates			    pub fn dominates(&self, other: &Location, dominators: &Dominators<BasicBlock>) -> bool 
@@ -1953,6 +2137,7 @@ downcast			    unsafe fn downcast<T>(self, tag: usize) -> Option<&'tcx T>
 drain_fulfillment_cx_or_panic			    pub fn drain_fulfillment_cx_or_panic<T>(&self,
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) { debug!("<<"); }
+dtorck_constraint_for_ty			    pub fn dtorck_constraint_for_ty(self,
 dummy			    pub fn dummy(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> TypeTrace<'tcx> 
 dummy			    pub fn dummy() -> ObligationCause<'tcx> 
 dump_constraints			    fn dump_constraints(&self, subject: ast::NodeId) 
@@ -1989,17 +2174,20 @@ empty			    pub fn empty() -> Generics
 empty			    fn empty() -> TraitObligationStackList<'o,'tcx> 
 empty			    pub fn empty() -> TypeckTables<'tcx> 
 empty			    pub fn empty() -> DefIdForest 
+empty			    fn empty() -> DtorckConstraint<'tcx> 
 empty			    pub fn empty() -> InstantiatedPredicates<'tcx> 
 empty			    pub fn empty<'a>() -> &'a Slice<T> 
 empty_parameter_environment			    pub fn empty_parameter_environment(self) -> ParameterEnvironment<'tcx> 
+empty_substs_for_def_id			    pub fn empty_substs_for_def_id(self, item_def_id: DefId) -> &'tcx ty::Substs<'tcx> 
 enabled			    pub fn enabled(&self) -> bool 
 encl_scope			    pub fn encl_scope(&self, id: CodeExtent) -> CodeExtent 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
+encode			    fn encode<S: Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<S: serialize::Encoder>(&self, s: &mut S) -> Result<(), S::Error> 
 encode			    fn encode<E: Encoder>(&self, e: &mut E) -> Result<(), E::Error> 
-encode_metadata			    fn encode_metadata<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+encode_metadata			    fn encode_metadata<'a, 'tcx>(&self,
 enqueue			    pub fn enqueue(&self, message: &DepMessage) 
 enqueue			    pub fn enqueue(&self, message: DepMessage) 
 enqueue_enabled			    fn enqueue_enabled(&self, message: DepMessage) 
@@ -2032,6 +2220,7 @@ equality_predicate			    pub fn equality_predicate(&self,
 equate			    pub fn equate<'a>(&'a mut self, a_is_expected: bool) -> Equate<'a, 'infcx, 'gcx, 'tcx> 
 equate			    pub fn equate<T>(&'a self, a_is_expected: bool, trace: TypeTrace<'tcx>, a: &T, b: &T)
 equate			mod equate;
+equate			    pub fn equate(&mut self, a: ty::TyVid, b: ty::TyVid) 
 erase_late_bound_regions			    pub fn erase_late_bound_regions<T>(self, value: &Binder<T>) -> T
 erase_late_bound_regions_and_normalize			    pub fn erase_late_bound_regions_and_normalize<T>(self, value: &ty::Binder<T>)
 erase_regions			    pub fn erase_regions<T>(self, value: &T) -> T
@@ -2045,6 +2234,7 @@ error_msg			    pub fn error_msg(&self) -> Cow<'static, str>
 error_reporting			pub mod error_reporting;
 error_reporting			mod error_reporting;
 escapes_depth			    pub fn escapes_depth(&self, depth: u32) -> bool 
+eval_length			pub fn eval_length(tcx: TyCtxt,
 evaluate_candidate			    fn evaluate_candidate<'o>(&mut self,
 evaluate_obligation			    pub fn evaluate_obligation(&mut self,
 evaluate_obligation_conservatively			    pub fn evaluate_obligation_conservatively(&mut self,
@@ -2074,6 +2264,7 @@ expect_variant_def			    pub fn expect_variant_def(self, def: Def) -> &'tcx Vari
 expected_found			pub fn expected_found<'a, 'gcx, 'tcx, R, T>(relation: &mut R,
 expected_found_bool			pub fn expected_found_bool<T>(a_is_expected: bool,
 expected_found_str			    fn expected_found_str<T: fmt::Display + TypeFoldable<'tcx>>(
+expected_found_str_ty			    fn expected_found_str_ty(&self,
 explain_span			        fn explain_span<'a, 'gcx, 'tcx>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 export_macros			    fn export_macros(&self, cnum: CrateNum) { bug!("export_macros") }
 export_macros			    fn export_macros(&self, cnum: CrateNum);
@@ -2106,7 +2297,7 @@ expr_use_visitor			    pub mod expr_use_visitor;
 expression_label			    fn expression_label(ex: &hir::Expr) -> Option<(ast::Name, Span)> 
 exprs			    fn exprs<'b, I: Iterator<Item=&'b hir::Expr>>(&mut self,
 extend			    fn extend<I: IntoIterator<Item=Box<for <'a> MirMapPass<'a>>>>(&mut self, it: I) 
-extend			    pub fn extend<I>(&mut self, dl: &TargetDataLayout,
+extend			    fn extend<I>(&mut self, dl: &TargetDataLayout,
 extend_to			    pub fn extend_to<FR, FT>(&self,
 extends			    pub fn extends(self, other: ty::ClosureKind) -> bool 
 extension			    pub fn extension(&self) -> &'static str 
@@ -2130,8 +2321,13 @@ fast_reject_trait_refs			    fn fast_reject_trait_refs(&mut self,
 fatal			    pub fn fatal(&self, msg: &str) -> ! 
 field			    fn field(&mut self, name: Name, expr: P<hir::Expr>, span: Span) -> hir::Field 
 field			    pub fn field(self, f: Field, ty: Ty<'tcx>) -> Lvalue<'tcx> 
+field			    pub fn field<C: LayoutTyper<'tcx>>(&self, cx: C, i: usize) -> C::TyLayout 
+field_count			    pub fn field_count(&self) -> usize 
 field_index_by_increasing_offset			    pub fn field_index_by_increasing_offset<'b>(&'b self) -> impl iter::Iterator<Item=usize>+'b 
 field_named			    pub fn field_named(&self, name: ast::Name) -> &FieldDef 
+field_offset			    pub fn field_offset<C: HasDataLayout>(&self, cx: C, i: usize) -> Size 
+field_offset			    pub fn field_offset<C: HasDataLayout>(&self,
+field_type			    pub fn field_type<C: HasTyCtxt<'tcx>>(&self, cx: C, i: usize) -> Ty<'tcx> 
 fields			    pub fn fields(&self) -> &[StructField] 
 filesearch			pub mod filesearch;
 filestem			    pub fn filestem(&self) -> String 
@@ -2142,6 +2338,7 @@ filter_to_traits			    pub fn filter_to_traits(self) -> FilterToTraits<Self>
 filtered_mut			    fn filtered_mut(&'a mut self, sty: SimplifiedType)
 finalize_incr_comp_session			    pub fn finalize_incr_comp_session(&self, new_directory_path: PathBuf) 
 find			    pub fn find(&self, id: NodeId) -> Option<Node<'hir>> 
+find_associated_item			pub fn find_associated_item<'a, 'tcx>(
 find_entry			    fn find_entry(&self, id: NodeId) -> Option<MapEntry<'hir>> 
 find_entry_point			pub fn find_entry_point(session: &Session, hir_map: &hir_map::Map) 
 find_field_named			    pub fn find_field_named(&self,
@@ -2150,11 +2347,12 @@ find_item			fn find_item(item: &Item, ctxt: &mut EntryContext, at_root: bool)
 find_libdir			fn find_libdir(sysroot: &Path) -> Cow<'static, str> 
 find_lint			    fn find_lint(&self, lint_name: &str, sess: &Session, span: Option<Span>)
 find_live			fn find_live<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-find_method			pub fn find_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 find_nonrepresentable			        fn find_nonrepresentable<'a, 'tcx, It>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-find_reachable			pub fn find_reachable<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-find_scope			    fn find_scope(&self,
+find_reachable			pub fn find_reachable<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Rc<NodeSet> 
+find_scope_edge			    fn find_scope_edge(&self,
 find_similar_impl_candidates			    fn find_similar_impl_candidates(&self,
+fingerprint			mod fingerprint;
+finish			    fn finish(mut hasher: stable_hasher::StableHasher<Self>) -> Self 
 finish			    pub fn finish(self) -> W 
 fit_signed			    pub fn fit_signed(x: i64) -> Integer 
 fit_unsigned			    pub fn fit_unsigned(x: u64) -> Integer 
@@ -2175,6 +2373,7 @@ float_unification_error			fn float_unification_error<'tcx>(a_is_expected: bool,
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, formatter: &mut ::std::fmt::Formatter) -> Result<(), ::std::fmt::Error> 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -2217,7 +2416,6 @@ fmt::Debug for RegionSnapshot			impl fmt::Debug for RegionSnapshot
 fmt::Debug for Stmt_			impl fmt::Debug for Stmt_ 
 fmt::Debug for TraitObligationStack			impl<'o,'tcx> fmt::Debug for TraitObligationStack<'o,'tcx> 
 fmt::Debug for Ty			impl fmt::Debug for Ty 
-fmt::Debug for TypeContents			impl fmt::Debug for TypeContents 
 fmt::Debug for TypeFlags			impl fmt::Debug for TypeFlags 
 fmt::Debug for TypeTrace			impl<'tcx> fmt::Debug for TypeTrace<'tcx> 
 fmt::Debug for Upvar			impl fmt::Debug for Upvar 
@@ -2269,6 +2467,7 @@ fmt::Display for CrateNum			impl fmt::Display for CrateNum
 fmt::Display for CrateType			impl fmt::Display for CrateType 
 fmt::Display for FixupError			impl fmt::Display for FixupError 
 fmt::Display for GenericKind			impl<'tcx> fmt::Display for GenericKind<'tcx> 
+fmt::Display for Instance			impl<'tcx> fmt::Display for Instance<'tcx> 
 fmt::Display for LayoutError			impl<'tcx> fmt::Display for LayoutError<'tcx> 
 fmt::Display for LoopIdError			impl fmt::Display for LoopIdError 
 fmt::Display for Svh			impl fmt::Display for Svh 
@@ -2286,6 +2485,7 @@ fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::EquatePredicate
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::OutlivesPredicate<&'tcx ty::Region,
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::OutlivesPredicate<Ty<'tcx>, &'tcx ty::Region>> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::ProjectionPredicate<'tcx>> 
+fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::SubtypePredicate<'tcx>> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::TraitPredicate<'tcx>> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Binder<ty::TraitRef<'tcx>> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::EquatePredicate<'tcx> 
@@ -2293,6 +2493,7 @@ fmt::Display for ty			impl<'tcx> fmt::Display for ty::FnSig<'tcx>
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::Predicate<'tcx> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::ProjectionPredicate<'tcx> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::ProjectionTy<'tcx> 
+fmt::Display for ty			impl<'tcx> fmt::Display for ty::SubtypePredicate<'tcx> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::TraitPredicate<'tcx> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::TraitRef<'tcx> 
 fmt::Display for ty			impl<'tcx> fmt::Display for ty::TyS<'tcx> 
@@ -2311,6 +2512,7 @@ fn_sig			    pub fn fn_sig(&self) -> PolyFnSig<'tcx>
 fn_sig			fn fn_sig(f: &mut fmt::Formatter,
 fn_trait_kind			    pub fn fn_trait_kind(&self, id: DefId) -> Option<ty::ClosureKind> 
 fold			    fn fold<T:TypeFoldable<'tcx>>(&mut self, value: &T) -> T 
+fold			    fn fold<T:TypeFoldable<'gcx>>(&mut self, value: &T) -> T 
 fold			pub mod fold;
 fold_autoref			    fn fold_autoref(&mut self, ar: &adjustment::AutoBorrow<'tcx>)
 fold_binder			            fn fold_binder<T>(&mut self, t: &ty::Binder<T>) -> ty::Binder<T>
@@ -2323,7 +2525,6 @@ fold_mt			    fn fold_mt(&mut self, t: &ty::TypeAndMut<'tcx>) -> ty::TypeAndMut<
 fold_region			    fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
 fold_region			    fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
 fold_region			    fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
-fold_region			    fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
 fold_region			            fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
 fold_region			    fn fold_region(&mut self, r: &'tcx ty::Region) -> &'tcx ty::Region 
 fold_region			    fn fold_region(&mut self, r:&'tcx  ty::Region) -> &'tcx ty::Region 
@@ -2332,10 +2533,11 @@ fold_regions			    pub fn fold_regions<T,F>(self,
 fold_regions_in			fn fold_regions_in<'a, 'gcx, 'tcx, T, F>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 fold_substs			    fn fold_substs(&mut self,
 fold_ty			    fn fold_ty(&mut self, t: Ty<'tcx>) -> Ty<'tcx> 
-fold_ty			    fn fold_ty(&mut self, t: Ty<'tcx>) -> Ty<'tcx> 
+fold_ty			    fn fold_ty(&mut self, ty: Ty<'tcx>) -> Ty<'tcx> 
 fold_ty			    fn fold_ty(&mut self, t: Ty<'tcx>) -> Ty<'tcx> 
 fold_ty			            fn fold_ty(&mut self, ty: Ty<'tcx>) -> Ty<'tcx> 
 fold_ty			    fn fold_ty(&mut self, ty: Ty<'tcx>) -> Ty<'tcx> 
+fold_ty			    fn fold_ty(&mut self, ty: Ty<'gcx>) -> Ty<'gcx> 
 fold_ty			            fn fold_ty(&mut self, ty: Ty<'tcx>) -> Ty<'tcx> 
 fold_ty			    fn fold_ty(&mut self, t: Ty<'tcx>) -> Ty<'tcx> 
 fold_ty			    fn fold_ty(&mut self, ty: Ty<'tcx>) -> Ty<'tcx> 
@@ -2377,7 +2579,7 @@ foo			fn foo<T>(t: T) where T: Trait<AssociatedType=u32>
 foo			fn foo<T>(x: T) 
 foo			fn foo<T>(x: Vec<T>) 
 foo			        fn foo(_: LangItem) -> Option<DefId> { None }
-for_abi_align			    pub fn for_abi_align(dl: &TargetDataLayout, align: Align) -> Option<Integer> 
+for_abi_align			    pub fn for_abi_align<C: HasDataLayout>(cx: C, align: Align) -> Option<Integer> 
 for_def			    pub fn for_def(def: &ty::TypeParameterDef) -> ParamTy 
 for_each_impl			    pub fn for_each_impl<F: FnMut(DefId)>(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>, mut f: F) 
 for_each_lib_search_path			    pub fn for_each_lib_search_path<F>(&self, mut f: F) where
@@ -2387,6 +2589,7 @@ for_item			    pub fn for_item(tcx: TyCtxt<'a, 'tcx, 'tcx>, id: NodeId)
 for_item			    pub fn for_item<FR, FT>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 for_self			    pub fn for_self() -> ParamTy 
 for_sty			    pub fn for_sty(st: &ty::TypeVariants) -> FlagComputation 
+for_variant			    pub fn for_variant(&self, variant_index: usize) -> Self 
 force			            pub fn force(tcx: TyCtxt<'a, 
 format_stable_since_msg			    fn format_stable_since_msg(version: &str) -> String 
 free_region			    pub mod free_region;
@@ -2401,17 +2604,19 @@ freshen			    pub fn freshen<T:TypeFoldable<'tcx>>(&self, t: T) -> T
 freshen			mod freshen;
 freshener			    pub fn freshener<'b>(&'b self) -> TypeFreshener<'b, 'gcx, 'tcx> 
 from			    fn from(res: Result<NodeId, LoopIdError>) -> Self 
+from			    fn from(err: ConstMathErr) -> ErrKind<'tcx> 
 from			    fn from(kind: AdtKind) -> Self 
 from			    fn from(r: &'tcx ty::Region) -> Kind<'tcx> 
 from			    fn from(ty: Ty<'tcx>) -> Kind<'tcx> 
 from_ast			    pub fn from_ast(vdata: &ast::VariantData) -> CtorKind 
-from_attr			    pub fn from_attr(dl: &TargetDataLayout, ity: attr::IntType) -> Integer 
+from_attr			    pub fn from_attr<C: HasDataLayout>(cx: C, ity: attr::IntType) -> Integer 
 from_attr_level			    pub fn from_attr_level(level: &attr::StabilityLevel) -> Self 
 from_bits			    pub fn from_bits(abi: u64, pref: u64) -> Result<Align, String> 
 from_bits			    pub fn from_bits(bits: u64) -> Size 
 from_borrow_kind			    pub fn from_borrow_kind(borrow_kind: ty::BorrowKind) -> MutabilityCategory 
 from_bytes			    pub fn from_bytes(abi: u64, pref: u64) -> Result<Align, String> 
 from_bytes			    pub fn from_bytes(bytes: u64) -> Size 
+from_cycle_error			    fn from_cycle_error<'a>(_: TyCtxt<'a, 'tcx, 'tcx>) -> Self 
 from_cycle_error			    fn from_cycle_error<'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Self;
 from_cycle_error			    fn from_cycle_error<'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Ty<'tcx> 
 from_depth			    fn from_depth(self, depth: u32) -> Region 
@@ -2425,6 +2630,7 @@ from_index			    fn from_index(i: u32) -> ty::IntVid { ty::IntVid { index: i } }
 from_index			    fn from_index(i: u32) -> ty::RegionVid { ty::RegionVid { index: i } }
 from_index			    fn from_index(i: u32) -> ty::TyVid { ty::TyVid { index: i } }
 from_item			    fn from_item(item: &ast::Item) -> Target 
+from_iter			    fn from_iter<I: IntoIterator<Item=DtorckConstraint<'tcx>>>(iter: I) -> Self 
 from_label_string			    pub fn from_label_string(label: &str, data: D) -> Result<DepNode<D>, ()> 
 from_local			    fn from_local(tcx: TyCtxt, id: ast::NodeId) -> MutabilityCategory 
 from_method			    pub fn from_method(tcx: TyCtxt<'a, 'gcx, 'tcx>,
@@ -2440,6 +2646,7 @@ from_node			    pub fn from_node(tcx: TyCtxt<'a, 'tcx, 'tcx>, id: NodeId) -> Mir
 from_object_ty			    fn from_object_ty(&mut self, ty: Ty<'tcx>,
 from_obligation_cause			    pub fn from_obligation_cause<F>(cause: &traits::ObligationCause<'tcx>,
 from_pointer_kind			    fn from_pointer_kind(base_mutbl: MutabilityCategory,
+from_smaller_hash			    pub fn from_smaller_hash(hash: u64) -> Fingerprint 
 from_str			    pub fn from_str(x: &str) -> Option<Level> 
 from_trait_id			    fn from_trait_id(tcx: TyCtxt, trait_id: DefId) -> OverloadedCallType 
 from_ty			    pub fn from_ty(ty: Ty<'tcx>) -> LvalueTy<'tcx> 
@@ -2456,6 +2663,7 @@ full			    pub fn full(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> DefIdForest
 fully_normalize			pub fn fully_normalize<'a, 'gcx, 'tcx, T>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
 fully_resolve			    pub fn fully_resolve<T:TypeFoldable<'tcx>>(&self, value: &T) -> FixupResult<T> 
 fully_resolve			pub fn fully_resolve<'a, 'gcx, 'tcx, T>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
+function_handle			    pub fn function_handle<'a>(
 fundamental_ty			fn fundamental_ty(tcx: TyCtxt, ty: Ty) -> bool 
 future_incompatible			    pub fn future_incompatible(&self, id: LintId) -> Option<&FutureIncompatibleInfo> 
 fuzzy_match_tys			    fn fuzzy_match_tys(&self, a: Ty<'tcx>, b: Ty<'tcx>) -> bool 
@@ -2463,8 +2671,8 @@ gather_attr			pub fn gather_attr(attr: &ast::Attribute) -> Vec<Result<(ast::Name
 gather_attrs			pub fn gather_attrs(attrs: &[ast::Attribute]) -> Vec<Result<(ast::Name, Level, Span), Span>> 
 generalize			    fn generalize(&self,
 generalize_region			        fn generalize_region<'a, 'gcx, 'tcx>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
-generate_derive_registrar_symbol			    pub fn generate_derive_registrar_symbol(&self,
-generate_plugin_registrar_symbol			    pub fn generate_plugin_registrar_symbol(&self, svh: &Svh, index: DefIndex)
+generate_derive_registrar_symbol			    pub fn generate_derive_registrar_symbol(&self, disambiguator: Symbol, index: DefIndex)
+generate_plugin_registrar_symbol			    pub fn generate_plugin_registrar_symbol(&self, disambiguator: Symbol, index: DefIndex)
 generics_require_inlining			fn generics_require_inlining(generics: &hir::Generics) -> bool 
 generics_require_sized_self			    fn generics_require_sized_self(self, def_id: DefId) -> bool 
 get			    pub fn get(&self, k: &M::Key) -> Option<&M::Value> 
@@ -2477,13 +2685,10 @@ get			    pub fn get(&self, key: &str) -> Option<&BTreeSet<String>>
 get			            pub fn get(tcx: TyCtxt<'a, 
 get_a			    fn get_a(&self) -> A; \/\/ note that this is object safe!
 get_any			    pub fn get_any(&self) -> Option<(&ast::NodeId, &Vec<EarlyLint>)> 
-get_arg_if_immutable			    pub fn get_arg_if_immutable(&self, map: &hir_map::Map) -> Option<ast::NodeId> 
-get_attrs			    pub fn get_attrs(self, did: DefId) -> Cow<'gcx, [ast::Attribute]> 
+get_attrs			    pub fn get_attrs(self, did: DefId) -> Attributes<'gcx> 
 get_cfg_indices			fn get_cfg_indices<'a>(id: ast::NodeId, index: &'a NodeMap<Vec<CFGIndex>>) -> &'a [CFGIndex] 
 get_dylib_search_paths			    pub fn get_dylib_search_paths(&self) -> Vec<PathBuf> 
 get_enclosing_scope			    pub fn get_enclosing_scope(&self, id: NodeId) -> Option<NodeId> 
-get_field			    pub fn get_field(&self, name: ast::Name) -> Option<DefId> 
-get_field_name			    pub fn get_field_name(&self) -> Option<ast::Name> 
 get_foreign_abi			    pub fn get_foreign_abi(&self, id: NodeId) -> Abi 
 get_if_local			    pub fn get_if_local(&self, id: DefId) -> Option<Node<'hir>> 
 get_inlined_body			    pub fn get_inlined_body(&self, def_id: DefId) -> Option<&'hir Body> 
@@ -2554,20 +2759,40 @@ hash			    fn hash<H: Hasher>(&self, s: &mut H)
 hash			    fn hash<H: Hasher>(&self, s: &mut H) 
 hash			    pub fn hash<T: Hash>(&mut self, x: T) 
 hash::Hash for LintId			impl hash::Hash for LintId 
+hash_bodies			    pub fn hash_bodies(&self) -> bool 
 hash_discriminant_u8			    fn hash_discriminant_u8<T>(&mut self, x: &T) 
+hash_hir_item_like			    pub fn hash_hir_item_like<F: FnOnce(&mut Self)>(&mut self,
+hash_spans			    pub fn hash_spans(&self) -> bool 
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			            fn hash_stable<W: ::rustc_data_structures::stable_hasher::StableHasherResult>(&self,
+hash_stable			            fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
+hash_stable_hashmap			pub fn hash_stable_hashmap<'a, 'tcx, K, V, R, SK, F, W>(hcx: &mut StableHashingContext<'a, 'tcx>,
+hash_stable_hashset			pub fn hash_stable_hashset<'a, 'tcx, K, R, SK, F, W>(hcx: &mut StableHashingContext<'a, 'tcx>,
+hash_stable_nodemap			pub fn hash_stable_nodemap<'a, 'tcx, V, W>(hcx: &mut StableHashingContext<'a, 'tcx>,
+hash_token			fn hash_token<'a, 'tcx, W: StableHasherResult>(token: &token::Token,
+hcx			mod hcx;
 head			    pub fn head(&mut self, w: &str) -> io::Result<()> 
 higher_ranked			mod higher_ranked;
 higher_ranked_glb			    pub fn higher_ranked_glb<T>(&mut self, a: &Binder<T>, b: &Binder<T>, a_is_expected: bool)
 higher_ranked_lub			    pub fn higher_ranked_lub<T>(&mut self, a: &Binder<T>, b: &Binder<T>, a_is_expected: bool)
 higher_ranked_match			    pub fn higher_ranked_match<T, U>(&mut self,
 higher_ranked_sub			    pub fn higher_ranked_sub<T>(&mut self, a: &Binder<T>, b: &Binder<T>, a_is_expected: bool)
+highlight_outer			    fn highlight_outer(&self,
 hir			impl hir::Arm 
 hir			impl hir::Pat 
 hir			pub mod hir;
+hir_id_validator			mod hir_id_validator;
 hir_visit::Visitor for LateContext			impl<'a, 'tcx> hir_visit::Visitor<'tcx> for LateContext<'a, 'tcx> 
 host_filesearch			    pub fn host_filesearch(&self, kind: PathKind) -> filesearch::FileSearch 
 host_triple			pub fn host_triple() -> &'static str 
 i32			impl i32 { fn foo(x: self) { ... } }
+ich			pub mod ich;
 id			    pub fn id(&self) -> ast::NodeId 
 id			    fn id(&self, index: IdIndex) -> DepNode<D> 
 id			    pub fn id(&self) -> NodeId 
@@ -2582,6 +2807,7 @@ identity_for_item			    pub fn identity_for_item(tcx: TyCtxt<'a, 'gcx, 'tcx>, de
 idx			    fn idx(&self, ln: LiveNode, var: Variable) -> usize 
 if_			    pub fn if_<'a, 'gcx>(tcx: ty::TyCtxt<'a, 'gcx, 'tcx>, cond: Operand<'tcx>,
 immediate_successors			    pub fn immediate_successors(&self, node: &DepNode<D>) -> Vec<&DepNode<D>> 
+immutability_blame			    pub fn immutability_blame(&self) -> Option<ImmutabilityBlame<'tcx>> 
 impl_item			    pub fn impl_item(&self, id: ImplItemId) -> &'hir ImplItem 
 impl_item			    pub fn impl_item(&self, id: ImplItemId) -> &ImplItem 
 impl_item_scope_tag			        fn impl_item_scope_tag(item: &hir::ImplItem) -> &'static str 
@@ -2589,8 +2815,6 @@ impl_of_method			    pub fn impl_of_method(self, def_id: DefId) -> Option<DefId>
 impl_or_trait_obligations			    fn impl_or_trait_obligations(&mut self,
 impl_parent			    fn impl_parent(&self, def: DefId) -> Option<DefId> { bug!("impl_parent") }
 impl_parent			    fn impl_parent(&self, impl_def_id: DefId) -> Option<DefId>;
-impl_polarity			    fn impl_polarity(&self, def: DefId) -> hir::ImplPolarity { bug!("impl_polarity") }
-impl_polarity			    fn impl_polarity(&self, def: DefId) -> hir::ImplPolarity;
 impl_similar_to			    fn impl_similar_to(&self,
 impl_trait_ref			    pub fn impl_trait_ref(self, id: DefId) -> Option<TraitRef<'gcx>> 
 impl_trait_ref_and_oblig			pub fn impl_trait_ref_and_oblig<'a, 'gcx, 'tcx>(selcx: &mut SelectionContext<'a, 'gcx, 'tcx>,
@@ -2598,7 +2822,13 @@ implementations_of_trait			    fn implementations_of_trait(&self, filter: Option
 implementations_of_trait			    fn implementations_of_trait(&self, filter: Option<DefId>) -> Vec<DefId>;
 implied_bounds			pub fn implied_bounds<'a, 'gcx, 'tcx>(
 implied_bounds_from_components			fn implied_bounds_from_components<'tcx>(sub_region: &'tcx ty::Region,
+impls_are_allowed_to_overlap			    pub fn impls_are_allowed_to_overlap(self, def_id1: DefId, def_id2: DefId) -> bool 
 impls_bound			    fn impls_bound(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+impls_const_math			mod impls_const_math;
+impls_hir			mod impls_hir;
+impls_mir			mod impls_mir;
+impls_syntax			mod impls_syntax;
+impls_ty			mod impls_ty;
 in_binder			fn in_binder<'a, 'gcx, 'tcx, T, U>(f: &mut fmt::Formatter,
 in_cbox			    pub fn in_cbox(&self) -> bool 
 in_ignore			    pub fn in_ignore<'graph>(&'graph self) -> Option<raii::IgnoreTask<'graph>> 
@@ -2614,12 +2844,15 @@ indenter			pub fn indenter() -> Indenter
 index			    fn index(&self, k: &'k M::Key) -> &M::Value 
 index			    fn index(self) -> usize 
 index			    fn index(self) -> usize 
+index			    pub fn index(&self) -> usize 
+index			    fn index(self) -> usize 
 index			    fn index(&self) -> u32 { self.index }
 index			            fn index(self) -> usize 
 index			    fn index(&self, index: BasicBlock) -> &BasicBlockData<'tcx> 
 index			    pub fn index(self, index: Operand<'tcx>) -> Lvalue<'tcx> 
 index_mut			    fn index_mut(&mut self, index: BasicBlock) -> &mut BasicBlockData<'tcx> 
 index_of_field_named			    pub fn index_of_field_named(&self,
+indexed_vec::Idx for ItemLocalId			impl indexed_vec::Idx for ItemLocalId 
 indices2			    fn indices2<F>(&mut self, ln: LiveNode, succ_ln: LiveNode, mut op: F) where
 infcx			    fn infcx(&self) -> &'infcx InferCtxt<'infcx, 'gcx, 'tcx> 
 infcx			    fn infcx(&self) -> &'f InferCtxt<'f, 'gcx, 'tcx>;
@@ -2629,14 +2862,13 @@ infer			pub mod infer;
 infer_ctxt			    pub fn infer_ctxt<E: InferEnv<'a, 'gcx>>(self,
 infer_variable_values			    fn infer_variable_values(&self,
 inhabitedness			pub mod inhabitedness;
-inherent_implementations_for_type			    fn inherent_implementations_for_type(&self, def_id: DefId) -> Vec<DefId> { vec![] }
-inherent_implementations_for_type			    fn inherent_implementations_for_type(&self, def_id: DefId) -> Vec<DefId>;
 inherit			    pub fn inherit(&self) -> MutabilityCategory 
 inhibit_enum_layout_opt			    pub fn inhibit_enum_layout_opt(&self) -> bool 
 init_empty			    fn init_empty(&mut self, ln: LiveNode, succ_ln: LiveNode) 
 init_from_succ			    fn init_from_succ(&mut self, ln: LiveNode, succ_ln: LiveNode) 
 init_incr_comp_session			    pub fn init_incr_comp_session(&self,
 init_llvm			fn init_llvm(sess: &Session) 
+init_node_id_to_hir_id_mapping			    pub fn init_node_id_to_hir_id_mapping(&mut self,
 initial_discriminant			    fn initial_discriminant<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Disr 
 initial_discriminant			    fn initial_discriminant<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Disr;
 initial_value			    fn initial_value(&self) -> bool;
@@ -2649,7 +2881,6 @@ inputs			    pub fn inputs(&self) -> &'tcx [Ty<'tcx>]
 inputs			    pub fn inputs(&self) -> Binder<&'tcx [Ty<'tcx>]> 
 insert			    pub fn insert(&mut self, k: M::Key, v: M::Value) 
 insert			    fn insert(&mut self, id: NodeId, node: Node<'hir>) 
-insert			    fn insert(&mut self, key: DefKey) -> DefIndex 
 insert			    pub fn insert(&mut self, value: T) 
 insert			    pub fn insert(&mut self, a: DefId, b: DefId, result: bool) 
 insert			    fn insert(&mut self,
@@ -2664,17 +2895,17 @@ insert_late_bound_lifetimes			fn insert_late_bound_lifetimes(map: &mut NamedRegi
 insert_lifetime			    fn insert_lifetime(&mut self,
 insert_previous_work_product			    pub fn insert_previous_work_product(&self, v: &Arc<WorkProductId>, data: WorkProduct) 
 insert_work_product			    pub fn insert_work_product(&self, v: &Arc<WorkProductId>, data: WorkProduct) 
+instance			mod instance;
+instance_mir			    pub fn instance_mir(self, instance: ty::InstanceDef<'gcx>)
 instantiate			    pub fn instantiate(&mut self,
+instantiate			    pub fn instantiate(&mut self, vid: ty::TyVid, ty: Ty<'tcx>) 
 instantiate			    pub fn instantiate(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>, substs: &Substs<'tcx>)
-instantiate_and_push			    pub fn instantiate_and_push(
 instantiate_into			    fn instantiate_into(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 instantiate_own			    pub fn instantiate_own(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>, substs: &Substs<'tcx>)
 instantiate_supertrait			    pub fn instantiate_supertrait(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 int_unification_error			fn int_unification_error<'tcx>(a_is_expected: bool, v: (ty::IntVarValue, ty::IntVarValue))
 inter			    pub fn inter(self) -> Option<&'this Map<'tcx>> 
 intercrate			    pub fn intercrate(infcx: &'cx InferCtxt<'cx, 'gcx, 'tcx>) -> SelectionContext<'cx, 'gcx, 'tcx> 
-interior_param			    pub fn interior_param(&self) -> bool 
-interior_unsafe			    pub fn interior_unsafe(&self) -> bool 
 intern_code_extent			    pub fn intern_code_extent(&self,
 intern_existential_predicates			    pub fn intern_existential_predicates(self, eps: &[ExistentialPredicate<'tcx>])
 intern_inlined_body			    pub fn intern_inlined_body(&self, def_id: DefId, body: Body) -> &'hir Body 
@@ -2690,16 +2921,17 @@ intern_with			    fn intern_with<F>(self, f: F) -> Self::Output
 intern_with			    fn intern_with<I: Iterator<Item=Self>, F: FnOnce(&[T]) -> R>(iter: I, f: F) -> Self::Output 
 intern_with			    fn intern_with<I: Iterator<Item=Self>, F: FnOnce(&[T]) -> R>(iter: I, f: F) -> Self::Output;
 intersection			    pub fn intersection<I>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
-intersects			    pub fn intersects(&self, tc: TypeContents) -> bool 
 into			    fn into(self) -> Result<NodeId, LoopIdError> 
 into_early_lint			    fn into_early_lint(self, id: LintId) -> EarlyLint 
 into_early_lint			    fn into_early_lint(self, id: LintId) -> EarlyLint;
 into_iter			    fn into_iter(self) -> Self::IntoIter 
+into_oneline			    pub fn into_oneline(self) -> Cow<'a, str> 
 into_option			    fn into_option(self) -> Option<CodeExtent> 
 into_set			    fn into_set(self) -> FxHashSet<&'tcx ty::Region> 
 into_string			    fn into_string(self) -> String 
 intra			    pub fn intra(self) -> Option<&'this Map<'tcx>> 
 intravisit			pub mod intravisit;
+intravisit::Visitor for HirIdValidator			impl<'a, 'hir: 'a> intravisit::Visitor<'hir> for HirIdValidator<'a, 'hir> 
 intrinsicck			    pub mod intrinsicck;
 invalid_node			fn invalid_node() -> LiveNode { LiveNode(usize::MAX) }
 invalid_users			fn invalid_users() -> Users 
@@ -2735,7 +2967,6 @@ is_descendant_of			    fn is_descendant_of(self, mut descendant: DefId, ancestor
 is_dllimport_foreign_item			    fn is_dllimport_foreign_item(&self, def: DefId) -> bool;
 is_dllimport_foreign_item			    fn is_dllimport_foreign_item(&self, id: DefId) -> bool { false }
 is_drop			    pub fn is_drop(&self) -> bool 
-is_dtorck			    pub fn is_dtorck(&'gcx self, tcx: TyCtxt) -> bool 
 is_elided			    pub fn is_elided(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
 is_empty			    pub fn is_empty(&self) -> bool 
@@ -2753,6 +2984,8 @@ is_fn_like			    fn is_fn_like(&self) -> bool
 is_foreign_item			    fn is_foreign_item(&self, did: DefId) -> bool { bug!("is_foreign_item") }
 is_foreign_item			    fn is_foreign_item(&self, did: DefId) -> bool;
 is_fp			    pub fn is_fp(&self) -> bool 
+is_freeze			    pub fn is_freeze(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+is_freeze_uncached			    fn is_freeze_uncached(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 is_fresh			    pub fn is_fresh(&self) -> bool 
 is_from_trait			    pub fn is_from_trait(&self) -> bool 
 is_fully_enabled			    pub fn is_fully_enabled(&self) -> bool 
@@ -2762,7 +2995,9 @@ is_global			    pub fn is_global(&self) -> bool
 is_global			    fn is_global(self) -> bool 
 is_global			    fn is_global(&self) -> bool 
 is_identity			    pub fn is_identity(&self) -> bool 
+is_ignored_attr			    pub fn is_ignored_attr(&self, name: Symbol) -> bool 
 is_immutable			    pub fn is_immutable(&self) -> bool 
+is_in_snapshot			    pub fn is_in_snapshot(&self) -> bool 
 is_integral			    pub fn is_integral(&self) -> bool 
 is_item_mir_available			    fn is_item_mir_available(&self, def: DefId) -> bool 
 is_item_mir_available			    fn is_item_mir_available(&self, def: DefId) -> bool;
@@ -2799,6 +3034,7 @@ is_phantom_data			    pub fn is_phantom_data(&self) -> bool
 is_phantom_data			    pub fn is_phantom_data(&self) -> bool 
 is_positional			    pub fn is_positional(&self) -> bool 
 is_primitive			    pub fn is_primitive(&self) -> bool 
+is_pub_restricted			    pub fn is_pub_restricted(&self) -> bool 
 is_public			    pub fn is_public(&self, id: Id) -> bool 
 is_reachable			    pub fn is_reachable(&self, id: Id) -> bool 
 is_refutable			    pub fn is_refutable(&self) -> bool 
@@ -2819,6 +3055,7 @@ is_some			    pub fn is_some(&self) -> bool
 is_stable			    pub fn is_stable(&self) -> bool 
 is_staged_api			    fn is_staged_api(&self, cnum: CrateNum) -> bool { bug!("is_staged_api") }
 is_staged_api			    fn is_staged_api(&self, cnum: CrateNum) -> bool;
+is_static			    pub fn is_static(&self) -> bool 
 is_static			    pub fn is_static(&self, super_region: ty::FreeRegion) -> bool 
 is_statically_included_foreign_item			    fn is_statically_included_foreign_item(&self, def_id: DefId) -> bool { false }
 is_statically_included_foreign_item			    fn is_statically_included_foreign_item(&self, def_id: DefId) -> bool;
@@ -2850,8 +3087,9 @@ is_valid			    fn is_valid(&self) -> bool
 is_var_in_set			fn is_var_in_set(new_vars: &[ty::RegionVid], r: &ty::Region) -> bool 
 is_vtable_safe_method			    pub fn is_vtable_safe_method(self,
 item			    pub fn item(&self, id: NodeId) -> &Item 
-item_attrs			    fn item_attrs(&self, def_id: DefId) -> Vec<ast::Attribute> { bug!("item_attrs") }
-item_attrs			    fn item_attrs(&self, def_id: DefId) -> Vec<ast::Attribute>;
+item_attrs			    fn item_attrs(&self, def_id: DefId) -> Rc<[ast::Attribute]> { bug!("item_attrs") }
+item_attrs			    fn item_attrs(&self, def_id: DefId) -> Rc<[ast::Attribute]>;
+item_body			    fn item_body<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>, def: DefId)
 item_body_nested_bodies			    fn item_body_nested_bodies(&self, def: DefId) -> BTreeMap<hir::BodyId, hir::Body> 
 item_body_nested_bodies			    fn item_body_nested_bodies(&self, def: DefId) -> BTreeMap<hir::BodyId, hir::Body>;
 item_children			    fn item_children(&self, did: DefId) -> Vec<def::Export> { bug!("item_children") }
@@ -2907,13 +3145,15 @@ late_anon			    fn late_anon(index: &Cell<u32>) -> Region
 lattice			pub mod lattice;
 layout			pub mod layout;
 layout			    pub fn layout<'lcx>(&'tcx self, infcx: &InferCtxt<'a, 'tcx, 'lcx>)
+layout_of			    fn layout_of(self, ty: Ty<'gcx>) -> Self::TyLayout 
+layout_of			    fn layout_of(self, ty: Ty<'tcx>) -> Self::TyLayout;
 leak_check			    pub fn leak_check(&self,
-len			    pub fn len(&self) -> usize 
 len			    fn len(&self) -> usize 
 level_src			    fn level_src(&self, lint: &'static Lint) -> Option<LevelSource> 
 level_stack			    fn level_stack(&mut self) -> &mut Vec<(LintId, LevelSource)> 
 level_stack			    fn level_stack(&mut self) -> &mut Vec<(LintId, LevelSource)>;
 liberate_late_bound_regions			    pub fn liberate_late_bound_regions<T>(self,
+lifetime_display			                    fn lifetime_display(lifetime: &Region) -> String 
 lifetimes			    pub fn lifetimes(&self) -> HirVec<&Lifetime> 
 lift			    pub fn lift<T: ?Sized + Lift<'tcx>>(self, value: &T) -> Option<T::Lifted> 
 lift_to_global			    pub fn lift_to_global<T: ?Sized + Lift<'gcx>>(self, value: &T) -> Option<T::Lifted> 
@@ -2927,8 +3167,10 @@ lift_to_tcx			    fn lift_to_tcx<'b, 'gcx>(&self, tcx: TyCtxt<'b, 'gcx, 'tcx>)
 lift_to_tcx			    fn lift_to_tcx<'a, 'gcx>(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Option<Self::Lifted> 
 lift_to_tcx			    fn lift_to_tcx<'b, 'gcx>(&self, tcx: TyCtxt<'b, 'gcx, 'tcx>) -> Option<Self::Lifted> 
 lift_to_tcx			    fn lift_to_tcx<'b, 'gcx>(&self, tcx: TyCtxt<'b, 'gcx, 'tcx>)
+linear			    pub fn linear(&self) -> bool { self.flags.contains(ReprFlags::IS_LINEAR) }
 link_name			pub fn link_name(attrs: &[ast::Attribute]) -> Option<Symbol> 
 link_or_copy			pub fn link_or_copy<P: AsRef<Path>, Q: AsRef<Path>>(p: P, q: Q) -> io::Result<LinkOrCopy> 
+linker_flavor			    pub fn linker_flavor(&self) -> LinkerFlavor 
 lint			pub mod lint;
 lint			    fn lint(&self, lint: &'static Lint, msg: &str) 
 lints			    fn lints(&self) -> &LintStore 
@@ -2969,7 +3211,7 @@ lower_arm			    fn lower_arm(&mut self, arm: &Arm) -> hir::Arm
 lower_attrs			    fn lower_attrs(&mut self, attrs: &Vec<Attribute>) -> hir::HirVec<Attribute> 
 lower_binding_mode			    fn lower_binding_mode(&mut self, b: &BindingMode) -> hir::BindingMode 
 lower_binop			    fn lower_binop(&mut self, b: BinOp) -> hir::BinOp 
-lower_block			    fn lower_block(&mut self, b: &Block) -> P<hir::Block> 
+lower_block			    fn lower_block(&mut self, b: &Block, targeted_by_break: bool) -> P<hir::Block> 
 lower_block_check_mode			    fn lower_block_check_mode(&mut self, b: &BlockCheckMode) -> hir::BlockCheckMode 
 lower_bounds			    fn lower_bounds(&mut self, bounds: &[TyParamBound]) -> hir::TyParamBounds 
 lower_capture_clause			    fn lower_capture_clause(&mut self, c: CaptureBy) -> hir::CaptureClause 
@@ -2977,7 +3219,6 @@ lower_constness			    fn lower_constness(&mut self, c: Spanned<Constness>) -> hi
 lower_crate			    fn lower_crate(mut self, c: &Crate) -> hir::Crate 
 lower_crate			pub fn lower_crate(sess: &Session,
 lower_defaultness			    fn lower_defaultness(&mut self, d: Defaultness, has_value: bool) -> hir::Defaultness 
-lower_destination			    fn lower_destination(&mut self, destination: Option<(NodeId, Spanned<Ident>)>)
 lower_expr			    fn lower_expr(&mut self, e: &Expr) -> hir::Expr 
 lower_field			    fn lower_field(&mut self, f: &Field) -> hir::Field 
 lower_fn_args_to_names			    fn lower_fn_args_to_names(&mut self, decl: &FnDecl)
@@ -2985,6 +3226,7 @@ lower_fn_decl			    fn lower_fn_decl(&mut self, decl: &FnDecl) -> P<hir::FnDecl>
 lower_foreign_item			    fn lower_foreign_item(&mut self, i: &ForeignItem) -> hir::ForeignItem 
 lower_foreign_mod			    fn lower_foreign_mod(&mut self, fm: &ForeignMod) -> hir::ForeignMod 
 lower_generics			    fn lower_generics(&mut self, g: &Generics) -> hir::Generics 
+lower_global_asm			    fn lower_global_asm(&mut self, ga: &GlobalAsm) -> P<hir::GlobalAsm> 
 lower_impl_item			    fn lower_impl_item(&mut self, i: &ImplItem) -> hir::ImplItem 
 lower_impl_item_ref			    fn lower_impl_item_ref(&mut self, i: &ImplItem) -> hir::ImplItemRef 
 lower_impl_polarity			    fn lower_impl_polarity(&mut self, i: ImplPolarity) -> hir::ImplPolarity 
@@ -2996,10 +3238,14 @@ lower_lifetime_def			    fn lower_lifetime_def(&mut self, l: &LifetimeDef) -> hi
 lower_lifetime_defs			    fn lower_lifetime_defs(&mut self, lts: &Vec<LifetimeDef>) -> hir::HirVec<hir::LifetimeDef> 
 lower_lifetimes			    fn lower_lifetimes(&mut self, lts: &Vec<Lifetime>) -> hir::HirVec<hir::Lifetime> 
 lower_local			    fn lower_local(&mut self, l: &Local) -> P<hir::Local> 
+lower_loop_destination			    fn lower_loop_destination(&mut self, destination: Option<(NodeId, Spanned<Ident>)>)
 lower_method_sig			    fn lower_method_sig(&mut self, sig: &MethodSig) -> hir::MethodSig 
 lower_mod			    fn lower_mod(&mut self, m: &Mod) -> hir::Mod 
 lower_mt			    fn lower_mt(&mut self, mt: &MutTy) -> hir::MutTy 
 lower_mutability			    fn lower_mutability(&mut self, m: Mutability) -> hir::Mutability 
+lower_node_id			    fn lower_node_id(&mut self, ast_node_id: NodeId) -> NodeId 
+lower_node_id_generic			    fn lower_node_id_generic<F>(&mut self,
+lower_node_id_with_owner			    fn lower_node_id_with_owner(&mut self,
 lower_opt_sp_ident			    fn lower_opt_sp_ident(&mut self, o_id: Option<Spanned<Ident>>) -> Option<Spanned<Name>> 
 lower_parenthesized_parameter_data			    fn lower_parenthesized_parameter_data(&mut self,
 lower_pat			    fn lower_pat(&mut self, p: &Pat) -> P<hir::Pat> 
@@ -3025,7 +3271,7 @@ lower_unsafe_source			    fn lower_unsafe_source(&mut self, u: UnsafeSource) -> 
 lower_unsafety			    fn lower_unsafety(&mut self, u: Unsafety) -> hir::Unsafety 
 lower_variant			    fn lower_variant(&mut self, v: &Variant) -> hir::Variant 
 lower_variant_data			    fn lower_variant_data(&mut self, vdata: &VariantData) -> hir::VariantData 
-lower_visibility			    fn lower_visibility(&mut self, v: &Visibility) -> hir::Visibility 
+lower_visibility			    fn lower_visibility(&mut self,
 lower_where_clause			    fn lower_where_clause(&mut self, wc: &WhereClause) -> hir::WhereClause 
 lower_where_predicate			    fn lower_where_predicate(&mut self, pred: &WherePredicate) -> hir::WherePredicate 
 lowering			pub mod lowering;
@@ -3057,8 +3303,8 @@ make_target_lib_path			fn make_target_lib_path(sysroot: &Path,
 map			pub mod map;
 map			    pub fn map<M, F>(self, f: F) -> Vtable<'tcx, M> where F: FnMut(N) -> M 
 map			    pub fn map<U, F: FnOnce(T) -> U>(self, f: F) -> NodeItem<U> 
-map_bound			    pub fn map_bound<F,U>(self, f: F) -> Binder<U>
-map_bound_ref			    pub fn map_bound_ref<F,U>(&self, f: F) -> Binder<U>
+map_bound			    pub fn map_bound<F, U>(self, f: F) -> Binder<U>
+map_bound_ref			    pub fn map_bound_ref<F, U>(&self, f: F) -> Binder<U>
 map_crate			pub fn map_crate<'hir>(forest: &'hir mut Forest,
 map_crate			    fn map_crate(&self) -> CrateNum 
 map_crate			    fn map_crate(&self) -> CrateNum;
@@ -3080,8 +3326,6 @@ matches_names			    fn matches_names(&self, parent_of_n: NodeId, name: Name) -> 
 max			    pub fn max() -> IdRange 
 max			    pub fn max(self, other: Align) -> Align 
 may_apply			    fn may_apply(&self) -> bool 
-may_apply			    pub fn may_apply(&self) -> bool 
-maybe_get_item_body			    fn maybe_get_item_body<'a, 'tcx>(&self, tcx: TyCtxt<'a, 'tcx, 'tcx>, def: DefId)
 maybe_item_mir			    pub fn maybe_item_mir(self, did: DefId) -> Option<Ref<'gcx, Mir<'gcx>>> 
 maybe_print_constraints_for			pub fn maybe_print_constraints_for<'a, 'gcx, 'tcx>(
 maybe_print_trailing_comment			    pub fn maybe_print_trailing_comment(&mut self,
@@ -3103,6 +3347,7 @@ method_might_be_inlined			fn method_might_be_inlined<'a, 'tcx>(tcx: TyCtxt<'a, '
 middle			pub mod middle 
 min			    pub fn min(self, other: Align) -> Align 
 mir			pub mod mir;
+mir_shim_dep_node			fn mir_shim_dep_node(instance: ty::InstanceDef) -> DepNode<DefId> 
 misc			    pub fn misc(span: Span, body_id: ast::NodeId) -> ObligationCause<'tcx> 
 misc			    pub fn misc(span: Span, body_id: ast::NodeId, trait_ref: O) -> Obligation<'tcx, O> 
 missing_lang_items			    fn missing_lang_items(&self, cnum: CrateNum) -> Vec<lang_items::LangItem>
@@ -3150,6 +3395,7 @@ mk_tup			    pub fn mk_tup<I: InternAs<[Ty<'tcx>], Ty<'tcx>>>(self, iter: I,
 mk_ty			    pub fn mk_ty(self, st: TypeVariants<'tcx>) -> Ty<'tcx> 
 mk_type_list			    pub fn mk_type_list<I: InternAs<[Ty<'tcx>],
 mk_var			    pub fn mk_var(self, v: TyVid) -> Ty<'tcx> 
+mono			    pub fn mono(tcx: ty::TyCtxt<'a, 'tcx, 'b>, def_id: DefId) -> Instance<'tcx> 
 moves_by_default			    pub fn moves_by_default(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
 multi			    pub fn multi(a: S, b: S, c: S, d: S) -> R 
 multi_s			    pub fn multi_s(a: S, b: S, c: S, d: S) -> R 
@@ -3171,8 +3417,10 @@ native_libraries			    fn native_libraries(&self, cnum: CrateNum) -> Vec<NativeL
 nbsp			    pub fn nbsp(&mut self) -> io::Result<()> 
 nearest_common_ancestor			    pub fn nearest_common_ancestor(&self,
 necessary_variants			    pub fn necessary_variants(&self) -> Vec<DefId> 
-need_type_info			    fn need_type_info(&self, obligation: &PredicateObligation<'tcx>, ty: Ty<'tcx>) 
-needs_drop			    pub fn needs_drop(&self, _: TyCtxt) -> bool 
+need_type_info			    pub fn need_type_info(&self, body_id: hir::BodyId, span: Span, ty: Ty<'tcx>) 
+needs_drop			    pub fn needs_drop(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
+needs_drop_inner			    fn needs_drop_inner(&'tcx self,
+needs_drop_uncached			    fn needs_drop_uncached(&'tcx self,
 needs_infer			    fn needs_infer(&self) -> bool 
 needs_infer			    pub fn needs_infer(&self) -> bool 
 needs_parentheses			fn needs_parentheses(expr: &hir::Expr) -> bool 
@@ -3186,6 +3434,7 @@ nested_obligations_mut			    fn nested_obligations_mut(&mut self) -> &mut Vec<N>
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'hir> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v>;
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'hir> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self)
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> hir_visit::NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			            fn nested_visit_map<'this>(&'this mut self) -> intravisit::NestedVisitorMap<'this, 'v> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
@@ -3200,7 +3449,7 @@ nested_visit_map			        fn nested_visit_map<'this>(&'this mut self) -> Nested
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'v> 
-nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'a> 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'gcx> 
 new			    pub fn new<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 new			    pub fn new(test: &str) -> Result<EdgeFilter, Box<Error>> 
 new			    pub fn new(text: &str) -> Self 
@@ -3223,14 +3472,16 @@ new			    fn new(d: &'a FnDecl, b: ast::BodyId, id: NodeId, s: Span, attrs: &'a 
 new			    pub fn new(definitions: &'a mut Definitions) -> Self 
 new			    pub fn new() -> Definitions 
 new			    pub fn new(krate: Crate, dep_graph: &DepGraph) -> Forest 
+new			    fn new(idx: usize) -> Self 
 new			    pub fn new(cm: &'a CodeMap,
 new			    pub fn new(hash: u64) -> Svh 
-new			    pub fn new(fields: &'combine mut CombineFields<'infcx, 'gcx, 'tcx>, a_is_expected: bool)
+new			    pub fn new<'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> CachingCodemapView<'tcx> 
+new			    pub fn new(tcx: ty::TyCtxt<'a, 'tcx, 'tcx>) -> Self 
 new			    pub fn new(fields: &'combine mut CombineFields<'infcx, 'gcx, 'tcx>, a_is_expected: bool)
 new			    pub fn new(infcx: &'a InferCtxt<'a, 'gcx, 'tcx>)
 new			    pub fn new(fields: &'combine mut CombineFields<'infcx, 'gcx, 'tcx>, a_is_expected: bool)
 new			    pub fn new(fields: &'combine mut CombineFields<'infcx, 'gcx, 'tcx>, a_is_expected: bool)
-new			    fn new(a_is_expected: bool, a: T, b: T) -> Self 
+new			    pub fn new(a_is_expected: bool, a: T, b: T) -> Self 
 new			    fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 new			    fn new(directions: TaintDirections,
 new			    pub fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> RegionVarBindings<'a, 'gcx, 'tcx> 
@@ -3276,6 +3527,8 @@ new			    pub fn new(infcx: &'cx InferCtxt<'cx, 'gcx, 'tcx>) -> SelectionContext
 new			    pub fn new() -> Self 
 new			    fn new() -> Children 
 new			    pub fn new() -> Graph 
+new			    fn new(tcx: TyCtxt<'a, 'gcx, 'gcx>) -> Self 
+new			    pub fn new(graph: DepGraph) -> Self 
 new			    fn new(base: I) -> FilterToTraits<I> 
 new			    fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> PredicateSet<'a, 'gcx, 'tcx> 
 new			    pub fn new(tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Match<'a, 'gcx, 'tcx> 
@@ -3286,9 +3539,10 @@ new			    fn new() -> FlagComputation
 new			    fn new(just_constrained: bool) -> Self 
 new			    fn new<F>(tcx: TyCtxt<'a, 'gcx, 'tcx>, fld_r: &'a mut F)
 new			    pub fn new<F>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
+new			    pub fn new(def_id: DefId, substs: &'tcx Substs<'tcx>)
 new			    fn new(root_mode: RootMode) -> LocalPathBuffer 
 new			    fn new(dl: &TargetDataLayout, fields: &Vec<&'a Layout>,
-new			    pub fn new(dl: &TargetDataLayout, packed: bool) -> Union 
+new			    fn new(dl: &TargetDataLayout, packed: bool) -> Union 
 new			            pub fn new(dep_graph: DepGraph,
 new			    fn new(tcx: TyCtxt,
 new			    pub fn new(tcx: TyCtxt, did: DefId) -> ReprOptions 
@@ -3301,11 +3555,12 @@ new			    pub fn new(ty: Ty<'tcx>) -> TypeWalker<'tcx>
 new_bound			    pub fn new_bound(&self, debruijn: ty::DebruijnIndex) -> &'tcx Region 
 new_code_extent			    fn new_code_extent(&mut self, child_scope: CodeExtentData) -> CodeExtent 
 new_from_input			    pub fn new_from_input(cm: &'a CodeMap,
+new_inner_visitor			    fn new_inner_visitor(&self,
 new_node_extent			    fn new_node_extent(&mut self, child_scope: ast::NodeId) -> CodeExtent 
 new_node_extent_with_dtor			    fn new_node_extent_with_dtor(&mut self, id: ast::NodeId) -> CodeExtent 
 new_region_var			    pub fn new_region_var(&self, origin: RegionVariableOrigin) -> RegionVid 
-new_return_pointer			    pub fn new_return_pointer(return_ty: Ty) -> LocalDecl 
-new_temp			    pub fn new_temp(ty: Ty<'tcx>) -> Self 
+new_return_pointer			    pub fn new_return_pointer(return_ty: Ty, span: Span) -> LocalDecl 
+new_temp			    pub fn new_temp(ty: Ty<'tcx>, span: Span) -> Self 
 new_var			    pub fn new_var(&mut self,
 next			    fn next(&mut self) -> Option<NodeId> 
 next			    fn next(&mut self) -> Option<(usize, <I as Iterator>::Item)> 
@@ -3319,7 +3574,7 @@ next			    fn next(&mut self) -> Option<ty::Predicate<'tcx>>
 next			    fn next(&mut self) -> Option<Ty<'tcx>> 
 next_diverging_ty_var			    pub fn next_diverging_ty_var(&self, origin: TypeVariableOrigin) -> Ty<'tcx> 
 next_float_var_id			    pub fn next_float_var_id(&self) -> FloatVid 
-next_id			    fn next_id(&self) -> NodeId 
+next_id			    fn next_id(&mut self) -> NodeId 
 next_int_var_id			    pub fn next_int_var_id(&self) -> IntVid 
 next_node_id			    pub fn next_node_id(&self) -> NodeId 
 next_region_var			    pub fn next_region_var(&self, origin: RegionVariableOrigin)
@@ -3341,10 +3596,12 @@ node_id_to_type_opt			    pub fn node_id_to_type_opt(&self, id: NodeId) -> Optio
 node_is_reachable			    pub fn node_is_reachable(&self, id: ast::NodeId) -> bool 
 node_label			    fn node_label(&'a self, &(i, n): &Node<'a>) -> dot::LabelText<'a> 
 node_label			    fn node_label(&self, n: &Node) -> dot::LabelText 
+node_matches_type			    fn node_matches_type(&mut self, node_id: &'gcx NodeId) -> bool 
 node_method_id			    pub fn node_method_id(&self, method_call: ty::MethodCall)
 node_method_ty			    pub fn node_method_ty(&self, method_call: ty::MethodCall)
 node_path_str			    pub fn node_path_str(self, id: ast::NodeId) -> String 
 node_scope_region			    pub fn node_scope_region(self, id: NodeId) -> &'tcx Region 
+node_to_hir_id			    pub fn node_to_hir_id(&self, node_id: ast::NodeId) -> hir::HirId 
 node_to_pretty_string			    pub fn node_to_pretty_string(&self, id: NodeId) -> String 
 node_to_string			    pub fn node_to_string(&self, id: NodeId) -> String 
 node_to_user_string			    pub fn node_to_user_string(&self, id: NodeId) -> String 
@@ -3368,15 +3625,17 @@ normalize			pub fn normalize<'a, 'b, 'gcx, 'tcx, T>(selcx: &'a mut SelectionCont
 normalize			    fn normalize(&mut self) -> Vec<traits::PredicateObligation<'tcx>> 
 normalize_and_test_predicates			pub fn normalize_and_test_predicates<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 normalize_associated_type			    pub fn normalize_associated_type<T>(self, value: &T) -> T
-normalize_associated_type			fn normalize_associated_type<'a, 'gcx, 'tcx>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
 normalize_associated_type_in_env			    pub fn normalize_associated_type_in_env<T>(
 normalize_param_env_or_error			pub fn normalize_param_env_or_error<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 normalize_projection_type			    pub fn normalize_projection_type(&mut self,
 normalize_projection_type			pub fn normalize_projection_type<'a, 'b, 'gcx, 'tcx>(
+normalize_projections			    fn normalize_projections(self, ty: Ty<'gcx>) -> Ty<'gcx> 
+normalize_projections			    fn normalize_projections(self, ty: Ty<'tcx>) -> Ty<'tcx>;
 normalize_projections_in			    fn normalize_projections_in<T>(&self, value: &T) -> T::Lifted
 normalize_to_error			fn normalize_to_error<'a, 'gcx, 'tcx>(selcx: &mut SelectionContext<'a, 'gcx, 'tcx>,
 normalize_with_depth			pub fn normalize_with_depth<'a, 'b, 'gcx, 'tcx, T>(
 note			mod note;
+note			    pub fn note(&self,
 note_and_explain_region			    pub fn note_and_explain_region(self,
 note_and_explain_type_err			    pub fn note_and_explain_type_err(self,
 note_error_origin			    fn note_error_origin(&self,
@@ -3385,7 +3644,6 @@ note_obligation_cause			    fn note_obligation_cause<T>(&self,
 note_obligation_cause_code			    fn note_obligation_cause_code<T>(&self,
 note_type_err			    pub fn note_type_err(&self,
 note_without_error			    pub fn note_without_error(&self, msg: &str) 
-num_local_def_ids			    pub fn num_local_def_ids(&self) -> usize 
 num_nodes			    fn num_nodes(&self) -> usize { self.basic_blocks.len() }
 num_vars			    pub fn num_vars(&self) -> u32 
 num_vars			    pub fn num_vars(&self) -> usize 
@@ -3404,16 +3662,13 @@ old_and_new_temporary_scope			    pub fn old_and_new_temporary_scope(&self, expr
 on_mir_pass			    fn on_mir_pass<'a>(
 on_unimplemented_note			    fn on_unimplemented_note(&self,
 opportunistic_resolve_var			    pub fn opportunistic_resolve_var(&self, rid: RegionVid) -> &'tcx ty::Region 
-opposite			    fn opposite(self) -> RelationDir 
-ops::BitAnd for TypeContents			impl ops::BitAnd for TypeContents 
-ops::BitOr for TypeContents			impl ops::BitOr for TypeContents 
-ops::Sub for TypeContents			impl ops::Sub for TypeContents 
 opt			    pub fn opt(a: S, b: S, c: S, d: S) -> R 
 opt			mod opt 
 opt_def_index			    pub fn opt_def_index(&self, node: ast::NodeId) -> Option<DefIndex> 
 opt_destruction_extent			    pub fn opt_destruction_extent(&self, n: ast::NodeId) -> Option<CodeExtent> 
 opt_encl_scope			    pub fn opt_encl_scope(&self, id: CodeExtent) -> Option<CodeExtent> 
 opt_expr			    fn opt_expr(&mut self,
+opt_id			    pub fn opt_id(self) -> Option<NodeId> 
 opt_local_def_id			    pub fn opt_local_def_id(&self, node: ast::NodeId) -> Option<DefId> 
 opt_local_def_id			    pub fn opt_local_def_id(&self, node: NodeId) -> Option<DefId> 
 opt_normalize_projection_type			fn opt_normalize_projection_type<'a, 'b, 'gcx, 'tcx>(
@@ -3424,6 +3679,7 @@ opt_ubnr			    pub fn opt_ubnr(a: S, b: S, c: S, d: S) -> R
 optgroups			    fn optgroups() -> Vec<OptGroup> 
 option			    pub fn option(&self) -> Option<PathBuf> 
 or			    pub fn or(self, vb: VerifyBound<'tcx>) -> VerifyBound<'tcx> 
+origin			    pub fn origin(&self, vid: ty::TyVid) -> TypeVariableOrigin 
 original_crate_name			    fn original_crate_name(&self, cnum: CrateNum) -> Symbol 
 original_crate_name			    fn original_crate_name(&self, cnum: CrateNum) -> Symbol;
 original_crate_name			    pub fn original_crate_name(self, cnum: CrateNum) -> Symbol 
@@ -3436,11 +3692,14 @@ outlives			pub mod outlives;
 outlives_components			    pub fn outlives_components(&self, ty0: Ty<'tcx>)
 output			    pub fn output(&self) -> Ty<'tcx> 
 output			    pub fn output(&self) -> ty::Binder<Ty<'tcx>> 
+over_align			    pub fn over_align(&self) -> Option<u32> 
+over_align			    pub fn over_align(&self, dl: &TargetDataLayout) -> Option<u32> 
 overflow_checks			    pub fn overflow_checks(&self) -> bool 
 overlap			fn overlap<'cx, 'gcx, 'tcx>(selcx: &mut SelectionContext<'cx, 'gcx, 'tcx>,
 overlapping_impls			pub fn overlapping_impls<'cx, 'gcx, 'tcx>(infcx: &InferCtxt<'cx, 'gcx, 'tcx>,
 overloaded_method_return_ty			    fn overloaded_method_return_ty(&self,
 own_count			    pub fn own_count(&self) -> usize 
+packed			    pub fn packed(&self) -> bool { self.flags.contains(ReprFlags::IS_PACKED) }
 panic_strategy			    fn panic_strategy(&self, cnum: CrateNum) -> PanicStrategy 
 panic_strategy			    fn panic_strategy(&self, cnum: CrateNum) -> PanicStrategy;
 panic_strategy			    pub fn panic_strategy(&self) -> PanicStrategy 
@@ -3457,11 +3716,13 @@ parse			    pub fn parse(sess: &Session) -> TargetDataLayout
 parse_bool			        fn parse_bool(slot: &mut bool, v: Option<&str>) -> bool 
 parse_cfgspecs			pub fn parse_cfgspecs(cfgspecs: Vec<String> ) -> ast::CrateConfig 
 parse_crate_types_from_list			pub fn parse_crate_types_from_list(list_list: Vec<String>)
+parse_linker_flavor			        fn parse_linker_flavor(slote: &mut Option<LinkerFlavor>, v: Option<&str>) -> bool 
 parse_list			        fn parse_list(slot: &mut Vec<String>, v: Option<&str>)
 parse_opt_bool			        fn parse_opt_bool(slot: &mut Option<bool>, v: Option<&str>) -> bool 
 parse_opt_list			        fn parse_opt_list(slot: &mut Option<Vec<String>>, v: Option<&str>)
 parse_opt_string			        fn parse_opt_string(slot: &mut Option<String>, v: Option<&str>) -> bool 
 parse_opt_uint			        fn parse_opt_uint(slot: &mut Option<usize>, v: Option<&str>) -> bool 
+parse_optimization_fuel			        fn parse_optimization_fuel(slot: &mut Option<(String, u64)>, v: Option<&str>) -> bool 
 parse_panic_strategy			        fn parse_panic_strategy(slot: &mut Option<PanicStrategy>, v: Option<&str>) -> bool 
 parse_passes			        fn parse_passes(slot: &mut Passes, v: Option<&str>) -> bool 
 parse_sanitizer			        fn parse_sanitizer(slote: &mut Option<Sanitizer>, v: Option<&str>) -> bool 
@@ -3496,7 +3757,6 @@ pop_skolemized			    pub fn pop_skolemized(&self,
 pop_skolemized			    pub fn pop_skolemized(&self,
 pop_task			    pub fn pop_task(&mut self, key: DepNode<D>) 
 populate_implementations_for_trait_if_necessary			    pub fn populate_implementations_for_trait_if_necessary(self, trait_id: DefId) 
-populate_inherent_implementations_for_type_if_necessary			    pub fn populate_inherent_implementations_for_type_if_necessary(self,
 positional_element_ty			    pub fn positional_element_ty(self,
 post			    fn post(&self, _state: &mut State, _node: AnnNode) -> io::Result<()> 
 postorder			pub fn postorder<'a, 'tcx>(mir: &'a Mir<'tcx>) -> Postorder<'a, 'tcx> 
@@ -3521,6 +3781,7 @@ pref			    pub fn pref(self) -> u64
 preorder			pub fn preorder<'a, 'tcx>(mir: &'a Mir<'tcx>) -> Preorder<'a, 'tcx> 
 previous_work_product			    pub fn previous_work_product(&self, v: &Arc<WorkProductId>) -> Option<WorkProduct> 
 previous_work_products			    pub fn previous_work_products(&self) -> Ref<FxHashMap<Arc<WorkProductId>, WorkProduct>> 
+primitive_align			    pub fn primitive_align(&self, dl: &TargetDataLayout) -> Align 
 principal			    pub fn principal(&self) -> Option<ExistentialTraitRef<'tcx>> 
 principal			    pub fn principal(&self) -> Option<PolyExistentialTraitRef<'tcx>> 
 print			impl<'a> print::State<'a> 
@@ -3634,13 +3895,16 @@ propagate_through_loop			    fn propagate_through_loop(&mut self,
 propagate_through_lvalue_components			    fn propagate_through_lvalue_components(&mut self,
 propagate_through_opt_expr			    fn propagate_through_opt_expr(&mut self,
 propagate_through_stmt			    fn propagate_through_stmt(&mut self, stmt: &hir::Stmt, succ: LiveNode)
+provide			pub fn provide(providers: &mut Providers) 
+provide			pub fn provide(providers: &mut ty::maps::Providers) 
+provide_extern			pub fn provide_extern(providers: &mut ty::maps::Providers) 
 provided_trait_methods			    pub fn provided_trait_methods(self, id: DefId) -> Vec<AssociatedItem> 
 ptr_sigil			pub fn ptr_sigil(ptr: PointerKind) -> &'static str 
 ptr_sized_integer			    pub fn ptr_sized_integer(&self) -> Integer 
-push			    pub fn push<E: Clone>(&mut self, k: M::Key, elem: E)
 push			    fn push(&mut self, predicate: &ty::Predicate<'tcx>) 
 push			    fn push(&mut self, text: &str) 
 push			    fn push(&mut self, text: &str);
+push_comma			    fn push_comma(&self,
 push_hook			    pub fn push_hook(&mut self, hook: Box<for<'b> MirPassHook<'b>>) 
 push_ignore			    pub fn push_ignore(&mut self) 
 push_impl_path			    fn push_impl_path<T>(self,
@@ -3665,8 +3929,10 @@ query			    pub fn query(&self) -> DepGraphQuery<DefId>
 raii			mod raii;
 raw_emit_lint			pub fn raw_emit_lint<S: Into<MultiSpan>>(sess: &Session,
 raw_struct_lint			pub fn raw_struct_lint<'a, S>(sess: &'a Session,
+reachability_dep_node			fn reachability_dep_node(_: CrateNum) -> DepNode<DefId> 
 reachable			    pub mod reachable;
 reachable_nodes			    fn reachable_nodes(&self, node: &DepNode<D>, direction: Direction) -> Vec<&DepNode<D>> 
+reachable_set			fn reachable_set<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, crate_num: CrateNum) -> Rc<NodeSet> 
 read			    fn read(&self, k: &M::Key) 
 read			    pub fn read(&mut self, v: DepNode<D>) 
 read			    pub fn read(&self, v: DepNode<DefId>) 
@@ -3700,7 +3966,7 @@ region_outlives_predicate			    pub fn region_outlives_predicate(&self,
 region_param			    pub fn region_param(&self, param: &EarlyBoundRegion) -> &RegionParameterDef 
 region_var_for_def			    pub fn region_var_for_def(&self,
 region_vars_confined_to_snapshot			    fn region_vars_confined_to_snapshot(&self,
-regions			    fn regions(&mut self, a: &'tcx ty::Region, _: &'tcx ty::Region)
+regions			    fn regions(&mut self, r: &'tcx ty::Region, r2: &'tcx ty::Region)
 regions			    fn regions(&mut self, a: &'tcx ty::Region, b: &'tcx ty::Region)
 regions			    fn regions(&mut self, a: &'tcx ty::Region, b: &'tcx ty::Region)
 regions			    fn regions(&mut self, a: &'tcx ty::Region, b: &'tcx ty::Region)
@@ -3716,6 +3982,7 @@ register_future_incompatible			    pub fn register_future_incompatible(&mut self
 register_group			    pub fn register_group(&mut self, sess: Option<&Session>,
 register_late_pass			    pub fn register_late_pass(&mut self,
 register_predicate_obligation			    pub fn register_predicate_obligation(&mut self,
+register_predicate_obligations			    pub fn register_predicate_obligations(&mut self,
 register_region_obligation			    pub fn register_region_obligation(&mut self,
 register_region_obligation			fn register_region_obligation<'tcx>(t_a: Ty<'tcx>,
 register_removed			    pub fn register_removed(&mut self, name: &str, reason: &str) 
@@ -3730,10 +3997,11 @@ relate_bound			    fn relate_bound(&mut self, v: Ty<'tcx>, a: Ty<'tcx>, b: Ty<'t
 relate_free_regions			    fn relate_free_regions(&mut self, sub: FreeRegion, sup: FreeRegion) 
 relate_free_regions_from_implied_bounds			    pub fn relate_free_regions_from_implied_bounds<'tcx>(&mut self,
 relate_free_regions_from_predicates			    pub fn relate_free_regions_from_predicates(&mut self,
-relate_item_substs			fn relate_item_substs<'a, 'gcx, 'tcx, R>(relation: &mut R,
+relate_item_substs			    fn relate_item_substs(&mut self,
+relate_item_substs			    fn relate_item_substs(&mut self,
+relate_item_substs			    fn relate_item_substs(&mut self,
 relate_substs			pub fn relate_substs<'a, 'gcx, 'tcx, R>(relation: &mut R,
 relate_to_static			    fn relate_to_static(&mut self, sup: FreeRegion) 
-relate_vars			    pub fn relate_vars(&mut self, a: ty::TyVid, dir: RelationDir, b: ty::TyVid) 
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
@@ -3741,8 +4009,6 @@ relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
 relate_with_variance			    fn relate_with_variance<T: Relate<'tcx>>(&mut self,
-relations			    fn relations<'a>(&'a mut self, a: ty::TyVid) -> &'a mut Vec<Relation> 
-relations			fn relations<'a>(v: &'a mut TypeVariableData) -> &'a mut Vec<Relation> 
 relative_target_lib_path			pub fn relative_target_lib_path(sysroot: &Path, target_triple: &str) -> PathBuf 
 relevant_for_never			    pub fn relevant_for_never<'tcx>(&self) -> bool 
 rematch_impl			    fn rematch_impl(&mut self,
@@ -3751,6 +4017,7 @@ replace_if_possible			    pub fn replace_if_possible(&mut self, t: Ty<'tcx>) -> 
 replace_late_bound_regions			    pub fn replace_late_bound_regions<T,F>(self,
 replace_late_bound_regions_with_fresh_var			    pub fn replace_late_bound_regions_with_fresh_var<T>(
 replace_newline_with_backslash_l			fn replace_newline_with_backslash_l(s: String) -> String 
+report			    pub fn report(&self,
 report_and_explain_type_error			    pub fn report_and_explain_type_error(&self,
 report_conflicting_default_types			    pub fn report_conflicting_default_types(&self,
 report_cycle			    pub fn report_cycle(self, CycleError { span, cycle }: CycleError) 
@@ -3788,6 +4055,7 @@ resolve_block			fn resolve_block<'a, 'tcx>(visitor: &mut RegionResolutionVisitor
 resolve_crate			pub fn resolve_crate(sess: &Session, map: &hir_map::Map) -> RegionMaps 
 resolve_elided_lifetimes			    fn resolve_elided_lifetimes(&mut self, lifetime_refs: &[hir::Lifetime]) 
 resolve_expr			fn resolve_expr<'a, 'tcx>(visitor: &mut RegionResolutionVisitor<'tcx, 'a>, expr: &'tcx hir::Expr) 
+resolve_field			    fn resolve_field(&self, field_name: FieldName) -> Option<(&'tcx ty::AdtDef, &'tcx ty::FieldDef)>
 resolve_fn			fn resolve_fn<'a, 'tcx>(visitor: &mut RegionResolutionVisitor<'tcx, 'a>,
 resolve_hir_path			    fn resolve_hir_path(&mut self, path: &mut hir::Path, is_value: bool);
 resolve_item_like			fn resolve_item_like<'a, 'tcx, F>(visitor: &mut RegionResolutionVisitor<'tcx, 'a>,
@@ -3808,7 +4076,7 @@ retrace_path			    pub fn retrace_path(&self,
 retrace_path			    fn retrace_path(&self,
 retrace_path			    pub fn retrace_path(self,
 rev_lookup			        fn rev_lookup<'a, 'gcx, 'tcx>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
-reverse			    fn reverse(values: &mut Vec<TypeVariableData<'tcx>>, action: UndoEntry<'tcx>) 
+reverse			    fn reverse(values: &mut Vec<TypeVariableData<'tcx>>, action: Instantiate<'tcx>) 
 reverse			    fn reverse(_: &mut Vec<Self::Value>, _: Self::Undo) {}
 reverse_postorder			pub fn reverse_postorder<'a, 'tcx>(mir: &'a Mir<'tcx>) -> ReversePostorder<'a, 'tcx> 
 rollback_skolemized			    pub fn rollback_skolemized(&mut self, snapshot: &ProjectionCacheSnapshot) 
@@ -3820,6 +4088,7 @@ rollback_undo_entry			    pub fn rollback_undo_entry(&self, undo_entry: UndoLogE
 root			    pub fn root(krate: &'hir Crate) -> NodeCollector<'hir> 
 root_mode			    fn root_mode(&self) -> &RootMode 
 root_mode			    fn root_mode(&self) -> &RootMode;
+root_parent_stable_hash			    fn root_parent_stable_hash(crate_name: &str, crate_disambiguator: &str) -> u64 
 root_var			    pub fn root_var(&mut self, vid: ty::TyVid) -> ty::TyVid 
 run_pass			    fn run_pass<'a>(
 run_pass			    fn run_pass<'a>(&mut self, tcx: TyCtxt<'a, 'tcx, 'tcx>,
@@ -3834,7 +4103,7 @@ same_origin			    pub fn same_origin(&self, other: &DeprecationEntry) -> bool
 same_size			    pub fn same_size(self, other: SizeSkeleton) -> bool 
 same_struct_or_enum			        fn same_struct_or_enum<'tcx>(ty: Ty<'tcx>, def: &'tcx ty::AdtDef) -> bool 
 same_type			        fn same_type<'tcx>(a: Ty<'tcx>, b: Ty<'tcx>) -> bool 
-save_and_restore_obligations_in_snapshot_flag			    pub fn save_and_restore_obligations_in_snapshot_flag<F, R>(&self, func: F) -> R
+save_and_restore_in_snapshot_flag			    pub fn save_and_restore_in_snapshot_flag<F, R>(&self, func: F) -> R
 scopes_intersect			    pub fn scopes_intersect(&self, scope1: CodeExtent, scope2: CodeExtent)
 search			    pub fn search<F>(&self, mut pick: F)
 search_paths			pub mod search_paths;
@@ -3876,6 +4145,7 @@ shadower_label			fn shadower_label(span: Span) -> Shadower
 shadower_lifetime			fn shadower_lifetime(l: &hir::Lifetime) -> Shadower 
 shallow_resolve			    pub fn shallow_resolve(&self, typ: Ty<'tcx>) -> Ty<'tcx> 
 shift_region			pub fn shift_region(region: ty::Region, amount: u32) -> ty::Region 
+shift_region_ref			pub fn shift_region_ref<'a, 'gcx, 'tcx>(
 shift_region_through_binders			    fn shift_region_through_binders(&self, region: &'tcx ty::Region) -> &'tcx ty::Region 
 shift_regions			pub fn shift_regions<'a, 'gcx, 'tcx, T>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 shift_regions_through_binders			    fn shift_regions_through_binders(&self, ty: Ty<'tcx>) -> Ty<'tcx> 
@@ -3892,16 +4162,17 @@ should_warn_about_item			    fn should_warn_about_item(&mut self, item: &hir::It
 should_warn_about_variant			    fn should_warn_about_variant(&mut self, variant: &hir::Variant_) -> bool 
 signal_block_expr			    fn signal_block_expr(&mut self,
 signal_shadowing_problem			fn signal_shadowing_problem(sess: &Session, name: ast::Name, orig: Original, shadower: Shadower) 
+simd			    pub fn simd(&self) -> bool { self.flags.contains(ReprFlags::IS_SIMD) }
 simd_size			    pub fn simd_size(&self, _cx: TyCtxt) -> usize 
 simd_type			    pub fn simd_type(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx> 
 simple_name			    pub fn simple_name(&self) -> Option<ast::Name> 
 simplify_type			pub fn simplify_type<'a, 'gcx, 'tcx>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 single_codegen_unit			    pub fn single_codegen_unit(&self) -> bool 
 size			    pub fn size(&self) -> Size 
-size			    pub fn size(&self, dl: &TargetDataLayout) -> Size 
-size			    pub fn size(self, dl: &TargetDataLayout) -> Size 
+size			    pub fn size<C: HasDataLayout>(&self, cx: C) -> Size 
+size			    pub fn size<C: HasDataLayout>(self, cx: C) -> Size 
 sized_conditions			    fn sized_conditions(&mut self, obligation: &TraitObligation<'tcx>)
-sized_constraint			    pub fn sized_constraint(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx> 
+sized_constraint			    pub fn sized_constraint(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> &'tcx [Ty<'tcx>] 
 sized_constraint_for_ty			    fn sized_constraint_for_ty(&self,
 skip_binder			    pub fn skip_binder(&self) -> &T 
 skip_current_subtree			    pub fn skip_current_subtree(&mut self) 
@@ -3950,6 +4221,8 @@ stability			    fn stability(&self, def: DefId) -> Option<attr::Stability>;
 stable			    fn stable(g: getopts::OptGroup) -> R { RustcOptGroup::stable(g) }
 stable			    pub fn stable(g: getopts::OptGroup) -> RustcOptGroup 
 stable_hash			    pub fn stable_hash(sub_hashes: BTreeMap<&'static str, &DepTrackingHash>,
+stable_hasher::StableHasherResult for Fingerprint			impl stable_hasher::StableHasherResult for Fingerprint 
+start			    pub fn start(&self) -> usize 
 start_node			    fn start_node(&self) -> Self::Node { START_BLOCK }
 start_snapshot			    fn start_snapshot(&self) -> CombinedSnapshot 
 start_snapshot			    pub fn start_snapshot(&self) -> RegionSnapshot 
@@ -3961,6 +4234,7 @@ str_to_ident			    fn str_to_ident(&self, s: &'static str) -> Name
 straightline			    fn straightline<'b, I: Iterator<Item=&'b hir::Expr>>(&mut self,
 stride			    pub fn stride(&self) -> Size 
 struct_err			    pub fn struct_err<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a>  
+struct_error			    pub fn struct_error(&self,
 struct_fatal			    pub fn struct_fatal<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a>  
 struct_field_names			    fn struct_field_names(&self, def: DefId) -> Vec<ast::Name> { bug!("struct_field_names") }
 struct_field_names			    fn struct_field_names(&self, def: DefId) -> Vec<ast::Name>;
@@ -3981,17 +4255,20 @@ sty			mod sty;
 sub			    pub fn sub<'a>(&'a mut self, a_is_expected: bool) -> Sub<'a, 'infcx, 'gcx, 'tcx> 
 sub			    pub fn sub<T>(&'a self, a_is_expected: bool, trace: TypeTrace<'tcx>, a: &T, b: &T)
 sub			mod sub;
-sub			    fn sub(self, other: TypeContents) -> TypeContents 
+sub			    pub fn sub(&mut self, a: ty::TyVid, b: ty::TyVid) 
 sub_free_region			    pub fn sub_free_region(&self, sub: FreeRegion, sup: FreeRegion) -> bool 
 sub_poly_trait_refs			    pub fn sub_poly_trait_refs(&self,
 sub_regions			    pub fn sub_regions(&self,
+sub_root_var			    pub fn sub_root_var(&mut self, vid: ty::TyVid) -> ty::TyVid 
 sub_types			    pub fn sub_types(&self,
+sub_unified			    pub fn sub_unified(&mut self, a: ty::TyVid, b: ty::TyVid) -> bool 
 subst			    fn subst(self, params: &[hir::Lifetime], map: &NamedRegionMap)
 subst			pub mod subst;
 subst			    fn subst<'a, 'gcx>(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 subst_spanned			    fn subst_spanned<'a, 'gcx>(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 subst_supertrait			    pub fn subst_supertrait(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>,
 substs			    pub fn substs(&self) -> &'tcx Substs<'tcx> 
+subtype_predicate			    pub fn subtype_predicate(&self,
 successors			    fn successors<'graph>(&'graph self, node: Self::Node)
 successors			    pub fn successors(&self) -> Cow<[BasicBlock]> 
 successors_mut			    pub fn successors_mut(&mut self) -> Vec<&mut BasicBlock> 
@@ -4058,7 +4335,7 @@ symbol_is_live			    fn symbol_is_live(&mut self,
 synth_comment			    pub fn synth_comment(&mut self, text: String) -> io::Result<()> 
 sysroot			    pub fn sysroot<'a>(&'a self) -> &'a Path 
 table			mod table;
-tag			    fn tag(&self) -> &'static str { "Bivariate" }
+tag			    fn tag(&self) -> &'static str 
 tag			    fn tag(&self) -> &'static str { "Equate" }
 tag			    fn tag(&self) -> &'static str { "Glb" }
 tag			    fn tag(&self) -> &'static str { "Lub" }
@@ -4077,9 +4354,8 @@ target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> { self.cfg.target(
 target			    fn target(&'a self, edge: &Edge<'a>) -> Node<'a> 
 target			    fn target(&self, edge: &Edge<'tcx>) -> Node 
 target_filesearch			    pub fn target_filesearch(&self, kind: PathKind) -> filesearch::FileSearch 
-tc_ty			        fn tc_ty<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-tcx			    fn tcx(&self) -> TyCtxt<'infcx, 'gcx, 'tcx> { self.fields.tcx() }
-tcx			    fn tcx<'a>(&'a self) -> TyCtxt<'a, 'gcx, 'tcx> 
+tcx			    pub fn tcx(&self) -> ty::TyCtxt<'a, 'tcx, 'tcx> 
+tcx			    fn tcx(&self) -> TyCtxt<'cx, 'gcx, 'tcx> 
 tcx			    pub fn tcx(&self) -> TyCtxt<'infcx, 'gcx, 'tcx> 
 tcx			    fn tcx(&self) -> TyCtxt<'infcx, 'gcx, 'tcx> { self.fields.tcx() }
 tcx			    fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'tcx> 
@@ -4094,10 +4370,13 @@ tcx			pub mod tcx;
 tcx			            fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'tcx> { self.infcx.tcx }
 tcx			    fn tcx<'c>(&'c self) -> TyCtxt<'c, 'gcx, 'tcx> 
 tcx			    pub fn tcx(&self) -> TyCtxt<'cx, 'gcx, 'tcx> 
+tcx			    fn tcx<'c>(&'c self) -> TyCtxt<'c, 'gcx, 'gcx> 
 tcx			    fn tcx(&self) -> TyCtxt<'a, 'gcx, 'tcx> { self.tcx }
 tcx			            fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'tcx> { self.0 }
 tcx			    fn tcx<'a>(&'a self) -> TyCtxt<'a, 'gcx, 'tcx>;
 tcx			    fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'tcx> { self.tcx }
+tcx			    fn tcx<'a>(&'a self) -> TyCtxt<'a, 'tcx, 'tcx>;
+tcx			    fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'gcx> 
 tcx			    fn tcx(&self) -> TyCtxt<'a, 'gcx, 'tcx>;
 tcx			    fn tcx<'b>(&'b self) -> TyCtxt<'b, 'gcx, 'tcx> { self.tcx }
 temp_path			    pub fn temp_path(&self,
@@ -4121,9 +4400,12 @@ to_bound_region			    pub fn to_bound_region(&self) -> ty::BoundRegion
 to_code_extent			    pub fn to_code_extent(&self, region_maps: &RegionMaps) -> CodeExtent 
 to_const_int			    pub fn to_const_int(&self) -> Option<ConstInt> 
 to_dep_node			    fn to_dep_node(key: &Self::Key) -> DepNode<DefId>;
+to_dep_node			    fn to_dep_node(key: &Self::Key) -> DepNode<DefId> 
+to_dep_node			    fn to_dep_node(key: &ty::PolyTraitRef<'tcx>) -> DepNode<DefId> 
 to_dep_node			            fn to_dep_node(key: &
 to_early_bound_region_data			    pub fn to_early_bound_region_data(&self) -> ty::EarlyBoundRegion 
 to_fulfillment_error			fn to_fulfillment_error<'tcx>(
+to_hex			    pub fn to_hex(&self) -> String 
 to_hir_binop			    pub fn to_hir_binop(self) -> hir::BinOp_ 
 to_mutbl_lossy			    pub fn to_mutbl_lossy(self) -> hir::Mutability 
 to_mutbl_lossy			    pub fn to_mutbl_lossy(self) -> hir::Mutability 
@@ -4137,11 +4419,13 @@ to_poly_trait_ref			    fn to_poly_trait_ref(&self) -> PolyTraitRef<'tcx>;
 to_predicate			    fn to_predicate(&self) -> Predicate<'tcx> 
 to_predicate			    fn to_predicate(&self) -> Predicate<'tcx>;
 to_readable_str			pub fn to_readable_str(mut val: usize) -> String 
+to_smaller_hash			    pub fn to_smaller_hash(&self) -> u64 
 to_string			    pub fn to_string(&self) -> String 
 to_string			    pub fn to_string(&self, tcx: TyCtxt) -> String 
 to_string			pub fn to_string<F>(ann: &PpAnn, f: F) -> String
 to_string			    pub fn to_string(&self) -> String 
 to_string			    pub fn to_string(&self) -> String 
+to_string_no_crate			    pub fn to_string_no_crate(&self) -> String 
 to_ty			    pub fn to_ty(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx> 
 to_ty			    pub fn to_ty(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx> 
 to_ty			    pub fn to_ty<'a, 'tcx>(&self, tcx: &ty::TyCtxt<'a, 'tcx, 'tcx>,
@@ -4175,6 +4459,9 @@ trait_ref_to_string			    pub fn trait_ref_to_string(&self, t: &ty::TraitRef<'tc
 trait_ref_type_vars			fn trait_ref_type_vars<'a, 'gcx, 'tcx>(selcx: &mut SelectionContext<'a, 'gcx, 'tcx>,
 trait_relevant_for_never			    pub fn trait_relevant_for_never(self, did: DefId) -> bool 
 traits			pub mod traits;
+trans			pub mod trans;
+trans_apply_param_substs			    pub fn trans_apply_param_substs<T>(self,
+trans_fulfill_obligation			    pub fn trans_fulfill_obligation(self,
 trans_normalize			            fn trans_normalize<'a, 'tcx>(&self,
 trans_normalize			    fn trans_normalize<'a, 'tcx>(&self, infcx: &InferCtxt<'a, 'gcx, 'tcx>) -> Self 
 trans_normalize			    fn trans_normalize<'a, 'tcx>(&self, infcx: &InferCtxt<'a, 'gcx, 'tcx>) -> Self;
@@ -4202,7 +4489,6 @@ ty			    pub fn ty<'a, 'gcx>(&self, mir: &Mir<'tcx>, tcx: TyCtxt<'a, 'gcx, 'tcx>
 ty			    pub fn ty<'a, 'gcx>(&self, mir: &Mir<'tcx>, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx> 
 ty			    pub fn ty<'a, 'gcx>(&self, mir: &Mir<'tcx>, tcx: TyCtxt<'a, 'gcx, 'tcx>) -> Ty<'tcx>
 ty			impl<'a, 'gcx, 'tcx> ty::TyS<'tcx> 
-ty			impl<'a, 'tcx> ty::TyS<'tcx> 
 ty			impl<'a, 'gcx, 'lcx, 'tcx> ty::TyS<'tcx> 
 ty			    pub fn ty(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>, subst: &Substs<'tcx>) -> Ty<'tcx> 
 ty			impl<'a, 'gcx, 'tcx> ty::ExistentialTraitRef<'tcx> 
@@ -4210,7 +4496,6 @@ ty			impl<'a, 'gcx, 'tcx> ty::PolyExistentialTraitRef<'tcx>
 ty			impl<'a, 'gcx, 'tcx> ty::TraitRef<'tcx> 
 ty			impl<'a, 'tcx> ty::TyS<'tcx> 
 ty::Lift for SelectionCandidate			impl<'a, 'tcx> ty::Lift<'tcx> for SelectionCandidate<'a> 
-ty::fold::TypeFolder for Generalizer			impl<'cx, 'gcx, 'tcx> ty::fold::TypeFolder<'gcx, 'tcx> for Generalizer<'cx, 'gcx, 'tcx> 
 ty_adt_def			    pub fn ty_adt_def(&self) -> Option<&'tcx AdtDef> 
 ty_for_param			    fn ty_for_param(&self, p: ty::ParamTy, source_ty: Ty<'tcx>) -> Ty<'tcx> 
 ty_is_local			fn ty_is_local(tcx: TyCtxt, ty: Ty, infer_is_local: InferIsLocal) -> bool 
@@ -4222,7 +4507,6 @@ ty_to_def_id			    pub fn ty_to_def_id(&self) -> Option<DefId>
 ty_to_string			    pub fn ty_to_string(&self, t: Ty<'tcx>) -> String 
 type_at			    pub fn type_at(&self, i: usize) -> Ty<'tcx> 
 type_category			        fn type_category<'tcx>(t: Ty<'tcx>) -> Option<u32> 
-type_contents			    pub fn type_contents(&'tcx self, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> TypeContents 
 type_error_message			    pub fn type_error_message<M>(&self,
 type_error_struct			    pub fn type_error_struct<M>(&self,
 type_error_struct_with_diag			    pub fn type_error_struct_with_diag<M>(&self,
@@ -4233,16 +4517,17 @@ type_is_unconstrained_numeric			    pub fn type_is_unconstrained_numeric(&'a sel
 type_is_unsafe_function			fn type_is_unsafe_function(ty: Ty) -> bool 
 type_known_to_meet_bound			pub fn type_known_to_meet_bound<'a, 'gcx, 'tcx>(infcx: &InferCtxt<'a, 'gcx, 'tcx>,
 type_moves_by_default			    pub fn type_moves_by_default(&self, ty: Ty<'tcx>, span: Span) -> bool 
-type_needs_drop_given_env			    pub fn type_needs_drop_given_env(self,
 type_param			    pub fn type_param(&self, param: &ParamTy) -> &TypeParameterDef 
 type_var_diverges			    pub fn type_var_diverges(&'a self, ty: Ty) -> bool 
 type_var_for_def			    pub fn type_var_for_def(&self,
 type_variable			pub mod type_variable;
+typeck_item_bodies_dep_node			fn typeck_item_bodies_dep_node(_: CrateNum) -> DepNode<DefId> 
 types			    pub fn types(&self) -> HirVec<&P<Ty>> 
 types			    pub fn types(cause: &ObligationCause<'tcx>,
 types			    pub fn types(&'a self) -> impl DoubleEndedIterator<Item=Ty<'tcx>> + 'a 
+types_created_since_snapshot			    pub fn types_created_since_snapshot(&mut self, s: &Snapshot) -> TypeVariableMap 
 types_escaping_snapshot			    pub fn types_escaping_snapshot(&mut self, s: &Snapshot) -> Vec<Ty<'tcx>> 
-tys			    fn tys(&mut self, a: Ty<'tcx>, b: Ty<'tcx>) -> RelateResult<'tcx, Ty<'tcx>> 
+tys			    fn tys(&mut self, t: Ty<'tcx>, t2: Ty<'tcx>) -> RelateResult<'tcx, Ty<'tcx>> 
 tys			    fn tys(&mut self, a: Ty<'tcx>, b: Ty<'tcx>) -> RelateResult<'tcx, Ty<'tcx>> 
 tys			    fn tys(&mut self, a: Ty<'tcx>, b: Ty<'tcx>) -> RelateResult<'tcx, Ty<'tcx>> 
 tys			    fn tys(&mut self, a: Ty<'tcx>, b: Ty<'tcx>) -> RelateResult<'tcx, Ty<'tcx>> 
@@ -4257,9 +4542,9 @@ unify_key			pub mod unify_key;
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 
 uninhabited_from			    pub fn uninhabited_from(
 uninhabited_from_inner			    fn uninhabited_from_inner(
-union			    pub fn union<I, T, F>(v: I, mut f: F) -> TypeContents where
 union			    pub fn union<I>(tcx: TyCtxt<'a, 'gcx, 'tcx>,
 unit			    pub fn unit(self) -> InferOk<'tcx, ()> 
+unop_can_panic_at_runtime			    pub fn unop_can_panic_at_runtime(&self, unop: hir::UnOp) -> bool
 unpack_option_like			fn unpack_option_like<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 unresolved_segments			    pub fn unresolved_segments(&self) -> usize 
 unsafety			    pub fn unsafety(&self) -> hir::Unsafety 
@@ -4292,7 +4577,7 @@ util			pub mod util;
 validate_crate_name			pub fn validate_crate_name(sess: Option<&Session>, s: &str, sp: Option<Span>) 
 values			    pub fn values<'a>(&'a self) -> BTreeMapValuesIter<'a, OutputType, Option<PathBuf>> 
 values_are_none			    fn values_are_none(&self) -> bool 
-values_str			    fn values_str(&self, values: &ValuePairs<'tcx>) -> Option<(String, String)> 
+values_str			    fn values_str(&self, values: &ValuePairs<'tcx>)
 var_diverges			    pub fn var_diverges<'a>(&'a self, vid: ty::TyVid) -> bool 
 var_ids			fn var_ids<'a, 'gcx, 'tcx>(fields: &CombineFields<'a, 'gcx, 'tcx>,
 var_origin			    pub fn var_origin(&self, vid: RegionVid) -> RegionVariableOrigin 
@@ -4320,8 +4605,8 @@ vis_is_accessible_from			    pub fn vis_is_accessible_from(self, vis: Visibility
 visibility			    fn visibility(&self, def: DefId) -> ty::Visibility { bug!("visibility") }
 visibility			    fn visibility(&self, def: DefId) -> ty::Visibility;
 visibility_qualified			pub fn visibility_qualified(vis: &hir::Visibility, w: &str) -> String 
-visible_parent_map			    fn visible_parent_map<'a>(&'a self) -> ::std::cell::RefMut<'a, DefIdMap<DefId>> 
-visible_parent_map			    fn visible_parent_map<'a>(&'a self) -> ::std::cell::RefMut<'a, DefIdMap<DefId>>;
+visible_parent_map			    fn visible_parent_map<'a>(&'a self) -> ::std::cell::Ref<'a, DefIdMap<DefId>> 
+visible_parent_map			    fn visible_parent_map<'a>(&'a self) -> ::std::cell::Ref<'a, DefIdMap<DefId>>;
 visit			mod visit;
 visit			pub mod visit;
 visit::Visitor for DefCollector			impl<'a> visit::Visitor<'a> for DefCollector<'a> 
@@ -4356,6 +4641,7 @@ visit_block			    fn visit_block(&mut self, block: &'tcx hir::Block)
 visit_block			    fn visit_block(&mut self, b: &'hir Block) 
 visit_body			    fn visit_body(&mut self, b: &'v Body) 
 visit_body			    fn visit_body(&mut self, body: &'tcx hir::Body) 
+visit_body			    fn visit_body(&mut self, body: &'gcx Body) 
 visit_branch			            fn visit_branch(&mut self,
 visit_closure_substs			            fn visit_closure_substs(&mut self,
 visit_const_expr			    pub fn visit_const_expr(&mut self, expr: &Expr) 
@@ -4413,6 +4699,7 @@ visit_generics			    fn visit_generics(&mut self, g: &'tcx hir::Generics)
 visit_generics			    fn visit_generics(&mut self, generics: &'tcx hir::Generics) 
 visit_id			    fn visit_id(&mut self, _node_id: NodeId) 
 visit_id			    fn visit_id(&mut self, id: NodeId) 
+visit_id			    fn visit_id(&mut self, node_id: NodeId) 
 visit_id			    fn visit_id(&mut self, id: ast::NodeId) 
 visit_ident			    fn visit_ident(&mut self, sp: Span, id: ast::Ident) 
 visit_impl_item			        fn visit_impl_item(&mut self, i: &'tcx hir::ImplItem) 
@@ -4422,6 +4709,7 @@ visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'hir ImplItem);
 visit_impl_item			            fn visit_impl_item(&mut self, item: &'lcx ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'hir ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'a ImplItem) 
+visit_impl_item			    fn visit_impl_item(&mut self, i: &'hir hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'a ast::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'tcx hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, _item: &hir::ImplItem) 
@@ -4433,6 +4721,7 @@ visit_impl_item			    fn visit_impl_item(&mut self, ii: &'hir hir::ImplItem)
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'tcx hir::ImplItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, ii: &'tcx hir::ImplItem) 
 visit_impl_item_ref			    fn visit_impl_item_ref(&mut self, ii: &'v ImplItemRef) 
+visit_impl_item_ref			    fn visit_impl_item_ref(&mut self, _: &'hir hir::ImplItemRef) 
 visit_item			        fn visit_item(&mut self, i: &'tcx hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &'a ast::Item) 
 visit_item			    fn visit_item(&mut self, i: &'v Item) 
@@ -4441,6 +4730,7 @@ visit_item			    fn visit_item(&mut self, item: &'hir Item);
 visit_item			            fn visit_item(&mut self, item: &'lcx Item) 
 visit_item			    fn visit_item(&mut self, i: &'hir Item) 
 visit_item			    fn visit_item(&mut self, i: &'a Item) 
+visit_item			    fn visit_item(&mut self, i: &'hir hir::Item) 
 visit_item			    fn visit_item(&mut self, it: &'a ast::Item) 
 visit_item			    fn visit_item(&mut self, it: &'tcx hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
@@ -4472,7 +4762,7 @@ visit_local			    fn visit_local(&mut self, l: &'tcx hir::Local) { visit_local(s
 visit_local			    fn visit_local(&mut self, l: &'tcx hir::Local) 
 visit_local			fn visit_local<'a, 'tcx>(ir: &mut IrMaps<'a, 'tcx>, local: &'tcx hir::Local) 
 visit_local			    fn visit_local(&mut self, l: &'hir Local) 
-visit_local			    fn visit_local(&mut self, local: &'a Local) 
+visit_local			    fn visit_local(&mut self, local: &'gcx Local) 
 visit_local_decl			            fn visit_local_decl(&mut self,
 visit_location			            fn visit_location(&mut self, mir: & 
 visit_lvalue			            fn visit_lvalue(&mut self,
@@ -4557,6 +4847,7 @@ visit_trait_item			    fn visit_trait_item(&mut self, trait_item: &'hir TraitIte
 visit_trait_item			            fn visit_trait_item(&mut self, item: &'lcx TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'hir TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, ti: &'a TraitItem) 
+visit_trait_item			    fn visit_trait_item(&mut self, i: &'hir hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, trait_item: &'a ast::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, trait_item: &'tcx hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, _item: &hir::TraitItem) 
@@ -4677,7 +4968,8 @@ warn_about_unused_or_dead_vars_in_pat			    fn warn_about_unused_or_dead_vars_in
 warn_dead_code			    fn warn_dead_code(&mut self,
 weak_lang_items			    pub mod weak_lang_items;
 wf			pub mod wf;
-when			    pub fn when(&self, cond: bool) -> TypeContents 
+while_hashing_hir_bodies			    pub fn while_hashing_hir_bodies<F: FnOnce(&mut Self)>(&mut self,
+while_hashing_spans			    pub fn while_hashing_spans<F: FnOnce(&mut Self)>(&mut self,
 with			    fn with<F>(&mut self, wrap_scope: Scope, f: F) where
 with			    pub fn with<P>(&self, value: P) -> Obligation<'tcx,P> 
 with			    pub fn with<U>(self, value: U) -> Normalized<'tcx,U> 
@@ -4685,6 +4977,7 @@ with			    fn with(r: &'o TraitObligationStack<'o,'tcx>) -> TraitObligationStack
 with			    pub fn with<F, R>(f: F) -> R
 with_addl_obligations			    fn with_addl_obligations(mut self,
 with_caller_bounds			    pub fn with_caller_bounds(&self,
+with_catch_scope			    fn with_catch_scope<T, F>(&mut self, catch_id: NodeId, f: F) -> T
 with_cause			    fn with_cause<F,R>(&mut self, cause: Cause, f: F) -> R
 with_cause			    fn with_cause<F,R>(&mut self, _cause: Cause, f: F) -> R
 with_depth			    fn with_depth(cause: ObligationCause<'tcx>,
@@ -4693,12 +4986,13 @@ with_extension			    pub fn with_extension(&self, extension: &str) -> PathBuf
 with_forced_absolute_paths			pub fn with_forced_absolute_paths<F: FnOnce() -> R, R>(f: F) -> R 
 with_freevars			    pub fn with_freevars<T, F>(self, fid: NodeId, f: F) -> T where
 with_fresh_ty_vars			    pub fn with_fresh_ty_vars(selcx: &mut traits::SelectionContext<'a, 'gcx, 'tcx>,
+with_hir_id_owner			    fn with_hir_id_owner<F>(&mut self, owner: NodeId, f: F)
 with_ignore			    pub fn with_ignore<OP,R>(&self, op: OP) -> R
 with_lint_attrs			    fn with_lint_attrs<F>(&mut self,
 with_loop_condition_scope			    fn with_loop_condition_scope<T, F>(&mut self, f: F) -> T
-with_loop_nodes			    fn with_loop_nodes<R, F>(&mut self,
 with_loop_scope			    fn with_loop_scope<T, F>(&mut self, loop_id: NodeId, f: F) -> T
-with_new_loop_scopes			    fn with_new_loop_scopes<T, F>(&mut self, f: F) -> T
+with_new_scopes			    fn with_new_scopes<T, F>(&mut self, f: F) -> T
+with_node_id_hashing_mode			    pub fn with_node_id_hashing_mode<F: FnOnce(&mut Self)>(&mut self,
 with_opt			    pub fn with_opt<F, R>(f: F) -> R
 with_options			    pub fn with_options(delegate: &'a mut (Delegate<'tcx>+'a),
 with_options			    pub fn with_options(infcx: &'a InferCtxt<'a, 'gcx, 'tcx>,
@@ -4712,7 +5006,7 @@ with_task			    pub fn with_task<C, A, R>(&self, key: DepNode<DefId>, cx: C, arg
 with_unresolved_segments			    pub fn with_unresolved_segments(def: Def, mut unresolved_segments: usize) -> Self 
 word_nbsp			    pub fn word_nbsp(&mut self, w: &str) -> io::Result<()> 
 work_products			    pub fn work_products(&self) -> Ref<FxHashMap<Arc<WorkProductId>, WorkProduct>> 
-would_be_zero_sized			    pub fn would_be_zero_sized<I>(dl: &TargetDataLayout, fields: I)
+would_be_zero_sized			    fn would_be_zero_sized<I>(dl: &TargetDataLayout, fields: I)
 write			    fn write(&self, k: &M::Key) 
 write			    pub fn write(&mut self, v: DepNode<D>) 
 write			    pub fn write(&self, v: DepNode<DefId>) 
@@ -4720,3 +5014,5 @@ write_lvalue			    fn write_lvalue(&mut self, expr: &Expr, succ: LiveNode, acc: 
 write_trait_impls			    fn write_trait_impls(&self, tcx: TyCtxt<'a, 'gcx, 'tcx>) 
 write_vars			    fn write_vars<F>(&self,
 writer			    fn writer(&mut self) -> &mut pp::Printer<'a> 
+xform			    pub fn xform(self, v: ty::Variance) -> ty::Variance 
+zero			    pub fn zero() -> Fingerprint 

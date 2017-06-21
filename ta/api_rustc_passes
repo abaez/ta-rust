@@ -20,8 +20,6 @@ LoopKind			enum LoopKind
 LoopKind			impl LoopKind 
 NodeData			struct NodeData 
 NodeData			struct NodeData 
-RvalueContext			struct RvalueContext<'a, 'tcx: 'a> 
-RvalueContextDelegate			struct RvalueContextDelegate<'a, 'gcx: 'a+'tcx, 'tcx: 'a> 
 SomeStruct			struct SomeStruct 
 StatCollector			impl<'k> StatCollector<'k> 
 StatCollector			struct StatCollector<'k> 
@@ -33,11 +31,9 @@ Visitor for CheckCrateVisitor			impl<'a, 'hir: 'a> Visitor<'hir> for CheckCrateV
 Visitor for CheckItemRecursionVisitor			impl<'a, 'b: 'a, 'hir: 'b> Visitor<'hir> for CheckItemRecursionVisitor<'a, 'b, 'hir> 
 Visitor for CheckLoopVisitor			impl<'a, 'hir> Visitor<'hir> for CheckLoopVisitor<'a, 'hir> 
 Visitor for CheckNoAsm			impl<'a> Visitor<'a> for CheckNoAsm<'a> 
-Visitor for RvalueContext			impl<'a, 'tcx> Visitor<'tcx> for RvalueContext<'a, 'tcx> 
 add_type			    fn add_type(&mut self, ty: Ty<'gcx>) 
 ast_validation			pub mod ast_validation;
 ast_visit::Visitor for StatCollector			impl<'v> ast_visit::Visitor<'v> for StatCollector<'v> 
-borrow			    fn borrow(&mut self,
 borrow			    fn borrow(&mut self,
 check_adjustments			fn check_adjustments<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr) 
 check_const_eval			    fn check_const_eval(&self, expr: &'gcx hir::Expr) 
@@ -45,7 +41,6 @@ check_crate			pub fn check_crate(session: &Session, krate: &Crate)
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate(sess: &Session, map: &Map) 
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
-check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate<'hir>(sess: &Session, hir_map: &hir_map::Map<'hir>) -> CompileResult 
 check_decl_no_pat			    fn check_decl_no_pat<ReportFn: Fn(Span, bool)>(&self, decl: &FnDecl, report_err: ReportFn) 
 check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr, node_ty: Ty<'tcx>) 
@@ -53,16 +48,12 @@ check_label			    fn check_label(&self, label: Ident, span: Span, id: NodeId)
 check_trait_fn_not_const			    fn check_trait_fn_not_const(&self, constness: Spanned<Constness>) 
 consts			pub mod consts;
 consume			    fn consume(&mut self,
-consume			    fn consume(&mut self,
 consume_pat			    fn consume_pat(&mut self, _consume_pat: &hir::Pat, _cmt: mc::cmt, _mode: euv::ConsumeMode) {}
-consume_pat			    fn consume_pat(&mut self,
 decl_without_init			    fn decl_without_init(&mut self, _id: ast::NodeId, _span: Span) {}
-decl_without_init			    fn decl_without_init(&mut self,
 diagnostics			pub mod diagnostics;
 emit_unlabled_cf_in_while_condition			    fn emit_unlabled_cf_in_while_condition(&mut self, span: Span, cf_type: &str) 
 err_handler			    fn err_handler(&self) -> &errors::Handler 
 euv::Delegate for CheckCrateVisitor			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for CheckCrateVisitor<'a, 'gcx> 
-euv::Delegate for RvalueContextDelegate			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for RvalueContextDelegate<'a, 'gcx, 'tcx> 
 foo			    fn foo((a, b): (u32, u32)); \/\/ error: patterns aren't allowed in foreign
 foo			    fn foo();
 foo			    fn foo(a: (u32, u32)); \/\/ ok!
@@ -74,18 +65,14 @@ hir_stats			pub mod hir_stats;
 hir_visit::Visitor for StatCollector			impl<'v> hir_visit::Visitor<'v> for StatCollector<'v> 
 invalid_visibility			    fn invalid_visibility(&self, vis: &Visibility, span: Span, note: Option<&str>) 
 loops			pub mod loops;
-main			fn main() 
 matched_pat			    fn matched_pat(&mut self, _: &hir::Pat, _: mc::cmt, _: euv::MatchMode) {}
-matched_pat			    fn matched_pat(&mut self,
 mir_stats			pub mod mir_stats;
 mir_visit::Visitor for StatCollector			impl<'a, 'tcx> mir_visit::Visitor<'tcx> for StatCollector<'a, 'tcx> 
-mutate			    fn mutate(&mut self,
 mutate			    fn mutate(&mut self,
 name			    fn name(self) -> &'static str 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> hir_visit::NestedVisitorMap<'this, 'v> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'hir> 
-nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'hir> 
 new			    fn new(v: &'a mut CheckCrateVisitor<'b, 'hir>) -> Self 
 no_asm			pub mod no_asm;
@@ -100,7 +87,6 @@ record			    fn record<T>(&mut self, label: &'static str, id: Id, node: &T)
 record			    fn record<T>(&mut self, label: &'static str, node: &T) 
 record_with_size			    fn record_with_size(&mut self, label: &'static str, node_size: usize) 
 require_loop			    fn require_loop(&self, name: &str, span: Span) 
-rvalues			pub mod rvalues;
 some_func			fn some_func() 
 static_recursion			pub mod static_recursion;
 visit_arm			    fn visit_arm(&mut self, a: &'v ast::Arm) 
@@ -153,7 +139,6 @@ visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &'v hir::MacroDef
 visit_mir			    fn visit_mir(&mut self, mir: &Mir<'tcx>) 
 visit_mod			    fn visit_mod(&mut self, m: &'v ast::Mod, _s: Span, _n: NodeId) 
 visit_mod			    fn visit_mod(&mut self, m: &'v hir::Mod, _s: Span, n: NodeId) 
-visit_nested_body			    fn visit_nested_body(&mut self, body_id: hir::BodyId) 
 visit_nested_body			    fn visit_nested_body(&mut self, body_id: hir::BodyId) 
 visit_nested_impl_item			    fn visit_nested_impl_item(&mut self, impl_item_id: hir::ImplItemId) 
 visit_nested_item			    fn visit_nested_item(&mut self, id: hir::ItemId) 

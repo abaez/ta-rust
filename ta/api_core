@@ -1,3 +1,7 @@
+::fmt::Debug for ManuallyDrop			impl<T: ::fmt::Debug> ::fmt::Debug for ManuallyDrop<T> 
+::ops::Deref for ManuallyDrop			impl<T> ::ops::Deref for ManuallyDrop<T> 
+::ops::DerefMut for ManuallyDrop			impl<T> ::ops::DerefMut for ManuallyDrop<T> 
+A			    struct A;
 Adapter			        struct Adapter<'a,T: ?Sized +'a>(&'a mut T);
 Adapter			        struct Adapter<Iter> 
 Adapter			        struct Adapter<Iter, E> 
@@ -19,12 +23,12 @@ ArgumentV1			pub struct ArgumentV1<'a>
 Arguments			impl<'a> Arguments<'a> 
 Arguments			pub struct Arguments<'a> 
 AsMut			            impl<T> AsMut<[T]> for [T; 
-AsMut			impl<'a, T: ?Sized, U: ?Sized> AsMut<U> for &'a mut T where T: AsMut<U> 
+AsMut			impl<'a, T: ?Sized, U: ?Sized> AsMut<U> for &'a mut T where T: AsMut<U>
 AsMut			impl<T> AsMut<[T]> for [T] 
 AsMut			pub trait AsMut<T: ?Sized> 
 AsRef			            impl<T> AsRef<[T]> for [T; 
-AsRef			impl<'a, T: ?Sized, U: ?Sized> AsRef<U> for &'a T where T: AsRef<U> 
-AsRef			impl<'a, T: ?Sized, U: ?Sized> AsRef<U> for &'a mut T where T: AsRef<U> 
+AsRef			impl<'a, T: ?Sized, U: ?Sized> AsRef<U> for &'a T where T: AsRef<U>
+AsRef			impl<'a, T: ?Sized, U: ?Sized> AsRef<U> for &'a mut T where T: AsRef<U>
 AsRef			impl<T> AsRef<[T]> for [T] 
 AsRef			pub trait AsRef<T: ?Sized> 
 AsRef for Iter			impl<'a, T> AsRef<[T]> for Iter<'a, T> 
@@ -37,6 +41,7 @@ AtomicBool			impl AtomicBool
 AtomicBool			pub struct AtomicBool 
 AtomicPtr			impl<T> AtomicPtr<T> 
 AtomicPtr			pub struct AtomicPtr<T> 
+Bar			        struct Bar;
 Binary			pub trait Binary 
 Binary			struct Binary;
 BitAnd			        impl BitAnd for 
@@ -72,13 +77,13 @@ BorrowRef			impl<'b> BorrowRef<'b>
 BorrowRef			struct BorrowRef<'b> 
 BorrowRefMut			impl<'b> BorrowRefMut<'b> 
 BorrowRefMut			struct BorrowRefMut<'b> 
-BorrowState			pub enum BorrowState 
 BoxPlace			pub trait BoxPlace<Data: ?Sized> : Place<Data> 
 Boxed			pub trait Boxed 
 BuildHasher			pub trait BuildHasher 
 BuildHasher for BuildHasherDefault			impl<H: Default + Hasher> BuildHasher for BuildHasherDefault<H> 
 BuildHasherDefault			pub struct BuildHasherDefault<H>(marker::PhantomData<H>);
 Bytes			pub struct Bytes<'a>(Cloned<slice::Iter<'a, u8>>);
+Bytes			struct Bytes<'a>(&'a [u8]);
 BytewiseEquality			trait BytewiseEquality { }
 Carrier			pub trait Carrier 
 Carrier for Result			impl<U, V> Carrier for Result<U, V> 
@@ -138,8 +143,14 @@ Copy			        impl<T:?Sized> Copy for
 Copy			pub trait Copy : Clone 
 Copy for Discriminant			impl<T> Copy for Discriminant<T> {}
 Copy for Shared			impl<T: ?Sized> Copy for Shared<T> { }
+CopyOnDrop			struct CopyOnDrop<T> 
 Count			pub enum Count 
+CrazyIterator			    impl CrazyIterator { fn new() -> CrazyIterator { CrazyIterator(false) } }
+CrazyIterator			    struct CrazyIterator(bool);
+Custom			struct Custom { hash: u64 }
+CustomHasher			struct CustomHasher { output: u64 }
 Cycle			pub struct Cycle<I> 
+CycleIter			pub struct CycleIter<'a, T: 'a> 
 Debug			        impl Debug for 
 Debug			        impl<
 Debug			impl Debug for ! 
@@ -194,8 +205,10 @@ Default for AtomicBool			impl Default for AtomicBool
 Default for AtomicPtr			impl<T> Default for AtomicPtr<T> 
 Default for BuildHasherDefault			impl<H> Default for BuildHasherDefault<H> 
 Default for Cell			impl<T:Default> Default for Cell<T> 
+Default for CustomHasher			impl Default for CustomHasher 
 Default for Empty			impl<T> Default for Empty<T> 
 Default for Hasher			impl<S: Sip> Default for Hasher<S> 
+Default for MyHasher			impl Default for MyHasher 
 Default for Option			impl<T> Default for Option<T> 
 Default for RefCell			impl<T:Default> Default for RefCell<T> 
 Default for UnsafeCell			impl<T: Default> Default for UnsafeCell<T> 
@@ -237,6 +250,7 @@ DoubleEndedIterator for Chars			impl<'a> DoubleEndedIterator for Chars<'a>
 DoubleEndedIterator for Chunks			impl<'a, T> DoubleEndedIterator for Chunks<'a, T> 
 DoubleEndedIterator for ChunksMut			impl<'a, T> DoubleEndedIterator for ChunksMut<'a, T> 
 DoubleEndedIterator for Cloned			impl<'a, I, T: 'a> DoubleEndedIterator for Cloned<I>
+DoubleEndedIterator for CrazyIterator			    impl DoubleEndedIterator for CrazyIterator 
 DoubleEndedIterator for Empty			impl<T> DoubleEndedIterator for Empty<T> 
 DoubleEndedIterator for Enumerate			impl<I> DoubleEndedIterator for Enumerate<I> where
 DoubleEndedIterator for Filter			impl<I: DoubleEndedIterator, P> DoubleEndedIterator for Filter<I, P>
@@ -256,6 +270,8 @@ DoubleEndedIterator for Lines			impl<'a> DoubleEndedIterator for Lines<'a>
 DoubleEndedIterator for LinesAny			impl<'a> DoubleEndedIterator for LinesAny<'a> 
 DoubleEndedIterator for Map			impl<B, I: DoubleEndedIterator, F> DoubleEndedIterator for Map<I, F> where
 DoubleEndedIterator for Once			impl<T> DoubleEndedIterator for Once<T> 
+DoubleEndedIterator for RSplit			impl<'a, T, P> DoubleEndedIterator for RSplit<'a, T, P> where P: FnMut(&T) -> bool 
+DoubleEndedIterator for RSplitMut			impl<'a, T, P> DoubleEndedIterator for RSplitMut<'a, T, P> where
 DoubleEndedIterator for Repeat			impl<A: Clone> DoubleEndedIterator for Repeat<A> 
 DoubleEndedIterator for Rev			impl<I> DoubleEndedIterator for Rev<I> where I: DoubleEndedIterator 
 DoubleEndedIterator for Skip			impl<I> DoubleEndedIterator for Skip<I> where I: DoubleEndedIterator + ExactSizeIterator 
@@ -273,8 +289,12 @@ DoubleEndedSearcher for CharSliceSearcher			impl<'a, 'b> DoubleEndedSearcher<'a>
 Drop			pub trait Drop 
 Drop for BorrowRef			impl<'b> Drop for BorrowRef<'b> 
 Drop for BorrowRefMut			impl<'b> Drop for BorrowRefMut<'b> 
+Drop for CopyOnDrop			impl<T> Drop for CopyOnDrop<T> 
+Drop for Dropper			    impl Drop for Dropper 
 Drop for FPUControlWord			    impl Drop for FPUControlWord 
 Drop for HasDtor			impl Drop for HasDtor 
+Drop for R			        impl Drop for R 
+Dropper			    struct Dropper(u32);
 Empty			pub struct Empty<T>(marker::PhantomData<T>);
 EmptyNeedle			struct EmptyNeedle 
 Enumerate			pub struct Enumerate<I> 
@@ -353,6 +373,9 @@ FnOnce			    impl<'a,A,F:?Sized> FnOnce<A> for &'a F
 FnOnce			    impl<'a,A,F:?Sized> FnOnce<A> for &'a mut F
 FnOnce			pub trait FnOnce<Args> 
 FnOnce for LinesAnyMap			impl<'a> FnOnce<(&'a str,)> for LinesAnyMap 
+Foo			        struct Foo;
+Foo			    trait Foo { fn dummy(&self) { } }
+Foo for isize			    impl Foo for isize {}
 FormatSpec			pub struct FormatSpec 
 Formatted			impl<'a> Formatted<'a> 
 Formatted			pub struct Formatted<'a> 
@@ -361,6 +384,13 @@ Formatter			pub struct Formatter<'a>
 Fp			impl Fp 
 Fp			pub struct Fp 
 FpCategory			pub enum FpCategory 
+Freeze			unsafe impl Freeze for .. {}
+Freeze			unsafe impl<'a, T: ?Sized> Freeze for &'a T {}
+Freeze			unsafe impl<'a, T: ?Sized> Freeze for &'a mut T {}
+Freeze			unsafe impl<T: ?Sized> Freeze for *const T {}
+Freeze			unsafe impl<T: ?Sized> Freeze for *mut T {}
+Freeze			unsafe trait Freeze {}
+Freeze for PhantomData			unsafe impl<T: ?Sized> Freeze for PhantomData<T> {}
 From			pub trait From<T>: Sized 
 From			        impl From<
 From for Cell			impl<T> From<T> for Cell<T> 
@@ -415,6 +445,8 @@ FusedIterator for LinesAny			impl<'a> FusedIterator for LinesAny<'a> {}
 FusedIterator for Map			impl<B, I: FusedIterator, F> FusedIterator for Map<I, F>
 FusedIterator for Once			impl<T> FusedIterator for Once<T> {}
 FusedIterator for Peekable			impl<I: FusedIterator> FusedIterator for Peekable<I> {}
+FusedIterator for RSplit			impl<'a, T, P> FusedIterator for RSplit<'a, T, P> where P: FnMut(&T) -> bool {}
+FusedIterator for RSplitMut			impl<'a, T, P> FusedIterator for RSplitMut<'a, T, P> where P: FnMut(&T) -> bool {}
 FusedIterator for Repeat			impl<A: Clone> FusedIterator for Repeat<A> {}
 FusedIterator for Rev			impl<I> FusedIterator for Rev<I>
 FusedIterator for Scan			impl<B, I, St, F> FusedIterator for Scan<I, St, F>
@@ -447,21 +479,25 @@ Hash			    impl<T> Hash for *const T
 Hash			    impl<T> Hash for *mut T 
 Hash			pub trait Hash 
 Hash			        impl<T:?Sized> Hash for 
+Hash for Bytes			impl<'a> Hash for Bytes<'a> 
+Hash for Custom			impl Hash for Custom 
 Hash for bool			    impl Hash for bool 
 Hash for char			    impl Hash for char 
 Hash for str			    impl Hash for str 
 Hasher			pub trait Hasher 
 Hasher			impl<S: Sip> Hasher<S> 
 Hasher			struct Hasher<S: Sip> 
+Hasher for CustomHasher			impl Hasher for CustomHasher 
+Hasher for MyHasher			impl Hasher for MyHasher 
 InPlace			pub trait InPlace<Data: ?Sized>: Place<Data> 
 Index			pub trait Index<Idx: ?Sized> 
 IndexMut			pub trait IndexMut<Idx: ?Sized>: Index<Idx> 
 Inspect			impl<I: Iterator, F> Inspect<I, F> where F: FnMut(&I::Item) 
 Inspect			pub struct Inspect<I, F> 
-Int			trait Int: Zero + PartialEq + PartialOrd + Div<Output=Self> + Rem<Output=Self> +
+Int			trait Int: PartialEq + PartialOrd + Div<Output=Self> + Rem<Output=Self> +
 IntErrorKind			enum IntErrorKind 
 Into			pub trait Into<T>: Sized 
-Into for T			impl<T, U> Into<U> for T where U: From<T> 
+Into for T			impl<T, U> Into<U> for T where U: From<T>
 IntoIter			pub struct IntoIter<A> { inner: Item<A> }
 IntoIter			pub struct IntoIter<T> { inner: Option<T> }
 IntoIterator			            impl<'a, T> IntoIterator for &'a [T; 
@@ -497,7 +533,9 @@ Iterator for Chars			impl<'a> Iterator for Chars<'a>
 Iterator for Chunks			impl<'a, T> Iterator for Chunks<'a, T> 
 Iterator for ChunksMut			impl<'a, T> Iterator for ChunksMut<'a, T> 
 Iterator for Cloned			impl<'a, I, T: 'a> Iterator for Cloned<I>
+Iterator for CrazyIterator			    impl Iterator for CrazyIterator 
 Iterator for Cycle			impl<I> Iterator for Cycle<I> where I: Clone + Iterator 
+Iterator for CycleIter			impl<'a, T> Iterator for CycleIter<'a, T> 
 Iterator for Empty			impl<T> Iterator for Empty<T> 
 Iterator for Enumerate			impl<I> Iterator for Enumerate<I> where I: Iterator 
 Iterator for EscapeDebug			impl Iterator for EscapeDebug 
@@ -521,6 +559,8 @@ Iterator for LinesAny			impl<'a> Iterator for LinesAny<'a>
 Iterator for Map			impl<B, I: Iterator, F> Iterator for Map<I, F> where F: FnMut(I::Item) -> B 
 Iterator for Once			impl<T> Iterator for Once<T> 
 Iterator for Peekable			impl<I: Iterator> Iterator for Peekable<I> 
+Iterator for RSplit			impl<'a, T, P> Iterator for RSplit<'a, T, P> where P: FnMut(&T) -> bool 
+Iterator for RSplitMut			impl<'a, T, P> Iterator for RSplitMut<'a, T, P> where P: FnMut(&T) -> bool 
 Iterator for Repeat			impl<A: Clone> Iterator for Repeat<A> 
 Iterator for ResultShunt			impl<I, T, E> Iterator for ResultShunt<I, E>
 Iterator for Rev			impl<I> Iterator for Rev<I> where I: DoubleEndedIterator 
@@ -546,6 +586,7 @@ LowerExp			        impl LowerExp for
 LowerExp			pub trait LowerExp 
 LowerHex			pub trait LowerHex 
 LowerHex			struct LowerHex;
+ManuallyDrop			impl<T> ManuallyDrop<T> 
 Map			pub struct Map<I, F> 
 MatchIndices			        struct MatchIndices;
 MatchIndicesInternal			struct MatchIndicesInternal<'a, P: Pattern<'a>>(P::Searcher);
@@ -558,6 +599,7 @@ Mul for Wrapping			        impl Mul for Wrapping<
 MulAssign			        impl MulAssign for 
 MulAssign			pub trait MulAssign<Rhs=Self> 
 MulAssign for Wrapping			        impl MulAssign for Wrapping<
+MyHasher			struct MyHasher 
 Neg			        impl Neg for 
 Neg			pub trait Neg 
 Neg for Wrapping			        impl Neg for Wrapping<
@@ -569,8 +611,6 @@ Not for Wrapping			        impl Not for Wrapping<
 Octal			pub trait Octal 
 Octal			struct Octal;
 Once			pub struct Once<T> 
-One			        impl One for 
-One			pub trait One: Sized 
 Option			impl<'a, T: Clone> Option<&'a T> 
 Option			impl<T: Default> Option<T> 
 Option			impl<T> Option<T> 
@@ -590,6 +630,7 @@ Ord			            impl<
 Ord for Cell			impl<T:Ord + Copy> Ord for Cell<T> 
 Ord for Ordering			impl Ord for Ordering 
 Ord for RefCell			impl<T: ?Sized + Ord> Ord for RefCell<T> 
+Ord for Reverse			impl<T: Ord> Ord for Reverse<T> 
 Ord for bool			    impl Ord for bool 
 Ord for str			    impl Ord for str 
 Ordering			impl Ordering 
@@ -597,6 +638,7 @@ Ordering			pub enum Ordering
 Ordering			pub enum Ordering 
 PadAdapter			impl<'a, 'b: 'a> PadAdapter<'a, 'b> 
 PadAdapter			struct PadAdapter<'a, 'b: 'a> 
+Pair			        struct Pair 
 ParseBoolError			pub struct ParseBoolError { _priv: () }
 ParseFloatError			impl ParseFloatError 
 ParseFloatError			pub struct ParseFloatError 
@@ -622,6 +664,7 @@ PartialEq			impl<A, B> PartialEq<[B]> for [A] where A: PartialEq<B>
 PartialEq			            impl<
 PartialEq for Cell			impl<T:PartialEq + Copy> PartialEq for Cell<T> 
 PartialEq for RefCell			impl<T: ?Sized + PartialEq> PartialEq for RefCell<T> 
+PartialEq for SketchyNum			    impl PartialEq for SketchyNum 
 PartialEq for str			    impl PartialEq for str 
 PartialOrd			            impl<T:PartialOrd> PartialOrd for [T; 
 PartialOrd			            impl PartialOrd for 
@@ -638,6 +681,7 @@ PartialOrd			            impl<
 PartialOrd for Cell			impl<T:PartialOrd + Copy> PartialOrd for Cell<T> 
 PartialOrd for Ordering			impl PartialOrd for Ordering 
 PartialOrd for RefCell			impl<T: ?Sized + PartialOrd> PartialOrd for RefCell<T> 
+PartialOrd for Reverse			impl<T: PartialOrd> PartialOrd for Reverse<T> 
 PartialOrd for bool			    impl PartialOrd for bool 
 PartialOrd for str			    impl PartialOrd for str 
 Pattern			impl<'a, 'b, 'c> Pattern<'a> for &'c &'b str 
@@ -665,9 +709,12 @@ Product			        impl Product for
 Product			        impl<'a> Product<&'a 
 Product			impl<T, U, E> Product<Result<U, E>> for Result<T, E>
 Product			pub trait Product<A = Self>: Sized 
+R			    struct R 
 RMatchIndices			        struct RMatchIndices;
 RMatches			        struct RMatches;
+RSplit			pub struct RSplit<'a, T:'a, P> where P: FnMut(&T) -> bool 
 RSplit			        struct RSplit;
+RSplitMut			pub struct RSplitMut<'a, T:'a, P> where P: FnMut(&T) -> bool 
 RSplitN			pub struct RSplitN<'a, T: 'a, P> where P: FnMut(&T) -> bool 
 RSplitN			        struct RSplitN;
 RSplitNMut			pub struct RSplitNMut<'a, T: 'a, P> where P: FnMut(&T) -> bool 
@@ -705,6 +752,7 @@ Result			pub enum Result<T, E>
 ResultShunt			impl<I, T, E> ResultShunt<I, E>
 ResultShunt			struct ResultShunt<I, E> 
 Rev			pub struct Rev<T> 
+Reverse			pub struct Reverse<T>(pub T);
 ReverseSearcher			pub unsafe trait ReverseSearcher<'a>: Searcher<'a> 
 ReverseSearcher for CharEqSearcher			unsafe impl<'a, C: CharEq> ReverseSearcher<'a> for CharEqSearcher<'a, C> 
 ReverseSearcher for CharPredicateSearcher			unsafe impl<'a, F> ReverseSearcher<'a> for CharPredicateSearcher<'a, F>
@@ -758,18 +806,25 @@ SipHasher13			pub struct SipHasher13
 SipHasher24			impl SipHasher24 
 SipHasher24			pub struct SipHasher24 
 Sized			pub trait Sized 
+SketchyNum			    struct SketchyNum 
 Skip			pub struct Skip<I> 
 SkipWhile			pub struct SkipWhile<I, P> 
 SliceExt			impl<T> SliceExt for [T] 
 SliceExt			pub trait SliceExt 
-SliceIndex			pub trait SliceIndex<T> 
-SliceIndex for ops			impl<T> SliceIndex<T> for  ops::Range<usize> 
-SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeFrom<usize> 
-SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeFull 
-SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeInclusive<usize> 
-SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeTo<usize> 
-SliceIndex for ops			impl<T> SliceIndex<T> for ops::RangeToInclusive<usize> 
-SliceIndex for usize			impl<T> SliceIndex<T> for usize 
+SliceIndex			pub trait SliceIndex<T: ?Sized> 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for  ops::Range<usize> 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for ops::RangeFrom<usize> 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for ops::RangeFull 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for ops::RangeInclusive<usize> 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for ops::RangeTo<usize> 
+SliceIndex for ops			impl<T> SliceIndex<[T]> for ops::RangeToInclusive<usize> 
+SliceIndex for ops			    impl SliceIndex<str> for ops::Range<usize> 
+SliceIndex for ops			    impl SliceIndex<str> for ops::RangeFrom<usize> 
+SliceIndex for ops			    impl SliceIndex<str> for ops::RangeFull 
+SliceIndex for ops			    impl SliceIndex<str> for ops::RangeInclusive<usize> 
+SliceIndex for ops			    impl SliceIndex<str> for ops::RangeTo<usize> 
+SliceIndex for ops			    impl SliceIndex<str> for ops::RangeToInclusive<usize> 
+SliceIndex for usize			impl<T> SliceIndex<[T]> for usize 
 SliceOrd			impl SliceOrd<u8> for [u8] 
 SliceOrd			impl<A> SliceOrd<A> for [A]
 SliceOrd			trait SliceOrd<B> 
@@ -782,6 +837,8 @@ Split			pub struct Split<'a, T:'a, P> where P: FnMut(&T) -> bool
 Split			        struct Split;
 SplitInternal			struct SplitInternal<'a, P: Pattern<'a>> 
 SplitIter			trait SplitIter: DoubleEndedIterator 
+SplitIter for RSplit			impl<'a, T, P> SplitIter for RSplit<'a, T, P> where P: FnMut(&T) -> bool 
+SplitIter for RSplitMut			impl<'a, T, P> SplitIter for RSplitMut<'a, T, P> where P: FnMut(&T) -> bool 
 SplitIter for Split			impl<'a, T, P> SplitIter for Split<'a, T, P> where P: FnMut(&T) -> bool 
 SplitIter for SplitMut			impl<'a, T, P> SplitIter for SplitMut<'a, T, P> where P: FnMut(&T) -> bool 
 SplitMut			pub struct SplitMut<'a, T:'a, P> where P: FnMut(&T) -> bool 
@@ -820,6 +877,10 @@ Sync for IterMut			unsafe impl<'a, T: Sync> Sync for IterMut<'a, T> {}
 Sync for Unique			unsafe impl<T: Sync + ?Sized> Sync for Unique<T> { }
 Take			pub struct Take<I> 
 TakeWhile			pub struct TakeWhile<I, P> 
+Test			struct Test;
+TestableFloat			trait TestableFloat : DecodableFloat + fmt::Display 
+TestableFloat for f32			impl TestableFloat for f32 
+TestableFloat for f64			impl TestableFloat for f64 
 Trait			trait Trait 
 Trait for Struct			impl Trait for Struct 
 TraitObject			pub struct TraitObject 
@@ -856,11 +917,12 @@ TryFrom			pub trait TryFrom<T>: Sized
 TryFrom			        impl TryFrom<
 TryFrom			        impl TryFrom<
 TryFrom			        impl TryFrom<
+TryFrom for T			impl<'a, T> TryFrom<&'a str> for T where T: FromStr
 TryFrom for char			impl TryFrom<u32> for char 
 TryFromIntError			impl TryFromIntError 
 TryFromIntError			pub struct TryFromIntError(());
 TryInto			pub trait TryInto<T>: Sized 
-TryInto for T			impl<T, U> TryInto<U> for T where U: TryFrom<T> 
+TryInto for T			impl<T, U> TryInto<U> for T where U: TryFrom<T>
 TwoWaySearcher			impl TwoWaySearcher 
 TwoWaySearcher			struct TwoWaySearcher 
 TwoWayStrategy			trait TwoWayStrategy 
@@ -889,8 +951,11 @@ Write			impl<'a, W: Write + ?Sized> Write for &'a mut W
 Write			pub trait Write 
 Write for Adapter			        impl<'a, T: ?Sized> Write for Adapter<'a, T>
 Write for Formatter			impl<'a> Write for Formatter<'a> 
-Zero			        impl Zero for 
-Zero			pub trait Zero: Sized 
+X			    impl X 
+X			    struct X(RefCell<(u32, char)>);
+X			    struct X(str); struct Y(Z + 'static);
+X			    struct X; struct Y(u32);
+Z			    trait Z {}
 Zeroable			pub unsafe trait Zeroable {}
 Zeroable			unsafe impl<T:?Sized> Zeroable for *const T {}
 Zeroable			unsafe impl<T:?Sized> Zeroable for *mut T {}
@@ -918,10 +983,13 @@ abs			    fn abs(self) -> f32
 abs			    fn abs(self) -> f64 
 abs			        pub fn abs(self) -> Self 
 abs			    fn abs(self) -> Self;
+accessor			        fn accessor(&self) -> Ref<u32> 
+accessor			        fn accessor(&self) -> RefMut<u32> 
 add			            pub fn add<'a>(&'a mut self, other: &
 add			            fn add(self, other: Wrapping<
 add			            fn add(self, other: 
 add			    fn add(self, rhs: RHS) -> Self::Output;
+add			    fn add(old: &mut isize, new: &usize) -> Option<f64> 
 add_assign			            fn add_assign(&mut self, other: Wrapping<
 add_assign			            fn add_assign(&mut self, other: 
 add_assign			    fn add_assign(&mut self, rhs: Rhs);
@@ -935,7 +1003,12 @@ algorithm_m			pub fn algorithm_m<T: RawFloat>(f: &Big, e: i16) -> T
 algorithm_r			fn algorithm_r<T: RawFloat>(f: &Big, e: i16, z0: T) -> T 
 align			    pub fn align(&self) -> Alignment 
 align_of			pub fn align_of<T>() -> usize 
+align_of_16			fn align_of_16() 
+align_of_32			fn align_of_32() 
+align_of_64			fn align_of_64() 
+align_of_basic			fn align_of_basic() 
 align_of_val			pub fn align_of_val<T: ?Sized>(val: &T) -> usize 
+align_of_val_basic			fn align_of_val_basic() 
 all			    fn all<F>(&mut self, mut f: F) -> bool where
 all			            fn all<F>(&mut self, mut predicate: F) -> bool
 alloc_obj_with_dtor			fn alloc_obj_with_dtor(b: &mut Bencher) 
@@ -948,10 +1021,20 @@ any			mod any;
 any			    fn any<F>(&mut self, mut f: F) -> bool where
 any			pub mod any;
 any			            fn any<F>(&mut self, mut predicate: F) -> bool
+any			mod any;
+any_downcast_mut			fn any_downcast_mut() 
+any_downcast_ref			fn any_downcast_ref() 
+any_fixed_vec			fn any_fixed_vec() 
+any_owning			fn any_owning() 
+any_referenced			fn any_referenced() 
+any_unsized			fn any_unsized() 
 arith_offset			    pub fn arith_offset<T>(dst: *const T, offset: isize) -> *const T;
 array			pub mod array;
+array			mod array;
 as_bytes			    fn as_bytes(&self) -> &[u8] 
 as_bytes			    fn as_bytes(&self) -> &[u8];
+as_bytes_mut			    unsafe fn as_bytes_mut(&mut self) -> &mut [u8] 
+as_bytes_mut			    unsafe fn as_bytes_mut(&mut self) -> &mut [u8];
 as_mut			                fn as_mut(&mut self) -> &mut [T] 
 as_mut			    fn as_mut(&mut self) -> &mut T;
 as_mut			    fn as_mut(&mut self) -> &mut U 
@@ -969,6 +1052,7 @@ as_ptr			    fn as_ptr(&self) -> *const Self::Item;
 as_ptr			    fn as_ptr(&self) -> *const T 
 as_ptr			    fn as_ptr(&self) -> *const u8 
 as_ptr			    fn as_ptr(&self) -> *const u8;
+as_ptr			fn as_ptr() 
 as_ref			                fn as_ref(&self) -> &[T] 
 as_ref			    fn as_ref(&self) -> &T;
 as_ref			    fn as_ref(&self) -> &U 
@@ -983,13 +1067,12 @@ as_slice			    fn as_slice(&self) -> &[T]
 as_slice			    fn as_slice(&self) -> &[T];
 as_slice			    pub fn as_slice(&self) -> &'a [T] 
 as_str			    pub fn as_str(&self) -> &'a str 
-as_unsafe_cell			    pub fn as_unsafe_cell(&self) -> &UnsafeCell<T> 
-as_unsafe_cell			    pub unsafe fn as_unsafe_cell(&self) -> &UnsafeCell<T> 
 as_usize			    fn as_usize(&self) -> Option<usize> 
 assert_coerce_unsized			fn assert_coerce_unsized(a: UnsafeCell<&i32>, b: Cell<&i32>, c: RefCell<&i32>) 
 assert_receiver_is_total_eq			    fn assert_receiver_is_total_eq(&self) {}
 assume			    pub fn assume(b: bool);
 atomic			pub mod atomic;
+atomic			mod atomic;
 atomic_add			unsafe fn atomic_add<T>(dst: *mut T, val: T, order: Ordering) -> T 
 atomic_and			    pub fn atomic_and<T>(dst: *mut T, src: T) -> T;
 atomic_and			unsafe fn atomic_and<T>(dst: *mut T, val: T, order: Ordering) -> T 
@@ -1143,7 +1226,7 @@ bench_zip_add			fn bench_zip_add(b: &mut Bencher)
 bench_zip_copy			fn bench_zip_copy(b: &mut Bencher) 
 big_to_fp			pub fn big_to_fp(f: &Big) -> Fp 
 bignum			pub mod bignum;
-binary_search			    fn binary_search<Q: ?Sized>(&self, x: &Q) -> Result<usize, usize> where T: Borrow<Q>, Q: Ord 
+bignum			mod bignum;
 binary_search			    fn binary_search<Q: ?Sized>(&self, x: &Q) -> Result<usize, usize>
 binary_search_by			    fn binary_search_by<'a, F>(&'a self, f: F) -> Result<usize, usize>
 binary_search_by			    fn binary_search_by<'a, F>(&'a self, mut f: F) -> Result<usize, usize>
@@ -1168,6 +1251,10 @@ bitxor			    fn bitxor(self, rhs: RHS) -> Self::Output;
 bitxor_assign			            fn bitxor_assign(&mut self, other: Wrapping<
 bitxor_assign			            fn bitxor_assign(&mut self, other: 
 bitxor_assign			    fn bitxor_assign(&mut self, rhs: Rhs);
+bool_			fn bool_() 
+bool_and			fn bool_and() 
+bool_nand			fn bool_nand() 
+borderline_overflow			fn borderline_overflow() 
 borrow			                fn borrow(&self) -> &[T] 
 borrow			    fn borrow(&self) -> &Borrowed;
 borrow			    fn borrow(&self) -> &T { &**self }
@@ -1179,12 +1266,13 @@ borrow_mut			    fn borrow_mut(&mut self) -> &mut Borrowed;
 borrow_mut			    fn borrow_mut(&mut self) -> &mut T { &mut **self }
 borrow_mut			    fn borrow_mut(&mut self) -> &mut T { self }
 borrow_mut			    pub fn borrow_mut(&self) -> RefMut<T> 
-borrow_state			    pub fn borrow_state(&self) -> BorrowState 
 bound_intermediate_digits			fn bound_intermediate_digits(decimal: &Decimal, e: i64) -> u64 
+break_patterns			fn break_patterns<T>(v: &mut [T]) 
 breakpoint			    pub fn breakpoint();
 bswap			    pub fn bswap<T>(x: T) -> T;
 build_hasher			    fn build_hasher(&self) -> H 
 build_hasher			    fn build_hasher(&self) -> Self::Hasher;
+builders			mod builders;
 builders			mod builders;
 builtin			mod builtin 
 by_ref			    fn by_ref(&mut self) -> &mut Self where Self: Sized { self }
@@ -1205,19 +1293,30 @@ call_once			        extern "rust-call" fn call_once(mut self, args: A) -> F::Out
 call_once			        extern "rust-call" fn call_once(self, args: A) -> F::Output 
 call_once			    extern "rust-call" fn call_once(self, args: Args) -> Self::Output;
 call_once			    extern "rust-call" fn call_once(self, (line,): (&'a str,)) -> &'a str 
-ceil_log5_of_max_sig			    fn ceil_log5_of_max_sig() -> i16 
-ceil_log5_of_max_sig			    fn ceil_log5_of_max_sig() -> i16;
 ceilf32			    pub fn ceilf32(x: f32) -> f32;
 ceilf64			    pub fn ceilf64(x: f64) -> f64;
 cell			pub mod cell;
+cell			mod cell;
+cell_default			fn cell_default() 
+cell_has_sensible_show			fn cell_has_sensible_show() 
+cell_into_inner			fn cell_into_inner() 
+cell_replace			fn cell_replace() 
+cell_set			fn cell_set() 
 chain			    fn chain<U>(self, other: U) -> Chain<Self, U::IntoIter> where
 char			pub mod char;
+char			mod char;
 char_indices			    fn char_indices(&self) -> CharIndices 
 char_indices			    fn char_indices(&self) -> CharIndices;
 char_private			mod char_private;
 chars			    fn chars(&self) -> Chars 
 chars			    fn chars(&self) -> Chars;
-check			fn check(x: u16, singletons: &[u16], normal: &[u16]) -> bool 
+check			fn check(x: u16, singletonuppers: &[(u8, u8)], singletonlowers: &[u8],
+check			    fn check(c: char) 
+check			    fn check(input: char, expect: &[u16]) 
+check			    fn check(input: char, expect: &[u8]) 
+check			    fn check(s: &[u16], expected: &[Result<char, u16>]) 
+check_exact			fn check_exact<F, T>(mut f: F, v: T, vstr: &str, expected: &[u8], expectedk: i16)
+check_exact_one			fn check_exact_one<F, T>(mut f: F, x: i64, e: isize, tstr: &str, expected: &[u8], expectedk: i16)
 checked_abs			        pub fn checked_abs(self) -> Option<Self> 
 checked_add			        fn checked_add(&self, other: u32) -> Option<Self> 
 checked_add			        pub fn checked_add(self, other: Self) -> Option<Self> 
@@ -1234,6 +1333,7 @@ checked_shr			        pub fn checked_shr(self, rhs: u32) -> Option<Self>
 checked_sub			        fn checked_sub(&self, other: u32) -> Option<Self> 
 checked_sub			        pub fn checked_sub(self, other: Self) -> Option<Self> 
 checked_sub			    fn checked_sub(&self, other: u32) -> Option<Self>;
+choose_pivot			fn choose_pivot<T, F>(v: &mut [T], is_less: &mut F) -> (usize, bool)
 chunks			    fn chunks(&self, size: usize) -> Chunks<Self::Item>;
 chunks			    fn chunks(&self, size: usize) -> Chunks<T> 
 chunks_mut			    fn chunks_mut(&mut self, chunk_size: usize) -> ChunksMut<Self::Item>;
@@ -1268,6 +1368,7 @@ clone			    fn clone(&self) -> Iter<'a, T> { Iter { ptr: self.ptr, end: self.end
 clone			    fn clone(&self) -> Split<'a, T, P> 
 clone			    fn clone(&self) -> Windows<'a, T> 
 clone			            fn clone(&self) -> Self 
+clone			mod clone;
 clone			                fn clone(&self) -> (
 clone::Clone for Discriminant			impl<T> clone::Clone for Discriminant<T> 
 clone_from			    fn clone_from(&mut self, source: &Self) 
@@ -1285,6 +1386,7 @@ cmp			        fn cmp(&self, other: & &'a A) -> Ordering { Ord::cmp(*self, *other
 cmp			        fn cmp(&self, other: &&'a mut A) -> Ordering { Ord::cmp(*self, *other) }
 cmp			        fn cmp(&self, other: &bool) -> Ordering 
 cmp			    fn cmp(&self, other: &Ordering) -> Ordering 
+cmp			    fn cmp(&self, other: &Reverse<T>) -> Ordering 
 cmp			    fn cmp(&self, other: &Self) -> Ordering;
 cmp			    fn cmp<I>(mut self, other: I) -> Ordering where
 cmp			pub mod cmp;
@@ -1299,6 +1401,7 @@ cmp			    fn cmp(&self, other: &*const T) -> Ordering
 cmp			    fn cmp(&self, other: &*mut T) -> Ordering 
 cmp			    fn cmp(&self, other: &[T]) -> Ordering 
 cmp			        fn cmp(&self, other: &str) -> Ordering 
+cmp			mod cmp;
 cmp			                fn cmp(&self, other: &(
 cmp::Eq for Discriminant			impl<T> cmp::Eq for Discriminant<T> {}
 cmp::PartialEq for Discriminant			impl<T> cmp::PartialEq for Discriminant<T> 
@@ -1313,6 +1416,7 @@ compare_exchange			    pub fn compare_exchange(&self,
 compare_exchange_weak			            pub fn compare_exchange_weak(&self,
 compare_exchange_weak			    pub fn compare_exchange_weak(&self,
 compare_with_half_ulp			pub fn compare_with_half_ulp(f: &Big, ones_place: usize) -> Ordering 
+compiler_fence			pub fn compiler_fence(order: Ordering) 
 consts			pub mod consts 
 consts			pub mod consts 
 contains			    pub fn contains(&self, item: Idx) -> bool 
@@ -1321,6 +1425,7 @@ contains			    fn contains(&self, x: &T) -> bool where T: PartialEq
 contains			    fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 contains			    fn contains<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool;
 contains_nonascii			fn contains_nonascii(x: usize) -> bool 
+conv			    fn conv(sig: u64) -> u64 
 convert			pub mod convert;
 convert			fn convert<T: RawFloat>(mut decimal: Decimal) -> Result<T, ParseFloatError> 
 copy			    pub fn copy<T>(src: *const T, dst: *mut T, count: usize);
@@ -1346,22 +1451,30 @@ ctlz			    pub fn ctlz<T>(x: T) -> T;
 ctpop			    pub fn ctpop<T>(x: T) -> T;
 cttz			    pub fn cttz<T>(x: T) -> T;
 cycle			    fn cycle(self) -> Cycle<Self> where Self: Sized + Clone 
+cycle			pub fn cycle<T>(data: &[T]) -> CycleIter<T> 
 d_rounds			    fn d_rounds(&mut State);
 d_rounds			    fn d_rounds(state: &mut State) 
 debug_list			    pub fn debug_list<'b>(&'b mut self) -> DebugList<'b, 'a> 
+debug_list			mod debug_list 
 debug_list_new			pub fn debug_list_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugList<'a, 'b> 
 debug_map			    pub fn debug_map<'b>(&'b mut self) -> DebugMap<'b, 'a> 
+debug_map			mod debug_map 
 debug_map_new			pub fn debug_map_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugMap<'a, 'b> 
 debug_set			    pub fn debug_set<'b>(&'b mut self) -> DebugSet<'b, 'a> 
+debug_set			mod debug_set 
 debug_set_new			pub fn debug_set_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>) -> DebugSet<'a, 'b> 
 debug_struct			    pub fn debug_struct<'b>(&'b mut self, name: &str) -> DebugStruct<'b, 'a> 
+debug_struct			mod debug_struct 
 debug_struct_new			pub fn debug_struct_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>,
 debug_tuple			    pub fn debug_tuple<'b>(&'b mut self, name: &str) -> DebugTuple<'b, 'a> 
+debug_tuple			mod debug_tuple 
 debug_tuple_new			pub fn debug_tuple_new<'a, 'b>(fmt: &'a mut fmt::Formatter<'b>, name: &str) -> DebugTuple<'a, 'b> 
 dec2flt			mod dec2flt;
 dec2flt			fn dec2flt<T: RawFloat>(s: &str) -> Result<T, ParseFloatError> 
 dec2flt			pub mod dec2flt;
+dec2flt			mod dec2flt;
 decode			pub fn decode<T: DecodableFloat>(v: T) -> (\/*negative?*\/ bool, FullDecoded) 
+decode_finite			pub fn decode_finite<T: DecodableFloat>(v: T) -> Decoded 
 decode_finite			pub fn decode_finite<T: DecodableFloat>(v: T) -> Decoded 
 decode_finite			pub fn decode_finite<T: DecodableFloat>(v: T) -> Decoded 
 decode_utf8			pub fn decode_utf8<I: IntoIterator<Item = u8>>(i: I) -> DecodeUtf8<I::IntoIter> 
@@ -1385,14 +1498,18 @@ default			    fn default() -> &'a str { "" }
 default			            fn default() -> Self 
 default			    fn default() -> AtomicPtr<T> 
 default			    fn default() -> Self 
+default			    fn default() -> CustomHasher 
+default			    fn default() -> MyHasher 
 default			                fn default() -> (
 deref			    fn deref(&self) -> &T 
+deref			    fn deref(&self) -> &Self::Target 
 deref			    fn deref(&self) -> &T 
 deref			    fn deref(&self) -> &Self::Target;
 deref			    fn deref(&self) -> &T { *self }
 deref			    fn deref(&self) -> &*const T 
 deref			    fn deref(&self) -> &*mut T 
 deref_mut			    fn deref_mut(&mut self) -> &mut T 
+deref_mut			    fn deref_mut(&mut self) -> &mut Self::Target 
 deref_mut			    fn deref_mut(&mut self) -> &mut Self::Target;
 deref_mut			    fn deref_mut(&mut self) -> &mut T { *self }
 determine_sign			fn determine_sign(sign: Sign, decoded: &FullDecoded, negative: bool) -> &'static [u8] 
@@ -1402,6 +1519,7 @@ digits			            pub fn digits(&self) -> &[
 digits_to_big			pub fn digits_to_big(integral: &[u8], fractional: &[u8]) -> Big 
 digits_to_dec_str			fn digits_to_dec_str<'a>(buf: &'a [u8], exp: i16, frac_digits: usize,
 digits_to_exp_str			fn digits_to_exp_str<'a>(buf: &'a [u8], exp: i16, min_ndigits: usize, upper: bool,
+discard_doesnt_unborrow			fn discard_doesnt_unborrow() 
 discriminant			pub fn discriminant<T>(v: &T) -> Discriminant<T> 
 discriminant_value			    pub fn discriminant_value<T>(v: &T) -> u64;
 div			            fn div(self, other: Wrapping<
@@ -1412,21 +1530,31 @@ div_assign			            fn div_assign(&mut self, other: Wrapping<
 div_assign			            fn div_assign(&mut self, other: 
 div_assign			    fn div_assign(&mut self, rhs: Rhs);
 div_rem			            pub fn div_rem(&self, d: &
+div_rem			    fn div_rem(n: u64, d: u64) -> (Big, Big) 
 div_rem_small			            pub fn div_rem_small(&mut self, other: 
 div_rem_upto_16			fn div_rem_upto_16<'a>(x: &'a mut Big, scale: &Big,
 diy_float			pub mod diy_float;
 do_inspect			    fn do_inspect(&mut self, elt: Option<I::Item>) -> Option<I::Item> 
+double_borrow_single_release_no_borrow_mut			fn double_borrow_single_release_no_borrow_mut() 
+double_imm_borrow			fn double_imm_borrow() 
 downcast_mut			    pub fn downcast_mut<T: Any>(&mut self) -> Option<&mut T> 
 downcast_ref			    pub fn downcast_ref<T: Any>(&self) -> Option<&T> 
 dragon			    mod dragon;
 dragon			    pub mod dragon;
+dragon			    mod dragon;
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 
+drop			    pub unsafe fn drop(slot: &mut ManuallyDrop<T>) 
 drop			pub fn drop<T>(_x: T) { }
 drop			        fn drop(&mut self) 
 drop			    fn drop(&mut self);
+drop			    fn drop(&mut self) 
+drop			       fn drop(&mut self) 
+drop			        fn drop(&mut self) 
 drop_in_place			    pub fn drop_in_place<T: ?Sized>(to_drop: *mut T);
+drop_in_place			pub unsafe fn drop_in_place<T: ?Sized>(to_drop: *mut T) 
 eat_digits			fn eat_digits(s: &[u8]) -> (&[u8], &[u8]) 
+ed_iterator_specializations			fn ed_iterator_specializations() 
 empty			pub fn empty<T>() -> Empty<T> 
 encode_normal			pub fn encode_normal<T: RawFloat>(x: Unpacked) -> T 
 encode_subnormal			pub fn encode_subnormal<T: RawFloat>(significand: u64) -> T 
@@ -1466,11 +1594,13 @@ eq			    fn eq(&self, other: &*mut T) -> bool { *self == *other }
 eq			pub fn eq<T: ?Sized>(a: *const T, b: *const T) -> bool 
 eq			    fn eq(&self, other: &[B]) -> bool 
 eq			        fn eq(&self, other: &str) -> bool 
+eq			        fn eq(&self, other: &SketchyNum) -> bool 
 eq			                fn eq(&self, other: &(
 eq_slice			fn eq_slice(a: &str, b: &str) -> bool 
 equal			    fn equal(&self, other: &[A]) -> bool 
 equal			    fn equal(&self, other: &[B]) -> bool;
 err			    pub fn err(self) -> Option<E> 
+error_len			    pub fn error_len(&self) -> Option<usize> 
 escape_debug			    fn escape_debug(self) -> EscapeDebug 
 escape_debug			    fn escape_debug(self) -> EscapeDebug;
 escape_default			    fn escape_default(self) -> EscapeDefault 
@@ -1481,23 +1611,35 @@ estimate_max_buf_len			fn estimate_max_buf_len(exp: i16) -> usize
 estimate_scaling_factor			pub fn estimate_scaling_factor(mant: u64, exp: i16) -> i16 
 estimated_capacity			    pub fn estimated_capacity(&self) -> usize 
 estimator			pub mod estimator;
+estimator			mod estimator;
+eu_iterator_specializations			fn eu_iterator_specializations() 
+exact_f32_random_equivalence_test			fn exact_f32_random_equivalence_test() 
+exact_f64_random_equivalence_test			fn exact_f64_random_equivalence_test() 
+exact_sanity_test			fn exact_sanity_test() 
+exact_sanity_test			fn exact_sanity_test() 
 exp2f32			    pub fn exp2f32(x: f32) -> f32;
 exp2f64			    pub fn exp2f64(x: f64) -> f64;
-exp_bits			    fn exp_bits() -> u8 
-exp_bits			    fn exp_bits() -> u8;
 expect			    pub fn expect(self, msg: &str) -> T 
 expect			    pub fn expect(self, msg: &str) -> T 
 expect_err			    pub fn expect_err(self, msg: &str) -> E 
 expect_failed			fn expect_failed(msg: &str) -> ! 
 expf32			    pub fn expf32(x: f32) -> f32;
 expf64			    pub fn expf64(x: f64) -> f64;
-explicit_sig_bits			    fn explicit_sig_bits() -> u8 
 extend			    fn extend<T: IntoIterator<Item=A>>(&mut self, iter: T);
 extract_sign			fn extract_sign(s: &str) -> (Sign, &str) 
+f			    fn f(xy: &(isize, char)) -> bool { let (_x, y) = *xy; y == 'b' }
+f32_exact_sanity_test			pub fn f32_exact_sanity_test<F>(mut f: F)
+f32_exhaustive_equivalence_test			pub fn f32_exhaustive_equivalence_test<F, G>(f: F, g: G, k: usize)
+f32_random_equivalence_test			pub fn f32_random_equivalence_test<F, G>(f: F, g: G, k: usize, n: usize)
+f32_shortest_sanity_test			pub fn f32_shortest_sanity_test<F>(mut f: F) where F: FnMut(&Decoded, &mut [u8]) -> (usize, i16) 
+f64_exact_sanity_test			pub fn f64_exact_sanity_test<F>(mut f: F)
+f64_random_equivalence_test			pub fn f64_random_equivalence_test<F, G>(f: F, g: G, k: usize, n: usize)
+f64_shortest_sanity_test			pub fn f64_shortest_sanity_test<F>(mut f: F) where F: FnMut(&Decoded, &mut [u8]) -> (usize, i16) 
 fabsf32			    pub fn fabsf32(x: f32) -> f32;
 fabsf64			    pub fn fabsf64(x: f64) -> f64;
 fadd_fast			    pub fn fadd_fast<T>(a: T, b: T) -> T;
 fast_path			pub fn fast_path<T: RawFloat>(integral: &[u8], fractional: &[u8], e: i64) -> Option<T> 
+fast_path_correct			fn fast_path_correct() 
 fdiv_fast			    pub fn fdiv_fast<T>(a: T, b: T) -> T;
 fence			pub fn fence(order: Ordering) 
 fetch_add			            pub fn fetch_add(&self, val: 
@@ -1518,6 +1660,7 @@ finalize			    unsafe fn finalize(filled: Self::Place) -> Self;
 finalize			    unsafe fn finalize(self) -> Self::Owner;
 find			    fn find<P>(&mut self, mut predicate: P) -> Option<Self::Item> where
 find			    fn find<P>(&mut self, mut predicate: P) -> Option<Self::Item> where
+find			    fn find<P>(&mut self, predicate: P) -> Option<Self::Item>
 find			            fn find<F>(&mut self, mut predicate: F) -> Option<Self::Item>
 find			    fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize> 
 find			    fn find<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize>;
@@ -1530,12 +1673,16 @@ finish			    fn finish(&self) -> u64
 finish			    fn finish(&mut self) -> Option<&'a [T]> 
 finish			    fn finish(&mut self) -> Option<&'a mut [T]> 
 finish			    fn finish(&mut self) -> Option<Self::Item>;
+finish			    fn finish(&self) -> u64 { self.hash }
+finish			    fn finish(&self) -> u64 { self.output }
 first			    fn first(&self) -> Option<&Self::Item>;
 first			    fn first(&self) -> Option<&T> 
 first_mut			    fn first_mut(&mut self) -> Option<&mut Self::Item>;
 first_mut			    fn first_mut(&mut self) -> Option<&mut T> 
+fixed_size_array			fn fixed_size_array() 
 flags			    pub fn flags(&self) -> u32 { self.flags }
 flat_map			    fn flat_map<U, F>(self, f: F) -> FlatMap<Self, U, F>
+float			mod float;
 float			mod float;
 float_macros			mod float_macros;
 float_to_decimal_common			fn float_to_decimal_common<T>(fmt: &mut Formatter, num: &T, negative_zero: bool) -> Result
@@ -1544,6 +1691,7 @@ floorf32			    pub fn floorf32(x: f32) -> f32;
 floorf64			    pub fn floorf64(x: f64) -> f64;
 flt2dec			mod flt2dec;
 flt2dec			pub mod flt2dec;
+flt2dec			mod flt2dec;
 fmaf32			    pub fn fmaf32(a: f32, b: f32, c: f32) -> f32;
 fmaf64			    pub fn fmaf64(a: f64, b: f64, c: f64) -> f64;
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1568,6 +1716,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			pub mod fmt;
+fmt			    fn fmt(&self, fmt: &mut ::fmt::Formatter) -> ::fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			            fn fmt(&self, f: &mut ::fmt::Formatter) -> ::fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
@@ -1585,11 +1734,14 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			            fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			        impl fmt::Debug for 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			            fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
+fmt			mod fmt;
 fmt::Binary for Wrapping			impl<T: fmt::Binary> fmt::Binary for Wrapping<T> 
 fmt::Debug for Any			impl fmt::Debug for Any + Send 
 fmt::Debug for Any			impl fmt::Debug for Any 
 fmt::Debug for AtomicBool			impl fmt::Debug for AtomicBool 
 fmt::Debug for AtomicPtr			impl<T> fmt::Debug for AtomicPtr<T> 
+fmt::Debug for Bar			        impl fmt::Debug for Bar 
 fmt::Debug for BuildHasherDefault			impl<H> fmt::Debug for BuildHasherDefault<H> 
 fmt::Debug for CharPredicateSearcher			impl<'a, F> fmt::Debug for CharPredicateSearcher<'a, F>
 fmt::Debug for Discriminant			impl<T> fmt::Debug for Discriminant<T> 
@@ -1597,10 +1749,13 @@ fmt::Debug for Empty			impl<T> fmt::Debug for Empty<T>
 fmt::Debug for Filter			impl<I: fmt::Debug, P> fmt::Debug for Filter<I, P> 
 fmt::Debug for FilterMap			impl<I: fmt::Debug, F> fmt::Debug for FilterMap<I, F> 
 fmt::Debug for FlatMap			impl<I: fmt::Debug, U: IntoIterator, F> fmt::Debug for FlatMap<I, U, F>
+fmt::Debug for Foo			        impl fmt::Debug for Foo 
 fmt::Debug for Inspect			impl<I: fmt::Debug, F> fmt::Debug for Inspect<I, F> 
 fmt::Debug for Iter			impl<'a, T: 'a + fmt::Debug> fmt::Debug for Iter<'a, T> 
 fmt::Debug for IterMut			impl<'a, T: 'a + fmt::Debug> fmt::Debug for IterMut<'a, T> 
 fmt::Debug for Map			impl<I: fmt::Debug, F> fmt::Debug for Map<I, F> 
+fmt::Debug for RSplit			impl<'a, T: 'a + fmt::Debug, P> fmt::Debug for RSplit<'a, T, P> where P: FnMut(&T) -> bool 
+fmt::Debug for RSplitMut			impl<'a, T: 'a + fmt::Debug, P> fmt::Debug for RSplitMut<'a, T, P> where P: FnMut(&T) -> bool 
 fmt::Debug for RSplitN			impl<'a, T: 'a + fmt::Debug, P> fmt::Debug for RSplitN<'a, T, P> where P: FnMut(&T) -> bool 
 fmt::Debug for RSplitNMut			impl<'a, T: 'a + fmt::Debug, P> fmt::Debug for RSplitNMut<'a, T, P> where P: FnMut(&T) -> bool 
 fmt::Debug for Range			impl<Idx: fmt::Debug> fmt::Debug for Range<Idx> 
@@ -1638,7 +1793,6 @@ fmul_fast			    pub fn fmul_fast<T>(a: T, b: T) -> T;
 fold			    fn fold<B, F>(self, init: B, mut f: F) -> B where
 fold			    fn fold<Acc, F>(self, init: Acc, mut f: F) -> Acc
 fold			    fn fold<Acc, G>(self, init: Acc, mut g: G) -> Acc
-forget			    pub fn forget<T>(_: T) -> ();
 forget			pub fn forget<T>(t: T) 
 format_exact			pub fn format_exact(d: &Decoded, buf: &mut [u8], limit: i16) -> (\/*#digits*\/ usize, \/*exp*\/ i16) 
 format_exact			pub fn format_exact(d: &Decoded, buf: &mut [u8], limit: i16) -> (\/*#digits*\/ usize, \/*exp*\/ i16) 
@@ -1647,6 +1801,7 @@ format_shortest			pub fn format_shortest(d: &Decoded, buf: &mut [u8]) -> (\/*#di
 format_shortest			pub fn format_shortest(d: &Decoded, buf: &mut [u8]) -> (\/*#digits*\/ usize, \/*exp*\/ i16) 
 format_shortest_opt			pub fn format_shortest_opt(d: &Decoded,
 fp_to_float			pub fn fp_to_float<T: RawFloat>(x: Fp) -> T 
+fp_to_float_half_to_even			fn fp_to_float_half_to_even() 
 fpu_precision			mod fpu_precision 
 frem_fast			    pub fn frem_fast<T>(a: T, b: T) -> T;
 from			    fn from(t: T) -> Cell<T> 
@@ -1681,6 +1836,9 @@ from_str			            fn from_str(src: &str) -> Result<Self, ParseFloatError>
 from_str			            fn from_str(src: &str) -> Result<Self, ParseIntError> 
 from_str			    fn from_str(s: &str) -> Result<Self, Self::Err>;
 from_str			    fn from_str(s: &str) -> Result<bool, ParseBoolError> 
+from_str			        fn from_str<T: ::std::str::FromStr>(t: &str) -> Option<T> 
+from_str			    fn from_str<T: FromStr>(t: &str) -> Option<T> 
+from_str_issue7588			fn from_str_issue7588() 
 from_str_radix			        pub fn from_str_radix(src: &str, radix: u32) -> Result<Self, ParseIntError> 
 from_str_radix			fn from_str_radix<T: FromStrRadixHelper>(src: &str, radix: u32) -> Result<T, ParseIntError> 
 from_str_unchecked			pub fn from_str_unchecked<'a, T>(bytes: T) -> u64 where T : IntoIterator<Item=&'a u8> 
@@ -1696,7 +1854,9 @@ from_u8			        fn from_u8(u: u8) ->
 from_u8			    fn from_u8(u: u8) -> Self;
 from_usize			    pub fn from_usize(x: &usize) -> ArgumentV1 
 from_utf8			pub fn from_utf8(v: &[u8]) -> Result<&str, Utf8Error> 
+from_utf8_mut			pub fn from_utf8_mut(v: &mut [u8]) -> Result<&mut str, Utf8Error> 
 from_utf8_unchecked			pub unsafe fn from_utf8_unchecked(v: &[u8]) -> &str 
+from_utf8_unchecked_mut			pub unsafe fn from_utf8_unchecked_mut(v: &mut [u8]) -> &mut str 
 fsub_fast			    pub fn fsub_fast<T>(a: T, b: T) -> T;
 full_add			                fn full_add(self, other: 
 full_add			    fn full_add(self, other: Self, carry: bool) -> (bool \/* carry *\/, Self);
@@ -1707,6 +1867,7 @@ full_mul			    fn full_mul(self, other: Self, carry: Self) -> (Self \/* carry *\
 full_mul_add			                fn full_mul_add(self, other: 
 full_mul_add			    fn full_mul_add(self, other: Self, other2: Self, carry: Self) -> (Self \/* carry *\/, Self);
 fuse			    fn fuse(self) -> Fuse<Self> where Self: Sized 
+g			    fn g(xy: &(isize, char)) -> bool { let (_x, y) = *xy; y == 'd' }
 ge			                fn ge(&self, other: &[T; 
 ge			    fn ge(&self, other: &Cell<T>) -> bool 
 ge			    fn ge(&self, other: &RefCell<T>) -> bool 
@@ -1714,6 +1875,7 @@ ge			                fn ge(&self, other: &
 ge			        fn ge(&self, other: & &'b B) -> bool { PartialOrd::ge(*self, *other) }
 ge			        fn ge(&self, other: &&'b mut B) -> bool { PartialOrd::ge(*self, *other) }
 ge			    fn ge(&self, other: &Rhs) -> bool 
+ge			    fn ge(&self, other: &Self) -> bool { other.0 >= self.0 }
 ge			    fn ge<I>(mut self, other: I) -> bool where
 ge			    fn ge(&self, other: &*const T) -> bool { *self >= *other }
 ge			    fn ge(&self, other: &*mut T) -> bool { *self >= *other }
@@ -1721,24 +1883,32 @@ ge			                fn ge(&self, other: &(
 get			    pub fn get(&self) -> *mut T 
 get			    pub fn get(&self) -> T 
 get			    pub unsafe fn get(&self) -> &T 
-get			    fn get(self, slice: &[T]) -> Option<&Self::Output>;
+get			    fn get(self, slice: &T) -> Option<&Self::Output>;
 get			    fn get(self, slice: &[T]) -> Option<&T> 
 get			    fn get(self, slice: &[T]) -> Option<&[T]> 
 get			    fn get<I>(&self, index: I) -> Option<&I::Output>
+get			        fn get(self, slice: &str) -> Option<&Self::Output> 
+get			    fn get<I: SliceIndex<str>>(&self, i: I) -> Option<&I::Output> 
+get			    fn get<I: SliceIndex<str>>(&self, i: I) -> Option<&I::Output>;
 get_bit			            pub fn get_bit(&self, i: usize) -> u8 
 get_bits			pub fn get_bits(x: &Big, start: usize, end: usize) -> u64 
 get_end			    fn get_end(&mut self) -> Option<&'a str> 
 get_mut			    pub fn get_mut(&mut self) -> &mut T 
 get_mut			    pub unsafe fn get_mut(&mut self) -> &mut T 
-get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut Self::Output>;
+get_mut			    fn get_mut(self, slice: &mut T) -> Option<&mut Self::Output>;
 get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut T> 
 get_mut			    fn get_mut(self, slice: &mut [T]) -> Option<&mut [T]> 
 get_mut			    fn get_mut<I>(&mut self, index: I) -> Option<&mut I::Output>
+get_mut			        fn get_mut(self, slice: &mut str) -> Option<&mut Self::Output> 
+get_mut			    fn get_mut<I: SliceIndex<str>>(&mut self, i: I) -> Option<&mut I::Output> 
+get_mut			    fn get_mut<I: SliceIndex<str>>(&mut self, i: I) -> Option<&mut I::Output>;
 get_mut			            pub fn get_mut(&mut self) -> &mut 
 get_mut			    pub fn get_mut(&mut self) -> &mut *mut T 
 get_mut			    pub fn get_mut(&mut self) -> &mut bool 
+get_mut_range			fn get_mut_range() 
 get_or_insert			    pub fn get_or_insert(&mut self, v: T) -> &mut T 
 get_or_insert_with			    pub fn get_or_insert_with<F: FnOnce() -> T>(&mut self, f: F) -> &mut T 
+get_range			fn get_range() 
 get_type_id			    fn get_type_id(&self) -> TypeId { TypeId::of::<T>() }
 get_type_id			    fn get_type_id(&self) -> TypeId;
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> (A::Item, B::Item) 
@@ -1748,17 +1918,26 @@ get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> Self::Item
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> Self::Item;
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> &'a T 
 get_unchecked			    unsafe fn get_unchecked(&mut self, i: usize) -> &'a mut T 
-get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &Self::Output;
+get_unchecked			    unsafe fn get_unchecked(self, slice: &T) -> &Self::Output;
 get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &T 
 get_unchecked			    unsafe fn get_unchecked(self, slice: &[T]) -> &[T] 
 get_unchecked			    unsafe fn get_unchecked<I>(&self, index: I) -> &I::Output
-get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut Self::Output;
+get_unchecked			        unsafe fn get_unchecked(self, slice: &str) -> &Self::Output 
+get_unchecked			    unsafe fn get_unchecked<I: SliceIndex<str>>(&self, i: I) -> &I::Output 
+get_unchecked			    unsafe fn get_unchecked<I: SliceIndex<str>>(&self, i: I) -> &I::Output;
+get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut T) -> &mut Self::Output;
 get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut T 
 get_unchecked_mut			    unsafe fn get_unchecked_mut(self, slice: &mut [T]) -> &mut [T] 
 get_unchecked_mut			    unsafe fn get_unchecked_mut<I>(&mut self, index: I) -> &mut I::Output
+get_unchecked_mut			        unsafe fn get_unchecked_mut(self, slice: &mut str) -> &mut Self::Output 
+get_unchecked_mut			    unsafe fn get_unchecked_mut<I: SliceIndex<str>>(&mut self, i: I) -> &mut I::Output 
+get_unchecked_mut			    unsafe fn get_unchecked_mut<I: SliceIndex<str>>(&mut self, i: I) -> &mut I::Output;
+get_unchecked_mut_range			fn get_unchecked_mut_range() 
+get_unchecked_range			fn get_unchecked_range() 
 getcount			    fn getcount(&mut self, cnt: &rt::v1::Count) -> Option<usize> 
 grisu			    mod grisu;
 grisu			    pub mod grisu;
+grisu			    mod grisu;
 gt			                fn gt(&self, other: &[T; 
 gt			    fn gt(&self, other: &Cell<T>) -> bool 
 gt			    fn gt(&self, other: &RefCell<T>) -> bool 
@@ -1766,10 +1945,12 @@ gt			                fn gt(&self, other: &
 gt			        fn gt(&self, other: & &'b B) -> bool { PartialOrd::gt(*self, *other) }
 gt			        fn gt(&self, other: &&'b mut B) -> bool { PartialOrd::gt(*self, *other) }
 gt			    fn gt(&self, other: &Rhs) -> bool 
+gt			    fn gt(&self, other: &Self) -> bool { other.0 > self.0 }
 gt			    fn gt<I>(mut self, other: I) -> bool where
 gt			    fn gt(&self, other: &*const T) -> bool { *self > *other }
 gt			    fn gt(&self, other: &*mut T) -> bool { *self > *other }
 gt			                fn gt(&self, other: &(
+handler			    fn handler(msg: &'static str) -> isize 
 hash			                fn hash<H: hash::Hasher>(&self, state: &mut H) 
 hash			fn hash<T: Hash>(x: &T) -> u64 
 hash			mod hash;
@@ -1783,27 +1964,41 @@ hash			            fn hash<H: Hasher>(&self, _: &mut H)
 hash			    fn hash<H: hash::Hasher>(&self, state: &mut H) 
 hash			            fn hash<HH: hash::Hasher>(&self, state: &mut HH) 
 hash			        impl<Ret, 
+hash			    fn hash<H: Hasher>(&self, state: &mut H) 
+hash			    fn hash<T: Hash>(t: &T) -> u64 
+hash			    fn hash<H: Hasher>(&self, state: &mut H) 
+hash			fn hash<T: Hash>(x: &T) -> u64 
+hash			mod hash;
 hash::Hash for Discriminant			impl<T> hash::Hash for Discriminant<T> 
 hash_bytes			fn hash_bytes<H: Hasher>(mut s: H, x: &[u8]) -> u64 
 hash_slice			                fn hash_slice<H: Hasher>(data: &[
 hash_slice			    fn hash_slice<H: Hasher>(data: &[Self], state: &mut H)
 hash_with			fn hash_with<H: Hasher, T: Hash>(mut st: H, x: &T) -> u64 
+hash_with			fn hash_with<H: Hasher, T: Hash>(mut st: H, x: &T) -> u64 
 haystack			        fn haystack(&self) -> &'a str 
 haystack			    fn haystack(&self) -> &'a str { self.haystack }
 haystack			    fn haystack(&self) -> &'a str 
 haystack			    fn haystack(&self) -> &'a str;
+heapsort			pub fn heapsort<T, F>(v: &mut [T], mut is_less: F)
+heapsort			pub fn heapsort<T, F>(v: &mut [T], is_less: &mut F)
+human_f64_roundtrip			fn human_f64_roundtrip() 
 i128			impl i128 
 i16			impl i16 
+i16			mod i16;
 i32			impl i32 
+i32			mod i32;
 i64			impl i64 
+i64			mod i64;
 i8			impl i8 
+i8			mod i8;
+imm_release_borrow_mut			fn imm_release_borrow_mut() 
 impls			mod impls 
 impls			mod impls 
 impls			mod impls 
 impls			mod impls 
 index			    fn index(&self, index: Idx) -> &Self::Output;
 index			    fn index(&self, index: I) -> &I::Output 
-index			    fn index(self, slice: &[T]) -> &Self::Output;
+index			    fn index(self, slice: &T) -> &Self::Output;
 index			    fn index(self, slice: &[T]) -> &T 
 index			    fn index(self, slice: &[T]) -> &[T] 
 index			        fn index(&self, _index: ops::RangeFull) -> &str 
@@ -1812,9 +2007,10 @@ index			        fn index(&self, index: ops::RangeFrom<usize>) -> &str
 index			        fn index(&self, index: ops::RangeInclusive<usize>) -> &str 
 index			        fn index(&self, index: ops::RangeTo<usize>) -> &str 
 index			        fn index(&self, index: ops::RangeToInclusive<usize>) -> &str 
+index			        fn index(self, slice: &str) -> &Self::Output 
 index_mut			    fn index_mut(&mut self, index: Idx) -> &mut Self::Output;
 index_mut			    fn index_mut(&mut self, index: I) -> &mut I::Output 
-index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut Self::Output;
+index_mut			    fn index_mut(self, slice: &mut T) -> &mut Self::Output;
 index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut T 
 index_mut			    fn index_mut(self, slice: &mut [T]) -> &mut [T] 
 index_mut			        fn index_mut(&mut self, _index: ops::RangeFull) -> &mut str 
@@ -1823,24 +2019,27 @@ index_mut			        fn index_mut(&mut self, index: ops::RangeFrom<usize>) -> &mu
 index_mut			        fn index_mut(&mut self, index: ops::RangeInclusive<usize>) -> &mut str 
 index_mut			        fn index_mut(&mut self, index: ops::RangeTo<usize>) -> &mut str 
 index_mut			        fn index_mut(&mut self, index: ops::RangeToInclusive<usize>) -> &mut str 
-inf_cutoff			    fn inf_cutoff() -> i64 
-inf_cutoff			    fn inf_cutoff() -> i64;
-infinity			    fn infinity() -> f32 
-infinity			    fn infinity() -> f64 
-infinity			    fn infinity() -> Self;
-infinity2			    fn infinity2() -> Self 
+index_mut			        fn index_mut(self, slice: &mut str) -> &mut Self::Output 
+inf			fn inf() 
+infinity			fn infinity() 
 init			    pub fn init<T>() -> T;
+insertion_sort			fn insertion_sort<T, F>(v: &mut [T], is_less: &mut F)
 inspect			    fn inspect<F>(self, f: F) -> Inspect<Self, F> where
+int_and			fn int_and() 
 int_macros			mod int_macros;
-integer_decode			    fn integer_decode(self) -> (u64, i16, i8) 
+int_macros			mod int_macros;
+int_or			fn int_or() 
+int_xor			fn int_xor() 
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8) 
 integer_decode			    fn integer_decode(self) -> (u64, i16, i8);
-integer_decode2			    fn integer_decode2(self) -> (u64, i16, i8) 
+integer_decode			fn integer_decode(f: f64) -> (u64, i16, i8) 
+integers_to_f64			fn integers_to_f64() 
 internal_macros			mod internal_macros;
 into			    fn into(self) -> T;
 into			    fn into(self) -> U 
 into_inner			    pub fn into_inner(self) -> T 
 into_inner			    pub unsafe fn into_inner(self) -> T 
+into_inner			    pub fn into_inner(slot: ManuallyDrop<T>) -> T 
 into_inner			            pub fn into_inner(self) -> 
 into_inner			    pub fn into_inner(self) -> *mut T 
 into_inner			    pub fn into_inner(self) -> bool 
@@ -1862,7 +2061,10 @@ into_searcher			    fn into_searcher(self, haystack: &'a str) -> Self::Searcher;
 into_searcher			    fn into_searcher(self, haystack: &'a str) -> StrSearcher<'a, 'b> 
 into_slice			    pub fn into_slice(self) -> &'a mut [T] 
 intrinsics			pub mod intrinsics;
+intrinsics			mod intrinsics;
+invalid_chars			fn invalid_chars() 
 is			    pub fn is<T: Any>(&self) -> bool 
+is_any			    fn is_any<T: Any + ?Sized>() {}
 is_char_boundary			    fn is_char_boundary(&self, index: usize) -> bool 
 is_char_boundary			    fn is_char_boundary(&self, index: usize) -> bool;
 is_contained_in			        fn is_contained_in(self, haystack: &'a str) -> bool 
@@ -1893,6 +2095,7 @@ is_none			    pub fn is_none(&self) -> bool
 is_normal			    fn is_normal(self) -> bool 
 is_normal			    fn is_normal(self) -> bool 
 is_normal			    fn is_normal(self) -> bool;
+is_normalized			    fn is_normalized(sig: u64) -> bool 
 is_null			    pub fn is_null(self) -> bool where T: Sized 
 is_ok			    pub fn is_ok(&self) -> bool 
 is_positive			        pub fn is_positive(self) -> bool { self > 0 }
@@ -1919,6 +2122,7 @@ iter			    pub fn iter(&self) -> Iter<T>
 iter			    pub fn iter(&self) -> Iter<T> 
 iter			    fn iter(&self) -> Iter<Self::Item>;
 iter			    fn iter(&self) -> Iter<T> 
+iter			mod iter;
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    pub fn iter_mut(&mut self) -> IterMut<T> 
 iter_mut			    fn iter_mut(&mut self) -> IterMut<Self::Item>;
@@ -1926,7 +2130,9 @@ iter_mut			    fn iter_mut(&mut self) -> IterMut<T>
 iter_nth			    fn iter_nth(&mut self, n: usize) -> Option<&'a T> 
 iter_nth			    fn iter_nth(&mut self, n: usize) -> Option<&'a mut T> 
 iter_private			mod iter_private;
+iterate			fn iterate<F, G, V>(func: &str, k: usize, n: usize, mut f: F, mut g: G, mut v: V) -> (usize, usize)
 iterator			mod iterator;
+large			fn large() 
 last			    fn last(self) -> Option<char> 
 last			    fn last(self) -> Option<Self::Item> where Self: Sized 
 last			    fn last(mut self) -> Option<I::Item> 
@@ -1941,6 +2147,11 @@ last			    fn last(mut self) -> Option<char>
 last			    fn last(self) -> Option<Self::Item> 
 last_mut			    fn last_mut(&mut self) -> Option<&mut Self::Item>;
 last_mut			    fn last_mut(&mut self) -> Option<&mut T> 
+ldexp			        fn ldexp(x: f64, n: i32) -> f64;
+ldexp_f32			fn ldexp_f32(a: f32, b: i32) -> f32 
+ldexp_f64			fn ldexp_f64(a: f64, b: i32) -> f64 
+ldexpi			    fn ldexpi(f: i64, exp: isize) -> Self { f as Self * (exp as Self).exp2() }
+ldexpi			    fn ldexpi(f: i64, exp: isize) -> Self;
 le			                fn le(&self, other: &[T; 
 le			    fn le(&self, other: &Cell<T>) -> bool 
 le			    fn le(&self, other: &RefCell<T>) -> bool 
@@ -1948,6 +2159,7 @@ le			                fn le(&self, other: &
 le			        fn le(&self, other: & &'b B) -> bool { PartialOrd::le(*self, *other) }
 le			        fn le(&self, other: &&'b mut B) -> bool { PartialOrd::le(*self, *other) }
 le			    fn le(&self, other: &Rhs) -> bool 
+le			    fn le(&self, other: &Self) -> bool { other.0 <= self.0 }
 le			    fn le<I>(mut self, other: I) -> bool where
 le			    fn le(&self, other: &*const T) -> bool { *self <= *other }
 le			    fn le(&self, other: &*mut T) -> bool { *self <= *other }
@@ -1980,6 +2192,9 @@ log2f32			    pub fn log2f32(x: f32) -> f32;
 log2f64			    pub fn log2f64(x: f64) -> f64;
 logf32			    pub fn logf32(x: f32) -> f32;
 logf64			    pub fn logf64(x: f64) -> f64;
+lonely_dot			fn lonely_dot() 
+lonely_sign			fn lonely_sign() 
+lower			    fn lower(c: char) -> String 
 lt			                fn lt(&self, other: &[T; 
 lt			    fn lt(&self, other: &Cell<T>) -> bool 
 lt			    fn lt(&self, other: &RefCell<T>) -> bool 
@@ -1987,6 +2202,7 @@ lt			                fn lt(&self, other: &
 lt			        fn lt(&self, other: & &'b B) -> bool { PartialOrd::lt(*self, *other) }
 lt			        fn lt(&self, other: &&'b mut B) -> bool { PartialOrd::lt(*self, *other) }
 lt			    fn lt(&self, other: &Rhs) -> bool 
+lt			    fn lt(&self, other: &Self) -> bool { other.0 < self.0 }
 lt			    fn lt<I>(mut self, other: I) -> bool where
 lt			    fn lt(&self, other: &*const T) -> bool { *self < *other }
 lt			    fn lt(&self, other: &*mut T) -> bool { *self < *other }
@@ -2004,6 +2220,7 @@ map_err			    pub fn map_err<F, O: FnOnce(E) -> F>(self, op: O) -> Result<T,F>
 map_or			    pub fn map_or<U, F: FnOnce(T) -> U>(self, default: U, f: F) -> U 
 map_or_else			    pub fn map_or_else<U, D: FnOnce() -> U, F: FnOnce(T) -> U>(self, default: D, f: F) -> U 
 marker			pub mod marker;
+massive_exponent			fn massive_exponent() 
 match_indices			    fn match_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> MatchIndices<'a, P> 
 match_indices			    fn match_indices<'a, P: Pattern<'a>>(&'a self, pat: P) -> MatchIndices<'a, P>;
 match_option_some			fn match_option_some(b: &mut Bencher) 
@@ -2021,14 +2238,8 @@ max			pub fn max<T: Ord>(v1: T, v2: T) -> T
 max			    fn max(self) -> Option<Self::Item> where Self: Sized, Self::Item: Ord
 max_by			    fn max_by<F>(self, mut compare: F) -> Option<Self::Item>
 max_by_key			    fn max_by_key<B: Ord, F>(self, f: F) -> Option<Self::Item>
-max_encoded_exp			    fn max_encoded_exp() -> i16 
-max_exp			    fn max_exp() -> i16 
-max_exp_int			    fn max_exp_int() -> i16 
 max_index_iter			    fn max_index_iter(array: &[i32]) -> usize 
-max_normal_digits			    fn max_normal_digits() -> usize 
-max_normal_digits			    fn max_normal_digits() -> usize;
 max_pow10_no_more_than			pub fn max_pow10_no_more_than(x: u32) -> (u8, u32) 
-max_sig			    fn max_sig() -> u64 
 max_value			        fn max_value() -> Self { Self::max_value() }
 max_value			    fn max_value() -> Self;
 maximal_suffix			    fn maximal_suffix(arr: &[u8], order_greater: bool) -> (usize, usize) 
@@ -2038,6 +2249,7 @@ may_have_side_effect			    fn may_have_side_effect() -> bool;
 may_have_side_effect			    fn may_have_side_effect() -> bool { false }
 mem			mod mem;
 mem			pub mod mem;
+mem			mod mem;
 memcmp			    fn memcmp(s1: *const u8, s2: *const u8, n: usize) -> i32;
 method			    fn method(&self) -> isize 
 method			    fn method(&self) -> isize;
@@ -2049,14 +2261,13 @@ min_align_of_val			    pub fn min_align_of_val<T: ?Sized>(_: &T) -> usize;
 min_align_of_val			pub fn min_align_of_val<T: ?Sized>(val: &T) -> usize 
 min_by			    fn min_by<F>(self, mut compare: F) -> Option<Self::Item>
 min_by_key			    fn min_by_key<B: Ord, F>(self, f: F) -> Option<Self::Item>
-min_exp			    fn min_exp() -> i16 
-min_exp_int			    fn min_exp_int() -> i16 
 min_pos_norm_value			    fn min_pos_norm_value() -> Self { f32::MIN_POSITIVE }
 min_pos_norm_value			    fn min_pos_norm_value() -> Self { f64::MIN_POSITIVE }
 min_pos_norm_value			    fn min_pos_norm_value() -> Self;
-min_sig			    fn min_sig() -> u64 
 min_value			        fn min_value() -> Self { Self::min_value() }
 min_value			    fn min_value() -> Self;
+missing_pieces			fn missing_pieces() 
+more_shortest_sanity_test			pub fn more_shortest_sanity_test<F>(mut f: F) where F: FnMut(&Decoded, &mut [u8]) -> (usize, i16) 
 move_val_init			    pub fn move_val_init<T>(dst: *mut T, src: T);
 mul			    pub fn mul(&self, other: &Fp) -> Fp 
 mul			            fn mul(self, other: Wrapping<
@@ -2072,10 +2283,8 @@ mul_pow2			            pub fn mul_pow2(&mut self, bits: usize) -> &mut
 mul_pow5			            pub fn mul_pow5(&mut self, mut e: usize) -> &mut 
 mul_small			            pub fn mul_small(&mut self, other: 
 mul_with_overflow			    pub fn mul_with_overflow<T>(x: T, y: T) -> (T, bool);
-nan			    fn nan() -> f32 
-nan			    fn nan() -> f64 
-nan			    fn nan() -> Self;
-nan2			    fn nan2() -> Self 
+mut_release_borrow_mut			fn mut_release_borrow_mut() 
+nan			fn nan() 
 ne			            fn ne(&self, other: &
 ne			            fn ne(&self, other: &
 ne			                fn ne(&self, other: &
@@ -2094,12 +2303,6 @@ needs_drop			    pub fn needs_drop<T>() -> bool;
 neg			            fn neg(self) -> Self 
 neg			            fn neg(self) -> 
 neg			    fn neg(self) -> Self::Output;
-neg_infinity			    fn neg_infinity() -> f32 
-neg_infinity			    fn neg_infinity() -> f64 
-neg_infinity			    fn neg_infinity() -> Self;
-neg_zero			    fn neg_zero() -> f32 
-neg_zero			    fn neg_zero() -> f64 
-neg_zero			    fn neg_zero() -> Self;
 new			    fn new(borrow: &'b Cell<BorrowFlag>) -> Option<BorrowRef<'b>> 
 new			    fn new(borrow: &'b Cell<BorrowFlag>) -> Option<BorrowRefMut<'b>> 
 new			    fn new(fmt: &'a mut fmt::Formatter<'b>) -> PadAdapter<'a, 'b> 
@@ -2110,6 +2313,7 @@ new			    pub fn new() -> SipHasher24
 new			    fn new(a: A, b: B) -> Self 
 new			    fn new(a: A, b: B) -> Self;
 new			    fn new(iter: I) -> Self 
+new			    pub fn new(value: T) -> ManuallyDrop<T> 
 new			    pub fn new(integral: &'a [u8], fractional: &'a [u8], exp: i64) -> Decimal<'a> 
 new			    pub fn new(sig: u64, k: i16) -> Self 
 new			    pub unsafe fn new(ptr: *const T) -> Self 
@@ -2165,6 +2369,8 @@ next			        fn next(&mut self) -> SearchStep
 next			    fn next(&mut self) -> SearchStep 
 next			    fn next(&mut self) -> SearchStep;
 next			    fn next<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool)
+next			        fn next(&mut self) -> Option<i32> 
+next			    fn next(&mut self) -> Option<Self::Item> 
 next_back			    fn next_back(&mut self) -> Option<(A::Item, B::Item)> 
 next_back			    fn next_back(&mut self) -> Option<(A::Item, B::Item)>
 next_back			    fn next_back(&mut self) -> Option<(usize, <I as Iterator>::Item)> 
@@ -2203,20 +2409,30 @@ next_back			        fn next_back(&mut self) -> SearchStep
 next_back			    fn next_back(&mut self) -> SearchStep 
 next_back			    fn next_back(&mut self) -> SearchStep;
 next_back			    fn next_back<S>(&mut self, haystack: &[u8], needle: &[u8], long_period: bool)
+next_back			        fn next_back(&mut self) -> Option<i32> 
 next_code_point			pub fn next_code_point<'a, I: Iterator<Item = &'a u8>>(bytes: &mut I) -> Option<u32> 
 next_code_point_reverse			fn next_code_point_reverse<'a, I>(bytes: &mut I) -> Option<u32>
 next_float			pub fn next_float<T: RawFloat>(x: T) -> T 
+next_float_inf			fn next_float_inf() 
+next_float_monotonic			fn next_float_monotonic() 
+next_float_subnormal			fn next_float_subnormal() 
+next_float_zero			fn next_float_zero() 
 next_match			        fn next_match(&mut self) -> Option<(usize, usize)> 
 next_match			    fn next_match(&mut self) -> Option<(usize, usize)> 
 next_match_back			        fn next_match_back(&mut self) -> Option<(usize, usize)> 
 next_match_back			    fn next_match_back(&mut self) -> Option<(usize, usize)> 
 next_match_back			    fn next_match_back(&mut self) -> Option<(usize, usize)>
 next_power_of_two			        pub fn next_power_of_two(self) -> Self 
+next_prev_identity			fn next_prev_identity() 
 next_reject			        fn next_reject(&mut self) -> Option<(usize, usize)> 
 next_reject			    fn next_reject(&mut self) -> Option<(usize, usize)> 
 next_reject_back			        fn next_reject_back(&mut self) -> Option<(usize, usize)> 
 next_reject_back			    fn next_reject_back(&mut self) -> Option<(usize, usize)>
+no_double_borrow_mut			fn no_double_borrow_mut() 
+no_imm_then_borrow_mut			fn no_imm_then_borrow_mut() 
+no_mut_then_imm_borrow			fn no_mut_then_imm_borrow() 
 nonzero			pub mod nonzero;
+nonzero			mod nonzero;
 normalize			    pub fn normalize(&self) -> Fp 
 normalize_to			    pub fn normalize_to(&self, e: i16) -> Fp 
 not			            fn not(self) -> Wrapping<
@@ -2237,23 +2453,23 @@ num			mod num;
 num			mod num;
 num			pub mod num;
 num			mod num;
+num			mod num;
+num			mod num;
 of			    pub fn of<T: ?Sized + 'static>() -> TypeId 
 offset			    pub fn offset<T>(dst: *const T, offset: isize) -> *const T;
 offset			    pub unsafe fn offset(self, count: isize) -> *const T where T: Sized 
 offset			    pub unsafe fn offset(self, count: isize) -> *mut T where T: Sized 
+offset_to			    pub fn offset_to(self, other: *const T) -> Option<isize> where T: Sized 
 ok			    pub fn ok(self) -> Option<T> 
 ok_or			    pub fn ok_or<E>(self, err: E) -> Result<T, E> 
 ok_or_else			    pub fn ok_or_else<E, F: FnOnce() -> E>(self, err: F) -> Result<T, E> 
 once			pub fn once<T>(value: T) -> Once<T> 
-one			    fn one() -> f32 
-one			    fn one() -> f64 
-one			            fn one() -> Self { 1 }
-one			            fn one() -> Self { 1.0 }
-one			    fn one() -> Self;
 only_ascii			    fn only_ascii(&self) -> bool { (*self as u32) < 128 }
 only_ascii			    fn only_ascii(&self) -> bool { false }
 only_ascii			    fn only_ascii(&self) -> bool 
 only_ascii			    fn only_ascii(&self) -> bool;
+op1			fn op1() -> Result<isize, &'static str> { Ok(666) }
+op2			fn op2() -> Result<isize, &'static str> { Err("sadface") }
 ops			mod ops;
 ops			impl<A: Step> ops::Range<A> 
 ops			impl<A: Step> ops::RangeFrom<A> 
@@ -2271,13 +2487,16 @@ ops			    impl ops::IndexMut<ops::RangeFrom<usize>> for str
 ops			    impl ops::IndexMut<ops::RangeInclusive<usize>> for str 
 ops			    impl ops::IndexMut<ops::RangeTo<usize>> for str 
 ops			    impl ops::IndexMut<ops::RangeToInclusive<usize>> for str 
+ops			mod ops;
 ops::Index for str			    impl ops::Index<ops::RangeFull> for str 
 ops::IndexMut for str			    impl ops::IndexMut<ops::RangeFull> for str 
 option			pub mod option;
+option			mod option;
 or			    pub fn or(self, optb: Option<T>) -> Option<T> 
 or			    pub fn or<F>(self, res: Result<T, F>) -> Result<T, F> 
 or_else			    pub fn or_else<F: FnOnce() -> Option<T>>(self, f: F) -> Option<T> 
 or_else			    pub fn or_else<F, O: FnOnce(E) -> Result<T, F>>(self, op: O) -> Result<T, F> 
+ordinary			fn ordinary() 
 overflowing_abs			        pub fn overflowing_abs(self) -> (Self, bool) 
 overflowing_add			    pub fn overflowing_add<T>(a: T, b: T) -> T;
 overflowing_add			        pub fn overflowing_add(self, rhs: Self) -> (Self, bool) 
@@ -2299,8 +2518,9 @@ panic_fmt			pub fn panic_fmt(fmt: fmt::Arguments, file_line: &(&'static str, u32
 panic_impl			        fn panic_impl(fmt: fmt::Arguments, file: &'static str, line: u32) -> !;
 panicking			pub mod panicking;
 parse			pub mod parse;
-parse			    fn parse<T: FromStr>(&self) -> Result<T, T::Err> { FromStr::from_str(self) }
-parse			    fn parse<T: FromStr>(&self) -> Result<T, T::Err>;
+parse			    fn parse<'a, T: TryFrom<&'a str>>(&'a self) -> Result<T, T::Error>;
+parse			    fn parse<'a, T>(&'a self) -> Result<T, T::Error> where T: TryFrom<&'a str> 
+parse			mod parse;
 parse_decimal			pub fn parse_decimal(s: &str) -> ParseResult 
 parse_exp			fn parse_exp<'a>(integral: &'a [u8], fractional: &'a [u8], rest: &'a [u8]) -> ParseResult<'a> 
 partial_cmp			                fn partial_cmp(&self, other: &[T; 
@@ -2313,6 +2533,7 @@ partial_cmp			        fn partial_cmp(&self, other: &&'b B) -> Option<Ordering>
 partial_cmp			        fn partial_cmp(&self, other: &&'b mut B) -> Option<Ordering> 
 partial_cmp			        fn partial_cmp(&self, other: &bool) -> Option<Ordering> 
 partial_cmp			    fn partial_cmp(&self, other: &Ordering) -> Option<Ordering> 
+partial_cmp			    fn partial_cmp(&self, other: &Reverse<T>) -> Option<Ordering> 
 partial_cmp			    fn partial_cmp(&self, other: &Rhs) -> Option<Ordering>;
 partial_cmp			    fn partial_cmp<I>(mut self, other: I) -> Option<Ordering> where
 partial_cmp			            fn partial_cmp(&self, _other: &
@@ -2324,7 +2545,11 @@ partial_cmp			    fn partial_cmp(&self, other: &[T]) -> Option<Ordering>
 partial_cmp			        fn partial_cmp(&self, other: &str) -> Option<Ordering> 
 partial_cmp			                fn partial_cmp(&self, other: &(
 partial_compare			    fn partial_compare(&self, other: &[B]) -> Option<Ordering>;
+partial_insertion_sort			fn partial_insertion_sort<T, F>(v: &mut [T], is_less: &mut F) -> bool
 partition			    fn partition<B, F>(self, mut f: F) -> (B, B) where
+partition			fn partition<T, F>(v: &mut [T], pivot: usize, is_less: &mut F) -> (usize, bool)
+partition_equal			fn partition_equal<T, F>(v: &mut [T], pivot: usize, is_less: &mut F) -> usize
+partition_in_blocks			fn partition_in_blocks<T, F>(v: &mut [T], pivot: &T, is_less: &mut F) -> usize
 pattern			pub mod pattern;
 peek			    pub fn peek(&mut self) -> Option<&I::Item> 
 peekable			    fn peekable(self) -> Peekable<Self> where Self: Sized 
@@ -2352,6 +2577,7 @@ prefix			            fn prefix(&self) -> &'static str {
 prefix			    fn prefix(&self) -> &'static str 
 prelude			pub mod prelude;
 prev_float			pub fn prev_float<T: RawFloat>(x: T) -> T 
+prev_float_monotonic			fn prev_float_monotonic() 
 process			    pub fn process<F, U>(iter: I, mut f: F) -> Result<U, E>
 product			    fn product<P>(self) -> P
 product			            fn product<I: Iterator<Item=
@@ -2359,11 +2585,15 @@ product			            fn product<I: Iterator<Item=&'a
 product			    fn product<I: Iterator<Item=A>>(iter: I) -> Self;
 product			    fn product<I>(iter: I) -> Result<T, E>
 ptr			pub mod ptr;
+ptr			mod ptr;
 ptrdistance			fn ptrdistance<T>(start: *const T, end: *const T) -> usize 
 quick_start			fn quick_start<T: RawFloat>(u: &mut Big, v: &mut Big, k: &mut i16) 
+quicksort			pub fn quicksort<T, F>(v: &mut [T], mut is_less: F)
+r			    fn r(i: Rc<RefCell<isize>>) -> R 
 range			mod range;
 raw			pub mod raw;
 rawfp			pub mod rawfp;
+rawfp			mod rawfp;
 read			pub unsafe fn read<T>(src: *const T) -> T 
 read_unaligned			pub unsafe fn read_unaligned<T>(src: *const T) -> T 
 read_volatile			pub unsafe fn read_volatile<T>(src: *const T) -> T 
@@ -2371,6 +2601,15 @@ recip			    fn recip(self) -> f32
 recip			    fn recip(self) -> f64 
 recip			    fn recip(self) -> Self;
 reconstruct			    fn reconstruct<U>(self, val: U) -> Result<U, E> 
+recurse			fn recurse<'a, T, F>(mut v: &'a mut [T], is_less: &mut F, mut pred: Option<&'a T>, mut limit: usize)
+ref_and_refmut_have_sensible_show			fn ref_and_refmut_have_sensible_show() 
+ref_clone_updates_flag			fn ref_clone_updates_flag() 
+ref_map_accessor			fn ref_map_accessor() 
+ref_map_does_not_update_flag			fn ref_map_does_not_update_flag() 
+ref_mut_map_accessor			fn ref_mut_map_accessor() 
+refcell_default			fn refcell_default() 
+refcell_ref_coercion			fn refcell_ref_coercion() 
+refcell_unsized			fn refcell_unsized() 
 rejecting			    fn rejecting(_a: usize, _b: usize) -> Self::Output { None }
 rejecting			    fn rejecting(a: usize, b: usize) -> Self::Output { SearchStep::Reject(a, b) }
 rejecting			    fn rejecting(a: usize, b: usize) -> Self::Output;
@@ -2390,12 +2629,15 @@ replace_zero			            fn replace_zero(&mut self) -> Self
 replace_zero			    fn replace_zero(&mut self) -> Self;
 reset			    fn reset(&mut self) 
 result			pub mod result;
+result			mod result;
 rev			    fn rev(self) -> Rev<Self> where Self: Sized + DoubleEndedIterator 
 reverse			    pub fn reverse(self) -> Ordering 
 reverse			    fn reverse(&mut self) 
 reverse			    fn reverse(&mut self);
 reverse_maximal_suffix			    fn reverse_maximal_suffix(arr: &[u8], known_period: usize,
+rfind			    fn rfind<P>(&mut self, predicate: P) -> Option<Self::Item>
 rfind			    fn rfind<P>(&mut self, mut predicate: P) -> Option<Self::Item> where
+rfind			            fn rfind<F>(&mut self, mut predicate: F) -> Option<Self::Item>
 rfind			    fn rfind<'a, P: Pattern<'a>>(&'a self, pat: P) -> Option<usize>
 rintf32			    pub fn rintf32(x: f32) -> f32;
 rintf64			    pub fn rintf64(x: f64) -> f64;
@@ -2409,13 +2651,18 @@ round_normal			pub fn round_normal<T: RawFloat>(x: Fp) -> Unpacked
 round_up			pub fn round_up(d: &mut [u8], n: usize) -> Option<u8> 
 roundf32			    pub fn roundf32(x: f32) -> f32;
 roundf64			    pub fn roundf64(x: f64) -> f64;
+rounding_overflow			fn rounding_overflow() 
 rposition			    fn rposition<P>(&mut self, mut predicate: P) -> Option<usize> where
 rposition			            fn rposition<F>(&mut self, mut predicate: F) -> Option<usize>
 rsearch_while			            fn rsearch_while<Acc, G>(&mut self, default: Acc, mut g: G) -> Acc
+rsplit			    fn rsplit<P>(&self, pred: P) -> RSplit<Self::Item, P>
+rsplit			    fn rsplit<P>(&self, pred: P) -> RSplit<T, P>
 rsplit			    fn rsplit<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplit<'a, P>
+rsplit_mut			    fn rsplit_mut<P>(&mut self, pred: P) -> RSplitMut<Self::Item, P>
+rsplit_mut			    fn rsplit_mut<P>(&mut self, pred: P) -> RSplitMut<T, P>
 rsplit_terminator			    fn rsplit_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> RSplitTerminator<'a, P>
 rsplitn			    fn rsplitn<P>(&self,  n: usize, pred: P) -> RSplitN<Self::Item, P>
-rsplitn			    fn rsplitn<P>(&self, n: usize, pred: P) -> RSplitN<T, P> where
+rsplitn			    fn rsplitn<P>(&self, n: usize, pred: P) -> RSplitN<T, P>
 rsplitn			    fn rsplitn<'a, P: Pattern<'a>>(&'a self, count: usize, pat: P) -> RSplitN<'a, P>
 rsplitn_mut			    fn rsplitn_mut<P>(&mut self,  n: usize, pred: P) -> RSplitNMut<Self::Item, P>
 rsplitn_mut			    fn rsplitn_mut<P>(&mut self, n: usize, pred: P) -> RSplitNMut<T, P> where
@@ -2429,12 +2676,14 @@ saturating_sub			        pub fn saturating_sub(self, other: Self) -> Self
 scan			    fn scan<St, B, F>(self, initial_state: St, f: F) -> Scan<Self, St, F>
 scatter			fn scatter(x: i32) -> i32 { (x * 31) % 127 }
 search_while			            fn search_while<Acc, G>(&mut self, default: Acc, mut g: G) -> Acc
-select_fold1			fn select_fold1<I,B, FProj, FCmp>(mut it: I,
+select_fold1			fn select_fold1<I, B, FProj, FCmp>(mut it: I,
 set			    pub fn set(&self, val: T) 
 set_cw			    fn set_cw(cw: u16) 
 set_precision			    pub fn set_precision<T>() -> FPUControlWord 
 set_precision			    pub fn set_precision<T>() { }
+shift_head			fn shift_head<T, F>(v: &mut [T], is_less: &mut F)
 shift_max			mod shift_max 
+shift_tail			fn shift_tail<T, F>(v: &mut [T], is_less: &mut F)
 shl			            fn shl(self, other: 
 shl			            fn shl(self, other: 
 shl			    fn shl(self, rhs: RHS) -> Self::Output;
@@ -2444,6 +2693,11 @@ shl_assign			    fn shl_assign(&mut self, rhs: Rhs);
 short_fast_pow10			    fn short_fast_pow10(e: usize) -> Self 
 short_fast_pow10			    fn short_fast_pow10(e: usize) -> Self;
 short_write			    fn short_write(&mut self, msg: &[u8]) 
+shortest_f32_exhaustive_equivalence_test			fn shortest_f32_exhaustive_equivalence_test() 
+shortest_f64_hard_random_equivalence_test			fn shortest_f64_hard_random_equivalence_test() 
+shortest_random_equivalence_test			fn shortest_random_equivalence_test() 
+shortest_sanity_test			fn shortest_sanity_test() 
+shortest_sanity_test			fn shortest_sanity_test() 
 show_usize			    fn show_usize(x: &usize, f: &mut Formatter) -> Result 
 shr			            fn shr(self, other: 
 shr			            fn shr(self, other: 
@@ -2451,8 +2705,6 @@ shr			    fn shr(self, rhs: RHS) -> Self::Output;
 shr_assign			            fn shr_assign(&mut self, other: 
 shr_assign			            fn shr_assign(&mut self, other: 
 shr_assign			    fn shr_assign(&mut self, rhs: Rhs);
-sig_bits			    fn sig_bits() -> u8 
-sig_bits			    fn sig_bits() -> u8;
 sign_aware_zero_pad			    pub fn sign_aware_zero_pad(&self) -> bool 
 sign_minus			    pub fn sign_minus(&self) -> bool { self.flags & (1 << FlagV1::SignMinus as u32) != 0 }
 sign_plus			    pub fn sign_plus(&self) -> bool { self.flags & (1 << FlagV1::SignPlus as u32) != 0 }
@@ -2463,6 +2715,7 @@ signum			    fn signum(self) -> Self;
 simplify			fn simplify(decimal: &mut Decimal) 
 sinf32			    pub fn sinf32(x: f32) -> f32;
 sinf64			    pub fn sinf64(x: f64) -> f64;
+sip			mod sip;
 sip			mod sip;
 sip			mod sip;
 size_from_ptr			fn size_from_ptr<T>(_: *const T) -> usize 
@@ -2486,11 +2739,17 @@ size_hint			    fn size_hint(&self) -> (usize, Option<usize>)
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_of			    pub fn size_of<T>() -> usize;
 size_of			pub fn size_of<T>() -> usize 
+size_of_16			fn size_of_16() 
+size_of_32			fn size_of_32() 
+size_of_64			fn size_of_64() 
+size_of_basic			fn size_of_basic() 
 size_of_val			    pub fn size_of_val<T: ?Sized>(_: &T) -> usize;
 size_of_val			pub fn size_of_val<T: ?Sized>(val: &T) -> usize 
+size_of_val_basic			fn size_of_val_basic() 
 skip			    fn skip(self, n: usize) -> Skip<Self> where Self: Sized 
 skip_while			    fn skip_while<P>(self, predicate: P) -> SkipWhile<Self, P> where
 slice			pub mod slice;
+slice			mod slice;
 slice_error_fail			fn slice_error_fail(s: &str, begin: usize, end: usize) -> ! 
 slice_index_len_fail			fn slice_index_len_fail(index: usize, len: usize) -> ! 
 slice_index_order_fail			fn slice_index_order_fail(index: usize, end: usize) -> ! 
@@ -2500,9 +2759,18 @@ slice_offset			    unsafe fn slice_offset(self, i: isize) -> Self
 slice_offset			    unsafe fn slice_offset(self, i: isize) -> Self;
 slice_unchecked			    unsafe fn slice_unchecked(&self, begin: usize, end: usize) -> &str 
 slice_unchecked			    unsafe fn slice_unchecked(&self, begin: usize, end: usize) -> &str;
+smoketest_cell			fn smoketest_cell() 
+sort			mod sort;
+sort_unstable			    fn sort_unstable(&mut self)
+sort_unstable			fn sort_unstable() 
+sort_unstable_by			    fn sort_unstable_by<F>(&mut self, compare: F)
+sort_unstable_by			    fn sort_unstable_by<F>(&mut self, mut compare: F)
+sort_unstable_by_key			    fn sort_unstable_by_key<B, F>(&mut self, f: F)
+sort_unstable_by_key			    fn sort_unstable_by_key<B, F>(&mut self, mut f: F)
 sources			mod sources;
+special_code_paths			fn special_code_paths() 
 split			    fn split<P>(&self, pred: P) -> Split<Self::Item, P>
-split			    fn split<P>(&self, pred: P) -> Split<T, P> where P: FnMut(&T) -> bool 
+split			    fn split<P>(&self, pred: P) -> Split<T, P>
 split			    fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P> 
 split			    fn split<'a, P: Pattern<'a>>(&'a self, pat: P) -> Split<'a, P>;
 split_at			    fn split_at(&self, mid: usize) -> (&[Self::Item], &[Self::Item]);
@@ -2522,21 +2790,22 @@ split_last			    fn split_last(&self) -> Option<(&T, &[T])>
 split_last_mut			    fn split_last_mut(&mut self) -> Option<(&mut Self::Item, &mut [Self::Item])>;
 split_last_mut			    fn split_last_mut(&mut self) -> Option<(&mut T, &mut [T])> 
 split_mut			    fn split_mut<P>(&mut self, pred: P) -> SplitMut<Self::Item, P>
-split_mut			    fn split_mut<P>(&mut self, pred: P) -> SplitMut<T, P> where P: FnMut(&T) -> bool 
+split_mut			    fn split_mut<P>(&mut self, pred: P) -> SplitMut<T, P>
 split_terminator			    fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P> 
 split_terminator			    fn split_terminator<'a, P: Pattern<'a>>(&'a self, pat: P) -> SplitTerminator<'a, P>;
 splitn			    fn splitn<P>(&self, n: usize, pred: P) -> SplitN<Self::Item, P>
-splitn			    fn splitn<P>(&self, n: usize, pred: P) -> SplitN<T, P> where
+splitn			    fn splitn<P>(&self, n: usize, pred: P) -> SplitN<T, P>
 splitn			    fn splitn<'a, P: Pattern<'a>>(&'a self, count: usize, pat: P) -> SplitN<'a, P> 
 splitn			    fn splitn<'a, P: Pattern<'a>>(&'a self, count: usize, pat: P) -> SplitN<'a, P>;
 splitn_mut			    fn splitn_mut<P>(&mut self, n: usize, pred: P) -> SplitNMut<Self::Item, P>
-splitn_mut			    fn splitn_mut<P>(&mut self, n: usize, pred: P) -> SplitNMut<T, P> where
+splitn_mut			    fn splitn_mut<P>(&mut self, n: usize, pred: P) -> SplitNMut<T, P>
 sqrtf32			    pub fn sqrtf32(x: f32) -> f32;
 sqrtf64			    pub fn sqrtf64(x: f64) -> f64;
 starts_with			    fn starts_with(&self, needle: &[Self::Item]) -> bool where Self::Item: PartialEq;
 starts_with			    fn starts_with(&self, needle: &[T]) -> bool where T: PartialEq 
 starts_with			    fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool 
 starts_with			    fn starts_with<'a, P: Pattern<'a>>(&'a self, pat: P) -> bool;
+static_init			fn static_init() 
 step			            fn step(&self, by: &
 step			    fn step(&self, by: &Self) -> Option<Self>;
 step_by			    pub fn step_by(self, by: A) -> StepBy<A, Self> 
@@ -2549,8 +2818,11 @@ store			            pub fn store(&self, val:
 store			    pub fn store(&self, ptr: *mut T, order: Ordering) 
 store			    pub fn store(&self, val: bool, order: Ordering) 
 str			pub mod str;
+str			mod str;
 strategy			mod strategy 
 strategy			pub mod strategy 
+strategy			mod strategy 
+string			    fn string(c: char) -> String 
 strongest_failure_ordering			fn strongest_failure_ordering(order: Ordering) -> Ordering 
 sub			            pub fn sub<'a>(&'a mut self, other: &
 sub			            fn sub(self, other: Wrapping<
@@ -2562,6 +2834,7 @@ sub_assign			    fn sub_assign(&mut self, rhs: Rhs);
 sub_one			            fn sub_one(&self) -> Self 
 sub_one			    fn sub_one(&self) -> Self;
 sub_with_overflow			    pub fn sub_with_overflow<T>(x: T, y: T) -> (T, bool);
+subnormals			fn subnormals() 
 sum			    fn sum<S>(self) -> S
 sum			            fn sum<I: Iterator<Item=
 sum			            fn sum<I: Iterator<Item=&'a 
@@ -2586,7 +2859,10 @@ take			    pub fn take(&self) -> T
 take			    fn take(self, n: usize) -> Take<Self> where Self: Sized, 
 take			    pub fn take(&mut self) -> Option<T> 
 take_while			    fn take_while<P>(self, predicate: P) -> TakeWhile<Self, P> where
+test			fn test() 
 tests			pub mod tests 
+tests			mod tests 
+tests			mod tests 
 then			    pub fn then(self, other: Ordering) -> Ordering 
 then_with			    pub fn then_with<F: FnOnce() -> Ordering>(self, f: F) -> Ordering 
 to_be			        pub fn to_be(self) -> Self { \/\/ or not to be?
@@ -2596,13 +2872,21 @@ to_degrees			    fn to_degrees(self) -> Self;
 to_digit			    fn to_digit(self, radix: u32) -> Option<u32> 
 to_digit			    fn to_digit(self, radix: u32) -> Option<u32>;
 to_exact_exp_str			pub fn to_exact_exp_str<'a, T, F>(mut format_exact: F, v: T,
+to_exact_exp_str_test			pub fn to_exact_exp_str_test<F>(mut f_: F)
 to_exact_fixed_str			pub fn to_exact_fixed_str<'a, T, F>(mut format_exact: F, v: T,
+to_exact_fixed_str_test			pub fn to_exact_fixed_str_test<F>(mut f_: F)
 to_le			        pub fn to_le(self) -> Self 
 to_radians			    fn to_radians(self) -> f32 
 to_radians			    fn to_radians(self) -> f64 
 to_radians			    fn to_radians(self) -> Self;
 to_shortest_exp_str			pub fn to_shortest_exp_str<'a, T, F>(mut format_shortest: F, v: T,
+to_shortest_exp_str_test			pub fn to_shortest_exp_str_test<F>(mut f_: F)
 to_shortest_str			pub fn to_shortest_str<'a, T, F>(mut format_shortest: F, v: T,
+to_shortest_str_test			pub fn to_shortest_str_test<F>(mut f_: F)
+to_string			    fn to_string<T, F>(f: &mut F, v: T, sign: Sign, exp_bounds: (i16, i16), upper: bool) -> String
+to_string			    fn to_string<T, F>(f: &mut F, v: T, sign: Sign, frac_digits: usize, upper: bool) -> String
+to_string			    fn to_string<T, F>(f: &mut F, v: T, sign: Sign, ndigits: usize, upper: bool) -> String
+to_string_with_parts			fn to_string_with_parts<F>(mut f: F) -> String
 to_u128			        fn to_u128(&self) -> u128 { *self as u128 }
 to_u128			    fn to_u128(&self) -> u128;
 to_u16			        fn to_u16(&self) -> u16 { *self as u16 }
@@ -2636,25 +2920,37 @@ truncf64			    pub fn truncf64(x: f64) -> f64;
 try			    pub fn try(f: fn(*mut u8), data: *mut u8, local_ptr: *mut u8) -> i32;
 try_borrow			    pub fn try_borrow(&self) -> Result<Ref<T>, BorrowError> 
 try_borrow_mut			    pub fn try_borrow_mut(&self) -> Result<RefMut<T>, BorrowMutError> 
-try_from			    fn try_from(i: u32) -> Result<Self, Self::Err> 
-try_from			    fn try_from(value: T) -> Result<Self, Self::Err>;
+try_from			    fn try_from(i: u32) -> Result<Self, Self::Error> 
+try_from			    fn try_from(s: &'a str) -> Result<T, Self::Error> 
+try_from			    fn try_from(value: T) -> Result<Self, Self::Error>;
 try_from			            fn try_from(u: 
 try_from			            fn try_from(u: 
 try_from			            fn try_from(u: 
-try_into			    fn try_into(self) -> Result<T, Self::Err>;
-try_into			    fn try_into(self) -> Result<U, U::Err> 
+try_into			    fn try_into(self) -> Result<T, Self::Error>;
+try_into			    fn try_into(self) -> Result<U, U::Error> 
+tuple			mod tuple;
 tuple			mod tuple;
 type_id			    pub fn type_id<T: ?Sized + 'static>() -> u64;
 type_name			    pub fn type_name<T: ?Sized>() -> &'static str;
 u128			impl u128 
 u16			impl u16 
+u16			mod u16;
 u32			impl u32 
+u32			mod u32;
 u64			impl u64 
+u64			mod u64;
 u8			impl u8 
+u8			mod u8;
 u8to64_le			unsafe fn u8to64_le(buf: &[u8], start: usize, len: usize) -> u64 
+uint_and			fn uint_and() 
 uint_macros			mod uint_macros;
+uint_macros			mod uint_macros;
+uint_or			fn uint_or() 
+uint_xor			fn uint_xor() 
 unchecked_div			    pub fn unchecked_div<T>(x: T, y: T) -> T;
 unchecked_rem			    pub fn unchecked_rem<T>(x: T, y: T) -> T;
+unchecked_shl			    pub fn unchecked_shl<T>(x: T, y: T) -> T;
+unchecked_shr			    pub fn unchecked_shr<T>(x: T, y: T) -> T;
 underflow			fn underflow<T: RawFloat>(x: Big, v: Big, rem: Big) -> T 
 uninit			    pub fn uninit<T>() -> T;
 uninitialized			pub unsafe fn uninitialized<T>() -> T 
@@ -2662,6 +2958,7 @@ unlikely			    pub fn unlikely(b: bool) -> bool;
 unpack			    fn unpack(self) -> Unpacked 
 unpack			    fn unpack(self) -> Unpacked;
 unreachable			    pub fn unreachable() -> !;
+unsafe_cell_unsized			fn unsafe_cell_unsized() 
 unwrap			    pub fn unwrap(self) -> T 
 unwrap			    pub fn unwrap(self) -> T 
 unwrap_err			    pub fn unwrap_err(self) -> E 
@@ -2674,6 +2971,7 @@ unwrap_or_default			    pub fn unwrap_or_default(self) -> T
 unwrap_or_else			    pub fn unwrap_or_else<F: FnOnce() -> T>(self, f: F) -> T 
 unwrap_or_else			    pub fn unwrap_or_else<F: FnOnce(E) -> T>(self, op: F) -> T 
 unzip			    fn unzip<A, B, FromA, FromB>(self) -> (FromA, FromB) where
+upper			    fn upper(c: char) -> String 
 use_early_reject			    fn use_early_reject() -> bool { false }
 use_early_reject			    fn use_early_reject() -> bool { true }
 use_early_reject			    fn use_early_reject() -> bool;
@@ -2684,13 +2982,16 @@ utf8_first_byte			fn utf8_first_byte(byte: u8, width: u32) -> u32 { (byte & (0x7
 utf8_is_cont_byte			fn utf8_is_cont_byte(byte: u8) -> bool { (byte & !CONT_MASK) == TAG_CONT_U8 }
 v1			    pub mod v1;
 v1			pub mod v1;
+valid			fn valid() 
 valid_up_to			    pub fn valid_up_to(&self) -> usize { self.valid_up_to }
 volatile_copy_memory			    pub fn volatile_copy_memory<T>(dst: *mut T, src: *const T, count: usize);
 volatile_copy_nonoverlapping_memory			    pub fn volatile_copy_nonoverlapping_memory<T>(dst: *mut T, src: *const T,
 volatile_load			    pub fn volatile_load<T>(src: *const T) -> T;
 volatile_set_memory			    pub fn volatile_set_memory<T>(dst: *mut T, val: u8, count: usize);
 volatile_store			    pub fn volatile_store<T>(dst: *mut T, val: T);
+whitespace			fn whitespace() 
 width			    pub fn width(&self) -> Option<usize> { self.width }
+width			    fn width<T>(l: *mut T, r: *mut T) -> usize 
 windows			    fn windows(&self, size: usize) -> Windows<Self::Item>;
 windows			    fn windows(&self, size: usize) -> Windows<T> 
 with_padding			    fn with_padding<F>(&mut self, padding: usize, default: rt::v1::Alignment,
@@ -2711,6 +3012,8 @@ write			    fn write(&mut self, bytes: &[u8]);
 write			    fn write(&mut self, msg: &[u8]) 
 write			    pub fn write(&self, out: &mut [u8]) -> Option<usize> 
 write			pub unsafe fn write<T>(dst: *mut T, src: T) 
+write			    fn write(&mut self, _: &[u8]) { panic!() }
+write			    fn write(&mut self, buf: &[u8]) 
 write_bytes			        fn write_bytes(buf: &mut Write, s: &[u8]) -> Result 
 write_bytes			    pub fn write_bytes<T>(dst: *mut T, val: u8, count: usize);
 write_char			            fn write_char(&mut self, c: char) -> Result 
@@ -2734,20 +3037,18 @@ write_u128			    fn write_u128(&mut self, i: u128)
 write_u16			    fn write_u16(&mut self, i: u16) 
 write_u32			    fn write_u32(&mut self, i: u32) 
 write_u64			    fn write_u64(&mut self, i: u64) 
+write_u64			    fn write_u64(&mut self, data: u64) { self.output = data; }
 write_u8			    fn write_u8(&mut self, i: u8) 
 write_u8			    fn write_u8(&mut self, i: u8) 
 write_unaligned			pub unsafe fn write_unaligned<T>(dst: *mut T, src: T) 
+write_unaligned_drop			fn write_unaligned_drop() 
 write_usize			    fn write_usize(&mut self, i: usize) 
 write_usize			    fn write_usize(&mut self, i: usize) 
 write_volatile			pub unsafe fn write_volatile<T>(dst: *mut T, src: T) 
-zero			    fn zero() -> f32 
-zero			    fn zero() -> f64 
-zero			            fn zero() -> Self { 0 }
-zero			            fn zero() -> Self { 0.0 }
+zero			        fn zero() -> 
 zero			    fn zero() -> Self;
-zero2			    fn zero2() -> Self 
-zero2			    fn zero2() -> Self;
-zero_cutoff			    fn zero_cutoff() -> i64 
-zero_cutoff			    fn zero_cutoff() -> i64;
+zero			fn zero() 
+zero_byte			    fn zero_byte(val: u32, byte: usize) -> u32 
+zero_byte			    fn zero_byte(val: u64, byte: usize) -> u64 
 zeroed			pub unsafe fn zeroed<T>() -> T 
 zip			    fn zip<U>(self, other: U) -> Zip<Self, U::IntoIter> where

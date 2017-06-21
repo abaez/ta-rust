@@ -89,8 +89,10 @@ Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::EquatePredicate<'tcx>
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<&'tcx ty::Region, &'tcx ty::Region> 
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<ty::Ty<'tcx>, &'tcx ty::Region> 
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::ProjectionPredicate<'tcx> 
+Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::SubtypePredicate<'tcx> 
 Clean for ty			impl<T, U> Clean<U> for ty::Binder<T> where T: Clean<U> 
 Clean for visit_ast			impl<'a, 'tcx> Clean<Crate> for visit_ast::RustdocVisitor<'a, 'tcx> 
+CodeBlocks			struct CodeBlocks<'a, I: Iterator<Item = Event<'a>>> 
 Collapser			struct Collapser;
 Collector			impl Collector 
 Collector			pub struct Collector 
@@ -129,6 +131,7 @@ FnDecl			impl FnDecl
 FnDecl			pub struct FnDecl 
 FoldItem			impl FoldItem 
 FoldItem			pub enum FoldItem 
+Footnotes			struct Footnotes<'a, I: Iterator<Item = Event<'a>>> 
 From for ItemType			impl From<clean::TypeKind> for ItemType 
 From for ItemType			impl<'a> From<&'a clean::Item> for ItemType 
 From for PrimitiveType			impl From<ast::FloatTy> for PrimitiveType 
@@ -143,6 +146,7 @@ GetDefId for Option			impl<T: GetDefId> GetDefId for Option<T>
 GetDefId for Type			impl GetDefId for Type 
 HRef			impl<'a> HRef<'a> 
 HRef			pub struct HRef<'a> 
+HeadingLinks			struct HeadingLinks<'a, 'b, I: Iterator<Item = Event<'a>>> 
 HirCollector			impl<'a, 'hir> HirCollector<'a, 'hir> 
 HirCollector			struct HirCollector<'a, 'hir: 'a> 
 Impl			pub struct Impl 
@@ -169,6 +173,7 @@ ItemEnum			pub enum ItemEnum
 ItemType			impl ItemType 
 ItemType			pub enum ItemType 
 Iterator for ListAttributesIter			impl<'a> Iterator for ListAttributesIter<'a> 
+Iterator for ParserWrapper			    impl<'a> Iterator for ParserWrapper<'a> 
 LangString			impl LangString 
 LangString			struct LangString 
 Layout			pub struct Layout 
@@ -180,11 +185,12 @@ ListAttributesIter			pub struct ListAttributesIter<'a>
 LoadStringError			pub enum LoadStringError 
 Macro			pub struct Macro 
 Macro			pub struct Macro 
-Markdown			pub struct Markdown<'a>(pub &'a str);
-MarkdownHtml			pub struct MarkdownHtml<'a>(pub &'a str);
-MarkdownWithToc			pub struct MarkdownWithToc<'a>(pub &'a str);
+Markdown			pub struct Markdown<'a>(pub &'a str, pub RenderType);
+MarkdownHtml			pub struct MarkdownHtml<'a>(pub &'a str, pub RenderType);
+MarkdownSummaryLine			pub struct MarkdownSummaryLine<'a>(pub &'a str);
+MarkdownWithToc			pub struct MarkdownWithToc<'a>(pub &'a str, pub RenderType);
 Method			pub struct Method 
-Method			pub struct Method<'a>(pub &'a clean::FnDecl, pub usize);
+Method			pub struct Method<'a> 
 Module			pub struct Module 
 Module			impl Module 
 Module			pub struct Module 
@@ -196,6 +202,7 @@ NameSpace			pub enum NameSpace
 NestedAttributesExt			pub trait NestedAttributesExt 
 Output			struct Output 
 Page			pub struct Page<'a> 
+ParserWrapper			    struct ParserWrapper<'a> 
 Path			impl Path 
 Path			pub struct Path 
 PathParameters			pub enum PathParameters 
@@ -208,6 +215,7 @@ PrimitiveType			pub enum PrimitiveType
 RawMutableSpace			pub struct RawMutableSpace(pub clean::Mutability);
 RenderInfo			pub struct RenderInfo 
 RenderMode			enum RenderMode 
+RenderType			pub enum RenderType 
 RustdocVisitor			impl<'a, 'tcx> RustdocVisitor<'a, 'tcx> 
 RustdocVisitor			pub struct RustdocVisitor<'a, 'tcx: 'a> 
 SelfTy			pub enum SelfTy 
@@ -227,6 +235,7 @@ Stripper			struct Stripper<'a>
 Struct			pub struct Struct 
 Struct			pub struct Struct 
 StructType			pub enum StructType 
+SummaryLine			struct SummaryLine<'a, I: Iterator<Item = Event<'a>>> 
 TY_PRIMITIVE	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var TY_PRIMITIVE = itemTypes.indexOf("primitive");
 TestOptions			pub struct TestOptions 
 ToJson for IndexItem			impl ToJson for IndexItem 
@@ -265,12 +274,13 @@ VariantStruct			pub struct VariantStruct
 VisSpace			impl<'a> VisSpace<'a> 
 VisSpace			pub struct VisSpace<'a>(pub &'a Option<clean::Visibility>);
 Visibility			pub enum Visibility 
-WhereClause			pub struct WhereClause<'a>(pub &'a clean::Generics, pub usize);
+WhereClause			pub struct WhereClause<'a>
 WherePredicate			pub enum WherePredicate 
 Write for Sink			    impl Write for Sink 
 Writer			pub trait Writer 
 Writer for U			impl<U: Write> Writer for U 
 acquire_input			fn acquire_input<R, F>(input: &str,
+add_old_test			    pub fn add_old_test(&mut self, test: String, filename: String) 
 add_plugin			    pub fn add_plugin(&mut self, plugin: PluginCallback) 
 add_test			    pub fn add_test(&mut self, test: String,
 all_false			    fn all_false() -> LangString 
@@ -306,6 +316,7 @@ clean			    fn clean(&self, _: &DocContext) -> Option<Visibility>
 clean			    fn clean(&self, _: &DocContext) -> Stability 
 clean			    fn clean(&self, _: &DocContext) -> String 
 clean			    fn clean(&self, _cx: &DocContext) -> Attributes 
+clean			    fn clean(&self, _cx: &DocContext) -> WherePredicate 
 clean			    fn clean(&self, cx: &DocContext) -> Arguments 
 clean			    fn clean(&self, cx: &DocContext) -> BareFunctionDecl 
 clean			    fn clean(&self, cx: &DocContext) -> Crate 
@@ -359,10 +370,11 @@ doc_impl_item			    fn doc_impl_item(w: &mut fmt::Formatter, cx: &Context, item:
 doc_value			    pub fn doc_value<'a>(&'a self) -> Option<&'a str> 
 doctree			pub mod doctree;
 document			fn document(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item) -> fmt::Result 
-document_full			fn document_full(w: &mut fmt::Formatter, item: &clean::Item) -> fmt::Result 
-document_short			fn document_short(w: &mut fmt::Formatter, item: &clean::Item, link: AssocItemLink) -> fmt::Result 
+document_full			fn document_full(w: &mut fmt::Formatter, item: &clean::Item,
+document_short			fn document_short(w: &mut fmt::Formatter, item: &clean::Item, link: AssocItemLink,
 document_stability			fn document_stability(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item) -> fmt::Result 
 dont_escape			                    fn dont_escape(c: u8) -> bool 
+dont_escape			                fn dont_escape(c: u8) -> bool 
 drop			        fn drop(&mut self) 
 emit_source			    fn emit_source(&mut self, filename: &str) -> io::Result<()> 
 empty			    fn empty() -> Span 
@@ -405,6 +417,7 @@ fmt::Display for Item			impl<'a> fmt::Display for Item<'a>
 fmt::Display for ItemType			impl fmt::Display for ItemType 
 fmt::Display for Markdown			impl<'a> fmt::Display for Markdown<'a> 
 fmt::Display for MarkdownHtml			impl<'a> fmt::Display for MarkdownHtml<'a> 
+fmt::Display for MarkdownSummaryLine			impl<'a> fmt::Display for MarkdownSummaryLine<'a> 
 fmt::Display for MarkdownWithToc			impl<'a> fmt::Display for MarkdownWithToc<'a> 
 fmt::Display for Method			impl<'a> fmt::Display for Method<'a> 
 fmt::Display for MutableSpace			impl fmt::Display for MutableSpace 
@@ -464,6 +477,8 @@ from			    fn from(kind: clean::TypeKind) -> ItemType
 from_ast			    pub fn from_ast(attrs: &[ast::Attribute]) -> Attributes 
 from_str			    fn from_str(s: &str) -> Option<PrimitiveType> 
 full_path			fn full_path(cx: &Context, item: &clean::Item) -> String 
+generate_name			    fn generate_name(&self, line: usize, filename: &str) -> String 
+generate_name_beginning			    fn generate_name_beginning(&self, filename: &str) -> String 
 generics			    pub fn generics(&self) -> Option<&Generics> 
 generics			    fn generics(&mut self, generics: &clean::Generics) 
 get			    pub fn get(&self) -> hir::Constness 
@@ -473,6 +488,7 @@ getQueryStringParams	/data/Code/src/rust/src/librustdoc/html/static/main.js	    
 getVirtualKey	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getVirtualKey(ev) 
 get_deprecation			fn get_deprecation(cx: &DocContext, def_id: DefId) -> Option<Deprecation> 
 get_doc_value			fn get_doc_value(item: &clean::Item) -> Option<&str> 
+get_entry			    fn get_entry(&mut self, key: &str) -> &mut (Vec<Event<'a>>, u16) 
 get_filename			    pub fn get_filename(&self) -> String 
 get_index_search_type			fn get_index_search_type(item: &clean::Item) -> Option<IndexItemFunctionType> 
 get_index_type			fn get_index_type(clean_type: &clean::Type) -> Type 
@@ -494,7 +510,6 @@ hoedown_buffer			impl hoedown_buffer
 hoedown_buffer			struct hoedown_buffer 
 hoedown_buffer_free			    fn hoedown_buffer_free(b: *mut hoedown_buffer);
 hoedown_buffer_new			    fn hoedown_buffer_new(unit: libc::size_t) -> *mut hoedown_buffer;
-hoedown_buffer_put			    fn hoedown_buffer_put(b: *mut hoedown_buffer, c: *const libc::c_char,
 hoedown_buffer_puts			    fn hoedown_buffer_puts(b: *mut hoedown_buffer, c: *const libc::c_char);
 hoedown_document			enum hoedown_document {}
 hoedown_document_free			    fn hoedown_document_free(md: *mut hoedown_document);
@@ -531,6 +546,7 @@ is_stripped			    pub fn is_stripped(&self) -> bool
 is_struct			    pub fn is_struct(&self) -> bool 
 is_trait			    pub fn is_trait(&self) -> bool 
 is_ty_method			    pub fn is_ty_method(&self) -> bool 
+is_union			    pub fn is_union(&self) -> bool 
 issue_17736			    fn issue_17736() 
 item			    fn item<F>(&mut self, item: clean::Item, mut f: F) -> Result<(), Error> where
 itemTypes	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var itemTypes = ["mod",
@@ -552,7 +568,6 @@ last_name			    pub fn last_name(&self) -> &str
 layout			    pub mod layout;
 libname			fn libname(mut n: String) -> String 
 libname			fn libname(n: String) -> String 
-link			    extern fn link(_ob: *mut hoedown_buffer,
 lists			    fn lists<'a>(&'a self, &'a str) -> ListAttributesIter<'a>;
 lists			    fn lists<'a>(&'a self, name: &'a str) -> ListAttributesIter<'a> 
 load			    pub fn load(in_header: &[String], before_content: &[String], after_content: &[String])
@@ -575,12 +590,15 @@ method			    fn method(w: &mut fmt::Formatter,
 mkdir			fn mkdir(path: &Path) -> io::Result<()> 
 naive_assoc_href			fn naive_assoc_href(it: &clean::Item, link: AssocItemLink) -> String 
 name_from_pat			fn name_from_pat(p: &hir::Pat) -> String 
+name_key			fn name_key(name: &str) -> (&str, u64, usize) 
 name_space			    pub fn name_space(&self) -> NameSpace 
 nested			    fn nested(&self, state: &mut hir::print::State, nested: hir::print::Nested)
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> intravisit::NestedVisitorMap<'this, 'hir> 
 new			    pub fn new(name: Option<Name>) -> Module 
 new			    pub fn new(did: DefId, text: &'a str) -> HRef<'a> 
 new			    pub fn new(lexer: lexer::StringReader<'a>, codemap: &'a CodeMap) -> Classifier<'a> 
+new			    fn new(iter: I) -> Self 
+new			    fn new(iter: I, toc: Option<&'b mut TocBuilder>) -> Self 
 new			    pub fn new(e: io::Error, file: &Path) -> Error 
 new			    pub fn new() -> TocBuilder 
 new			    pub fn new(prefix: PathBuf) -> PluginManager 
@@ -588,7 +606,9 @@ new			    pub fn new(cratename: String, cfgs: Vec<String>, libs: SearchPaths, ex
 new			    pub fn new(cx: &'a core::DocContext<'a, 'tcx>) -> RustdocVisitor<'a, 'tcx> 
 new			    pub fn new(cx: &'a ::core::DocContext<'b, 'tcx>) -> LibEmbargoVisitor<'a, 'b, 'tcx> 
 next			    fn next(&mut self) -> Option<Self::Item> 
-normal_text			    extern fn normal_text(_ob: *mut hoedown_buffer,
+next			        fn next(&mut self) -> Option<String> 
+next			    fn next(&mut self) -> Option<Self::Item> 
+old_find_testable_code			pub fn old_find_testable_code(doc: &str, tests: &mut ::test::Collector, position: Span) 
 opts			pub fn opts() -> Vec<RustcOptGroup> 
 parse			    fn parse(string: &str) -> LangString 
 parse_externs			fn parse_externs(matches: &getopts::Matches) -> Result<Externs, String> 
@@ -651,12 +671,21 @@ shorter			fn shorter<'a>(s: Option<&'a str>) -> String
 should_ignore_first_line_indent			    fn should_ignore_first_line_indent() 
 should_leave_multiple_indent_levels			    fn should_leave_multiple_indent_levels() 
 should_not_ignore_first_line_indent_in_a_single_line_para			    fn should_not_ignore_first_line_indent_in_a_single_line_para() 
+should_not_trim			    fn should_not_trim() 
 should_trim_mixed_indentation			    fn should_trim_mixed_indentation() 
 should_unindent			    fn should_unindent() 
 should_unindent_multiple_paragraphs			    fn should_unindent_multiple_paragraphs() 
 should_unindent_tabs			    fn should_unindent_tabs() 
+sidebar_assoc_items			fn sidebar_assoc_items(it: &clean::Item) -> String 
+sidebar_enum			fn sidebar_enum(fmt: &mut fmt::Formatter, it: &clean::Item,
+sidebar_module			fn sidebar_module(fmt: &mut fmt::Formatter, _it: &clean::Item,
+sidebar_primitive			fn sidebar_primitive(fmt: &mut fmt::Formatter, it: &clean::Item,
+sidebar_struct			fn sidebar_struct(fmt: &mut fmt::Formatter, it: &clean::Item,
+sidebar_trait			fn sidebar_trait(fmt: &mut fmt::Formatter, it: &clean::Item,
+sidebar_union			fn sidebar_union(fmt: &mut fmt::Formatter, it: &clean::Item,
 simplify			mod simplify;
 singleton			    pub fn singleton(name: String) -> Path 
+slugify			fn slugify(c: char) -> Option<char> 
 snip			    fn snip(&self, sp: Span) -> String 
 src_href			    fn src_href(&self) -> Option<String> 
 stability			    fn stability(&self, id: ast::NodeId) -> Option<attr::Stability> 
