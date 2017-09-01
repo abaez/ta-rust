@@ -6,7 +6,7 @@ ConstContext			impl<'a, 'tcx> ConstContext<'a, 'tcx>
 ConstContext			pub struct ConstContext<'a, 'tcx: 'a> 
 Constructor			impl<'tcx> Constructor<'tcx> 
 Constructor			pub enum Constructor<'tcx> 
-Delegate for MutationChecker			impl<'a, 'gcx, 'tcx> Delegate<'tcx> for MutationChecker<'a, 'gcx> 
+Delegate for MutationChecker			impl<'a, 'tcx> Delegate<'tcx> for MutationChecker<'a, 'tcx> 
 Empty			enum Empty {}
 FieldPattern			pub struct FieldPattern<'tcx> 
 FromIterator			impl<'a, 'tcx> FromIterator<Vec<&'a Pattern<'tcx>>> for Matrix<'a, 'tcx> 
@@ -20,7 +20,8 @@ Matrix			impl<'a, 'tcx> Matrix<'a, 'tcx>
 Matrix			pub struct Matrix<'a, 'tcx: 'a>(Vec<Vec<&'a Pattern<'tcx>>>);
 Method			enum Method { GET, POST }
 Method			enum Method 
-MutationChecker			struct MutationChecker<'a, 'gcx: 'a> 
+Method			pub enum Method { GET, POST }
+MutationChecker			struct MutationChecker<'a, 'tcx: 'a> 
 OuterVisitor			struct OuterVisitor<'a, 'tcx: 'a> { tcx: TyCtxt<'a, 'tcx, 'tcx> }
 Pattern			impl<'tcx> Pattern<'tcx> 
 Pattern			impl<'a, 'gcx, 'tcx> Pattern<'tcx> 
@@ -60,7 +61,7 @@ check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>)
 check_exhaustive			fn check_exhaustive<'a, 'tcx>(cx: &mut MatchCheckCtxt<'a, 'tcx>,
 check_for_bindings_named_the_same_as_variants			fn check_for_bindings_named_the_same_as_variants(cx: &MatchVisitor, pat: &Pat) 
 check_for_mutation_in_guard			fn check_for_mutation_in_guard(cx: &MatchVisitor, guard: &hir::Expr) 
-check_irrefutable			    fn check_irrefutable(&self, pat: &Pat, is_fn_arg: bool) 
+check_irrefutable			    fn check_irrefutable(&self, pat: &Pat, origin: &str) 
 check_legality_of_bindings_in_at_patterns			fn check_legality_of_bindings_in_at_patterns(cx: &MatchVisitor, pat: &Pat) 
 check_legality_of_move_bindings			fn check_legality_of_move_bindings(cx: &MatchVisitor,
 check_match			    fn check_match(
@@ -71,6 +72,7 @@ compare_lit_exprs			    pub fn compare_lit_exprs(&self,
 conservative_is_uninhabited			    fn conservative_is_uninhabited(&self, scrutinee_ty: Ty<'tcx>) -> bool 
 const_eval			fn const_eval<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 constructor_arity			fn constructor_arity(_cx: &MatchCheckCtxt, ctor: &Constructor, ty: Ty) -> usize 
+constructor_covered_by_range			fn constructor_covered_by_range(tcx: TyCtxt, span: Span,
 constructor_sub_pattern_tys			fn constructor_sub_pattern_tys<'a, 'tcx: 'a>(cx: &MatchCheckCtxt<'a, 'tcx>,
 consume			    fn consume(&mut self, _: ast::NodeId, _: Span, _: cmt, _: ConsumeMode) {}
 consume			    fn consume(self) -> usize 
@@ -129,7 +131,6 @@ print_const_val			fn print_const_val(value: &ConstVal, f: &mut fmt::Formatter) -
 provide			pub fn provide(providers: &mut Providers) 
 push			    pub fn push(&mut self, row: Vec<&'a Pattern<'tcx>>) 
 push_wild_constructor			    fn push_wild_constructor<'a>(
-range_covered_by_constructor			fn range_covered_by_constructor(tcx: TyCtxt, span: Span,
 report_inlining_errors			    fn report_inlining_errors(&self, pat_span: Span) 
 resolve_trait_associated_const			fn resolve_trait_associated_const<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 single_pattern			    pub fn single_pattern(&self) -> &Pattern<'tcx> 

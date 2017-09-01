@@ -16,6 +16,8 @@ Metric			pub struct Metric
 MetricMap			impl MetricMap 
 MetricMap			pub struct MetricMap(BTreeMap<String, Metric>);
 NamePadding			pub enum NamePadding 
+Options			impl Options 
+Options			pub struct Options 
 OutputLocation			enum OutputLocation<T> 
 SYSTEM_INFO			        struct SYSTEM_INFO 
 Send for TestResult			unsafe impl Send for TestResult {}
@@ -39,6 +41,7 @@ TestOpts			pub struct TestOpts
 TestPaths			pub struct TestPaths 
 TestResult			pub enum TestResult 
 Write for Sink			        impl Write for Sink 
+__rust_begin_short_backtrace			fn __rust_begin_short_backtrace<F: FnOnce()>(f: F) 
 as_slice			    fn as_slice(&self) -> &str 
 bench			    pub fn bench<F>(&mut self, mut f: F) -> Option<stats::Summary>
 bench			pub mod bench 
@@ -53,6 +56,7 @@ callback			    fn callback<T: Write>(event: &TestEvent, st: &mut ConsoleTestStat
 check			    fn check(samples: &[f64], summ: &Summary) 
 clone			    fn clone(&self) -> MetricMap 
 convert_benchmarks_to_tests			pub fn convert_benchmarks_to_tests(tests: Vec<TestDescAndFn>) -> Vec<TestDescAndFn> 
+display_output			    pub fn display_output(mut self, display_output: bool) -> Options 
 do_not_run_ignored_tests			    pub fn do_not_run_ignored_tests() 
 exact_filter_match			    pub fn exact_filter_match() 
 f			        fn f() 
@@ -95,6 +99,7 @@ min			    fn min(&self) -> f64
 min			    fn min(&self) -> f64;
 new			    fn new() -> TestOpts 
 new			    pub fn new() -> MetricMap 
+new			    pub fn new() -> Options 
 new			    pub fn new(opts: &TestOpts, _: Option<T>) -> io::Result<ConsoleTestState<io::Stdout>> 
 new			    pub fn new(value: f64, noise: f64) -> Metric 
 new			    pub fn new(samples: &[f64]) -> Summary 
@@ -102,7 +107,7 @@ no_iter			    pub fn no_iter(_: &mut Bencher) {}
 ns_from_dur			fn ns_from_dur(dur: Duration) -> u64 
 ns_iter_inner			fn ns_iter_inner<T, F>(inner: &mut F, k: u64) -> u64
 num_cpus			    fn num_cpus() -> usize 
-optgroups			fn optgroups() -> Vec<getopts::OptGroup> 
+optgroups			fn optgroups() -> getopts::Options 
 padded_name			    fn padded_name(&self, column_count: usize, align: NamePadding) -> String 
 padding			    fn padding(&self) -> NamePadding 
 parse_ignored_flag			    fn parse_ignored_flag() 
@@ -136,12 +141,13 @@ testfn			            fn testfn() {}
 tests			        fn tests() -> Vec<TestDescAndFn> 
 tests			mod tests 
 tests			mod tests 
-usage			fn usage(binary: &str) 
+usage			fn usage(binary: &str, options: &getopts::Options) 
 use_color			fn use_color(opts: &TestOpts) -> bool 
 var			    fn var(&self) -> f64 
 var			    fn var(&self) -> f64;
 winsorize			pub fn winsorize(samples: &mut [f64], pct: f64) 
 write			            fn write(&mut self, data: &[u8]) -> io::Result<usize> 
+write_allowed_fail			    pub fn write_allowed_fail(&mut self) -> io::Result<()> 
 write_bench			    pub fn write_bench(&mut self) -> io::Result<()> 
 write_failed			    pub fn write_failed(&mut self) -> io::Result<()> 
 write_failures			    pub fn write_failures(&mut self) -> io::Result<()> 
@@ -150,6 +156,7 @@ write_log			    pub fn write_log<S: AsRef<str>>(&mut self, msg: S) -> io::Result
 write_log_result			    pub fn write_log_result(&mut self, test: &TestDesc, result: &TestResult) -> io::Result<()> 
 write_metric			    pub fn write_metric(&mut self) -> io::Result<()> 
 write_ok			    pub fn write_ok(&mut self) -> io::Result<()> 
+write_outputs			    pub fn write_outputs(&mut self) -> io::Result<()> 
 write_plain			    pub fn write_plain<S: AsRef<str>>(&mut self, s: S) -> io::Result<()> 
 write_pretty			    pub fn write_pretty(&mut self, word: &str, color: term::color::Color) -> io::Result<()> 
 write_result			    pub fn write_result(&mut self, result: &TestResult) -> io::Result<()> 

@@ -1,26 +1,48 @@
+Alloc			    unsafe impl<'a> Alloc for &'a System 
+Alloc for System			    unsafe impl Alloc for System 
+GetLastError			        fn GetLastError() -> DWORD;
 GetLastError			        fn GetLastError() -> DWORD;
 GetProcessHeap			        fn GetProcessHeap() -> HANDLE;
+GetProcessHeap			        fn GetProcessHeap() -> HANDLE;
+GetStdHandle			        fn GetStdHandle(which: DWORD) -> HANDLE;
+Header			    struct Header(*mut u8);
 Header			    struct Header(*mut u8);
 HeapAlloc			        fn HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: SIZE_T) -> LPVOID;
+HeapAlloc			        fn HeapAlloc(hHeap: HANDLE, dwFlags: DWORD, dwBytes: SIZE_T) -> LPVOID;
+HeapFree			        fn HeapFree(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID) -> BOOL;
 HeapFree			        fn HeapFree(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID) -> BOOL;
 HeapReAlloc			        fn HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID, dwBytes: SIZE_T) -> LPVOID;
-__rust_allocate			pub extern "C" fn __rust_allocate(size: usize, align: usize) -> *mut u8 
-__rust_allocate_zeroed			pub extern "C" fn __rust_allocate_zeroed(size: usize, align: usize) -> *mut u8 
-__rust_deallocate			pub extern "C" fn __rust_deallocate(ptr: *mut u8, old_size: usize, align: usize) 
-__rust_reallocate			pub extern "C" fn __rust_reallocate(ptr: *mut u8,
-__rust_reallocate_inplace			pub extern "C" fn __rust_reallocate_inplace(ptr: *mut u8,
-__rust_usable_size			pub extern "C" fn __rust_usable_size(size: usize, align: usize) -> usize 
+HeapReAlloc			        fn HeapReAlloc(hHeap: HANDLE, dwFlags: DWORD, lpMem: LPVOID, dwBytes: SIZE_T) -> LPVOID;
+Stderr			            struct Stderr;
+System			    pub struct System;
+Write for Stderr			            impl Write for Stderr 
+WriteFile			        fn WriteFile(hFile: HANDLE,
 align_ptr			    unsafe fn align_ptr(ptr: *mut u8, align: usize) -> *mut u8 
+align_ptr			    unsafe fn align_ptr(ptr: *mut u8, align: usize) -> *mut u8 
+aligned_malloc			    unsafe fn aligned_malloc(layout: &Layout) -> *mut u8 
 aligned_malloc			    unsafe fn aligned_malloc(size: usize, align: usize) -> *mut u8 
+alloc			        unsafe fn alloc(&mut self, layout: Layout) -> Result<*mut u8, AllocErr> 
+alloc_excess			        unsafe fn alloc_excess(&mut self, layout: Layout) -> Result<Excess, AllocErr> 
+alloc_zeroed			        unsafe fn alloc_zeroed(&mut self, layout: Layout)
 allocate			    pub unsafe fn allocate(size: usize, align: usize) -> *mut u8 
+allocate_with_flags			    unsafe fn allocate_with_flags(layout: Layout, flags: DWORD)
 allocate_with_flags			    unsafe fn allocate_with_flags(size: usize, align: usize, flags: DWORD) -> *mut u8 
 allocate_zeroed			    pub unsafe fn allocate_zeroed(size: usize, align: usize) -> *mut u8 
+dealloc			        unsafe fn dealloc(&mut self, ptr: *mut u8, _layout: Layout) 
+dealloc			        unsafe fn dealloc(&mut self, ptr: *mut u8, layout: Layout) 
 deallocate			    pub unsafe fn deallocate(ptr: *mut u8, _old_size: usize, _align: usize) 
 deallocate			    pub unsafe fn deallocate(ptr: *mut u8, _old_size: usize, align: usize) 
 get_header			    unsafe fn get_header<'a>(ptr: *mut u8) -> &'a mut Header 
+get_header			    unsafe fn get_header<'a>(ptr: *mut u8) -> &'a mut Header 
+grow_in_place			        unsafe fn grow_in_place(&mut self,
 imp			mod imp 
-reallocate			    pub unsafe fn reallocate(ptr: *mut u8, _old_size: usize, size: usize, align: usize) -> *mut u8 
+new			mod new 
+old			mod old;
+oom			        fn oom(&mut self, err: AllocErr) -> ! 
+platform			mod platform 
+realloc			        unsafe fn realloc(&mut self,
+realloc_excess			        unsafe fn realloc_excess(&mut self,
 reallocate			    pub unsafe fn reallocate(ptr: *mut u8, old_size: usize, size: usize, align: usize) -> *mut u8 
-reallocate_inplace			    pub unsafe fn reallocate_inplace(_ptr: *mut u8,
-reallocate_inplace			    pub unsafe fn reallocate_inplace(ptr: *mut u8,
-usable_size			    pub fn usable_size(size: usize, _align: usize) -> usize 
+shrink_in_place			        unsafe fn shrink_in_place(&mut self,
+usable_size			        fn usable_size(&self, layout: &Layout) -> (usize, usize) 
+write_str			                fn write_str(&mut self, s: &str) -> fmt::Result 

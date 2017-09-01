@@ -51,6 +51,7 @@ LLVMAddClause			    pub fn LLVMAddClause(LandingPad: ValueRef, ClauseVal: ValueR
 LLVMAddFunction			    pub fn LLVMAddFunction(M: ModuleRef, Name: *const c_char, FunctionTy: TypeRef) -> ValueRef;
 LLVMAddGlobal			    pub fn LLVMAddGlobal(M: ModuleRef, Ty: TypeRef, Name: *const c_char) -> ValueRef;
 LLVMAddIncoming			    pub fn LLVMAddIncoming(PhiNode: ValueRef,
+LLVMAddNamedMetadataOperand			    pub fn LLVMAddNamedMetadataOperand(M: ModuleRef, Name: *const c_char, Val: ValueRef);
 LLVMAppendBasicBlockInContext			    pub fn LLVMAppendBasicBlockInContext(C: ContextRef,
 LLVMBasicBlockAsValue			    pub fn LLVMBasicBlockAsValue(BB: BasicBlockRef) -> ValueRef;
 LLVMBuildAShr			    pub fn LLVMBuildAShr(B: BuilderRef,
@@ -261,6 +262,7 @@ LLVMIsPackedStruct			    pub fn LLVMIsPackedStruct(StructTy: TypeRef) -> Bool;
 LLVMIsSectionIteratorAtEnd			    pub fn LLVMIsSectionIteratorAtEnd(ObjFile: ObjectFileRef, SI: SectionIteratorRef) -> Bool;
 LLVMIsUndef			    pub fn LLVMIsUndef(Val: ValueRef) -> Bool;
 LLVMMDNodeInContext			    pub fn LLVMMDNodeInContext(C: ContextRef, Vals: *const ValueRef, Count: c_uint) -> ValueRef;
+LLVMMDStringInContext			    pub fn LLVMMDStringInContext(C: ContextRef, Str: *const c_char, SLen: c_uint) -> ValueRef;
 LLVMModuleCreateWithNameInContext			    pub fn LLVMModuleCreateWithNameInContext(ModuleID: *const c_char, C: ContextRef) -> ModuleRef;
 LLVMMoveToNextSection			    pub fn LLVMMoveToNextSection(SI: SectionIteratorRef);
 LLVMOffsetOfElement			    pub fn LLVMOffsetOfElement(TD: TargetDataRef,
@@ -368,11 +370,12 @@ LLVMRustHasFeature			    pub fn LLVMRustHasFeature(T: TargetMachineRef, s: *cons
 LLVMRustInlineAsm			    pub fn LLVMRustInlineAsm(Ty: TypeRef,
 LLVMRustLinkInExternalBitcode			    pub fn LLVMRustLinkInExternalBitcode(M: ModuleRef, bc: *const c_char, len: size_t) -> bool;
 LLVMRustMarkAllFunctionsNounwind			    pub fn LLVMRustMarkAllFunctionsNounwind(M: ModuleRef);
+LLVMRustMetadataAsValue			    pub fn LLVMRustMetadataAsValue(C: ContextRef, MD: MetadataRef) -> ValueRef;
 LLVMRustMetadataTypeInContext			    pub fn LLVMRustMetadataTypeInContext(C: ContextRef) -> TypeRef;
 LLVMRustOpenArchive			    pub fn LLVMRustOpenArchive(path: *const c_char) -> ArchiveRef;
 LLVMRustPassKind			    pub fn LLVMRustPassKind(Pass: PassRef) -> PassKind;
 LLVMRustPositionBuilderAtStart			    pub fn LLVMRustPositionBuilderAtStart(B: BuilderRef, BB: BasicBlockRef);
-LLVMRustPrintModule			    pub fn LLVMRustPrintModule(PM: PassManagerRef, M: ModuleRef, Output: *const c_char);
+LLVMRustPrintModule			    pub fn LLVMRustPrintModule(PM: PassManagerRef,
 LLVMRustPrintPassTimings			    pub fn LLVMRustPrintPassTimings();
 LLVMRustPrintPasses			    pub fn LLVMRustPrintPasses();
 LLVMRustPrintTargetCPUs			    pub fn LLVMRustPrintTargetCPUs(T: TargetMachineRef);
@@ -419,6 +422,7 @@ LLVMSetMetadata			    pub fn LLVMSetMetadata(Val: ValueRef, KindID: c_uint, Node
 LLVMSetModuleInlineAsm			    pub fn LLVMSetModuleInlineAsm(M: ModuleRef, Asm: *const c_char);
 LLVMSetPersonalityFn			    pub fn LLVMSetPersonalityFn(Func: ValueRef, Pers: ValueRef);
 LLVMSetSection			    pub fn LLVMSetSection(Global: ValueRef, Section: *const c_char);
+LLVMSetTailCall			    pub fn LLVMSetTailCall(CallInst: ValueRef, IsTailCall: Bool);
 LLVMSetThreadLocal			    pub fn LLVMSetThreadLocal(GlobalVar: ValueRef, IsThreadLocal: Bool);
 LLVMSetUnnamedAddr			    pub fn LLVMSetUnnamedAddr(GlobalVar: ValueRef, UnnamedAddr: Bool);
 LLVMSetValueName			    pub fn LLVMSetValueName(Val: ValueRef, Name: *const c_char);
@@ -484,7 +488,7 @@ data			    pub fn data(&self) -> &'a [u8]
 debug_loc_to_string			pub unsafe fn debug_loc_to_string(c: ContextRef, tr: DebugLocRef) -> String 
 debuginfo			pub mod debuginfo 
 describe			    pub fn describe(self) -> &'static str 
-detect_llvm_link			fn detect_llvm_link(llvm_config: &Path) -> (&'static str, Option<&'static str>) 
+detect_llvm_link			fn detect_llvm_link(major: u32, minor: u32, llvm_config: &Path)
 diagnostic			pub mod diagnostic;
 drop			    fn drop(&mut self) 
 drop			    fn drop(&mut self) 

@@ -56,6 +56,7 @@ StyledBuffer			pub struct StyledBuffer
 StyledString			pub struct StyledString 
 SubDiagnostic			impl SubDiagnostic 
 SubDiagnostic			pub struct SubDiagnostic 
+Substitution			pub struct Substitution 
 WaitForSingleObject			        fn WaitForSingleObject(hHandle: HANDLE, dwMilliseconds: DWORD) -> DWORD;
 Write for BufferedWriter			impl Write for BufferedWriter 
 Write for Destination			impl Write for Destination 
@@ -71,6 +72,7 @@ as_line			    pub fn as_line(&self) -> Annotation
 as_start			    pub fn as_start(&self) -> Annotation 
 bug			    pub fn bug(&self, msg: &str) -> ! 
 bump_err_count			    pub fn bump_err_count(&self) 
+call_span_if_macro			    fn call_span_if_macro(&self, sp: Span) -> Span;
 cancel			    pub fn cancel(&mut self) 
 cancel			    pub fn cancel(&self, err: &mut DiagnosticBuilder) 
 cancelled			    pub fn cancelled(&self) -> bool 
@@ -103,6 +105,7 @@ emit_suggestion_default			    fn emit_suggestion_default(&mut self,
 emit_to_destination			fn emit_to_destination(rendered_buffer: &Vec<Vec<StyledString>>,
 emit_with_code			    pub fn emit_with_code(&self, msp: &MultiSpan, msg: &str, code: &str, lvl: Level) 
 emitter			pub mod emitter;
+ensure_filemap_source_present			    fn ensure_filemap_source_present(&self, file_map: Rc<FileMap>) -> bool;
 ensure_lines			    fn ensure_lines(&mut self, line: usize) 
 err			    pub fn err(&self, msg: &str) 
 err_count			    pub fn err_count(&self) -> usize 
@@ -153,13 +156,14 @@ normal			    pub fn normal<S: Into<String>>(t: S) -> DiagnosticStyledString
 note			    pub fn note(&mut self, msg: &str) -> &mut Self 
 note_expected_found			    pub fn note_expected_found(&mut self,
 note_expected_found_extra			    pub fn note_expected_found_extra(&mut self,
+note_trait_signature			    pub fn note_trait_signature(&mut self, name: String, signature: String) -> &mut Self 
 note_without_error			    pub fn note_without_error(&self, msg: &str) 
 num_lines			    pub fn num_lines(&self) -> usize 
 num_overlap			fn num_overlap(a_start: usize, a_end: usize, b_start: usize, b_end:usize, inclusive: bool) -> bool 
 overlaps			fn overlaps(a1: &Annotation, a2: &Annotation, padding: usize) -> bool 
 panic_if_treat_err_as_bug			    fn panic_if_treat_err_as_bug(&self) 
 prepend			    pub fn prepend(&mut self, line: usize, string: &str, style: Style) 
-preprocess_annotations			    fn preprocess_annotations(&self, msp: &MultiSpan) -> Vec<FileWithAnnotatedLines> 
+preprocess_annotations			    fn preprocess_annotations(&mut self, msp: &MultiSpan) -> Vec<FileWithAnnotatedLines> 
 push_highlighted			    pub fn push_highlighted<S: Into<String>>(&mut self, t: S) 
 push_normal			    pub fn push_normal<S: Into<String>>(&mut self, t: S) 
 push_trailing			        fn push_trailing(buf: &mut String,
@@ -170,9 +174,9 @@ render			    pub fn render(&mut self) -> Vec<Vec<StyledString>>
 render_source_line			    fn render_source_line(&self,
 reset_attrs			    fn reset_attrs(&mut self) -> io::Result<()> 
 set_continue_after_error			    pub fn set_continue_after_error(&self, continue_after_error: bool) 
+set_message			    pub fn set_message(&mut self, message: &str) 
 set_span			    pub fn set_span<S: Into<MultiSpan>>(&mut self, sp: S) -> &mut Self 
-set_style			    pub fn set_style(&mut self, line: usize, col: usize, style: Style) 
-snippet			pub mod snippet;
+snippet			mod snippet;
 span_bug			    pub fn span_bug<S: Into<MultiSpan>>(&self, sp: S, msg: &str) -> ! 
 span_bug_no_panic			    pub fn span_bug_no_panic<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
 span_err			    pub fn span_err<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
@@ -180,10 +184,13 @@ span_err_with_code			    pub fn span_err_with_code<S: Into<MultiSpan>>(&self, sp
 span_fatal			    pub fn span_fatal<S: Into<MultiSpan>>(&self, sp: S, msg: &str) -> FatalError 
 span_fatal_with_code			    pub fn span_fatal_with_code<S: Into<MultiSpan>>(&self,
 span_help			    pub fn span_help<S: Into<MultiSpan>>(&mut self,
-span_label			    pub fn span_label(&mut self, span: Span, label: &fmt::Display)
+span_label			    pub fn span_label<T: Into<String>>(&mut self, span: Span, label: T) -> &mut Self 
+span_label			    pub fn span_label<T: Into<String>>(&mut self, span: Span, label: T) -> &mut Self 
 span_note			    pub fn span_note<S: Into<MultiSpan>>(&mut self,
+span_note_diag			    pub fn span_note_diag<'a>(&'a self,
 span_note_without_error			    pub fn span_note_without_error<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
-span_suggestion			    pub fn span_suggestion<S: Into<MultiSpan>>(&mut self,
+span_suggestion			    pub fn span_suggestion(&mut self, sp: Span, msg: &str, suggestion: String) -> &mut Self 
+span_suggestions			    pub fn span_suggestions(&mut self, sp: Span, msg: &str, suggestions: Vec<String>) -> &mut Self 
 span_to_filename			    fn span_to_filename(&self, sp: Span) -> FileName;
 span_to_lines			    fn span_to_lines(&self, sp: Span) -> FileLinesResult;
 span_to_string			    fn span_to_string(&self, sp: Span) -> String;
@@ -191,12 +198,13 @@ span_unimpl			    pub fn span_unimpl<S: Into<MultiSpan>>(&self, sp: S, msg: &str
 span_warn			    pub fn span_warn<S: Into<MultiSpan>>(&mut self,
 span_warn			    pub fn span_warn<S: Into<MultiSpan>>(&self, sp: S, msg: &str) 
 span_warn_with_code			    pub fn span_warn_with_code<S: Into<MultiSpan>>(&self, sp: S, msg: &str, code: &str) 
-splice_lines			    pub fn splice_lines(&self, cm: &CodeMapper) -> String 
+splice_lines			    pub fn splice_lines(&self, cm: &CodeMapper) -> Vec<(String, bool)> 
 start_attr			    fn start_attr(&mut self, attr: term::Attr) -> io::Result<()> 
 stderr			    pub fn stderr(color_config: ColorConfig, code_map: Option<Rc<CodeMapper>>) -> EmitterWriter 
 stderr_isatty			fn stderr_isatty() -> bool 
 struct_dummy			    pub fn struct_dummy<'a>(&'a self) -> DiagnosticBuilder<'a> 
 struct_err			    pub fn struct_err<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a> 
+struct_err_with_code			    pub fn struct_err_with_code<'a>(&'a self, msg: &str, code: &str) -> DiagnosticBuilder<'a> 
 struct_fatal			    pub fn struct_fatal<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a> 
 struct_span_err			    pub fn struct_span_err<'a, S: Into<MultiSpan>>(&'a self,
 struct_span_err_with_code			    pub fn struct_span_err_with_code<'a, S: Into<MultiSpan>>(&'a self,
@@ -206,10 +214,12 @@ struct_span_warn			    pub fn struct_span_warn<'a, S: Into<MultiSpan>>(&'a self,
 struct_span_warn_with_code			    pub fn struct_span_warn_with_code<'a, S: Into<MultiSpan>>(&'a self,
 struct_warn			    pub fn struct_warn<'a>(&'a self, msg: &str) -> DiagnosticBuilder<'a> 
 style_or_override			        fn style_or_override(style: Style, override_style: Option<Style>) -> Style 
-styled_buffer			pub mod styled_buffer;
+styled_buffer			mod styled_buffer;
 styled_message			    pub fn styled_message(&self) -> &Vec<(String, Style)> 
 sub			    fn sub(&mut self,
 sub_with_highlights			    fn sub_with_highlights(&mut self,
+substitution_spans			    pub fn substitution_spans<'a>(&'a self) -> impl Iterator<Item = Span> + 'a 
+substitutions			    fn substitutions(&self) -> usize 
 takes_space			    pub fn takes_space(&self) -> bool 
 to_str			    pub fn to_str(self) -> &'static str 
 unimpl			    pub fn unimpl(&self, msg: &str) -> ! 

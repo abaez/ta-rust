@@ -19,7 +19,7 @@ Class			pub enum Class
 Classifier			impl<'a> Classifier<'a> 
 Classifier			pub struct Classifier<'a> 
 Clean			impl Clean<Attributes> for [ast::Attribute] 
-Clean			impl Clean<Option<Lifetime>> for ty::Region 
+Clean			impl Clean<Option<Lifetime>> for ty::RegionKind 
 Clean			impl Clean<Option<Visibility>> for hir::Visibility 
 Clean			impl Clean<Option<Visibility>> for ty::Visibility 
 Clean			impl Clean<VariantStruct> for ::rustc::hir::VariantData 
@@ -86,8 +86,8 @@ Clean for ty			impl<'tcx> Clean<TyParamBound> for ty::TraitRef<'tcx>
 Clean for ty			impl<'tcx> Clean<Type> for ty::ProjectionTy<'tcx> 
 Clean for ty			impl<'tcx> Clean<Type> for ty::Ty<'tcx> 
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::EquatePredicate<'tcx> 
-Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<&'tcx ty::Region, &'tcx ty::Region> 
-Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<ty::Ty<'tcx>, &'tcx ty::Region> 
+Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<ty::Region<'tcx>, ty::Region<'tcx>> 
+Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::OutlivesPredicate<ty::Ty<'tcx>, ty::Region<'tcx>> 
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::ProjectionPredicate<'tcx> 
 Clean for ty			impl<'tcx> Clean<WherePredicate> for ty::SubtypePredicate<'tcx> 
 Clean for ty			impl<T, U> Clean<U> for ty::Binder<T> where T: Clean<U> 
@@ -181,6 +181,8 @@ LibEmbargoVisitor			impl<'a, 'b, 'tcx> LibEmbargoVisitor<'a, 'b, 'tcx>
 LibEmbargoVisitor			pub struct LibEmbargoVisitor<'a, 'b: 'a, 'tcx: 'b> 
 Lifetime			impl Lifetime 
 Lifetime			pub struct Lifetime(String);
+Line			enum Line<'a> 
+Line			impl<'a> Line<'a> 
 ListAttributesIter			pub struct ListAttributesIter<'a> 
 LoadStringError			pub enum LoadStringError 
 Macro			pub struct Macro 
@@ -280,6 +282,7 @@ Write for Sink			    impl Write for Sink
 Writer			pub trait Writer 
 Writer for U			impl<U: Write> Writer for U 
 acquire_input			fn acquire_input<R, F>(input: &str,
+addClass	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function addClass(elem, className) 
 add_old_test			    pub fn add_old_test(&mut self, test: String, filename: String) 
 add_plugin			    pub fn add_plugin(&mut self, plugin: PluginCallback) 
 add_test			    pub fn add_test(&mut self, test: String,
@@ -370,6 +373,7 @@ doc_impl_item			    fn doc_impl_item(w: &mut fmt::Formatter, cx: &Context, item:
 doc_value			    pub fn doc_value<'a>(&'a self) -> Option<&'a str> 
 doctree			pub mod doctree;
 document			fn document(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item) -> fmt::Result 
+document.onclick	/data/Code/src/rust/src/librustdoc/html/static/main.js	    document.onclick = function(ev) 
 document_full			fn document_full(w: &mut fmt::Formatter, item: &clean::Item,
 document_short			fn document_short(w: &mut fmt::Formatter, item: &clean::Item, link: AssocItemLink,
 document_stability			fn document_stability(w: &mut fmt::Formatter, cx: &Context, item: &clean::Item) -> fmt::Result 
@@ -379,7 +383,7 @@ drop			        fn drop(&mut self)
 emit_source			    fn emit_source(&mut self, filename: &str) -> io::Result<()> 
 empty			    fn empty() -> Span 
 enter_alias			    pub fn enter_alias<F, R>(&self,
-enter_span			    fn enter_span(&mut self, Class) -> io::Result<()>;
+enter_span			    fn enter_span(&mut self, _: Class) -> io::Result<()>;
 enter_span			    fn enter_span(&mut self, klass: Class) -> io::Result<()> 
 error::Error for Error			impl error::Error for Error 
 escape			    pub mod escape;
@@ -403,10 +407,7 @@ fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result 
-fmt::Debug for CommaSep			impl<'a, T: fmt::Debug> fmt::Debug for CommaSep<'a, T> 
-fmt::Debug for HRef			impl<'a> fmt::Debug for HRef<'a> 
 fmt::Debug for Toc			impl fmt::Debug for Toc 
-fmt::Debug for clean			impl fmt::Debug for clean::Type 
 fmt::Display for AbiSpace			impl fmt::Display for AbiSpace 
 fmt::Display for CommaSep			impl<'a, T: fmt::Display> fmt::Display for CommaSep<'a, T> 
 fmt::Display for ConstnessSpace			impl fmt::Display for ConstnessSpace 
@@ -447,7 +448,7 @@ fmt::Display for clean			impl fmt::Display for clean::Type
 fmt::Display for clean			impl fmt::Display for clean::TypeBinding 
 fmt_impl			fn fmt_impl(i: &clean::Impl,
 fmt_impl_for_trait_page			pub fn fmt_impl_for_trait_page(i: &clean::Impl,
-fmt_type			fn fmt_type(t: &clean::Type, f: &mut fmt::Formatter, use_absolute: bool,
+fmt_type			fn fmt_type(t: &clean::Type, f: &mut fmt::Formatter, use_absolute: bool) -> fmt::Result 
 focusSearchBar	/data/Code/src/rust/src/librustdoc/html/static/main.js	function focusSearchBar() 
 fold			    pub fn fold(self) -> Option<Item> 
 fold			pub mod fold;
@@ -468,6 +469,8 @@ fold_item			    fn fold_item(&mut self, mut i: Item) -> Option<Item>
 fold_item_recur			    fn fold_item_recur(&mut self, item: Item) -> Option<Item> 
 fold_mod			    fn fold_mod(&mut self, m: Module) -> Module 
 fold_until			    fn fold_until(&mut self, level: u32) 
+for_code			    fn for_code(self) -> &'a str 
+for_html			    fn for_html(self) -> Option<&'a str> 
 format			    pub mod format;
 from			    fn from(float_ty: ast::FloatTy) -> PrimitiveType 
 from			    fn from(int_ty: ast::IntTy) -> PrimitiveType 
@@ -486,8 +489,8 @@ get			    pub fn get(&self) -> hir::Unsafety
 get			    pub fn get(self) -> &'a Option<clean::Visibility> 
 getQueryStringParams	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getQueryStringParams() 
 getVirtualKey	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function getVirtualKey(ev) 
+get_args			fn get_args() -> Option<Vec<String>> 
 get_deprecation			fn get_deprecation(cx: &DocContext, def_id: DefId) -> Option<Deprecation> 
-get_doc_value			fn get_doc_value(item: &clean::Item) -> Option<&str> 
 get_entry			    fn get_entry(&mut self, key: &str) -> &mut (Vec<Event<'a>>, u16) 
 get_filename			    pub fn get_filename(&self) -> String 
 get_index_search_type			fn get_index_search_type(item: &clean::Item) -> Option<IndexItemFunctionType> 
@@ -497,10 +500,11 @@ get_line			    pub fn get_line(&self) -> usize
 get_ref			    pub fn get_ref<'a>(&'a self) -> &'a str 
 get_stability			fn get_stability(cx: &DocContext, def_id: DefId) -> Option<Stability> 
 handleShortcut	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function handleShortcut(ev) 
+hasClass	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function hasClass(elem, className) 
 has_self			    pub fn has_self(&self) -> bool 
 has_stripped_fields			    pub fn has_stripped_fields(&self) -> Option<bool> 
-has_word			    fn has_word(self, &str) -> bool;
 has_word			    fn has_word(self, word: &str) -> bool 
+has_word			    fn has_word(self, word: &str) -> bool;
 header			    extern fn header(_ob: *mut hoedown_buffer,
 header			    extern fn header(ob: *mut hoedown_buffer, text: *const hoedown_buffer,
 highlight			    pub mod highlight;
@@ -529,11 +533,12 @@ inline			pub mod inline;
 inner_impl			    fn inner_impl(&self) -> &clean::Impl 
 into_toc			    pub fn into_toc(mut self) -> Toc 
 intravisit::Visitor for HirCollector			impl<'a, 'hir> intravisit::Visitor<'hir> for HirCollector<'a, 'hir> 
+isHidden	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function isHidden(elem) 
 is_associated_const			    pub fn is_associated_const(&self) -> bool 
 is_associated_type			    pub fn is_associated_type(&self) -> bool 
 is_crate			    pub fn is_crate(&self) -> bool 
-is_doc_reachable			    fn is_doc_reachable(&self, DefId) -> bool;
 is_doc_reachable			    fn is_doc_reachable(&self, did: DefId) -> bool 
+is_doc_reachable			    fn is_doc_reachable(&self, did: DefId) -> bool;
 is_enum			    pub fn is_enum(&self) -> bool 
 is_fn			    pub fn is_fn(&self) -> bool 
 is_generic			    pub fn is_generic(&self) -> bool 
@@ -546,6 +551,7 @@ is_stripped			    pub fn is_stripped(&self) -> bool
 is_struct			    pub fn is_struct(&self) -> bool 
 is_trait			    pub fn is_trait(&self) -> bool 
 is_ty_method			    pub fn is_ty_method(&self) -> bool 
+is_typedef			    pub fn is_typedef(&self) -> bool 
 is_union			    pub fn is_union(&self) -> bool 
 issue_17736			    fn issue_17736() 
 item			    fn item<F>(&mut self, item: clean::Item, mut f: F) -> Result<(), Error> where
@@ -568,9 +574,9 @@ last_name			    pub fn last_name(&self) -> &str
 layout			    pub mod layout;
 libname			fn libname(mut n: String) -> String 
 libname			fn libname(n: String) -> String 
-lists			    fn lists<'a>(&'a self, &'a str) -> ListAttributesIter<'a>;
 lists			    fn lists<'a>(&'a self, name: &'a str) -> ListAttributesIter<'a> 
-load			    pub fn load(in_header: &[String], before_content: &[String], after_content: &[String])
+lists			    fn lists<'a>(&'a self, name: &'a str) -> ListAttributesIter<'a>;
+load			    pub fn load(in_header: &[String], before_content: &[String], after_content: &[String],
 load_attrs			pub fn load_attrs(cx: &DocContext, did: DefId) -> clean::Attributes 
 load_external_files			fn load_external_files(names: &[String]) -> Option<String> 
 load_plugin			    pub fn load_plugin(&mut self, name: String) 
@@ -579,15 +585,13 @@ main			fn main()
 main			pub fn main() 
 main_args			pub fn main_args(args: &[String]) -> isize 
 make_item_keywords			fn make_item_keywords(it: &clean::Item) -> String 
-maketest			pub fn maketest(s: &str, cratename: Option<&str>, dont_insert_main: bool,
+make_test			pub fn make_test(s: &str,
+map_line			fn map_line(s: &str) -> Line 
 markdown			    pub mod markdown;
 markdown			pub mod markdown;
-maybe_ignore_item			fn maybe_ignore_item(it: &clean::Item) -> bool 
 maybe_inline_local			    fn maybe_inline_local(&mut self,
 maybe_sized			    fn maybe_sized(cx: &DocContext) -> TyParamBound 
-md_render_assoc_item			fn md_render_assoc_item(item: &clean::Item) -> String 
 method			    fn method(w: &mut fmt::Formatter,
-mkdir			fn mkdir(path: &Path) -> io::Result<()> 
 naive_assoc_href			fn naive_assoc_href(it: &clean::Item, link: AssocItemLink) -> String 
 name_from_pat			fn name_from_pat(p: &hir::Pat) -> String 
 name_key			fn name_key(name: &str) -> (&str, u64, usize) 
@@ -609,6 +613,7 @@ next			    fn next(&mut self) -> Option<Self::Item>
 next			        fn next(&mut self) -> Option<String> 
 next			    fn next(&mut self) -> Option<Self::Item> 
 old_find_testable_code			pub fn old_find_testable_code(doc: &str, tests: &mut ::test::Collector, position: Span) 
+onEach	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function onEach(arr, func) 
 opts			pub fn opts() -> Vec<RustcOptGroup> 
 parse			    fn parse(string: &str) -> LangString 
 parse_externs			fn parse_externs(matches: &getopts::Matches) -> Result<Externs, String> 
@@ -629,10 +634,12 @@ recurse			    fn recurse<T, F>(&mut self, s: String, f: F) -> T where
 redirect			pub fn redirect(dst: &mut io::Write, url: &str) -> io::Result<()> 
 register_def			fn register_def(cx: &DocContext, def: Def) -> DefId 
 register_header			    pub fn register_header(&mut self, name: &str, level: u32) 
+removeClass	/data/Code/src/rust/src/librustdoc/html/static/main.js	    function removeClass(elem, className) 
 render			pub fn render<T: fmt::Display, S: fmt::Display>(
 render			pub fn render(w: &mut fmt::Formatter,
 render			    pub mod render;
 render			pub fn render(input: &str, mut output: PathBuf, matches: &getopts::Matches,
+render_assoc_const_value			fn render_assoc_const_value(item: &clean::Item) -> String 
 render_assoc_item			fn render_assoc_item(w: &mut fmt::Formatter,
 render_assoc_items			fn render_assoc_items(w: &mut fmt::Formatter,
 render_attribute			fn render_attribute(attr: &ast::MetaItem) -> Option<String> 
@@ -658,13 +665,14 @@ run			pub fn run(mut krate: clean::Crate,
 run			pub fn run(input: &str,
 run_core			pub fn run_core(search_paths: SearchPaths,
 run_plugins			    pub fn run_plugins(&self, mut krate: clean::Crate) -> clean::Crate 
-runtest			fn runtest(test: &str, cratename: &str, cfgs: Vec<String>, libs: SearchPaths,
+run_test			fn run_test(test: &str, cratename: &str, filename: &str, cfgs: Vec<String>, libs: SearchPaths,
 rust_input			fn rust_input<R, F>(cratefile: &str, externs: Externs, matches: &getopts::Matches, f: F) -> R
 rustdoc_class			    pub fn rustdoc_class(self) -> &'static str 
 scrape_test_config			fn scrape_test_config(krate: &::rustc::hir::Crate) -> TestOptions 
 self_type			    pub fn self_type(&self) -> Option<SelfTy> 
 separate_supertrait_bounds			fn separate_supertrait_bounds(mut g: clean::Generics)
 sess			    pub fn sess(&self) -> &session::Session 
+set_fragment	/data/Code/src/rust/src/librustdoc/html/static/main.js	            var set_fragment = function (name) 
 set_position			    pub fn set_position(&mut self, position: Span) 
 short_stability			fn short_stability(item: &clean::Item, cx: &Context, show_reason: bool) -> Vec<String> 
 shorter			fn shorter<'a>(s: Option<&'a str>) -> String 
@@ -682,6 +690,7 @@ sidebar_module			fn sidebar_module(fmt: &mut fmt::Formatter, _it: &clean::Item,
 sidebar_primitive			fn sidebar_primitive(fmt: &mut fmt::Formatter, it: &clean::Item,
 sidebar_struct			fn sidebar_struct(fmt: &mut fmt::Formatter, it: &clean::Item,
 sidebar_trait			fn sidebar_trait(fmt: &mut fmt::Formatter, it: &clean::Item,
+sidebar_typedef			fn sidebar_typedef(fmt: &mut fmt::Formatter, it: &clean::Item,
 sidebar_union			fn sidebar_union(fmt: &mut fmt::Formatter, it: &clean::Item,
 simplify			mod simplify;
 singleton			    pub fn singleton(name: String) -> Path 
@@ -690,10 +699,9 @@ snip			    fn snip(&self, sp: Span) -> String
 src_href			    fn src_href(&self) -> Option<String> 
 stability			    fn stability(&self, id: ast::NodeId) -> Option<attr::Stability> 
 stability_class			    pub fn stability_class(&self) -> Option<String> 
-stable			fn stable(g: getopts::OptGroup) -> RustcOptGroup { RustcOptGroup::stable(g) }
+stable			fn stable<F>(name: &'static str, f: F) -> RustcOptGroup
 stable_since			    pub fn stable_since(&self) -> Option<&str> 
 statik			    pub fn statik() -> Lifetime 
-string			    fn string<T: Display>(&mut self, T, Class, Option<&TokenAndSpan>) -> io::Result<()>;
 string			    fn string<T: Display>(&mut self,
 strip_hidden			mod strip_hidden;
 strip_hidden			pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult 
@@ -701,7 +709,6 @@ strip_priv_imports			mod strip_priv_imports;
 strip_priv_imports			pub fn strip_priv_imports(krate: clean::Crate)  -> plugins::PluginResult 
 strip_private			mod strip_private;
 strip_private			pub fn strip_private(mut krate: clean::Crate) -> plugins::PluginResult 
-stripped_filtered_line			fn stripped_filtered_line<'a>(s: &'a str) -> Option<&'a str> 
 struct_type_from_def			pub fn struct_type_from_def(vdata: &hir::VariantData) -> StructType 
 t			        fn t(input: &str, expect: &str) 
 t			        fn t(s: &str,
@@ -719,8 +726,7 @@ toc			    pub mod toc;
 trait_did			    fn trait_did(&self) -> Option<DefId> 
 trait_is_same_or_supertrait			fn trait_is_same_or_supertrait(cx: &DocContext, child: DefId,
 trait_item			    fn trait_item(w: &mut fmt::Formatter, cx: &Context, m: &clean::Item, t: &clean::Item)
-try_inline			pub fn try_inline(cx: &DocContext, def: Def, into: Option<ast::Name>)
-try_inline_def			fn try_inline_def(cx: &DocContext, def: Def) -> Option<Vec<clean::Item>> 
+try_inline			pub fn try_inline(cx: &DocContext, def: Def, name: ast::Name)
 ty_bounds			fn ty_bounds(bounds: Vec<clean::TyParamBound>) -> Vec<clean::TyParamBound> 
 ty_params			pub fn ty_params(mut params: Vec<clean::TyParam>) -> Vec<clean::TyParam> 
 tybounds			fn tybounds(w: &mut fmt::Formatter,
@@ -730,9 +736,10 @@ unindent_comments			mod unindent_comments;
 unindent_comments			pub fn unindent_comments(krate: clean::Crate) -> plugins::PluginResult 
 unindent_doc_comments			    pub fn unindent_doc_comments(&mut self) 
 unindent_tests			mod unindent_tests 
-unstable			fn unstable(g: getopts::OptGroup) -> RustcOptGroup { RustcOptGroup::unstable(g) }
+unstable			fn unstable<F>(name: &'static str, f: F) -> RustcOptGroup
 update			    fn update(&mut self, did: DefId, level: Option<AccessLevel>) -> Option<AccessLevel> 
 usage			pub fn usage(argv0: &str) 
+v			        fn v() -> Vec<String> 
 visit			    pub fn visit(&mut self, krate: &hir::Crate) 
 visit_ast			pub mod visit_ast;
 visit_enum_def			    pub fn visit_enum_def(&mut self, it: &hir::Item,
@@ -762,3 +769,4 @@ write_header			fn write_header(class: Option<&str>,
 write_shared			fn write_shared(cx: &Context,
 write_source			    pub fn write_source<W: Writer>(&mut self,
 write_token			    fn write_token<W: Writer>(&mut self,
+x	/data/Code/src/rust/src/librustdoc/html/static/main.js	    var x = document.getElementsByClassName('version-selector');

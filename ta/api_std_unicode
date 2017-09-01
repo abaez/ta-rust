@@ -9,15 +9,22 @@ DecodeUtf16			pub struct DecodeUtf16<I>
 DecodeUtf16Error			impl DecodeUtf16Error 
 DecodeUtf16Error			pub struct DecodeUtf16Error 
 DoubleEndedIterator for SplitWhitespace			impl<'a> DoubleEndedIterator for SplitWhitespace<'a> 
+FnMut for IsNotEmpty			impl<'a, 'b> FnMut<(&'a &'b str, )> for IsNotEmpty 
+FnMut for IsWhitespace			impl FnMut<(char, )> for IsWhitespace 
+FnOnce for IsNotEmpty			impl<'a, 'b> FnOnce<(&'a &'b str, )> for IsNotEmpty 
+FnOnce for IsWhitespace			impl FnOnce<(char, )> for IsWhitespace 
 FusedIterator for SplitWhitespace			impl<'a> FusedIterator for SplitWhitespace<'a> {}
 FusedIterator for ToLowercase			impl FusedIterator for ToLowercase {}
 FusedIterator for ToUppercase			impl FusedIterator for ToUppercase {}
 FusedIterator for Utf16Encoder			impl<I> FusedIterator for Utf16Encoder<I>
+IsNotEmpty			struct IsNotEmpty;
+IsWhitespace			struct IsWhitespace;
 Iterator for CaseMappingIter			impl Iterator for CaseMappingIter 
 Iterator for SplitWhitespace			impl<'a> Iterator for SplitWhitespace<'a> 
 Iterator for ToLowercase			impl Iterator for ToLowercase 
 Iterator for ToUppercase			impl Iterator for ToUppercase 
 Iterator for Utf16Encoder			impl<I> Iterator for Utf16Encoder<I>
+Iterator for Utf8LossyChunksIter			impl<'a> Iterator for Utf8LossyChunksIter<'a> 
 Lowercase			    pub fn Lowercase(c: char) -> bool 
 N			    pub fn N(c: char) -> bool 
 Pattern_White_Space			    pub fn Pattern_White_Space(c: char) -> bool 
@@ -31,27 +38,62 @@ UnicodeStr for str			impl UnicodeStr for str
 Uppercase			    pub fn Uppercase(c: char) -> bool 
 Utf16Encoder			impl<I> Utf16Encoder<I> 
 Utf16Encoder			pub struct Utf16Encoder<I> 
+Utf8Lossy			impl Utf8Lossy 
+Utf8Lossy			pub struct Utf8Lossy 
+Utf8LossyChunk			pub struct Utf8LossyChunk<'a> 
+Utf8LossyChunksIter			pub struct Utf8LossyChunksIter<'a> 
 White_Space			    pub fn White_Space(c: char) -> bool 
 XID_Continue			    pub fn XID_Continue(c: char) -> bool 
 XID_Start			    pub fn XID_Start(c: char) -> bool 
 bsearch_case_table			    fn bsearch_case_table(c: char, table: &'static [(char, [char; 3])]) -> Option<usize> 
+call_mut			    extern "rust-call" fn call_mut(&mut self, arg: (&&str, )) -> bool 
+call_mut			    extern "rust-call" fn call_mut(&mut self, arg: (char, )) -> bool 
+call_once			    extern "rust-call" fn call_once(mut self, arg: (&&str, )) -> bool 
+call_once			    extern "rust-call" fn call_once(mut self, arg: (char, )) -> bool 
 char			impl char 
 char			pub mod char;
+chunks			    pub fn chunks(&self) -> Utf8LossyChunksIter 
+chunks			fn chunks() 
+compute_trie	/data/Code/src/rust/src/libstd_unicode/unicode.py	def compute_trie(rawdata, chunksize):
 conversions			pub mod conversions 
+debug			fn debug() 
 decode_utf16			pub fn decode_utf16<I: IntoIterator<Item = u16>>(iter: I) -> DecodeUtf16<I::IntoIter> 
+derived	/data/Code/src/rust/src/libstd_unicode/unicode.py	        derived = load_properties("DerivedCoreProperties.txt", want_derived)
 derived_property			pub mod derived_property 
 derived_property			pub mod derived_property 
+display			fn display() 
+emit_bool_trie	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_bool_trie(f, name, t_data, is_pub=True):
+emit_bsearch_range_table	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_bsearch_range_table(f):
+emit_conversions_module	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_conversions_module(f, to_upper, to_lower, to_title):
+emit_norm_module	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_norm_module(f, canon, compat, combine, norm_props):
+emit_property_module	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_property_module(f, mod, tbl, emit):
+emit_small_bool_trie	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_small_bool_trie(f, name, t_data, is_pub=True):
+emit_table	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_table(f, name, t_data, t_type = "&'static [(char, char)]", is_pub=True,
+emit_trie_lookup_range_table	/data/Code/src/rust/src/libstd_unicode/unicode.py	def emit_trie_lookup_range_table(f):
 encode_utf16			    pub fn encode_utf16(self, dst: &mut [u16]) -> &mut [u16] 
 encode_utf8			    pub fn encode_utf8(self, dst: &mut [u8]) -> &mut str 
+escape_char	/data/Code/src/rust/src/libstd_unicode/unicode.py	def escape_char(c):
 escape_debug			    pub fn escape_debug(self) -> EscapeDebug 
 escape_default			    pub fn escape_default(self) -> EscapeDefault 
 escape_unicode			    pub fn escape_unicode(self) -> EscapeUnicode 
+expanded_categories	/data/Code/src/rust/src/libstd_unicode/unicode.py	expanded_categories = 
+fetch	/data/Code/src/rust/src/libstd_unicode/unicode.py	def fetch(f):
+fileinput	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
+fmt::Debug for Utf8Lossy			impl fmt::Debug for Utf8Lossy 
 fmt::Display for CaseMappingIter			impl fmt::Display for CaseMappingIter 
 fmt::Display for DecodeUtf16Error			impl fmt::Display for DecodeUtf16Error 
 fmt::Display for ToLowercase			impl fmt::Display for ToLowercase 
 fmt::Display for ToUppercase			impl fmt::Display for ToUppercase 
+fmt::Display for Utf8Lossy			impl fmt::Display for Utf8Lossy 
+format_table_content	/data/Code/src/rust/src/libstd_unicode/unicode.py	def format_table_content(f, content, indent):
+from_bytes			    pub fn from_bytes(bytes: &[u8]) -> &Utf8Lossy 
+from_str			    pub fn from_str(s: &str) -> &Utf8Lossy 
+gen_unassigned	/data/Code/src/rust/src/libstd_unicode/unicode.py	def gen_unassigned(assigned):
 general_category			pub mod general_category 
+group_cat	/data/Code/src/rust/src/libstd_unicode/unicode.py	def group_cat(cat):
+group_cats	/data/Code/src/rust/src/libstd_unicode/unicode.py	def group_cats(cats):
 is_alphabetic			    pub fn is_alphabetic(self) -> bool 
 is_alphanumeric			    pub fn is_alphanumeric(self) -> bool 
 is_alphanumeric			    fn is_alphanumeric(&self) -> bool 
@@ -59,33 +101,51 @@ is_alphanumeric			    fn is_alphanumeric(&self) -> bool;
 is_control			    pub fn is_control(self) -> bool 
 is_digit			    pub fn is_digit(self, radix: u32) -> bool 
 is_lowercase			    pub fn is_lowercase(self) -> bool 
-is_not_empty			        fn is_not_empty(s: &&str) -> bool 
 is_numeric			    pub fn is_numeric(self) -> bool 
+is_surrogate	/data/Code/src/rust/src/libstd_unicode/unicode.py	def is_surrogate(n):
 is_uppercase			    pub fn is_uppercase(self) -> bool 
 is_whitespace			    pub fn is_whitespace(self) -> bool 
-is_whitespace			        fn is_whitespace(c: char) -> bool 
 is_whitespace			    fn is_whitespace(&self) -> bool 
 is_whitespace			    fn is_whitespace(&self) -> bool;
 is_xid_continue			    pub fn is_xid_continue(self) -> bool 
 is_xid_start			    pub fn is_xid_start(self) -> bool 
 len_utf16			    pub fn len_utf16(self) -> usize 
 len_utf8			    pub fn len_utf8(self) -> usize 
+load_properties	/data/Code/src/rust/src/libstd_unicode/unicode.py	def load_properties(f, interestingprops):
+load_special_casing	/data/Code/src/rust/src/libstd_unicode/unicode.py	def load_special_casing(f, to_upper, to_lower, to_title):
+load_unicode_data	/data/Code/src/rust/src/libstd_unicode/unicode.py	def load_unicode_data(f):
 lookup			    fn lookup(&self, c: char) -> bool 
+lossy			pub mod lossy;
+lossy			mod lossy;
+math	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
 new			    fn new(chars: [char; 3]) -> CaseMappingIter 
 new			    pub fn new(chars: I) -> Utf16Encoder<I>
 next			    fn next(&mut self) -> Option<Result<char, DecodeUtf16Error>> 
 next			    fn next(&mut self) -> Option<char> 
+next			    fn next(&mut self) -> Option<Utf8LossyChunk<'a>> 
 next			    fn next(&mut self) -> Option<&'a str> 
 next			    fn next(&mut self) -> Option<u16> 
 next_back			    fn next_back(&mut self) -> Option<&'a str> 
+norm_props	/data/Code/src/rust/src/libstd_unicode/unicode.py	        norm_props = load_properties("DerivedNormalizationProps.txt",
+operator	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
+os	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
+pattern	/data/Code/src/rust/src/libstd_unicode/unicode.py	            pattern = "for Version (\\d+)\\.(\\d+)\\.(\\d+) of the Unicode"
 property			pub mod property 
 property			pub mod property 
+props	/data/Code/src/rust/src/libstd_unicode/unicode.py	        props = load_properties("PropList.txt",
+r		"
+re	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
+safe_get			        fn safe_get(xs: &[u8], i: usize) -> u8 
+scripts	/data/Code/src/rust/src/libstd_unicode/unicode.py	        scripts = load_properties("Scripts.txt", [])
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 size_hint			    fn size_hint(&self) -> (usize, Option<usize>) 
 split_whitespace			    fn split_whitespace(&self) -> SplitWhitespace 
 split_whitespace			    fn split_whitespace<'a>(&'a self) -> SplitWhitespace<'a>;
 str			pub mod str 
+surrogate_codepoints	/data/Code/src/rust/src/libstd_unicode/unicode.py	surrogate_codepoints = (0xd800, 0xdfff)
+sys	/data/Code/src/rust/src/libstd_unicode/unicode.py	import fileinput, re, os, sys, operator, math
 tables			mod tables;
+to_combines	/data/Code/src/rust/src/libstd_unicode/unicode.py	def to_combines(combs):
 to_digit			    pub fn to_digit(self, radix: u32) -> Option<u32> 
 to_lower			    pub fn to_lower(c: char) -> [char; 3] 
 to_lowercase			    pub fn to_lowercase(self) -> ToLowercase 
@@ -100,4 +160,8 @@ trim_left			    fn trim_left(&self) -> &str;
 trim_right			    fn trim_right(&self) -> &str 
 trim_right			    fn trim_right(&self) -> &str;
 u_str			mod u_str;
+ungroup_cat	/data/Code/src/rust/src/libstd_unicode/unicode.py	def ungroup_cat(cat):
+unicode_version	/data/Code/src/rust/src/libstd_unicode/unicode.py	            unicode_version = re.search(pattern, readme.read()).groups()
 unpaired_surrogate			    pub fn unpaired_surrogate(&self) -> u16 
+unsafe_get			        fn unsafe_get(xs: &[u8], i: usize) -> u8 
+want_derived	/data/Code/src/rust/src/libstd_unicode/unicode.py	        want_derived = ["XID_Start", "XID_Continue", "Alphabetic", "Lowercase", "Uppercase",

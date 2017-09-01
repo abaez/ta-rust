@@ -1,19 +1,15 @@
+::std::ops::Index for IncrementalHashesMap			impl<'a> ::std::ops::Index<&'a DepNode> for IncrementalHashesMap 
 Classify			impl<'a, 'g, N, I, O> Classify<'a, 'g, N, I, O>
 Classify			pub struct Classify<'a, 'g: 'a, N: 'g, I: 'a, O: 'a>
 Color			enum Color 
 ComputeItemHashesVisitor			impl<'a, 'tcx: 'a> ComputeItemHashesVisitor<'a, 'tcx> 
 ComputeItemHashesVisitor			struct ComputeItemHashesVisitor<'a, 'tcx: 'a> 
-CrateInfo			pub struct CrateInfo 
 Dag			struct Dag 
 DagId			impl DagId 
 DagId			pub struct DagId 
 DagNode			struct DagNode 
-Debug for DefIdDirectory			impl Debug for DefIdDirectory 
-DefIdDirectory			impl DefIdDirectory 
-DefIdDirectory			pub struct DefIdDirectory 
-DefIdDirectoryBuilder			impl<'a,'tcx> DefIdDirectoryBuilder<'a,'tcx> 
-DefIdDirectoryBuilder			pub struct DefIdDirectoryBuilder<'a,'tcx:'a> 
-DefPathIndex			pub struct DefPathIndex 
+DepNodeIndex			impl DepNodeIndex 
+DepNodeIndex			pub struct DepNodeIndex(pub u32);
 DirtyCleanMetadataVisitor			impl<'a, 'tcx, 'm> DirtyCleanMetadataVisitor<'a, 'tcx, 'm> 
 DirtyCleanMetadataVisitor			pub struct DirtyCleanMetadataVisitor<'a, 'tcx: 'a, 'm> 
 DirtyCleanVisitor			impl<'a, 'tcx> DirtyCleanVisitor<'a, 'tcx> 
@@ -22,36 +18,33 @@ FindAllAttrs			impl<'a, 'tcx> FindAllAttrs<'a, 'tcx>
 FindAllAttrs			pub struct FindAllAttrs<'a, 'tcx:'a> 
 GraphReduce			impl<'q, N, I, O> GraphReduce<'q, N, I, O>
 GraphReduce			struct GraphReduce<'q, N, I, O>
-GraphvizDepGraph			pub struct GraphvizDepGraph<'q>(FxHashSet<&'q DepNode<DefId>>,
+GraphvizDepGraph			pub struct GraphvizDepGraph<'q>(FxHashSet<&'q DepNode>,
 HashContext			impl<'a, 'tcx> HashContext<'a, 'tcx> 
 HashContext			pub struct HashContext<'a, 'tcx: 'a> 
+Idx for DepNodeIndex			impl Idx for DepNodeIndex 
 IfThisChanged			impl<'a, 'tcx> IfThisChanged<'a, 'tcx> 
 IfThisChanged			struct IfThisChanged<'a, 'tcx:'a> 
 IncrementalHashesMap			impl IncrementalHashesMap 
 IncrementalHashesMap			pub struct IncrementalHashesMap 
 ItemLikeVisitor for ComputeItemHashesVisitor			impl<'a, 'tcx: 'a> ItemLikeVisitor<'tcx> for ComputeItemHashesVisitor<'a, 'tcx> 
 ItemLikeVisitor for DirtyCleanVisitor			impl<'a, 'tcx> ItemLikeVisitor<'tcx> for DirtyCleanVisitor<'a, 'tcx> 
-ItemLikeVisitor for IfThisChanged			impl<'a, 'tcx> ItemLikeVisitor<'tcx> for IfThisChanged<'a, 'tcx> 
 Predecessors			impl<'q> Predecessors<'q> 
 Predecessors			pub struct Predecessors<'query> 
 Reduction			pub struct Reduction<'q, N> where N: 'q + Debug + Clone 
-RetracedDefIdDirectory			impl RetracedDefIdDirectory 
-RetracedDefIdDirectory			pub struct RetracedDefIdDirectory 
+SerializedDepGraph			impl SerializedDepGraph 
 SerializedDepGraph			pub struct SerializedDepGraph 
-SerializedEdgeSet			pub struct SerializedEdgeSet 
-SerializedHash			pub struct SerializedHash 
 SerializedMetadataHashes			pub struct SerializedMetadataHashes 
 SerializedWorkProduct			pub struct SerializedWorkProduct 
 State			    enum State { Undecided, Deciding, Included, Excluded }
 UnifyKey for DagId			impl UnifyKey for DagId 
-add			    pub fn add(&mut self, def_id: DefId) -> DefPathIndex 
+Visitor for IfThisChanged			impl<'a, 'tcx> Visitor<'tcx> for IfThisChanged<'a, 'tcx> 
 all_except_most_recent			fn all_except_most_recent(deletion_candidates: Vec<(SystemTime, PathBuf, Option<flock::Lock>)>)
 argument			    fn argument(&self, attr: &ast::Attribute) -> Option<ast::Name> 
 as_input_index			    pub fn as_input_index(&self) -> NodeIndex 
-assert_clean			    fn assert_clean(&self, item_span: Span, dep_node: DepNode<DefId>) 
+assert_clean			    fn assert_clean(&self, item_span: Span, dep_node: DepNode) 
 assert_dep_graph			pub fn assert_dep_graph<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 assert_dep_graph			mod assert_dep_graph;
-assert_dirty			    fn assert_dirty(&self, item_span: Span, dep_node: DepNode<DefId>) 
+assert_dirty			    fn assert_dirty(&self, item_span: Span, dep_node: DepNode) 
 assert_no_characters_lost			fn assert_no_characters_lost(s: &str) 
 assert_state			    fn assert_state(&self, should_be_clean: bool, def_id: DefId, span: Span) 
 calculate_svh			mod calculate_svh;
@@ -64,6 +57,7 @@ classify			mod classify;
 compress			mod compress;
 compute			    fn compute(mut self) -> Reduction<'q, N> 
 compute_and_store_ich_for_item_like			    fn compute_and_store_ich_for_item_like<T>(&mut self,
+compute_and_store_ich_for_trait_impls			    fn compute_and_store_ich_for_trait_impls(&mut self, krate: &'tcx hir::Crate)
 compute_crate_hash			    fn compute_crate_hash(&mut self) 
 compute_incremental_hashes_map			pub fn compute_incremental_hashes_map<'a, 'tcx: 'a>(tcx: TyCtxt<'a, 'tcx, 'tcx>)
 construct			mod construct;
@@ -71,71 +65,68 @@ copy_files			fn copy_files(target_dir: &Path,
 crate_path			fn crate_path(sess: &Session,
 crate_path_tcx			fn crate_path_tcx(tcx: TyCtxt, cnum: CrateNum) -> PathBuf 
 create_dir			fn create_dir(sess: &Session, path: &Path, dir_tag: &str) -> Result<(),()> 
-create_node			            fn create_node((): (), (): ()) 
 cycle_head			    fn cycle_head(&mut self, in_node: NodeIndex) -> NodeIndex 
 dag_id			mod dag_id;
 data			mod data;
 decode_dep_graph			pub fn decode_dep_graph<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-def_id			    pub fn def_id(&self, index: DefPathIndex) -> Option<DefId> 
-def_path_string			    pub fn def_path_string(&self, tcx: TyCtxt, index: DefPathIndex) -> String 
 delete_all_session_dir_contents			pub fn delete_all_session_dir_contents(sess: &Session) -> io::Result<()> 
 delete_dirty_work_product			fn delete_dirty_work_product(tcx: TyCtxt,
 delete_session_dir_lock_file			fn delete_session_dir_lock_file(sess: &Session,
 delete_workproduct_files			pub fn delete_workproduct_files(sess: &Session, work_product: &WorkProduct) 
 dep_graph_path			pub fn dep_graph_path(sess: &Session) -> PathBuf 
-dep_node			    fn dep_node(&self, attr: &Attribute, def_id: DefId) -> DepNode<DefId> 
-dep_node_str			    fn dep_node_str(&self, dep_node: &DepNode<DefId>) -> DepNode<String> 
+dep_node			    fn dep_node(&self, attr: &Attribute, def_id: DefId) -> DepNode 
+dep_node_str			    fn dep_node_str(&self, dep_node: &DepNode) -> String 
 detect_cycles			fn detect_cycles() 
-directory			    pub fn directory(&self) -> &DefIdDirectory 
-directory			mod directory;
 dirty_clean			mod dirty_clean;
+does_still_exist			fn does_still_exist(tcx: TyCtxt, dep_node: &DepNode) -> bool 
 dot::GraphWalk for GraphvizDepGraph			impl<'a, 'tcx, 'q> dot::GraphWalk<'a> for GraphvizDepGraph<'q> 
 dot::Labeller for GraphvizDepGraph			impl<'a, 'tcx, 'q> dot::Labeller<'a> for GraphvizDepGraph<'q> 
 dump_graph			fn dump_graph(tcx: TyCtxt) 
 edge_order1			fn edge_order1() 
 edge_order2			fn edge_order2() 
-edges			    fn edges(&self) -> dot::Edges<(&'q DepNode<DefId>, &'q DepNode<DefId>)> 
-encode_dep_graph			pub fn encode_dep_graph(preds: &Predecessors,
+edge_targets_from			    pub fn edge_targets_from(&self, source: DepNodeIndex) -> &[DepNodeIndex] 
+edges			    fn edges(&self) -> dot::Edges<(&'q DepNode, &'q DepNode)> 
+encode_dep_graph			pub fn encode_dep_graph(tcx: TyCtxt,
 encode_metadata_hashes			pub fn encode_metadata_hashes(tcx: TyCtxt,
 encode_work_products			pub fn encode_work_products(sess: &Session, encoder: &mut Encoder) -> io::Result<()> 
 expect_associated_value			fn expect_associated_value(tcx: TyCtxt, item: &NestedMetaItem) -> ast::Name 
 extract_timestamp_from_session_dir			fn extract_timestamp_from_session_dir(directory_name: &str)
 file_format			mod file_format;
-filter_edges			fn filter_edges<'q>(query: &'q DepGraphQuery<DefId>,
-filter_nodes			fn filter_nodes<'q>(query: &'q DepGraphQuery<DefId>,
+filter_edges			fn filter_edges<'q>(query: &'q DepGraphQuery,
+filter_nodes			fn filter_nodes<'q>(query: &'q DepGraphQuery,
 finalize_session_directory			pub fn finalize_session_directory(sess: &Session, svh: Svh) 
 find_metadata_hashes_for			pub fn find_metadata_hashes_for(tcx: TyCtxt, cnum: CrateNum) -> Option<PathBuf> 
 find_metadata_hashes_iter			fn find_metadata_hashes_iter<'a, I>(target_svh: &str, iter: I) -> Option<OsString>
 find_source_directory			fn find_source_directory(crate_dir: &Path,
 find_source_directory_in_iter			fn find_source_directory_in_iter<I>(iter: I,
-fmt			    fn fmt(&self, fmt: &mut fmt::Formatter) -> Result<(), fmt::Error> 
 from_index			    fn from_index(u: u32) -> Self 
 from_input_index			    pub fn from_input_index(n: NodeIndex) -> Self 
 fs			mod fs;
 garbage_collect_session_directories			pub fn garbage_collect_session_directories(sess: &Session) -> io::Result<()> 
 generate_session_dir_path			fn generate_session_dir_path(crate_dir: &Path) -> PathBuf 
+get			    pub fn get(&self, k: &DepNode) -> Option<&Fingerprint> 
 graph_id			    fn graph_id(&self) -> dot::Id 
-hash			    pub fn hash(&mut self, dep_node: &DepNode<DefId>) -> Option<Fingerprint> 
+hash			    pub fn hash(&mut self, dep_node: &DepNode) -> Option<Fingerprint> 
 hash			mod hash;
 hash_crate_root_module			    fn hash_crate_root_module(&mut self, krate: &'tcx hir::Crate) 
 in_cycle			    fn in_cycle(&mut self, ni1: NodeIndex, ni2: NodeIndex) -> bool 
 in_incr_comp_dir			pub fn in_incr_comp_dir(incr_comp_session_dir: &Path, file_name: &str) -> PathBuf 
 in_incr_comp_dir_sess			pub fn in_incr_comp_dir_sess(sess: &Session, file_name: &str) -> PathBuf 
-index			    fn index(&self, index: &'a DepNode<DefId>) -> &Fingerprint 
+index			    fn index(&self, index: &'a DepNode) -> &Fingerprint 
+index			    fn index(self) -> usize 
 index			    fn index(&self) -> u32 
 initial_dirty_nodes			fn initial_dirty_nodes<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 inputs			    fn inputs(&self, in_node: NodeIndex) -> impl Iterator<Item = NodeIndex> + 'q 
-insert			    pub fn insert(&mut self, k: DepNode<DefId>, v: Fingerprint) -> Option<Fingerprint> 
+insert			    pub fn insert(&mut self, k: DepNode, v: Fingerprint) 
 intravisit::Visitor for DirtyCleanMetadataVisitor			impl<'a, 'tcx, 'm> intravisit::Visitor<'tcx> for DirtyCleanMetadataVisitor<'a, 'tcx, 'm> 
 intravisit::Visitor for FindAllAttrs			impl<'a, 'tcx> intravisit::Visitor<'tcx> for FindAllAttrs<'a, 'tcx> 
 is_active_attr			    fn is_active_attr(&mut self, attr: &Attribute) -> bool 
 is_finalized			fn is_finalized(directory_name: &str) -> bool 
-is_hashable			    pub fn is_hashable(dep_node: &DepNode<DefId>) -> bool 
+is_hashable			    pub fn is_hashable(tcx: TyCtxt, dep_node: &DepNode) -> bool 
 is_old_enough_to_be_collected			fn is_old_enough_to_be_collected(timestamp: SystemTime) -> bool 
 is_session_directory			fn is_session_directory(directory_name: &str) -> bool 
 is_session_directory_lock_file			fn is_session_directory_lock_file(file_name: &str) -> bool 
 iter			    pub fn iter<'a>(&'a self)
-krate_still_valid			    pub fn krate_still_valid(&self,
 len			    pub fn len(&self) -> usize 
 load			mod load;
 load_data			    fn load_data(&mut self, cnum: CrateNum) 
@@ -146,39 +137,35 @@ load_from_data			    fn load_from_data(&mut self,
 load_prev_metadata_hashes			fn load_prev_metadata_hashes(tcx: TyCtxt,
 lock_directory			fn lock_directory(sess: &Session,
 lock_file_path			pub fn lock_file_path(session_dir: &Path) -> PathBuf 
-make_key			        fn make_key(name: &str, disambiguator: &str) -> String 
-map			    pub fn map(&mut self, node: &DepNode<DefId>) -> DepNode<DefPathIndex> 
-map			    pub fn map(&self, node: &DepNode<DefPathIndex>) -> Option<DepNode<DefId>> 
 mark_cycle			    fn mark_cycle(&mut self, in_node1: NodeIndex, in_node2: NodeIndex) 
-max_current_crate			    fn max_current_crate(&self, tcx: TyCtxt) -> CrateNum 
-metadata_hash			    fn metadata_hash(&mut self, def_id: DefId) -> Fingerprint 
+metadata_hash			    fn metadata_hash<K, C>(&mut self,
 metadata_hash_export_path			pub fn metadata_hash_export_path(sess: &Session) -> PathBuf 
 metadata_hash_import_path			pub fn metadata_hash_import_path(import_session_dir: &Path) -> PathBuf 
+nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> intravisit::NestedVisitorMap<'this, 'tcx> 
 new			    pub fn new() -> IncrementalHashesMap 
-new			    pub fn new(krates: Vec<CrateInfo>) -> DefIdDirectory 
-new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>) -> DefIdDirectoryBuilder<'a, 'tcx> 
+new			    fn new(idx: usize) -> Self 
+new			    pub fn new(idx: usize) -> DepNodeIndex 
 new			    pub fn new(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 new			    fn new(in_graph: &'q Graph<N, ()>, is_input: I, is_output: O) -> Self 
-new			    pub fn new(query: &'q DepGraphQuery<DefId>, hcx: &mut HashContext) -> Self 
-node_id			    fn node_id(&self, n: &&'q DepNode<DefId>) -> dot::Id 
-node_label			    fn node_label(&self, n: &&'q DepNode<DefId>) -> dot::LabelText 
-node_set			fn node_set<'q>(query: &'q DepGraphQuery<DefId>, filter: &DepNodeFilter)
-nodes			    fn nodes(&self) -> dot::Nodes<&'q DepNode<DefId>> 
+new			    pub fn new(query: &'q DepGraphQuery, hcx: &mut HashContext) -> Self 
+node_id			    fn node_id(&self, n: &&'q DepNode) -> dot::Id 
+node_label			    fn node_label(&self, n: &&'q DepNode) -> dot::LabelText 
+node_set			fn node_set<'q>(query: &'q DepGraphQuery, filter: &DepNodeFilter)
+nodes			    fn nodes(&self) -> dot::Nodes<&'q DepNode> 
 open			    fn open(&mut self, node: NodeIndex) 
 persist			mod persist;
 preds			mod preds;
 prepare_session_directory			pub fn prepare_session_directory(tcx: TyCtxt) -> Result<bool, ()> 
 process_attrs			    fn process_attrs(&mut self, node_id: ast::NodeId, attrs: &[ast::Attribute]) 
-process_edges			fn process_edges<'a, 'tcx, 'edges>(
+process_edge			fn process_edge<'a, 'tcx, 'edges>(
 read_file			pub fn read_file(sess: &Session, path: &Path) -> io::Result<Option<Vec<u8>>> 
 reconcile_work_products			fn reconcile_work_products<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-recurse			    fn recurse(query: &DepGraphQuery<DefId>,
+recurse			    fn recurse(query: &DepGraphQuery,
 reduce			fn reduce(graph: &Graph<&'static str, ()>,
 reduce_graph			pub fn reduce_graph<N, I, O>(graph: &Graph<N, ()>,
 report_format_mismatch			fn report_format_mismatch(sess: &Session, file: &Path, message: &str) 
 report_unchecked_attrs			    fn report_unchecked_attrs(&self, checked_attrs: &FxHashSet<ast::AttrId>) 
-retrace			    pub fn retrace(&self, tcx: TyCtxt) -> RetracedDefIdDirectory 
 rustc_version			fn rustc_version() -> String 
 safe_remove_dir_all			fn safe_remove_dir_all(p: &Path) -> io::Result<()> 
 safe_remove_file			fn safe_remove_file(p: &Path) -> io::Result<()> 
@@ -187,13 +174,12 @@ save_dep_graph			pub fn save_dep_graph<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 save_in			fn save_in<F>(sess: &Session, path_buf: PathBuf, encode: F)
 save_trans_partition			pub fn save_trans_partition(sess: &Session,
 save_work_products			pub fn save_work_products(sess: &Session) 
-source			    fn source(&self, edge: &(&'q DepNode<DefId>, &'q DepNode<DefId>)) -> &'q DepNode<DefId> 
+source			    fn source(&self, edge: &(&'q DepNode, &'q DepNode)) -> &'q DepNode 
 string_to_timestamp			fn string_to_timestamp(s: &str) -> Result<SystemTime, ()> 
 suboptimal			fn suboptimal() 
 svh_to_fingerprint			fn svh_to_fingerprint(svh: Svh) -> Fingerprint 
 tag			    fn tag(_: Option<Self>) -> &'static str 
-target			    fn target(&self, edge: &(&'q DepNode<DefId>, &'q DepNode<DefId>)) -> &'q DepNode<DefId> 
-tcx			    pub fn tcx(&self) -> TyCtxt<'a, 'tcx, 'tcx> 
+target			    fn target(&self, edge: &(&'q DepNode, &'q DepNode)) -> &'q DepNode 
 test			mod test;
 test			mod test;
 test1			fn test1() 
@@ -201,7 +187,7 @@ test2			fn test2()
 test2b			fn test2b() 
 test3			fn test3() 
 timestamp_to_string			fn timestamp_to_string(timestamp: SystemTime) -> String 
-transitive_dirty_nodes			fn transitive_dirty_nodes(edge_map: &FxHashMap<DepNode<DefPathIndex>, Vec<DepNode<DefPathIndex>>>,
+transitive_dirty_nodes			fn transitive_dirty_nodes(serialized_dep_graph: &SerializedDepGraph,
 visit_attribute			    fn visit_attribute(&mut self, attr: &'tcx Attribute) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, i: &'tcx hir::ForeignItem) 
 visit_impl_item			    fn visit_impl_item(&mut self, impl_item: &'tcx hir::ImplItem) 
@@ -212,15 +198,16 @@ visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item)
 visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
 visit_struct_field			    fn visit_struct_field(&mut self, s: &'tcx hir::StructField) 
+visit_struct_field			    fn visit_struct_field(&mut self, s: &'tcx hir::StructField) 
 visit_trait_item			    fn visit_trait_item(&mut self, trait_item: &'tcx hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, item: &'tcx hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, item: &'tcx hir::TraitItem) 
 visit_trait_item			    fn visit_trait_item(&mut self, item: &hir::TraitItem) 
 visit_variant			    fn visit_variant(&mut self,
 visit_variant_data			    fn visit_variant_data(&mut self,
-walk_between			fn walk_between<'q>(query: &'q DepGraphQuery<DefId>,
+walk_between			fn walk_between<'q>(query: &'q DepGraphQuery,
 walk_edge			    fn walk_edge(&mut self, parent: NodeIndex, child: NodeIndex) 
-walk_nodes			fn walk_nodes<'q>(query: &'q DepGraphQuery<DefId>,
+walk_nodes			fn walk_nodes<'q>(query: &'q DepGraphQuery,
 work_product			mod work_product;
 work_products_path			pub fn work_products_path(sess: &Session) -> PathBuf 
 write_file_header			pub fn write_file_header<W: io::Write>(stream: &mut W) -> io::Result<()> 

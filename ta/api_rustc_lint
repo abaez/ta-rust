@@ -1,11 +1,15 @@
+AnonymousParameters			pub struct AnonymousParameters;
 BoxPointers			impl BoxPointers 
 BoxPointers			pub struct BoxPointers;
 DeprecatedAttr			impl DeprecatedAttr 
 DeprecatedAttr			pub struct DeprecatedAttr 
+EarlyLintPass for AnonymousParameters			impl EarlyLintPass for AnonymousParameters 
 EarlyLintPass for DeprecatedAttr			impl EarlyLintPass for DeprecatedAttr 
+EarlyLintPass for IllegalFloatLiteralPattern			impl EarlyLintPass for IllegalFloatLiteralPattern 
 EarlyLintPass for UnusedImportBraces			impl EarlyLintPass for UnusedImportBraces 
 EarlyLintPass for UnusedParens			impl EarlyLintPass for UnusedParens 
 FfiResult			enum FfiResult 
+IllegalFloatLiteralPattern			pub struct IllegalFloatLiteralPattern;
 ImproperCTypes			pub struct ImproperCTypes;
 ImproperCTypesVisitor			impl<'a, 'tcx> ImproperCTypesVisitor<'a, 'tcx> 
 ImproperCTypesVisitor			struct ImproperCTypesVisitor<'a, 'tcx: 'a> 
@@ -35,8 +39,10 @@ LateLintPass for UnusedResults			impl<'a, 'tcx> LateLintPass<'a, 'tcx> for Unuse
 LateLintPass for UnusedUnsafe			impl<'a, 'tcx> LateLintPass<'a, 'tcx> for UnusedUnsafe 
 LateLintPass for VariantSizeDifferences			impl<'a, 'tcx> LateLintPass<'a, 'tcx> for VariantSizeDifferences 
 LateLintPass for WhileTrue			impl<'a, 'tcx> LateLintPass<'a, 'tcx> for WhileTrue 
+LintPass for AnonymousParameters			impl LintPass for AnonymousParameters 
 LintPass for BoxPointers			impl LintPass for BoxPointers 
 LintPass for DeprecatedAttr			impl LintPass for DeprecatedAttr 
+LintPass for IllegalFloatLiteralPattern			impl LintPass for IllegalFloatLiteralPattern 
 LintPass for ImproperCTypes			impl LintPass for ImproperCTypes 
 LintPass for InvalidNoMangleItems			impl LintPass for InvalidNoMangleItems 
 LintPass for MissingCopyImplementations			impl LintPass for MissingCopyImplementations 
@@ -127,18 +133,18 @@ check_item			    fn check_item(&mut self, cx: &EarlyContext, item: &ast::Item)
 check_lifetime_def			    fn check_lifetime_def(&mut self, cx: &LateContext, t: &hir::LifetimeDef) 
 check_limits			        fn check_limits(cx: &LateContext,
 check_missing_docs_attrs			    fn check_missing_docs_attrs(&self,
-check_must_use			        fn check_must_use(cx: &LateContext, attrs: &[ast::Attribute], sp: Span) -> bool 
+check_must_use			        fn check_must_use(cx: &LateContext, def_id: DefId, sp: Span) -> bool 
 check_pat			    fn check_pat(&mut self, cx: &LateContext, p: &hir::Pat) 
+check_pat			    fn check_pat(&mut self, cx: &EarlyContext, pat: &ast::Pat) 
 check_pat			    fn check_pat(&mut self, cx: &LateContext, pat: &hir::Pat) 
 check_snake_case			    fn check_snake_case(&self, cx: &LateContext, sort: &str, name: &str, span: Option<Span>) 
 check_stmt			    fn check_stmt(&mut self, cx: &EarlyContext, s: &ast::Stmt) 
 check_stmt			    fn check_stmt(&mut self, cx: &LateContext, s: &hir::Stmt) 
 check_struct_def			    fn check_struct_def(&mut self,
-check_struct_def			    fn check_struct_def(&mut self,
-check_struct_def_post			    fn check_struct_def_post(&mut self,
 check_struct_field			    fn check_struct_field(&mut self, cx: &LateContext, sf: &hir::StructField) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, ti: &hir::TraitItem) 
+check_trait_item			    fn check_trait_item(&mut self, cx: &EarlyContext, it: &ast::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, item: &hir::TraitItem) 
 check_trait_item			    fn check_trait_item(&mut self, cx: &LateContext, trait_item: &hir::TraitItem) 
 check_type_for_ffi			    fn check_type_for_ffi(&self,
@@ -148,7 +154,6 @@ check_unused_parens_core			    fn check_unused_parens_core(&self,
 check_upper_case			    fn check_upper_case(cx: &LateContext, sort: &str, name: ast::Name, span: Span) 
 check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
 check_variant			    fn check_variant(&mut self, cx: &LateContext, v: &hir::Variant, _: &hir::Generics) 
-check_variant_post			    fn check_variant_post(&mut self, _: &LateContext, _: &hir::Variant, _: &hir::Generics) 
 contains_exterior_struct_lit			        fn contains_exterior_struct_lit(value: &ast::Expr) -> bool 
 def_id_is_transmute			        fn def_id_is_transmute(cx: &LateContext, def_id: DefId) -> bool 
 doc_hidden			    fn doc_hidden(&self) -> bool 
@@ -156,6 +161,7 @@ enter_lint_attrs			    fn enter_lint_attrs(&mut self, _: &LateContext, attrs: &[
 exit_lint_attrs			    fn exit_lint_attrs(&mut self, _: &LateContext, _attrs: &[ast::Attribute]) 
 expr_refers_to_this_fn			        fn expr_refers_to_this_fn(cx: &LateContext, fn_id: ast::NodeId, id: ast::NodeId) -> bool 
 expr_refers_to_this_method			        fn expr_refers_to_this_method(cx: &LateContext,
+fl_lit_check_expr			fn fl_lit_check_expr(cx: &EarlyContext, expr: &ast::Expr) 
 float_ty_range			        fn float_ty_range(float_ty: ast::FloatTy) -> (f64, f64) 
 get_lints			    fn get_lints(&self) -> LintArray 
 get_lints			    fn get_lints(&self) -> LintArray 
@@ -171,8 +177,8 @@ is_ffi_safe			fn is_ffi_safe(ty: attr::IntType) -> bool
 is_repr_nullable_ptr			fn is_repr_nullable_ptr<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
 is_snake_case			        fn is_snake_case(ident: &str) -> bool 
 is_valid			        fn is_valid<T: cmp::PartialOrd>(binop: hir::BinOp, v: T, min: T, max: T) -> bool 
-method_call_refers_to_method			        fn method_call_refers_to_method<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId, span: Span) -> MethodLateContext 
+method_call_refers_to_method			        fn method_call_refers_to_method<'a, 'tcx>(cx: &LateContext<'a, 'tcx>,
+method_context			pub fn method_context(cx: &LateContext, id: ast::NodeId) -> MethodLateContext 
 new			    pub fn new() -> DeprecatedAttr 
 new			    pub fn new() -> MissingDebugImplementations 
 new			    pub fn new() -> MissingDoc 

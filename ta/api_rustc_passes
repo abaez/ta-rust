@@ -13,8 +13,8 @@ CheckLoopVisitor			struct CheckLoopVisitor<'a, 'hir: 'a>
 CheckNoAsm			struct CheckNoAsm<'a> 
 Context			enum Context 
 Foo			trait Foo 
+Foo for Bar			impl Foo for Bar 
 Foo for Bar			pub impl Foo for Bar { \/\/ error: unnecessary visibility qualifier
-Foo for Bar			pub impl Foo for Bar 
 Id			enum Id 
 LoopKind			enum LoopKind 
 LoopKind			impl LoopKind 
@@ -41,10 +41,11 @@ check_crate			pub fn check_crate(session: &Session, krate: &Crate)
 check_crate			pub fn check_crate<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>) 
 check_crate			pub fn check_crate(sess: &Session, map: &Map) 
 check_crate			pub fn check_crate(sess: &Session, krate: &ast::Crate) 
-check_crate			pub fn check_crate<'hir>(sess: &Session, hir_map: &hir_map::Map<'hir>) -> CompileResult 
+check_crate			pub fn check_crate<'hir>(sess: &Session, hir_map: &hir_map::Map<'hir>)
 check_decl_no_pat			    fn check_decl_no_pat<ReportFn: Fn(Span, bool)>(&self, decl: &FnDecl, report_err: ReportFn) 
 check_expr			fn check_expr<'a, 'tcx>(v: &mut CheckCrateVisitor<'a, 'tcx>, e: &hir::Expr, node_ty: Ty<'tcx>) 
-check_label			    fn check_label(&self, label: Ident, span: Span, id: NodeId) 
+check_expr_within_pat			    fn check_expr_within_pat(&self, expr: &Expr, allow_paths: bool) 
+check_label			    fn check_label(&self, label: Ident, span: Span) 
 check_trait_fn_not_const			    fn check_trait_fn_not_const(&self, constness: Spanned<Constness>) 
 consts			pub mod consts;
 consume			    fn consume(&mut self,
@@ -55,11 +56,11 @@ emit_unlabled_cf_in_while_condition			    fn emit_unlabled_cf_in_while_condition
 err_handler			    fn err_handler(&self) -> &errors::Handler 
 euv::Delegate for CheckCrateVisitor			impl<'a, 'gcx, 'tcx> euv::Delegate<'tcx> for CheckCrateVisitor<'a, 'gcx> 
 foo			    fn foo((a, b): (u32, u32)); \/\/ error: patterns aren't allowed in foreign
+foo			    fn foo() {}
 foo			    fn foo();
 foo			    fn foo(a: (u32, u32)); \/\/ ok!
 foo			    fn foo(s: SomeStruct); \/\/ ok!
 foo			    pub fn foo() {} \/\/ error: unnecessary visibility qualifier
-foo			    pub fn foo() {}
 handle_const_fn_call			    fn handle_const_fn_call(&mut self, def_id: DefId, ret_ty: Ty<'gcx>) 
 hir_stats			pub mod hir_stats;
 hir_visit::Visitor for StatCollector			impl<'v> hir_visit::Visitor<'v> for StatCollector<'v> 
@@ -137,17 +138,18 @@ visit_lvalue			    fn visit_lvalue(&mut self,
 visit_mac			    fn visit_mac(&mut self, mac: &'v ast::Mac) 
 visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &'v hir::MacroDef) 
 visit_mir			    fn visit_mir(&mut self, mir: &Mir<'tcx>) 
-visit_mod			    fn visit_mod(&mut self, m: &'v ast::Mod, _s: Span, _n: NodeId) 
+visit_mod			    fn visit_mod(&mut self, m: &'v ast::Mod, _s: Span, _a: &[ast::Attribute], _n: NodeId) 
 visit_mod			    fn visit_mod(&mut self, m: &'v hir::Mod, _s: Span, n: NodeId) 
 visit_nested_body			    fn visit_nested_body(&mut self, body_id: hir::BodyId) 
 visit_nested_impl_item			    fn visit_nested_impl_item(&mut self, impl_item_id: hir::ImplItemId) 
 visit_nested_item			    fn visit_nested_item(&mut self, id: hir::ItemId) 
 visit_nested_trait_item			    fn visit_nested_trait_item(&mut self, trait_item_id: hir::TraitItemId) 
 visit_operand			    fn visit_operand(&mut self,
+visit_pat			    fn visit_pat(&mut self, pat: &'a Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &'tcx hir::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &'v ast::Pat) 
 visit_pat			    fn visit_pat(&mut self, p: &'v hir::Pat) 
-visit_path			    fn visit_path(&mut self, path: &'a Path, id: NodeId) 
+visit_path			    fn visit_path(&mut self, path: &'a Path, _: NodeId) 
 visit_path			    fn visit_path(&mut self, path: &'v hir::Path, _id: NodeId) 
 visit_path			    fn visit_path(&mut self, path: &'hir hir::Path, _: ast::NodeId) 
 visit_path_list_item			    fn visit_path_list_item(&mut self,

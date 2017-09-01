@@ -50,6 +50,7 @@ Default for AccumulateVec			impl<A: Array> Default for AccumulateVec<A>
 Default for ArrayVec			impl<A> Default for ArrayVec<A>
 Default for FnvHasher			impl Default for FnvHasher 
 Default for FxHasher			impl Default for FxHasher 
+Default for IndexVec			impl<I: Idx, T> Default for IndexVec<I, T> 
 Default for SmallVec			impl<A: Array> Default for SmallVec<A> 
 Delegate			struct Delegate<K>(PhantomData<K>);
 DepthFirstTraversal			impl<'g, N: Debug, E: Debug> DepthFirstTraversal<'g, N, E> 
@@ -131,6 +132,7 @@ HashStable			pub trait HashStable<CTX>
 HashStable for Edge			impl<CTX> HashStable<CTX> for Edge 
 HashStable for Index			impl<CTX> HashStable<CTX> for Index 
 HashStable for Option			impl<T, CTX> HashStable<CTX> for Option<T>
+HashStable for String			impl<CTX> HashStable<CTX> for String 
 HashStable for TransitiveRelation			impl<CTX, T> HashStable<CTX> for TransitiveRelation<T>
 HashStable for bool			impl<CTX> HashStable<CTX> for bool 
 HashStable for f32			impl<CTX> HashStable<CTX> for f32 
@@ -222,12 +224,13 @@ StableHasher			impl<W> StableHasher<W>
 StableHasher			pub struct StableHasher<W> 
 StableHasherResult			impl StableHasherResult for [u8; 20] 
 StableHasherResult			pub trait StableHasherResult: Sized 
+StableHasherResult for u128			impl StableHasherResult for u128 
 StableHasherResult for u64			impl StableHasherResult for u64 
 Subtract			pub struct Subtract;
 TestGraph			impl TestGraph 
 TestGraph			pub struct TestGraph 
-TransitiveRelation			impl<T: Debug + PartialEq> TransitiveRelation<T> 
-TransitiveRelation			pub struct TransitiveRelation<T: Debug + PartialEq> 
+TransitiveRelation			impl<T: Clone + Debug + Eq + Hash + Clone> TransitiveRelation<T> 
+TransitiveRelation			pub struct TransitiveRelation<T: Clone + Debug + Eq + Hash + Clone> 
 TransposedGraph			impl<G: ControlFlowGraph> TransposedGraph<G> 
 TransposedGraph			pub struct TransposedGraph<G: ControlFlowGraph> 
 TupleSlice			        impl<T> TupleSlice<T> for 
@@ -335,6 +338,7 @@ default			    fn default() -> AccumulateVec<A>
 default			    fn default() -> Self 
 default			    fn default() -> FnvHasher 
 default			    fn default() -> FxHasher 
+default			    fn default() -> Self 
 default			    fn default() -> SmallVec<A> 
 depth_traverse			    pub fn depth_traverse<'a>(&'a self,
 deref			    fn deref(&self) -> &Self::Target 
@@ -526,6 +530,7 @@ len			    pub fn len(&self) -> usize
 len			    pub fn len(&self) -> usize 
 len_edges			    pub fn len_edges(&self) -> usize 
 len_nodes			    pub fn len_nodes(&self) -> usize 
+less_than			    pub fn less_than(&self, a: &T) -> Vec<&T> 
 many			    pub fn many<I: IntoIterator<Item=A::Element>>(iter: I) -> Self 
 many			    pub fn many<I: IntoIterator<Item=A::Element>>(els: I) -> Self 
 mark_as_waiting			    fn mark_as_waiting(&self) 
@@ -533,6 +538,7 @@ mark_as_waiting_from			    fn mark_as_waiting_from(&self, node: &Node<O>)
 mark_neighbors_as_waiting_from			    fn mark_neighbors_as_waiting_from(&self, node: &Node<O>) 
 matrix_intersection			fn matrix_intersection() 
 matrix_iter			fn matrix_iter() 
+maybe_map			    pub fn maybe_map<F, U>(&self, mut f: F) -> Option<TransitiveRelation<U>>
 merge			    pub fn merge(&mut self, read: usize, write: usize) -> bool 
 minimal_upper_bounds			    pub fn minimal_upper_bounds(&self, a: &T, b: &T) -> Vec<&T> 
 mubs_best_choice1			fn mubs_best_choice1() 
@@ -564,7 +570,7 @@ new			    pub fn new(graph: &'g Graph<N, E>, direction: Direction) -> Self
 new			    fn new(init: Word, universe_size: usize) -> Self 
 new			    fn new(idx: usize) -> Self { assert!(idx <= u32::MAX as usize); idx as u32 }
 new			    fn new(idx: usize) -> Self { idx }
-new			    fn new(usize) -> Self;
+new			    fn new(idx: usize) -> Self;
 new			    pub fn new() -> Self 
 new			    pub fn new() -> Ivar<T> 
 new			    fn new(parent: Option<NodeIndex>, obligation: O) -> Node<O> 

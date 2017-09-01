@@ -21,6 +21,8 @@ Encodable for Symbol			impl Encodable for Symbol
 Encodable for SyntaxContext			impl Encodable for SyntaxContext 
 ExpnFormat			pub enum ExpnFormat 
 ExpnInfo			pub struct ExpnInfo 
+ExternalSource			impl ExternalSource 
+ExternalSource			pub enum ExternalSource 
 FileLines			pub struct FileLines 
 FileMap			impl FileMap 
 FileMap			pub struct FileMap 
@@ -44,6 +46,7 @@ MacroBacktrace			pub struct MacroBacktrace
 MalformedCodemapPositions			pub struct MalformedCodemapPositions 
 Mark			impl Mark 
 Mark			pub struct Mark(u32);
+MarkData			struct MarkData 
 MultiByteChar			pub struct MultiByteChar 
 MultiSpan			impl MultiSpan 
 MultiSpan			pub struct MultiSpan 
@@ -60,12 +63,15 @@ SpanSnippetError			pub enum SpanSnippetError
 Sub for BytePos			impl Sub for BytePos 
 Sub for CharPos			impl Sub for CharPos 
 Symbol			impl Symbol 
+Symbol			impl Symbol 
 Symbol			pub struct Symbol(u32);
 SyntaxContext			impl SyntaxContext 
 SyntaxContext			pub struct SyntaxContext(u32);
 SyntaxContextData			pub struct SyntaxContextData 
 add			    fn add(self, rhs: BytePos) -> BytePos 
 add			    fn add(self, rhs: CharPos) -> CharPos 
+add_external_src			    pub fn add_external_src<F>(&self, get_src: F) -> bool
+adjust			    pub fn adjust(&mut self, expansion: Mark) -> Option<Mark> 
 allows_unstable			    pub fn allows_unstable(&self) -> bool 
 apply_mark			    pub fn apply_mark(self, mark: Mark) -> SyntaxContext 
 as_ref			    fn as_ref(&self) -> &U 
@@ -77,7 +83,6 @@ byte_length			    pub fn byte_length(&self) -> u32
 clear_markings			pub fn clear_markings() 
 contains			    pub fn contains(self, other: Span) -> bool 
 count_lines			    pub fn count_lines(&self) -> usize 
-data			    pub fn data(self) -> SyntaxContextData 
 decode			    fn decode<D: Decoder>(_: &mut D) -> Result<SyntaxContext, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<BytePos, D::Error> 
 decode			    fn decode<D: Decoder>(d: &mut D) -> Result<FileMap, D::Error> 
@@ -108,9 +113,10 @@ fmt::Debug for SyntaxContext			impl fmt::Debug for SyntaxContext
 fmt::Display for Ident			impl fmt::Display for Ident 
 fmt::Display for InternedString			impl fmt::Display for InternedString 
 fmt::Display for Symbol			impl fmt::Display for Symbol 
-fresh			    pub fn fresh() -> Self 
+fresh			    pub fn fresh(parent: Mark) -> Self 
 fresh			        fn fresh() -> Self 
 from			    fn from(span: Span) -> MultiSpan 
+from_ident			    pub fn from_ident(ident: Ident) -> Symbol 
 from_span			    pub fn from_span(primary_span: Span) -> MultiSpan 
 from_spans			    pub fn from_spans(vec: Vec<Span>) -> MultiSpan 
 from_str			    pub fn from_str(string: &str) -> Ident 
@@ -120,22 +126,36 @@ from_usize			    fn from_usize(n: usize) -> CharPos { CharPos(n) }
 from_usize			    fn from_usize(n: usize) -> Self;
 gensym			    fn gensym(&mut self, string: &str) -> Symbol 
 gensym			    pub fn gensym(string: &str) -> Self 
-get			    pub fn get(&self, name: Symbol) -> &str 
-get_line			    pub fn get_line(&self, line_number: usize) -> Option<&str> 
+gensymed			    fn gensymed(&mut self, symbol: Symbol) -> Symbol 
+gensymed			    pub fn gensymed(self) -> Self 
+get			    pub fn get(&self, symbol: Symbol) -> &str 
+get_line			    pub fn get_line(&self, line_number: usize) -> Option<Cow<str>> 
+get_source			    pub fn get_source(&self) -> Option<&str> 
+get_until_newline			        fn get_until_newline(src: &str, begin: usize) -> &str 
+glob_adjust			    pub fn glob_adjust(&mut self, expansion: Mark, mut glob_ctxt: SyntaxContext)
 hygiene			pub mod hygiene;
 intern			    pub fn intern(&mut self, string: &str) -> Symbol 
 intern			    pub fn intern(string: &str) -> Self 
+interned			    pub fn interned(&self, symbol: Symbol) -> Symbol 
+interned			    pub fn interned(self) -> Self 
 interner_tests			    fn interner_tests() 
+is_absent			    pub fn is_absent(&self) -> bool 
+is_descendant_of			    pub fn is_descendant_of(mut self, ancestor: Mark) -> bool 
 is_imported			    pub fn is_imported(&self) -> bool 
+is_modern			    pub fn is_modern(self) -> bool 
 is_real_file			    pub fn is_real_file(&self) -> bool 
 keywords			    pub mod keywords 
 line_bounds			    pub fn line_bounds(&self, line_index: usize) -> (BytePos, BytePos) 
 lookup_line			    pub fn lookup_line(&self, pos: BytePos) -> Option<usize> 
 lookup_line			fn lookup_line(lines: &[BytePos], pos: BytePos) -> isize 
 macro_backtrace			    pub fn macro_backtrace(mut self) -> Vec<MacroBacktrace> 
+modern			    pub fn modern(mut self) -> Mark 
+modern			    pub fn modern(self) -> SyntaxContext 
+modern			    pub fn modern(self) -> Ident 
 name			    pub fn name(&self) -> Symbol 
 new			    fn new() -> Self 
 new			    pub fn new() -> MultiSpan 
+new			    pub fn new(name: FileName,
 new			    pub fn new() -> Self 
 next_line			    pub fn next_line(&self, pos: BytePos) 
 next_point			    pub fn next_point(self) -> Span 
@@ -145,11 +165,15 @@ primary_span			    pub fn primary_span(&self) -> Option<Span>
 primary_spans			    pub fn primary_spans(&self) -> &[Span] 
 push_span_label			    pub fn push_span_label(&mut self, span: Span, label: String) 
 record_multibyte_char			    pub fn record_multibyte_char(&self, pos: BytePos, bytes: usize) 
+remove_bom			fn remove_bom(src: &mut String) 
+remove_mark			    pub fn remove_mark(&mut self) -> Mark 
 replace			    pub fn replace(&mut self, before: Span, after: Span) -> bool 
+reverse_glob_adjust			    pub fn reverse_glob_adjust(&mut self, expansion: Mark, mut glob_ctxt: SyntaxContext)
 root			    pub fn root() -> Self 
 serialize::UseSpecializedDecodable for Span			impl serialize::UseSpecializedDecodable for Span 
 serialize::UseSpecializedEncodable for Span			impl serialize::UseSpecializedEncodable for Span 
 set_expn_info			    pub fn set_expn_info(self, info: ExpnInfo) 
+set_modern			    pub fn set_modern(self) 
 source_callee			        fn source_callee(info: ExpnInfo) -> NameAndSpan 
 source_callee			    pub fn source_callee(self) -> Option<NameAndSpan> 
 source_callsite			    pub fn source_callsite(self) -> Span 
@@ -162,11 +186,11 @@ symbol			pub mod symbol;
 tests			mod tests 
 tests			mod tests 
 to			    pub fn to(self, end: Span) -> Span 
+to_ident			    pub fn to_ident(self) -> Ident 
 to_usize			    fn to_usize(&self) -> usize { let BytePos(n) = *self; n as usize }
 to_usize			    fn to_usize(&self) -> usize { let CharPos(n) = *self; n }
 to_usize			    fn to_usize(&self) -> usize;
 trim_start			    pub fn trim_start(self, other: Span) -> Option<Span> 
-unhygienize			    pub fn unhygienize(self) -> Ident 
 until			    pub fn until(self, end: Span) -> Span 
 with			    fn with<T, F: FnOnce(&mut HygieneData) -> T>(f: F) -> T 
 with_interner			fn with_interner<T, F: FnOnce(&mut Interner) -> T>(f: F) -> T 

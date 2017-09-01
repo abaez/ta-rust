@@ -1,5 +1,3 @@
-ArchiveMetadata			impl ArchiveMetadata 
-ArchiveMetadata			pub struct ArchiveMetadata 
 AssociatedContainer			impl AssociatedContainer 
 AssociatedContainer			pub enum AssociatedContainer 
 Ast			pub struct Ast<'tcx> 
@@ -45,17 +43,16 @@ EncodeContext			pub struct EncodeContext<'a, 'tcx: 'a>
 EncodeVisitor			struct EncodeVisitor<'a, 'b: 'a, 'tcx: 'b> 
 Encoder for EncodeContext			impl<'a, 'tcx> Encoder for EncodeContext<'a, 'tcx> 
 Entry			pub struct Entry<'tcx> 
-EntryBuilder			impl<'a, 'b, 'tcx> EntryBuilder<'a, 'b, 'tcx> 
-EntryBuilder			impl<'a, 'b: 'a, 'tcx: 'b> EntryBuilder<'a, 'b, 'tcx> 
-EntryBuilder			impl<'a, 'b: 'a, 'tcx: 'b> EntryBuilder<'a, 'b, 'tcx> 
-EntryBuilder			pub struct EntryBuilder<'a, 'b: 'a, 'tcx: 'b> 
 EntryKind			impl<'tcx> EntryKind<'tcx> 
 EntryKind			pub enum EntryKind<'tcx> 
 ExtensionCrate			struct ExtensionCrate 
 ExternCrateInfo			struct ExternCrateInfo 
-FnData			pub struct FnData 
+Finder			            struct Finder(bool);
+FnData			pub struct FnData<'tcx> 
 FromId			pub struct FromId<T>(pub ast::NodeId, pub T);
-HashStable			impl<'a, 'tcx> HashStable<StableHashingContext<'a, 'tcx>> for EntryKind<'tcx> 
+HashStable			impl<'a, 'gcx, 'tcx, T> HashStable<StableHashingContext<'a, 'gcx, 'tcx>> for Tracked<T>
+HashStable			impl<'a, 'gcx, 'tcx> HashStable<StableHashingContext<'a, 'gcx, 'tcx>> for EntryKind<'tcx> 
+HashStable			impl<'a, 'gcx, 'tcx> HashStable<StableHashingContext<'a, 'gcx, 'tcx>> for TraitImpls 
 HashStable for Lazy			impl<CTX, T> HashStable<CTX> for Lazy<T> 
 HashStable for LazySeq			impl<CTX, T> HashStable<CTX> for LazySeq<T> 
 ImplData			pub struct ImplData<'tcx> 
@@ -66,6 +63,10 @@ Index			pub struct Index
 IndexBuilder			impl<'a, 'b, 'tcx> IndexBuilder<'a, 'b, 'tcx> 
 IndexBuilder			impl<'a, 'b, 'tcx> IndexBuilder<'a, 'b, 'tcx> 
 IndexBuilder			pub struct IndexBuilder<'a, 'b: 'a, 'tcx: 'b> 
+IsolatedEncoder			impl<'a, 'b, 'tcx> IsolatedEncoder<'a, 'b, 'tcx> 
+IsolatedEncoder			impl<'a, 'b: 'a, 'tcx: 'b> IsolatedEncoder<'a, 'b, 'tcx> 
+IsolatedEncoder			impl<'a, 'b: 'a, 'tcx: 'b> IsolatedEncoder<'a, 'b, 'tcx> 
+IsolatedEncoder			pub struct IsolatedEncoder<'a, 'b: 'a, 'tcx: 'b> 
 ItemLikeVisitor for ImplVisitor			impl<'a, 'tcx, 'v> ItemLikeVisitor<'v> for ImplVisitor<'a, 'tcx> 
 Lazy			impl<'a, 'tcx: 'a, T: Decodable> Lazy<T> 
 Lazy			impl<T> Lazy<T> 
@@ -83,9 +84,9 @@ Metadata			impl<'a, 'tcx> Metadata<'a, 'tcx> for &'a MetadataBlob
 Metadata			impl<'a, 'tcx> Metadata<'a, 'tcx> for (&'a CrateMetadata, &'a Session) 
 Metadata			impl<'a, 'tcx> Metadata<'a, 'tcx> for (&'a CrateMetadata, TyCtxt<'a, 'tcx, 'tcx>) 
 Metadata			pub trait Metadata<'a, 'tcx>: Copy 
-MetadataBlob			pub enum MetadataBlob 
+MetadataBlob			pub struct MetadataBlob(pub ErasedBoxRef<[u8]>);
 MetadataBlob			impl<'a, 'tcx> MetadataBlob 
-MethodData			pub struct MethodData 
+MethodData			pub struct MethodData<'tcx> 
 ModData			pub struct ModData 
 MyRegistrar			        struct MyRegistrar(Vec<(ast::Name, Rc<SyntaxExtension>)>);
 NestedBodyCollector			struct NestedBodyCollector<'a, 'tcx: 'a> 
@@ -98,28 +99,28 @@ SpecializedDecoder			impl<'a, 'tcx> SpecializedDecoder<&'tcx ty::Slice<Ty<'tcx>>
 SpecializedDecoder			impl<'a, 'tcx> SpecializedDecoder<&'tcx ty::Slice<ty::ExistentialPredicate<'tcx>>>
 SpecializedDecoder			impl<'a, 'tcx> SpecializedDecoder<Ty<'tcx>> for DecodeContext<'a, 'tcx> 
 SpecializedDecoder			impl<'a, 'tcx> SpecializedDecoder<ty::GenericPredicates<'tcx>> for DecodeContext<'a, 'tcx> 
+SpecializedDecoder			impl<'a, 'tcx> SpecializedDecoder<ty::Region<'tcx>> for DecodeContext<'a, 'tcx> 
 SpecializedDecoder for DecodeContext			impl<'a, 'tcx> SpecializedDecoder<&'tcx ty::AdtDef> for DecodeContext<'a, 'tcx> 
-SpecializedDecoder for DecodeContext			impl<'a, 'tcx> SpecializedDecoder<&'tcx ty::Region> for DecodeContext<'a, 'tcx> 
 SpecializedDecoder for DecodeContext			impl<'a, 'tcx> SpecializedDecoder<CrateNum> for DecodeContext<'a, 'tcx> 
 SpecializedDecoder for DecodeContext			impl<'a, 'tcx> SpecializedDecoder<Span> for DecodeContext<'a, 'tcx> 
 SpecializedEncoder			impl<'a, 'tcx, T> SpecializedEncoder<Lazy<T>> for EncodeContext<'a, 'tcx> 
 SpecializedEncoder			impl<'a, 'tcx, T> SpecializedEncoder<LazySeq<T>> for EncodeContext<'a, 'tcx> 
 SpecializedEncoder			impl<'a, 'tcx> SpecializedEncoder<Ty<'tcx>> for EncodeContext<'a, 'tcx> 
 SpecializedEncoder			impl<'a, 'tcx> SpecializedEncoder<ty::GenericPredicates<'tcx>> for EncodeContext<'a, 'tcx> 
+Tracked			impl<T> Tracked<T> 
+Tracked			pub struct Tracked<T> 
 TraitData			pub struct TraitData<'tcx> 
 TraitImpls			pub struct TraitImpls 
 Unaligned			impl<T> Unaligned<T> 
 Unaligned			struct Unaligned<T>(T);
 Untracked			pub struct Untracked<T>(pub T);
-VariantData			pub struct VariantData 
+VariantData			pub struct VariantData<'tcx> 
 Visitor for EncodeVisitor			impl<'a, 'b, 'tcx> Visitor<'tcx> for EncodeVisitor<'a, 'b, 'tcx> 
 Visitor for NestedBodyCollector			impl<'a, 'tcx: 'a> Visitor<'tcx> for NestedBodyCollector<'a, 'tcx> 
 add_extern_mod_stmt_cnum			    pub fn add_extern_mod_stmt_cnum(&self, emod_id: ast::NodeId, cnum: CrateNum) 
 add_statically_included_foreign_item			    pub fn add_statically_included_foreign_item(&self, id: DefIndex) 
 add_used_library			    pub fn add_used_library(&self, lib: NativeLibrary) 
 add_used_link_args			    pub fn add_used_link_args(&self, args: &str) 
-are_equal_modulo_startpos			fn are_equal_modulo_startpos(fm1: &syntax_pos::FileMap, fm2: &syntax_pos::FileMap) -> bool 
-as_slice			    pub fn as_slice<'a>(&'a self) -> &'a [u8] 
 associated_item_cloned			    fn associated_item_cloned(&self, def: DefId) -> ty::AssociatedItem
 astencode			mod astencode;
 bytes_to_words			fn bytes_to_words(b: &[u8]) -> &[Unaligned<u32>] 
@@ -129,8 +130,6 @@ cdata			    pub fn cdata(&self) -> &'a CrateMetadata
 clone			    fn clone(&self) -> Self 
 clone			    fn clone(&self) -> Self 
 closure_kind			    pub fn closure_kind(&self, closure_id: DefIndex) -> ty::ClosureKind 
-closure_ty			    pub fn closure_ty(&self,
-const_is_rvalue_promotable_to_static			    fn const_is_rvalue_promotable_to_static(&self, def: DefId) -> bool 
 const_is_rvalue_promotable_to_static			    pub fn const_is_rvalue_promotable_to_static(&self, id: DefIndex) -> bool 
 crate_data_as_rc_any			    fn crate_data_as_rc_any(&self, krate: CrateNum) -> Rc<Any> 
 crate_dependencies_in_rpo			    pub fn crate_dependencies_in_rpo(&self, krate: CrateNum) -> Vec<CrateNum> 
@@ -150,26 +149,23 @@ def_key			    fn def_key(&self, def: DefId) -> DefKey
 def_key			    pub fn def_key(&self, index: DefIndex) -> DefKey 
 def_path			    fn def_path(&self, def: DefId) -> DefPath 
 def_path			    pub fn def_path(&self, id: DefIndex) -> DefPath 
-def_path_hash			    fn def_path_hash(&self, def: DefId) -> u64 
-def_path_hash			    pub fn def_path_hash(&self, index: DefIndex) -> u64 
-def_span			    fn def_span(&self, sess: &Session, def: DefId) -> Span 
+def_path_hash			    fn def_path_hash(&self, def: DefId) -> DefPathHash 
+def_path_hash			    pub fn def_path_hash(&self, index: DefIndex) -> DefPathHash 
+def_path_table			    fn def_path_table(&self, cnum: CrateNum) -> Rc<DefPathTable> 
 defaultness			    pub fn defaultness(&self) -> hir::Defaultness 
 dep_kind			    fn dep_kind(&self, cnum: CrateNum) -> DepKind
-deprecation			    fn deprecation(&self, def: DefId) -> Option<attr::Deprecation> 
 deref			    fn deref(&self) -> &MetadataBlob 
 deref			    fn deref(&self) -> &Self::Target 
 deref_mut			    fn deref_mut(&mut self) -> &mut Self::Target 
 derive_registrar_fn			    fn derive_registrar_fn(&self, cnum: CrateNum) -> Option<DefId>
-describe_def			    fn describe_def(&self, def: DefId) -> Option<Def> 
 diagnostics			mod diagnostics;
 disambiguator			    pub fn disambiguator(&self) -> Symbol 
 do_extern_mod_stmt_cnum			    pub fn do_extern_mod_stmt_cnum(&self, emod_id: ast::NodeId) -> Option<CrateNum> 
 do_get_used_crates			    pub fn do_get_used_crates(&self,
 do_is_statically_included_foreign_item			    pub fn do_is_statically_included_foreign_item(&self, def_id: DefId) -> bool 
 dump_crates			fn dump_crates(cstore: &CStore) 
-dylib_dependency_formats			    fn dylib_dependency_formats(&self, cnum: CrateNum)
 dylibname			    fn dylibname(&self) -> (String, String) 
-each_child_of_item			    pub fn each_child_of_item<F>(&self, id: DefIndex, mut callback: F)
+each_child_of_item			    pub fn each_child_of_item<F>(&self, id: DefIndex, mut callback: F, sess: &Session)
 emit_lazy_distance			    fn emit_lazy_distance(&mut self,
 emit_nil			    fn emit_nil(&mut self) -> Result<(), Self::Error> 
 emit_node			    fn emit_node<F: FnOnce(&mut Self, usize) -> R, R>(&mut self, f: F) -> R 
@@ -178,19 +174,19 @@ encode_addl_info_for_item			    fn encode_addl_info_for_item(&mut self, item: &h
 encode_attributes			    fn encode_attributes(&mut self, attrs: &[ast::Attribute]) -> LazySeq<ast::Attribute> 
 encode_body			    pub fn encode_body(&mut self, body_id: hir::BodyId) -> Lazy<Ast<'tcx>> 
 encode_codemap			    fn encode_codemap(&mut self) -> LazySeq<syntax_pos::FileMap> 
-encode_crate_deps			    fn encode_crate_deps(&mut self) -> LazySeq<CrateDep> 
+encode_crate_deps			    fn encode_crate_deps(&mut self, _: ()) -> LazySeq<CrateDep> 
 encode_crate_root			    fn encode_crate_root(&mut self) -> Lazy<CrateRoot> 
 encode_def_path_table			    fn encode_def_path_table(&mut self) -> Lazy<DefPathTable> 
 encode_deprecation			    fn encode_deprecation(&mut self, def_id: DefId) -> Option<Lazy<attr::Deprecation>> 
-encode_dylib_dependency_formats			    fn encode_dylib_dependency_formats(&mut self) -> LazySeq<Option<LinkagePreference>> 
+encode_dylib_dependency_formats			    fn encode_dylib_dependency_formats(&mut self, _: ()) -> LazySeq<Option<LinkagePreference>> 
 encode_enum_variant_info			    fn encode_enum_variant_info(&mut self,
-encode_exported_symbols			    fn encode_exported_symbols(&mut self) -> LazySeq<DefIndex> 
+encode_exported_symbols			    fn encode_exported_symbols(&mut self, exported_symbols: &NodeSet) -> LazySeq<DefIndex> 
 encode_field			    fn encode_field(&mut self,
 encode_fields			    fn encode_fields(&mut self, adt_def_id: DefId) 
 encode_fn_arg_names			    fn encode_fn_arg_names(&mut self, names: &[Spanned<ast::Name>])
 encode_fn_arg_names_for_body			    fn encode_fn_arg_names_for_body(&mut self, body_id: hir::BodyId)
 encode_generics			    fn encode_generics(&mut self, def_id: DefId) -> Lazy<ty::Generics> 
-encode_impls			    fn encode_impls(&mut self) -> LazySeq<TraitImpls> 
+encode_impls			    fn encode_impls(&mut self, _: ()) -> LazySeq<TraitImpls> 
 encode_info_for_anon_ty			    fn encode_info_for_anon_ty(&mut self, def_id: DefId) -> Entry<'tcx> 
 encode_info_for_closure			    fn encode_info_for_closure(&mut self, def_id: DefId) -> Entry<'tcx> 
 encode_info_for_embedded_const			    fn encode_info_for_embedded_const(&mut self, def_id: DefId) -> Entry<'tcx> 
@@ -207,15 +203,16 @@ encode_info_for_ty			    fn encode_info_for_ty(&mut self, ty: &hir::Ty)
 encode_info_for_ty_param			    fn encode_info_for_ty_param(&mut self,
 encode_inherent_implementations			    fn encode_inherent_implementations(&mut self, def_id: DefId) -> LazySeq<DefIndex> 
 encode_item_type			    fn encode_item_type(&mut self, def_id: DefId) -> Lazy<Ty<'tcx>> 
-encode_item_variances			    fn encode_item_variances(&mut self, def_id: DefId) -> LazySeq<ty::Variance> 
-encode_lang_items			    fn encode_lang_items(&mut self) -> (LazySeq<(DefIndex, usize)>, LazySeq<lang_items::LangItem>) 
+encode_lang_items			    fn encode_lang_items(&mut self, _: ()) -> LazySeq<(DefIndex, usize)> 
+encode_lang_items_missing			    fn encode_lang_items_missing(&mut self, _: ()) -> LazySeq<lang_items::LangItem> 
 encode_metadata			    fn encode_metadata<'a, 'tcx>(&self,
 encode_metadata			pub fn encode_metadata<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
-encode_mir			    fn encode_mir(&mut self, def_id: DefId) -> Option<Lazy<mir::Mir<'tcx>>> 
-encode_native_libraries			    fn encode_native_libraries(&mut self) -> LazySeq<NativeLibrary> 
+encode_native_libraries			    fn encode_native_libraries(&mut self, _: ()) -> LazySeq<NativeLibrary> 
+encode_optimized_mir			    fn encode_optimized_mir(&mut self, def_id: DefId) -> Option<Lazy<mir::Mir<'tcx>>> 
 encode_predicates			    fn encode_predicates(&mut self, def_id: DefId) -> Lazy<ty::GenericPredicates<'tcx>> 
 encode_stability			    fn encode_stability(&mut self, def_id: DefId) -> Option<Lazy<attr::Stability>> 
 encode_struct_ctor			    fn encode_struct_ctor(&mut self, (adt_def_id, def_id): (DefId, DefId)) -> Entry<'tcx> 
+encode_variances_of			    fn encode_variances_of(&mut self, def_id: DefId) -> LazySeq<ty::Variance> 
 encode_with_shorthand			    fn encode_with_shorthand<T, U, M>(&mut self,
 encoder			mod encoder;
 entry			    fn entry(&self, item_id: DefIndex) -> Entry<'tcx> 
@@ -223,18 +220,18 @@ error			    fn error(&mut self, err: &str) -> Self::Error
 existing_match			    fn existing_match(&self, name: Symbol, hash: Option<&Svh>, kind: PathKind)
 export_macros			    fn export_macros(&self, cnum: CrateNum) 
 exported_symbols			    fn exported_symbols(&self, cnum: CrateNum) -> Vec<DefId>
-extern_crate			    fn extern_crate(&self, cnum: CrateNum) -> Option<ExternCrate>
 extern_mod_stmt_cnum			    fn extern_mod_stmt_cnum(&self, emod_id: ast::NodeId) -> Option<CrateNum>
 extract_crate_info			    fn extract_crate_info(&self, i: &ast::Item) -> Option<ExternCrateInfo> 
 extract_one			    fn extract_one(&mut self,
 find_commandline_library			    fn find_commandline_library<'b, LOCS>(&mut self, locs: LOCS) -> Option<Library>
 find_library_crate			    fn find_library_crate(&mut self) -> Option<Library> 
-find_plugin_registrar			    pub fn find_plugin_registrar(&mut self, span: Span, name: &str)
-finish			    pub fn finish(self, def_id: DefId) 
+find_plugin_registrar			    pub fn find_plugin_registrar(&mut self,
+finish			    pub fn finish(self) -> (Option<Fingerprint>, &'a mut EncodeContext<'b, 'tcx>) 
 fmt			    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result 
 fmt::Display for CrateFlavor			impl fmt::Display for CrateFlavor 
-fn_arg_names			    fn fn_arg_names(&self, did: DefId) -> Vec<ast::Name>
+fn_sig			    pub fn fn_sig(&self,
 get			    fn get(self) -> T { self.0 }
+get			    pub fn get(&self, dep_graph: &DepGraph, dep_node: DepNode) -> &T 
 get_adt_def			    pub fn get_adt_def(&self,
 get_associated_item			    pub fn get_associated_item(&self, id: DefIndex) -> ty::AssociatedItem 
 get_attributes			    fn get_attributes(&self, item: &Entry<'tcx>) -> Vec<ast::Attribute> 
@@ -244,25 +241,25 @@ get_crate_hash			    pub fn get_crate_hash(&self, cnum: CrateNum) -> Svh
 get_ctor_kind			    pub fn get_ctor_kind(&self, node_id: DefIndex) -> CtorKind 
 get_def			    pub fn get_def(&self, index: DefIndex) -> Option<Def> 
 get_deprecation			    pub fn get_deprecation(&self, id: DefIndex) -> Option<attr::Deprecation> 
-get_dylib_dependency_formats			    pub fn get_dylib_dependency_formats(&self) -> Vec<(CrateNum, LinkagePreference)> 
-get_exported_symbols			    pub fn get_exported_symbols(&self) -> Vec<DefId> 
+get_dylib_dependency_formats			    pub fn get_dylib_dependency_formats(&self,
+get_exported_symbols			    pub fn get_exported_symbols(&self, dep_graph: &DepGraph) -> Vec<DefId> 
 get_fn_arg_names			    pub fn get_fn_arg_names(&self, id: DefIndex) -> Vec<ast::Name> 
 get_foreign_items_of_kind			    fn get_foreign_items_of_kind(&self, kind: cstore::NativeLibraryKind) -> Vec<DefIndex> 
 get_generics			    pub fn get_generics(&self, item_id: DefIndex) -> ty::Generics 
 get_impl_data			    fn get_impl_data(&self, id: DefIndex) -> ImplData<'tcx> 
+get_impl_defaultness			    pub fn get_impl_defaultness(&self, id: DefIndex) -> hir::Defaultness 
 get_impl_polarity			    pub fn get_impl_polarity(&self, id: DefIndex) -> hir::ImplPolarity 
 get_impl_trait			    pub fn get_impl_trait(&self,
-get_implementations_for_trait			    pub fn get_implementations_for_trait(&self, filter: Option<DefId>, result: &mut Vec<DefId>) 
+get_implementations_for_trait			    pub fn get_implementations_for_trait(&self,
 get_inherent_implementations_for_type			    pub fn get_inherent_implementations_for_type(&self, id: DefIndex) -> Vec<DefId> 
-get_item_attrs			    pub fn get_item_attrs(&self, node_id: DefIndex) -> Rc<[ast::Attribute]> 
+get_item_attrs			    pub fn get_item_attrs(&self,
 get_item_variances			    pub fn get_item_variances(&self, id: DefIndex) -> Vec<ty::Variance> 
-get_lang_items			    pub fn get_lang_items(&self) -> Vec<(DefIndex, usize)> 
+get_lang_items			    pub fn get_lang_items(&self, dep_graph: &DepGraph) -> Vec<(DefIndex, usize)> 
 get_macro			    pub fn get_macro(&self, id: DefIndex) -> (ast::Name, MacroDef) 
 get_metadata_section			fn get_metadata_section(target: &Target,
 get_metadata_section_imp			fn get_metadata_section_imp(target: &Target,
-get_missing_lang_items			    pub fn get_missing_lang_items(&self) -> Vec<lang_items::LangItem> 
-get_native_libraries			    pub fn get_native_libraries(&self) -> Vec<NativeLibrary> 
-get_ordered_deps			        fn get_ordered_deps(cstore: &cstore::CStore) -> Vec<(CrateNum, Rc<cstore::CrateMetadata>)> 
+get_missing_lang_items			    pub fn get_missing_lang_items(&self, dep_graph: &DepGraph) -> Vec<lang_items::LangItem> 
+get_native_libraries			    pub fn get_native_libraries(&self,
 get_parent_impl			    pub fn get_parent_impl(&self, id: DefIndex) -> Option<DefId> 
 get_predicates			    pub fn get_predicates(&self,
 get_repr_options			pub fn get_repr_options<'a, 'tcx, 'gcx>(tcx: &TyCtxt<'a, 'tcx, 'gcx>, did: DefId) -> ReprOptions 
@@ -276,57 +273,54 @@ get_super_predicates			    pub fn get_super_predicates(&self,
 get_trait_def			    pub fn get_trait_def(&self, item_id: DefIndex) -> ty::TraitDef 
 get_trait_of_item			    pub fn get_trait_of_item(&self, id: DefIndex) -> Option<DefId> 
 get_type			    pub fn get_type(&self, id: DefIndex, tcx: TyCtxt<'a, 'tcx, 'tcx>) -> Ty<'tcx> 
+get_untracked			    pub fn get_untracked(&self) -> &T 
 get_used_libraries			    pub fn get_used_libraries(&self) -> &RefCell<Vec<NativeLibrary>> 
 get_used_link_args			    pub fn get_used_link_args<'a>(&'a self) -> &'a RefCell<Vec<String>> 
 get_variant			    fn get_variant(&self, item: &Entry, index: DefIndex) -> ty::VariantDef 
 get_visibility			    pub fn get_visibility(&self, id: DefIndex) -> ty::Visibility 
+has_default_lib_allocator			    pub fn has_default_lib_allocator(&self, dep_graph: &DepGraph) -> bool 
+has_global_allocator			        fn has_global_allocator(krate: &ast::Crate) -> bool 
+has_global_allocator			    pub fn has_global_allocator(&self, dep_graph: &DepGraph) -> bool 
 hash			    pub fn hash(&self) -> Svh 
 hash_stable			    fn hash_stable<W: StableHasherResult>(&self,
-impl_parent			    fn impl_parent(&self, impl_def: DefId) -> Option<DefId> 
+impl_defaultness			    fn impl_defaultness(&self, def: DefId) -> hir::Defaultness
 implementations_of_trait			    fn implementations_of_trait(&self, filter: Option<DefId>) -> Vec<DefId>
 imported_filemaps			    pub fn imported_filemaps(&'a self,
 index			mod index;
 index_builder			mod index_builder;
-inject_allocator_crate			    fn inject_allocator_crate(&mut self) 
+inject_allocator_crate			    fn inject_allocator_crate(&mut self, krate: &ast::Crate) 
 inject_dependency_if			    fn inject_dependency_if(&self,
 inject_panic_runtime			    fn inject_panic_runtime(&mut self, krate: &ast::Crate) 
+inject_profiler_runtime			    fn inject_profiler_runtime(&mut self) 
 inject_sanitizer_runtime			    fn inject_sanitizer_runtime(&mut self) 
 into_items			    pub fn into_items(self) -> Index 
-is_allocator			    pub fn is_allocator(&self) -> bool 
-is_allocator			    fn is_allocator(&self, cnum: CrateNum) -> bool
 is_compatible			    pub fn is_compatible(&self) -> bool 
-is_compiler_builtins			    pub fn is_compiler_builtins(&self) -> bool 
+is_compiler_builtins			    pub fn is_compiler_builtins(&self, dep_graph: &DepGraph) -> bool 
 is_compiler_builtins			    fn is_compiler_builtins(&self, cnum: CrateNum) -> bool 
-is_const_fn			    fn is_const_fn(&self, did: DefId) -> bool
+is_const_fn			    fn is_const_fn<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>, def_id: DefId) -> bool 
 is_const_fn			    pub fn is_const_fn(&self, id: DefIndex) -> bool 
-is_default_impl			    fn is_default_impl(&self, impl_did: DefId) -> bool 
 is_default_impl			    pub fn is_default_impl(&self, impl_id: DefIndex) -> bool 
 is_dllimport_foreign_item			    fn is_dllimport_foreign_item(&self, def_id: DefId) -> bool 
-is_dllimport_foreign_item			    pub fn is_dllimport_foreign_item(&self, id: DefIndex) -> bool 
-is_exported_symbol			    fn is_exported_symbol(&self, def_id: DefId) -> bool 
-is_foreign_item			    fn is_foreign_item(&self, did: DefId) -> bool 
+is_dllimport_foreign_item			    pub fn is_dllimport_foreign_item(&self, id: DefIndex, dep_graph: &DepGraph) -> bool 
 is_foreign_item			    pub fn is_foreign_item(&self, id: DefIndex) -> bool 
-is_item_mir_available			    fn is_item_mir_available(&self, def: DefId) -> bool 
 is_item_mir_available			    pub fn is_item_mir_available(&self, id: DefIndex) -> bool 
-is_no_builtins			    pub fn is_no_builtins(&self) -> bool 
+is_no_builtins			    pub fn is_no_builtins(&self, dep_graph: &DepGraph) -> bool 
 is_no_builtins			    fn is_no_builtins(&self, cnum: CrateNum) -> bool 
-is_panic_runtime			    pub fn is_panic_runtime(&self) -> bool 
-is_panic_runtime			    fn is_panic_runtime(&self, cnum: CrateNum) -> bool
+is_panic_runtime			    pub fn is_panic_runtime(&self, dep_graph: &DepGraph) -> bool 
 is_proc_macro			    fn is_proc_macro(&self, id: DefIndex) -> bool 
-is_sanitizer_runtime			    pub fn is_sanitizer_runtime(&self) -> bool 
+is_profiler_runtime			    pub fn is_profiler_runtime(&self, dep_graph: &DepGraph) -> bool 
+is_profiler_runtime			    fn is_profiler_runtime(&self, cnum: CrateNum) -> bool 
+is_sanitizer_runtime			    pub fn is_sanitizer_runtime(&self, dep_graph: &DepGraph) -> bool 
 is_sanitizer_runtime			    fn is_sanitizer_runtime(&self, cnum: CrateNum) -> bool 
-is_staged_api			    pub fn is_staged_api(&self) -> bool 
-is_staged_api			    fn is_staged_api(&self, cnum: CrateNum) -> bool
 is_statically_included_foreign_item			    fn is_statically_included_foreign_item(&self, def_id: DefId) -> bool
-item_attrs			    fn item_attrs(&self, def_id: DefId) -> Rc<[ast::Attribute]>
+isolated_encoder			mod isolated_encoder;
 item_body			    fn item_body<'a, 'tcx>(&self,
 item_body			    pub fn item_body(&self,
-item_body_nested_bodies			    fn item_body_nested_bodies(&self, def: DefId) -> BTreeMap<hir::BodyId, hir::Body> 
 item_body_nested_bodies			    pub fn item_body_nested_bodies(&self, id: DefIndex) -> BTreeMap<hir::BodyId, hir::Body> 
 item_body_tables			    pub fn item_body_tables(&self,
-item_children			    fn item_children(&self, def_id: DefId) -> Vec<def::Export>
+item_children			    fn item_children(&self, def_id: DefId, sess: &Session) -> Vec<def::Export>
 item_generics_cloned			    fn item_generics_cloned(&self, def: DefId) -> ty::Generics 
-item_name			    fn item_name(&self, item_index: DefIndex) -> ast::Name 
+item_name			    pub fn item_name(&self, item_index: DefIndex) -> ast::Name 
 iter_crate_data			    pub fn iter_crate_data<I>(&self, mut i: I)
 iter_enumerated			    pub fn iter_enumerated<'a>(&self,
 lang_items			    fn lang_items(&self, cnum: CrateNum) -> Vec<(DefIndex, usize)>
@@ -336,9 +330,10 @@ lazy_seq			    pub fn lazy_seq<I, T>(&mut self, iter: I) -> LazySeq<T>
 lazy_seq			    pub fn lazy_seq<I, T>(&mut self, iter: I) -> LazySeq<T>
 lazy_seq_from_slice			    pub fn lazy_seq_from_slice<T>(&mut self, slice: &[T]) -> LazySeq<T>
 lazy_seq_ref			    pub fn lazy_seq_ref<'b, I, T>(&mut self, iter: I) -> LazySeq<T>
+lazy_seq_ref			    pub fn lazy_seq_ref<'x, I, T>(&mut self, iter: I) -> LazySeq<T>
 lazy_seq_ref_from_slice			    pub fn lazy_seq_ref_from_slice<T>(&mut self, slice: &[&T]) -> LazySeq<T>
-list_crate_metadata			    pub fn list_crate_metadata(&self, out: &mut io::Write) -> io::Result<()> 
-list_file_metadata			pub fn list_file_metadata(target: &Target, path: &Path, out: &mut io::Write) -> io::Result<()> 
+list_crate_metadata			    pub fn list_crate_metadata(&self,
+list_file_metadata			pub fn list_file_metadata(target: &Target,
 load			    fn load(&mut self, locate_ctxt: &mut locator::Context) -> Option<LoadResult> 
 load_derive_macros			    fn load_derive_macros(&mut self, root: &CrateRoot, dylib: Option<PathBuf>, span: Span)
 load_library_crate			    pub fn load_library_crate(&mut self) -> Library 
@@ -346,13 +341,13 @@ load_macro			    fn load_macro(&self, id: DefId, sess: &Session) -> LoadedMacro
 local_def_id			    fn local_def_id(&self, index: DefIndex) -> DefId 
 locator			pub mod locator;
 lookup			    pub fn lookup(&self, bytes: &[u8], def_index: DefIndex) -> Option<Lazy<Entry<'tcx>>> 
+map			    pub fn map<F, R>(&self, f: F) -> Tracked<R>
 maybe_entry			    fn maybe_entry(&self, item_id: DefIndex) -> Option<Lazy<Entry<'tcx>>> 
-maybe_get_item_mir			    pub fn maybe_get_item_mir(&self,
+maybe_get_optimized_mir			    pub fn maybe_get_optimized_mir(&self,
 maybe_load_library_crate			    pub fn maybe_load_library_crate(&mut self) -> Option<Library> 
-meta_section_name			pub fn meta_section_name(target: &Target) -> &'static str 
+metadata_dep_node			    pub fn metadata_dep_node(&self, kind: GlobalMetaDataKind) -> DepNode 
 metadata_encoding_version			    fn metadata_encoding_version(&self) -> &[u8]
-metadata_filename			    fn metadata_filename(&self) -> &str
-metadata_section_name			    fn metadata_section_name(&self, target: &Target) -> &str
+metadata_loader			    fn metadata_loader(&self) -> &MetadataLoader 
 middle::cstore::CrateLoader for CrateLoader			impl<'a> middle::cstore::CrateLoader for CrateLoader<'a> 
 min_size			    pub fn min_size() -> usize 
 min_size			    pub fn min_size(length: usize) -> usize 
@@ -360,19 +355,20 @@ mir_const_qualif			    pub fn mir_const_qualif(&self, id: DefIndex) -> u8
 missing_lang_items			    fn missing_lang_items(&self, cnum: CrateNum)
 name			    pub fn name(&self) -> Symbol 
 native_libraries			    fn native_libraries(&self, cnum: CrateNum) -> Vec<NativeLibrary>
-needs_allocator			    pub fn needs_allocator(&self) -> bool 
-needs_panic_runtime			    pub fn needs_panic_runtime(&self) -> bool 
+needs_allocator			    pub fn needs_allocator(&self, dep_graph: &DepGraph) -> bool 
+needs_panic_runtime			    pub fn needs_panic_runtime(&self, dep_graph: &DepGraph) -> bool 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 nested_visit_map			    fn nested_visit_map<'this>(&'this mut self) -> NestedVisitorMap<'this, 'tcx> 
 new			    pub fn new(sess: &'a Session, cstore: &'a CStore, local_crate_name: &str) -> Self 
-new			    pub fn new(dep_graph: &DepGraph) -> CStore 
+new			    pub fn new(dep_graph: &DepGraph, metadata_loader: Box<MetadataLoader>) -> CStore 
 new			    pub fn new((max_index_lo, max_index_hi): (usize, usize)) -> Index 
 new			    pub fn new(ecx: &'a mut EncodeContext<'b, 'tcx>) -> Self 
-new			    fn new(ar: ArchiveRO) -> Option<ArchiveMetadata> 
+new			    pub fn new(ecx: &'a mut EncodeContext<'b, 'tcx>) -> Self 
+new			    pub fn new(state: T) -> Tracked<T> 
 next_crate_num			    pub fn next_crate_num(&self) -> CrateNum 
 note_crate_name			pub fn note_crate_name(err: &mut DiagnosticBuilder, name: &str) 
 original_crate_name			    fn original_crate_name(&self, cnum: CrateNum) -> Symbol
-panic_strategy			    pub fn panic_strategy(&self) -> PanicStrategy 
+panic_strategy			    pub fn panic_strategy(&self, dep_graph: &DepGraph) -> PanicStrategy 
 panic_strategy			    fn panic_strategy(&self, cnum: CrateNum) -> PanicStrategy 
 paths			    fn paths(&self) -> Vec<PathBuf> 
 plugin_registrar_fn			    fn plugin_registrar_fn(&self, cnum: CrateNum) -> Option<DefId>
@@ -382,6 +378,7 @@ preprocess			    pub fn preprocess(&mut self, krate: &ast::Crate)
 process_foreign_mod			    fn process_foreign_mod(&mut self, i: &ast::Item, fm: &ast::ForeignMod,
 process_item			    fn process_item(&mut self, item: &ast::Item, definitions: &Definitions) 
 provide			        pub fn provide<
+provide_local			pub fn provide_local<'tcx>(providers: &mut Providers<'tcx>) 
 push_dependencies_in_postorder			    pub fn push_dependencies_in_postorder(&self, ordering: &mut Vec<CrateNum>, krate: CrateNum) 
 raw_bytes			    fn raw_bytes(self) -> &'a [u8] 
 raw_bytes			    fn raw_bytes(self) -> &'a [u8];
@@ -389,9 +386,9 @@ read			            fn read(&self, tcx: TyCtxt)
 read			    fn read(&self, _tcx: TyCtxt) {}
 read			    fn read(&self, tcx: TyCtxt) 
 read			    fn read(&self, tcx: TyCtxt);
+read_dep_node			    pub fn read_dep_node(&self, def_id: DefId) 
 read_extension_crate			    fn read_extension_crate(&mut self, span: Span, info: &ExternCrateInfo) -> ExtensionCrate 
 read_lazy_distance			    fn read_lazy_distance(&mut self, min_size: usize) -> Result<usize, <Self as Decoder>::Error> 
-read_meta_section_name			pub fn read_meta_section_name(_target: &Target) -> &'static str 
 record			    pub fn record(&mut self, def_id: DefId, entry: Lazy<Entry>) 
 record			    pub fn record<'x, DATA>(&'x mut self,
 record_index			    pub fn record_index(&mut self, item: DefIndex, entry: Lazy<Entry>) 
@@ -420,7 +417,6 @@ sess			    fn sess(self) -> Option<&'a Session>
 set_crate_data			    pub fn set_crate_data(&self, cnum: CrateNum, data: Rc<CrateMetadata>) 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<&'tcx Substs<'tcx>, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<&'tcx ty::AdtDef, Self::Error> 
-specialized_decode			    fn specialized_decode(&mut self) -> Result<&'tcx ty::Region, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<&'tcx ty::Slice<Ty<'tcx>>, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<CrateNum, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<Lazy<T>, Self::Error> 
@@ -428,32 +424,33 @@ specialized_decode			    fn specialized_decode(&mut self) -> Result<LazySeq<T>, 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<Span, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<Ty<'tcx>, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self) -> Result<ty::GenericPredicates<'tcx>, Self::Error> 
+specialized_decode			    fn specialized_decode(&mut self) -> Result<ty::Region<'tcx>, Self::Error> 
 specialized_decode			    fn specialized_decode(&mut self)
 specialized_encode			    fn specialized_encode(&mut self, lazy: &Lazy<T>) -> Result<(), Self::Error> 
 specialized_encode			    fn specialized_encode(&mut self, seq: &LazySeq<T>) -> Result<(), Self::Error> 
 specialized_encode			    fn specialized_encode(&mut self, ty: &Ty<'tcx>) -> Result<(), Self::Error> 
 specialized_encode			    fn specialized_encode(&mut self,
-stability			    fn stability(&self, def: DefId) -> Option<attr::Stability> 
 staticlibname			    fn staticlibname(&self) -> (String, String) 
 struct_field_names			    fn struct_field_names(&self, def: DefId) -> Vec<ast::Name>
 tcx			    fn tcx(self) -> Option<TyCtxt<'a, 'tcx, 'tcx>> { None }
 tcx			    fn tcx(self) -> Option<TyCtxt<'a, 'tcx, 'tcx>> 
 tcx			    pub fn tcx(&self) -> TyCtxt<'a, 'tcx, 'tcx> 
 to_def			    fn to_def(&self, did: DefId) -> Option<Def> 
-trait_of_item			    fn trait_of_item(&self, def_id: DefId) -> Option<DefId> 
+tracked			    pub fn tracked<'x, DATA, R>(&'x mut self,
 update_extern_crate			    fn update_extern_crate(&mut self,
 used_crate_source			    fn used_crate_source(&self, cnum: CrateNum) -> CrateSource
 used_crates			    fn used_crates(&self, prefer: LinkagePreference) -> Vec<(CrateNum, LibSource)>
 used_libraries			    fn used_libraries(&self) -> Vec<NativeLibrary>
 used_link_args			    fn used_link_args(&self) -> Vec<String>
-verify_decompressed_encoding_version			fn verify_decompressed_encoding_version(blob: &MetadataBlob,
 verify_no_symbol_conflicts			    fn verify_no_symbol_conflicts(&self,
 visibility			    fn visibility(&self, def: DefId) -> ty::Visibility 
-visible_parent_map			    fn visible_parent_map<'a>(&'a self) -> ::std::cell::Ref<'a, DefIdMap<DefId>> 
+visible_parent_map			    fn visible_parent_map<'a>(&'a self, sess: &Session) -> ::std::cell::Ref<'a, DefIdMap<DefId>> 
+visit::Visitor for Finder			            impl<'ast> visit::Visitor<'ast> for Finder 
 visit_expr			    fn visit_expr(&mut self, ex: &'tcx hir::Expr) 
 visit_foreign_item			    fn visit_foreign_item(&mut self, ni: &'tcx hir::ForeignItem) 
 visit_generics			    fn visit_generics(&mut self, generics: &'tcx hir::Generics) 
 visit_impl_item			    fn visit_impl_item(&mut self, _impl_item: &'v hir::ImplItem) 
+visit_item			                fn visit_item(&mut self, i: &'ast ast::Item) 
 visit_item			    fn visit_item(&mut self, item: &'tcx hir::Item) 
 visit_item			    fn visit_item(&mut self, item: &hir::Item) 
 visit_macro_def			    fn visit_macro_def(&mut self, macro_def: &'tcx hir::MacroDef) 
